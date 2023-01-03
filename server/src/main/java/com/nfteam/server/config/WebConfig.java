@@ -13,8 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
     private static final String LOCALHOST_FRONT = "http://localhost:3000";
     private static final String LOCALHOST_BACK = "http://localhost:8080";
 
-    //
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
