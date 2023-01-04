@@ -22,7 +22,7 @@ public class Member extends AuditingFields {
     @Setter
     @Column(length=100)
     private String userPassword;
-
+    ///
     @Setter
     @Column(length = 100)
     private String email;
