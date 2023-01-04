@@ -1,4 +1,4 @@
-package com.nfteam.server.dto.Response;
+package com.nfteam.server.member.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;

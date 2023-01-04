@@ -1,4 +1,4 @@
-package com.nfteam.server.dto;
+package com.nfteam.server.member.dto;
 
 
 import lombok.Data;
@@ -20,6 +20,8 @@ public class MemberDto implements Serializable {
     private String createdBy;
     private LocalDateTime modifiedAt;
     private String modifiedBy;
+
+
 
 
 

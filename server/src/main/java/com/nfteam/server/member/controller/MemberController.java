@@ -1,8 +1,7 @@
-package com.nfteam.server.Controller;
+package com.nfteam.server.member.controller;
 
-import com.nfteam.server.Domain.Member;
-import com.nfteam.server.Service.MemberService;
-import com.nfteam.server.dto.Request.MemberRegisterRequest;
+import com.nfteam.server.member.Service.MemberService;
+import com.nfteam.server.member.dto.Request.MemberRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
