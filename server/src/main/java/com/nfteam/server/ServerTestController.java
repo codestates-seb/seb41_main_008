@@ -9,6 +9,6 @@ public class ServerTestController {
     //
     @GetMapping
     public String homeTest() {
-        return "서버 정상 동작 확인";
+        return "서버 정상 동작 확인 프론트용";
     }
 }
