@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import DropdownItems from './DropdownItems';
+
 const Header = () => {
   const SearchInput = styled.input`
     display: flex;
