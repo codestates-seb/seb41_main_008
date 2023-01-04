@@ -10,12 +10,15 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "item_group")
+@Table(name = "item_collection_group")
 public class ItemGroup extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
     private Long groupId;
+
+    @Column(name = "group_name", length = 100)
+    private String groupName;
 
     // 해당 그룹(컬렉션) 소유자
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,5 @@
 package com.nfteam.server.cart.entity;
 
-import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.item.entity.Item;
 import lombok.Getter;
 
@@ -9,10 +8,10 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "cart_item_rel")
-public class CartItemRel extends BaseEntity {
+public class CartItemRel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_item_id")
+    @Column(name = "rel_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

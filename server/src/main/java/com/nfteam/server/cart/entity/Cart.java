@@ -1,17 +1,17 @@
 package com.nfteam.server.cart.entity;
 
-import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.member.entity.Member;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Entity
 @Table(name = "cart")
-public class Cart extends BaseEntity {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
@@ -21,6 +21,9 @@ public class Cart extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Column(name = "payment_date")
+    private LocalDateTime paymentDate = LocalDateTime.now();
 
     // 카트의 상태
     // true 현재 회원의 활성화 된 카트(아직 결제 전)

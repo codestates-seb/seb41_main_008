@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class TransAction extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
+    @Column(name = "trans_id")
     private Long transId;
 
     @ManyToOne(fetch = FetchType.LAZY)

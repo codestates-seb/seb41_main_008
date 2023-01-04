@@ -1,9 +1,7 @@
 package com.nfteam.server.audit;
 
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -26,14 +24,5 @@ public class BaseEntity {
     private LocalDateTime modifiedDate;
 
     // 생성한 사람을 등록하고 수정한 사람를 자동으로 등록하는 부분은 스프링 시큐리티 컨텍스트에서 연동해서 가져와야함
-    // 이 부분 삭제하던지 AuditorAware 적용이 필요!!
-    // https://marsland.tistory.com/m/531
-
-    @CreatedBy
-    @Column(name = "created_by", updatable = false)
-    private String createdBy;
-
-    @LastModifiedBy
-    @Column(name = "modified_by")
-    private String modifiedBy;
+    // AuditorAware 적용이 필요해서 구현해야 하고, 더불어 현재 애플리케이션에서는 이미 유저 정보가 다 연관되어 있어서 불필요한 정보라서 제외
 }
