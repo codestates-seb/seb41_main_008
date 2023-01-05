@@ -1,6 +1,7 @@
 package com.nfteam.server.cart.entity;
 
 import com.nfteam.server.item.entity.Item;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ public class CartItemRel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rel_id")
-    private Long id;
+    private Long relId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
@@ -25,4 +26,9 @@ public class CartItemRel {
     protected CartItemRel() {
     }
 
+    @Builder
+    public CartItemRel(Cart cart, Item item) {
+        this.cart = cart;
+        this.item = item;
+    }
 }
