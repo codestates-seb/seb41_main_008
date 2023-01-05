@@ -22,3 +22,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .exposedHeaders(HttpHeaders.LOCATION);
     }
 }
+
+
