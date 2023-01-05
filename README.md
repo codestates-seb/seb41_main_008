@@ -16,6 +16,7 @@ FrontEnd: 김응열, 서범길, 정태진
     - refactor : 리팩토링
     - test : 테스트
     - chore : 기타 작업
+- <b>📌 commit Message는 하는 작업을 잘 파악할 수 있게 명확하게 적어주세요.</b>
 
 ### 2. Branch 생성 규칙
 - 기본 형식 : [type]/[feature]
