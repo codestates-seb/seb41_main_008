@@ -3,33 +3,38 @@ package com.nfteam.server.auth.jwt;
 import com.nfteam.server.auth.repository.RedisRepository;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
-@RequiredArgsConstructor
 @Getter
 @Component
 public class JwtTokenizer {
-    @Value("${jwt.secret-key}")
     private final String secretKey;
-
-    @Value("${jwt.access-token-expiration-minutes}")
     private final int accessTokenExpirationMinutes;
-
-    @Value("${jwt.refresh-token-expiration-minutes}")
     private final int refreshTokenExpirationMinutes;
 
-    private final RedisRepository redisRepository;
+//    private final RedisRepository redisRepository;
 
+
+    public JwtTokenizer(@Value("${jwt.secret-key}") String secretKey,
+                        @Value("${jwt.access-token-expiration-minutes}") int accessTokenExpirationMinutes,
+                        @Value("${jwt.refresh-token-expiration-minutes}") int refreshTokenExpirationMinutes) {
+        this.secretKey = secretKey;
+        this.accessTokenExpirationMinutes = accessTokenExpirationMinutes;
+        this.refreshTokenExpirationMinutes = refreshTokenExpirationMinutes;
+//        this.redisRepository = redisRepository;
+    }
 
     public String generateAccessToken(Map<String, Object> claims,
-        String subject, Date expiration, String base64EncodedSecretKey){
+                                      String subject, Date expiration, String base64EncodedSecretKey) {
 
         Key key = getKeyFromBase64EncodedKey(secretKey);
         return null;

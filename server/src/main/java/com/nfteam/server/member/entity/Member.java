@@ -1,55 +1,73 @@
 package com.nfteam.server.member.entity;
 
 
-import com.nfteam.server.audit.AuditingFields;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import com.nfteam.server.audit.BaseEntity;
+import com.nfteam.server.cart.entity.Cart;
+import com.nfteam.server.coin.CoinMemberRel;
+import com.nfteam.server.item.entity.Item;
+import com.nfteam.server.item.entity.ItemCollection;
+import com.nfteam.server.transaction.entity.TransAction;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
-@ToString
-@NoArgsConstructor
-@Table(indexes = {
-        @Index(columnList = "email",unique = true),
-        @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")
-})
 @Entity
-public class Member extends AuditingFields {
+@Table(name = "member")
+public class Member extends BaseEntity {
     @Id
-    @Column(length = 50)
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
+    private Long memberId;
 
-    @Setter
-    @Column(length=100)
-    private String userPassword;
-    ///
-    @Setter
-    @Column(length = 100)
+    @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Setter
-    @Column(length = 100)
+    @Column(name = "password", nullable = false, length = 400)
+    private String password;
+
+    @Column(name = "nickname", length = 100)
     private String nickname;
 
-    @Builder
-    private Member(String userId, String userPassword, String email, String nickname){
-        this.userId=userId;
-        this.userPassword=userPassword;
-        this.email=email;
-        this.nickname=nickname;
-        this.modifiedBy=createdBy;
+    @Column(name = "profile_url", length = 2500, nullable = false)
+    private String profileUrl;
 
+    // todo: 아래 양방향 연관관계들을 추후 필요없으면 삭제
+
+    // 회원 활성화 여부 - true 활성화, false 탈퇴 회원
+    @Column(name = "member_active", nullable = false)
+    private Boolean memberActive = true;
+
+    // 현재 진행형 장바구니 + 이전에 장바구니에 담고 결제했던 기록들
+    @OneToMany(mappedBy = "member")
+    private List<Cart> cartList = new ArrayList<>();
+
+    // 멤버가 소유한(직접 발행) 컬렉션 리스트
+    @OneToMany(mappedBy = "member")
+    private List<ItemCollection> collectionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Item> itemList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<CoinMemberRel> coinList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<TransAction> transActionList = new ArrayList<>();
+
+    protected Member() {
     }
 
-    public static Member of(String username, String password, String email, String nickname) {
-        return new Member(username,password,email,nickname);
+    @Builder
+    public Member(Long memberId, String email, String password, String nickname, Boolean memberActive, String profileUrl) {
+        this.memberId = memberId;
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.memberActive = memberActive;
+        this.profileUrl = profileUrl;
     }
 }
