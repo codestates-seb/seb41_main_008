@@ -4,16 +4,21 @@ package com.nfteam.server.member.entity;
 import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.item.entity.ItemGroup;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "member")
+@NoArgsConstructor
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +31,20 @@ public class Member extends BaseEntity {
     @Column(name = "password", nullable = false, length = 400)
     private String password;
 
-    @Column(name = "nickname", length = 100)
+    @Column(name = "nickname", nullable = false, length = 100)
     private String nickname;
-
-    // 회원 활성화 여부
-    // true 활성화 회원, false 탈퇴 회원
-    @Column(name = "member_active", nullable = false)
-    private Boolean memberActive = true;
 
     // 프로필 이미지 URL
     @Column(name = "profile_url", length = 2500, nullable = false)
     private String profileUrl;
+
+    //회원상태관리를 위한 Column
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "member_status",length = 20, nullable = false)
+    private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
     // 멤버의 장바구니 리스트
     // 현재 장바구니 + 이전에 장바구니에 담은 기록들
@@ -51,16 +59,24 @@ public class Member extends BaseEntity {
     // 해당 멤버가 소유한 아이템을 조회하고 싶다면
     // 연관관계 상 아이템쪽에서 memberId 를 조건으로 꺼내와야 합니다.
 
-    protected Member() {
+    /** 회원가입 - 활동중
+     *  1년 이상 로그인 x - 휴면상태
+     *  회원탈퇴 - 탈퇴 상태
+     */
+    public enum MemberStatus {
+        MEMBER_ACTIVE("활동중"),
+        MEMBER_SLEEP("휴면 상태"),
+        MEMBER_QUIT("탈퇴 상태");
+
+        @Getter
+        private String status;
+
+        MemberStatus(String status) {
+            this.status = status;
+        }
     }
 
-    @Builder
-    public Member(Long memberId, String email, String password, String nickname, Boolean memberActive, String profileUrl) {
-        this.memberId = memberId;
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.memberActive = memberActive;
-        this.profileUrl = profileUrl;
+    public enum OauthPlatform {
+        GOOGLE, GITHUB;
     }
 }
