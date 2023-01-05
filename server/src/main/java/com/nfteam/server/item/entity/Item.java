@@ -13,24 +13,25 @@ import java.util.List;
 @Entity
 @Table(name = "item")
 public class Item extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long itemId;
 
     // 상품의 현재 판매가능 여부
-    @Column(name = "sell_status", nullable = false)
-    private Boolean sellStatus = true;
+    @Column(name = "on_sale", nullable = false)
+    private Boolean onSale = true;
 
     // 상품의 소속 그룹
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private ItemGroup group;
+    @JoinColumn(name = "collection_id")
+    private ItemCollection collection;
 
     // 아이템 현재 소유자 정보
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_member_id")
-    private Member owner;
+    private Member member;
 
     // 현재 이 아이템이 속해있는 장바구니들의 목록
     // 결제가 완료되어 판매 가능 여부 상태값이 변하면
