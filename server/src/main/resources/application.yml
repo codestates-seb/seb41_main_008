@@ -1,7 +1,13 @@
 spring:
   config:
     import:
-      - config/application.yml
+      - config/application-dev.yml
+      - config/application-prod.yml
   profiles:
-    active: dev
-
+    active: prod
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
