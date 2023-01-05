@@ -1,5 +1,7 @@
 package com.nfteam.server.member.service;
 
+import com.nfteam.server.exception.BusinessLogicException;
+import com.nfteam.server.exception.ExceptionCode;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import java.util.List;
@@ -39,7 +41,7 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         if(member.isPresent()){
             //TODO exeption 글로벌 처리하기
-            throw new RuntimeException("이미 가입된 이메일입니다");
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
     }
 }

@@ -3,9 +3,8 @@ package com.nfteam.server.member.entity;
 
 import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
-import com.nfteam.server.item.entity.ItemGroup;
+import com.nfteam.server.item.entity.ItemCollection;
 import java.time.LocalDateTime;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -52,9 +51,12 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Cart> cartList = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
     // 멤버가 가진 그룹 리스트
-    @OneToMany(mappedBy = "owner")
-    private List<ItemGroup> groupList = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<ItemCollection> collectionList = new ArrayList<>();
 
     // 해당 멤버가 소유한 아이템을 조회하고 싶다면
     // 연관관계 상 아이템쪽에서 memberId 를 조건으로 꺼내와야 합니다.
