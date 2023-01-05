@@ -11,10 +11,15 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain secutiryFilterChain(HttpSecurity httpSecurity) throws Exception {
-
-
-        return httpSecurity.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity.formLogin().disable()
+                .authorizeRequests()
+                .antMatchers("/h2").permitAll()
+                .and()
+                .csrf().disable()
+                .headers().frameOptions().disable()
+                .and()
+                .build();
     }
 
 
