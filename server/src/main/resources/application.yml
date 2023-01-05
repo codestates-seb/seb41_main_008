@@ -4,3 +4,4 @@ spring:
       - config/application.yml
   profiles:
     active: dev
+
