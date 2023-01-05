@@ -3,7 +3,10 @@ package com.nfteam.server.member.entity;
 
 import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
-import com.nfteam.server.item.entity.ItemGroup;
+import com.nfteam.server.coin.CoinMemberRel;
+import com.nfteam.server.item.entity.Item;
+import com.nfteam.server.item.entity.ItemCollection;
+import com.nfteam.server.transaction.entity.TransAction;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -29,27 +32,31 @@ public class Member extends BaseEntity {
     @Column(name = "nickname", length = 100)
     private String nickname;
 
-    // 회원 활성화 여부
-    // true 활성화 회원, false 탈퇴 회원
-    @Column(name = "member_active", nullable = false)
-    private Boolean memberActive = true;
-
-    // 프로필 이미지 URL
     @Column(name = "profile_url", length = 2500, nullable = false)
     private String profileUrl;
 
-    // 멤버의 장바구니 리스트
-    // 현재 장바구니 + 이전에 장바구니에 담은 기록들
-    // 멤버의 장바구니를 조회하는 api 호출시 현재 활성화 된 장바구니를 보여주도록 해야한다.
+    // todo: 아래 양방향 연관관계들을 추후 필요없으면 삭제
+
+    // 회원 활성화 여부 - true 활성화, false 탈퇴 회원
+    @Column(name = "member_active", nullable = false)
+    private Boolean memberActive = true;
+
+    // 현재 진행형 장바구니 + 이전에 장바구니에 담고 결제했던 기록들
     @OneToMany(mappedBy = "member")
     private List<Cart> cartList = new ArrayList<>();
 
-    // 멤버가 가진 그룹 리스트
-    @OneToMany(mappedBy = "owner")
-    private List<ItemGroup> groupList = new ArrayList<>();
+    // 멤버가 소유한(직접 발행) 컬렉션 리스트
+    @OneToMany(mappedBy = "member")
+    private List<ItemCollection> collectionList = new ArrayList<>();
 
-    // 해당 멤버가 소유한 아이템을 조회하고 싶다면
-    // 연관관계 상 아이템쪽에서 memberId 를 조건으로 꺼내와야 합니다.
+    @OneToMany(mappedBy = "member")
+    private List<Item> itemList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<CoinMemberRel> coinList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<TransAction> transActionList = new ArrayList<>();
 
     protected Member() {
     }
