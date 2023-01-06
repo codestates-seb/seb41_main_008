@@ -2,7 +2,6 @@ spring:
   config:
     import:
       - config/application-dev.yml
-      - config/application-prod.yml
   profiles:
     active: dev
   jpa:
@@ -11,6 +10,8 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
+    hibernate:
+      ddl-auto: create
 logging:
   level:
     org:
