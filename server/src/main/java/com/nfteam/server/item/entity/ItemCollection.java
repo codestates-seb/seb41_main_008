@@ -35,7 +35,7 @@ public class ItemCollection extends BaseEntity {
 
     public void assignMember(Member member) {
         this.member = member;
-        member.getCollectionList().add(this);
+        member.getGroupList().add(this);
     }
 
 
