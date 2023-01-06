@@ -10,7 +10,7 @@ jar {
 }
 
 group = 'com.nfteam'
-version = '0.0.1-SNAPSHOT' + new Date().format("yyyy-MM-dd-HH:mm:ss")
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
