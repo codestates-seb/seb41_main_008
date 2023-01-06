@@ -1,0 +1,29 @@
+spring:
+  config:
+    import:
+      - config/application-dev.yml
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
+server:
+  port: 8081
+  servlet:
+    encoding:
+      force-response: true
+  redis:
+    host: localhost
+    port: 6379
+
+jwt:
+  secret-key: adfasdfsdfsdfasdfsdfsdafsdfsdsdfdsafasdfasdfsdfsdfsafsdfsdfsadse           # 민감한 정보는 시스템 환경 변수에서 로드한다.
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 2880
