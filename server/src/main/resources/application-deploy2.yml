@@ -1,5 +1,7 @@
 spring:
   config:
+    activate:
+      on-profile: deploy2
     import:
       - config/application-prod.yml
   jpa:
@@ -15,6 +17,7 @@ logging:
         orm:
           jpa: DEBUG
 server:
+  port: 8082
   servlet:
     encoding:
       force-response: true

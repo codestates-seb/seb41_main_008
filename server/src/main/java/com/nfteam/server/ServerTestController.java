@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServerTestController {
     @GetMapping
     public String homeTest() {
-        return "개발 서버 정상 동작 확인";
+        return "운영서버 무중단 배포 확인 1";
     }
 }

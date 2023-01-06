@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user
+    destination: /home/ec2-user/deploy/
     overwrite: yes
 
 permissions:
@@ -11,7 +11,15 @@ permissions:
     group: ec2-user
 
 hooks:
+  AfterInstall:
+    - location: /scripts/stop.sh #nginx와 연결되어 있지 않은 스프링 부트 종료
+      timeout: 60
+      runas: ec2-user
   ApplicationStart:
-    - location: /scripts/deploy.sh
+    - location: /scripts/start.sh #nginx와 연결되어 있지 않은 port로 새 버전 스프링 부트 시작
+      timeout: 60
+      runas: ec2-user
+  ValidateService:
+    - location: /scripts/health.sh # 새 부트 정상 실행 확인
       timeout: 60
       runas: ec2-user
