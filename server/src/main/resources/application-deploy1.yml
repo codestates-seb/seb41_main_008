@@ -1,5 +1,7 @@
 spring:
   config:
+    activate:
+      on-profile: deploy1
     import:
       - config/application-dev.yml
   jpa:
