@@ -81,7 +81,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         member.setEmail(username);
         member.setRoles(roles);
 
-        MemberDetails memberDetails = new MemberDetails(member, authorityUtils);
+        MemberDetails memberDetails = new MemberDetails(authorityUtils, member);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, null,
             authorities);

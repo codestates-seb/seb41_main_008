@@ -1,5 +1,6 @@
 package com.nfteam.server.member.service;
 
+import com.nfteam.server.auth.utils.CustomAuthorityUtils;
 import com.nfteam.server.exception.BusinessLogicException;
 import com.nfteam.server.exception.ExceptionCode;
 import com.nfteam.server.member.entity.Member;
@@ -19,6 +20,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
 
     public Member createMember(Member member) {
         //존재 여부 확인
@@ -27,6 +29,9 @@ public class MemberService {
         //pw 암호화
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
+
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
 
         //TODO : role, 기본 프로필사진 설정
         member.setProfileUrl("temp");

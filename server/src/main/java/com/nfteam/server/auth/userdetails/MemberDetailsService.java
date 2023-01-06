@@ -24,6 +24,6 @@ public class MemberDetailsService implements UserDetailsService {
         Member findMember = memberRepository.findByEmail(username).orElseThrow(()->new BusinessLogicException(
             ExceptionCode.MEMBER_NOT_FOUND));
 
-        return new MemberDetails(findMember,customAuthorityUtils);
+        return new MemberDetails(customAuthorityUtils,findMember);
     }
 }

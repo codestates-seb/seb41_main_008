@@ -39,6 +39,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         Gson gson = new Gson();
         MemberDetails memberDeatils = (MemberDetails) authentication.getPrincipal();
         memberDeatils.setLastLogin(LocalDateTime.now());
+        memberDeatils.setAuthorityUtils(null);
 
         Optional<Member> findmember = memberRepository.findByEmail(memberDeatils.getEmail());
         findmember.get().setLastLogin(LocalDateTime.now());

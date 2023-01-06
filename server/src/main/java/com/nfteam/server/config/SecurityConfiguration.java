@@ -1,11 +1,23 @@
 package com.nfteam.server.config;
 
+import com.nfteam.server.auth.filter.JwtAuthenticationFilter;
+import com.nfteam.server.auth.filter.JwtVerificationFilter;
+import com.nfteam.server.auth.handler.MemberAccessDeniedHandler;
+import com.nfteam.server.auth.handler.MemberAuthenticationEntryPoint;
+import com.nfteam.server.auth.handler.MemberAuthenticationFailureHandler;
+import com.nfteam.server.auth.handler.MemberAuthenticationSuccessHandler;
+import com.nfteam.server.auth.jwt.JwtTokenizer;
+import com.nfteam.server.auth.repository.RedisRepository;
+import com.nfteam.server.auth.utils.CustomAuthorityUtils;
+import com.nfteam.server.member.repository.MemberRepository;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +29,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    private final JwtTokenizer jwtTokenizer;
+
+    private final CustomAuthorityUtils authorityUtils;
+
+    private final MemberRepository memberRepository;
+
+    private final RedisRepository redisRepository;
 
     @Bean
     public SecurityFilterChain secutiryFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -31,11 +51,11 @@ public class SecurityConfiguration {
             .formLogin().disable()
             .httpBasic().disable()
             .exceptionHandling()
-//          .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
-//          .accessDeniedHandler(new MemberAccessDeniedHandler())
+            .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+            .accessDeniedHandler(new MemberAccessDeniedHandler())
             .and()
-//          .apply(new CustomFilterConfigurer())
-//          .and()
+            .apply(new CustomFilterConfigurer())
+            .and()
             .authorizeHttpRequests(authorize -> authorize
                 .anyRequest().permitAll());
 //            .oauth2Login(oauth2 -> oauth2
@@ -64,5 +84,24 @@ public class SecurityConfiguration {
         return source;
     }
 
+    public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity>{
 
+        @Override
+        public void configure(HttpSecurity builder) throws Exception {
+
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager,jwtTokenizer,redisRepository);
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(memberRepository)); //success 핸들러
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler()); //failure 핸들러
+            jwtAuthenticationFilter.setFilterProcessesUrl("/api/members/login");
+
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+
+            builder.addFilter(jwtAuthenticationFilter)
+                .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+
+
+        }
+
+    }
 }
