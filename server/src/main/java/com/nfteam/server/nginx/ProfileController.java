@@ -8,19 +8,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 public class ProfileController {
-    private final Environment environment;
+    private static final List<String> PROFILES = Arrays.asList("deploy1", "deploy2");
+    private static final String DEFAULT = "default";
+    private final Environment env;
 
     @GetMapping("/profile")
     public String getProfile() {
-        List<String> profiles = Arrays.asList(environment.getActiveProfiles());
-        List<String> deployProfiles = Arrays.asList("deploy1", "deploy2");
-        String defaultProfile = profiles.isEmpty() ? "default" : profiles.get(0);
+        List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        String defaultProfile = activeProfiles.isEmpty() ? DEFAULT : activeProfiles.get(0);
 
-        return profiles.stream()
-                .filter(deployProfiles::contains)
+        return activeProfiles.stream()
+                .filter(PROFILES::contains)
                 .findAny()
                 .orElse(defaultProfile);
     }
