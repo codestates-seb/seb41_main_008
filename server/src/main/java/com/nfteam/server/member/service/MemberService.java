@@ -1,5 +1,6 @@
 package com.nfteam.server.member.service;
 
+import com.nfteam.server.auth.repository.RedisRepository;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
 import com.nfteam.server.exception.BusinessLogicException;
 import com.nfteam.server.exception.ExceptionCode;
@@ -7,6 +8,7 @@ import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+
+    private final RedisRepository redisRepository;
 
     public Member createMember(Member member) {
         //존재 여부 확인
@@ -39,14 +43,22 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    public void logout(HttpServletRequest request, long memberId) {
+        String refreshToken = request.getHeader("RefreshToken");
+        redisRepository.expireRefreshToken(refreshToken);
+    }
+
+
+
     /**
      * 도구
      */
     private void verifyExistsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if(member.isPresent()){
-            //TODO exeption 글로벌 처리하기
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
     }
+
+
 }
