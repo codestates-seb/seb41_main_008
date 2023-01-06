@@ -1,10 +1,7 @@
 spring:
   config:
     import:
-      - config/application-dev.yml
       - config/application-prod.yml
-  profiles:
-    active: prod
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
