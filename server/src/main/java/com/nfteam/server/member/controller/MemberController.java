@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 public class MemberController {
+    //멤버
 
     private final MemberService memberService;
     private final MemberMapper mapper;

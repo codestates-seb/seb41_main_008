@@ -13,13 +13,14 @@ import java.util.List;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+//TODO Setter,Mapstruct 리팩토링
 @Getter
 @Setter
 @Entity
 @Table(name = "member")
 @NoArgsConstructor
 public class Member extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -57,7 +58,7 @@ public class Member extends BaseEntity {
 
     // 멤버가 가진 그룹 리스트
     @OneToMany(mappedBy = "member")
-    private List<ItemCollection> collectionList = new ArrayList<>();
+    private List<ItemCollection> groupList = new ArrayList<>();
 
     // 해당 멤버가 소유한 아이템을 조회하고 싶다면
     // 연관관계 상 아이템쪽에서 memberId 를 조건으로 꺼내와야 합니다.

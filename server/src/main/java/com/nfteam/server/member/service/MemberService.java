@@ -48,8 +48,6 @@ public class MemberService {
         redisRepository.expireRefreshToken(refreshToken);
     }
 
-
-
     /**
      * 도구
      */

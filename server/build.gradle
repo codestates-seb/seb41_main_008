@@ -5,6 +5,10 @@ plugins {
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
+jar {
+    enabled = false
+}
+
 group = 'com.nfteam'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
