@@ -21,10 +21,6 @@ server:
   servlet:
     encoding:
       force-response: true
-  redis:
-    host: localhost
-    port: 6379
-
 jwt:
   secret-key: adfasdfsdfsdfasdfsdfsdafsdfsdsdfdsafasdfasdfsdfsdfsafsdfsdfsadse           # 민감한 정보는 시스템 환경 변수에서 로드한다.
   access-token-expiration-minutes: 30
