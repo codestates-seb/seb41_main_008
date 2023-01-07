@@ -32,11 +32,11 @@ public class Member extends BaseEntity {
     @Column(name = "password", nullable = false, length = 400)
     private String password;
 
-    @Column(name = "nickname", nullable = false, length = 100)
+    @Column(name = "nickname",length = 100)
     private String nickname;
 
     // 프로필 이미지 URL
-    @Column(name = "profile_url", length = 2500, nullable = false)
+    @Column(name = "profile_url", length = 2500)
     private String profileUrl;
 
     //회원상태관리를 위한 Column
