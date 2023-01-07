@@ -1,9 +1,14 @@
 package com.nfteam.server.member.service;
 
+import com.nfteam.server.auth.repository.RedisRepository;
+import com.nfteam.server.auth.utils.CustomAuthorityUtils;
+import com.nfteam.server.exception.BusinessLogicException;
+import com.nfteam.server.exception.ExceptionCode;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +22,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
+
+    private final RedisRepository redisRepository;
 
     public Member createMember(Member member) {
         //존재 여부 확인
@@ -26,10 +34,18 @@ public class MemberService {
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
 
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
         //TODO : role, 기본 프로필사진 설정
         member.setProfileUrl("temp");
 
         return memberRepository.save(member);
+    }
+
+    public void logout(HttpServletRequest request, long memberId) {
+        String refreshToken = request.getHeader("RefreshToken");
+        redisRepository.expireRefreshToken(refreshToken);
     }
 
     /**
@@ -38,8 +54,9 @@ public class MemberService {
     private void verifyExistsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if(member.isPresent()){
-            //TODO exeption 글로벌 처리하기
-            throw new RuntimeException("이미 가입된 이메일입니다");
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
     }
+
+
 }

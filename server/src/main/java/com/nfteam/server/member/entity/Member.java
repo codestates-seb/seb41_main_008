@@ -5,7 +5,6 @@ import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.item.entity.ItemCollection;
 import java.time.LocalDateTime;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -14,13 +13,14 @@ import java.util.List;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+//TODO Setter,Mapstruct 리팩토링
 @Getter
 @Setter
 @Entity
 @Table(name = "member")
 @NoArgsConstructor
 public class Member extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -32,11 +32,11 @@ public class Member extends BaseEntity {
     @Column(name = "password", nullable = false, length = 400)
     private String password;
 
-    @Column(name = "nickname", nullable = false, length = 100)
+    @Column(name = "nickname",length = 100)
     private String nickname;
 
     // 프로필 이미지 URL
-    @Column(name = "profile_url", length = 2500, nullable = false)
+    @Column(name = "profile_url", length = 2500)
     private String profileUrl;
 
     //회원상태관리를 위한 Column
@@ -52,6 +52,9 @@ public class Member extends BaseEntity {
     // 멤버의 장바구니를 조회하는 api 호출시 현재 활성화 된 장바구니를 보여주도록 해야한다.
     @OneToMany(mappedBy = "member")
     private List<Cart> cartList = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     // 멤버가 가진 그룹 리스트
     @OneToMany(mappedBy = "member")
