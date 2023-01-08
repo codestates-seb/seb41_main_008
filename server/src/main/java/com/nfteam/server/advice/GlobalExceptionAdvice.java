@@ -1,47 +1,75 @@
 package com.nfteam.server.advice;
 
 import com.nfteam.server.dto.ErrorResponse;
-import com.nfteam.server.exception.BusinessLogicException;
-import javax.validation.ConstraintViolationException;
+import com.nfteam.server.exception.ExceptionCode;
+import com.nfteam.server.exception.NFTCustomException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ErrorResponse.of(e.getBindingResult());
+    private static final String LOG_MESSAGE = "Exception Code : {}, Exception_Message : {}, Exception_Class : {}";
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        log.warn(LOG_MESSAGE, ExceptionCode.INVALID_METHOD_ARGS, exception.getMessage(), exception.getClass().getSimpleName());
+
+        StringBuilder message = new StringBuilder();
+        exception.getBindingResult().getFieldErrors().forEach(
+                e -> message.append(e.getDefaultMessage()).append(" / ")
+        );
+
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(ExceptionCode.INVALID_METHOD_ARGS.getValue(), message.toString()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
-        return ErrorResponse.of(e.getConstraintViolations());
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException exception) {
+        log.warn(LOG_MESSAGE, ExceptionCode.INVALID_PATH_VARIABLE_ARGS, exception.getMessage(), exception.getClass().getSimpleName());
+
+        StringBuilder message = new StringBuilder();
+        exception.getConstraintViolations().forEach(
+                e -> message.append(e.getMessage()).append("/")
+        );
+
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(ExceptionCode.INVALID_PATH_VARIABLE_ARGS.getValue(), message.toString()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBusinessLogicException(BusinessLogicException e) {
-        return ErrorResponse.of(e.getExceptionCode());
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+        log.warn(LOG_MESSAGE, HttpStatus.METHOD_NOT_ALLOWED.value(), exception.getMessage(), exception.getClass().getSimpleName());
+
+        HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
+
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(String.valueOf(status.value()), status.getReasonPhrase()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ErrorResponse handleHttpRequestMethodNotSupportedException(
-        HttpRequestMethodNotSupportedException e) {
-        return ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED);
+
+    @ExceptionHandler(NFTCustomException.class)
+    public ResponseEntity<ErrorResponse> handleNFTCustomException(NFTCustomException exception) {
+        log.warn(LOG_MESSAGE, exception.getExceptionCode(), exception.getMessage(), exception.getClass().getSimpleName());
+
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.of(exception));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(Exception e) {
-        e.printStackTrace();
-        return ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUnhandledException(Exception exception) {
+        log.warn(LOG_MESSAGE, ExceptionCode.INTERNAL_SERVER_ERROR, exception.getMessage(), exception.getClass().getSimpleName());
+
+        return ResponseEntity.internalServerError()
+                .body(new ErrorResponse(ExceptionCode.INTERNAL_SERVER_ERROR.getValue(), exception.getMessage()));
     }
+
 }
