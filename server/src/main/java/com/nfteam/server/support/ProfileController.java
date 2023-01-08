@@ -1,4 +1,4 @@
-package com.nfteam.server.nginx;
+package com.nfteam.server.support;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
