@@ -6,18 +6,18 @@ import lombok.Getter;
 @Getter
 public class ErrorResponse {
 
-    private String exceptionCode;
-    private String exceptionMessage;
+    private String code;
+    private String message;
 
     private ErrorResponse() {
     }
 
-    public ErrorResponse(String exceptionCode, String exceptionMessage) {
-        this.exceptionCode = exceptionCode;
-        this.exceptionMessage = exceptionMessage;
+    public ErrorResponse(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
-    public static ErrorResponse of(NFTCustomException e){
+    public static ErrorResponse of(NFTCustomException e) {
         return new ErrorResponse(e.getExceptionCode().getValue(), e.getMessage());
     }
 
