@@ -19,7 +19,12 @@ public enum ExceptionCode {
     TOKEN_NOT_FOUND("TOKEN_NOT_FOUND"),
 
     // ITEM
-    ITEM_NOT_FOUND("ITEM_NOT_FOUND");
+    ITEM_NOT_FOUND("ITEM_NOT_FOUND"),
+    ITEM_COLLECTION_NOT_FOUND("ITEM_NOT_FOUND"),
+
+    // SUPPORT
+    IMAGE_CONVERTING_FAILED("IMAGE_CONVERTING_FAILED");
+
 
     private final String value;
 
