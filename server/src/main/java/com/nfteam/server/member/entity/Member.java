@@ -3,6 +3,7 @@ package com.nfteam.server.member.entity;
 
 import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
+import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -59,6 +60,10 @@ public class Member extends BaseEntity {
     // 멤버가 가진 그룹 리스트
     @OneToMany(mappedBy = "member")
     private List<ItemCollection> groupList = new ArrayList<>();
+
+    // 멤버가 가진 아이템 리스트
+    @OneToMany(mappedBy = "member")
+    private List<Item> itemList = new ArrayList<>();
 
     public Member(Long memberId) {
         this.memberId = memberId;

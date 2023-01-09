@@ -10,7 +10,6 @@ import com.nfteam.server.item.repository.ItemCollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
-import com.nfteam.server.support.S3ImageUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +21,21 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
     private final ItemCollectionRepository itemCollectionRepository;
-    private final S3ImageUploader s3ImageUploader;
 
     @Transactional
     public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) {
         Item item = itemCreateRequest.toItem();
 
         // itemCredential + collection + member 정보 아이템에 추가
-        Member member = getMemberById(memberDetails.getMemberId());
-        ItemCollection itemCollection = getItemCollectionInfo(itemCreateRequest.getItemCollectionId());
-        item.assignCollectionAndMember(itemCollection, member);
+        item.assignMember(new Member(memberDetails.getMemberId()));
+
+        Long itemCollectionId = Long.parseLong(itemCreateRequest.getItemCollectionId());
+        item.assignCollection(new ItemCollection(itemCollectionId));
+
         itemRepository.save(item);
+
+        // Member member = getMemberById(memberDetails.getMemberId());
+        // ItemCollection itemCollection = getItemCollectionInfo(itemCreateRequest.getItemCollectionId());
 
         return item.getItemId();
     }
