@@ -65,7 +65,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      */
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         //액세스토큰 만료기한 확인
-
+        //TODO: ExpiredJwtException으로 자체적으로 처리?
         int minutes = jwtTokenizer.getAccessTokenExpirationMinutes();
         long now = new Date().getTime();
 

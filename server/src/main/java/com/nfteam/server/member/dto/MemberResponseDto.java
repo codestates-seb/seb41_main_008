@@ -15,6 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
+    //TODO: cartlist, grouplist 추가
+
     private long memberId;
 
     @NotBlank
