@@ -16,7 +16,6 @@ public enum ExceptionCode {
 
     // AUTH
     NOT_AUTHORIZED("NOT_AUTHORIZED"),
-    TOKEN_NOT_FOUND("TOKEN_NOT_FOUND"),
 
     // ITEM
     ITEM_NOT_FOUND("ITEM_NOT_FOUND"),
@@ -26,7 +25,9 @@ public enum ExceptionCode {
     IMAGE_CONVERTING_FAILED("IMAGE_CONVERTING_FAILED"),
 
     //TOKEN
-    TOKEN_EXPIRED("TOKEN_EXPIRED");
+    TOKEN_NOT_FOUND("TOKEN_NOT_FOUND"),
+    TOKEN_EXPIRED("TOKEN_EXPIRED"),
+    TOKEN_EXTRACT_FAILED("TOKEN_EXTRACT_FAILED");
 
 
     private final String value;

@@ -1,4 +1,4 @@
-package com.nfteam.server.support;
+package com.nfteam.server.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class ProfileController {
+public class ServerProfileCheckController {
     private static final List<String> PROFILES = Arrays.asList("deploy1", "deploy2");
     private static final String DEFAULT = "default";
     private final Environment env;
