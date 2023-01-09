@@ -1,33 +1,33 @@
 import styled from 'styled-components';
 import DropdownItems from './DropdownItems';
 
-const Header = () => {
-  const SearchInput = styled.input`
-    display: flex;
-    border: 1px solid black;
-    width: 100%;
-    padding: 8px;
-    border-radius: 10px;
-    border: none;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  `;
-  const DropdownList = styled.li`
-    position: relative;
+const SearchInput = styled.input`
+  display: flex;
+  border: 1px solid black;
+  width: 100%;
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+`;
+const DropdownList = styled.li`
+  position: relative;
+  div {
+    top: 25px;
+    visibility: hidden;
+    transition: 0.8s all;
+    opacity: 0;
+  }
+  &:hover {
     div {
-      top: 25px;
-      visibility: hidden;
-      transition: 0.8s all;
-      opacity: 0;
+      top: 50px;
+      visibility: visible;
+      opacity: 1;
     }
-    &:hover {
-      div {
-        top: 50px;
-        visibility: visible;
-        opacity: 1;
-      }
-    }
-  `;
+  }
+`;
 
+const Header = () => {
   return (
     <header className="flex justify-center items-center border-2 p-4 sticky top-0 bg-[#dbedfa]">
       <div className="flex gap-2 mr-2">
