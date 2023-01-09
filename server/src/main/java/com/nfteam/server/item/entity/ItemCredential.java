@@ -40,7 +40,7 @@ public class ItemCredential {
 
     public ItemCredential of(Item item) {
         return ItemCredential.builder()
-                .hashCode(createItemHashCode(item.getItemImageUrl()))
+                .hashCode(createItemHashCode(item.getItemImageName()))
                 .item(item)
                 .build();
     }

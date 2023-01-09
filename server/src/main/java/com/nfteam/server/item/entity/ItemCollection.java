@@ -32,6 +32,10 @@ public class ItemCollection extends BaseEntity {
     protected ItemCollection() {
     }
 
+    public ItemCollection(Long collectionId) {
+        this.collectionId = collectionId;
+    }
+
     public void assignMember(Member member) {
         this.member = member;
         member.getGroupList().add(this);

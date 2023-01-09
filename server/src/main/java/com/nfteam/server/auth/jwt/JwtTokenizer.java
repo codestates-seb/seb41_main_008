@@ -1,62 +1,53 @@
 package com.nfteam.server.auth.jwt;
 
-import com.nfteam.server.auth.repository.RedisRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-
-@RequiredArgsConstructor
 @Getter
 @Component
 public class JwtTokenizer {
-    @Value("${jwt.secret-key}")
-    private String secretKey;
 
-    @Value("${jwt.access-token-expiration-minutes}")
-    private int accessTokenExpirationMinutes;
+    private final SecretKey secretKey;
 
-    @Value("${jwt.refresh-token-expiration-minutes}")
-    private int refreshTokenExpirationMinutes;
+    private final int accessTokenExpirationMinutes;
+
+    private final int refreshTokenExpirationMinutes;
 
 
-    public String generateAccessToken(Map<String, Object> claims,
-                                      String subject, Date expiration, String base64EncodedSecretKey) {
+    public JwtTokenizer(@Value("${jwt.secret-key}") String secretKey,
+                        @Value("${jwt.access-token-expiration-minutes}") int accessTokenExpirationMinutes,
+                        @Value("${jwt.refresh-token-expiration-minutes}") int refreshTokenExpirationMinutes) {
+        this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        this.accessTokenExpirationMinutes = accessTokenExpirationMinutes;
+        this.refreshTokenExpirationMinutes = refreshTokenExpirationMinutes;
+    }
 
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
-
+    public String generateAccessToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(expiration)
-                .signWith(key)
+                .setExpiration(getTokenExpiration(accessTokenExpirationMinutes))
+                .signWith(secretKey)
                 .compact();
     }
 
-    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
-
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
-
+    public String generateRefreshToken(String subject) {
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(expiration)
-                .signWith(key)
+                .setExpiration(getTokenExpiration(refreshTokenExpirationMinutes))
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -68,33 +59,25 @@ public class JwtTokenizer {
         return expiration;
     }
 
-    public String encodeBase64SecretKey(String secretKey) {
-        //secretKey -> encodeBase64SecretKey
-        return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public Jws<Claims> getClaims(String jws, String base64EncodedSecertKey) {
-        //JWT에 포함되어 있는 Signature를 검증함으로써 JWT의 위/변조 여부를 확인
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecertKey);
-
-        Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+    //JWT에 포함되어 있는 Signature를 검증함으로써 JWT의 위/변조 여부를 확인
+    public Jws<Claims> getClaims(String jws) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(jws);
-
-        return claims;
     }
 
-    /**
-     * 도구
-     */
-    private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {
-        //encodeBase64SecretKey -> secretKey
-        byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
-        Key key = Keys.hmacShaKeyFor(keyBytes);
-
-        return key;
+    // 토큰 유효기간 검사
+    public boolean isValidDateToken(String jws) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(jws);
+            Date exp = claims.getBody().getExpiration();
+            return exp.after(new Date());
+        } catch (JwtException je) {
+            return false;
+        }
     }
-
-
 }
