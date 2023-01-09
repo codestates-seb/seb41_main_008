@@ -40,8 +40,7 @@ public class MemberService {
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
 
-        //TODO : role, 기본 프로필사진 설정
-        member.setProfileUrl("temp");
+        member.setProfileImageName("temp");
 
         return memberRepository.save(member);
     }
@@ -56,6 +55,8 @@ public class MemberService {
             .ifPresent(memberStatus -> findMember.setMemberStatus(memberStatus));
         Optional.ofNullable(member.getPassword())
             .ifPresent(password -> findMember.setPassword(password));
+        Optional.ofNullable(member.getProfileImageName())
+            .ifPresent(url -> findMember.setProfileImageName(url));
 
         return memberRepository.save(findMember);
     }

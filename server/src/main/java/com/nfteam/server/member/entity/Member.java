@@ -36,8 +36,8 @@ public class Member extends BaseEntity {
     private String nickname;
 
     // 프로필 이미지 URL
-    @Column(name = "profile_url", length = 2500)
-    private String profileUrl;
+    @Column(name = "profile_image", length = 2500)
+    private String profileImageName;
 
     //회원상태관리를 위한 Column
     @Column(name = "last_login")

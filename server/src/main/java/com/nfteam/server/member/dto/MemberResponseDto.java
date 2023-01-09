@@ -27,7 +27,7 @@ public class MemberResponseDto {
 
     private MemberStatus memberStatus;
 
-    private String profileUrl;
+    private String profileImageName;
 
     private LocalDateTime createdDate;
 

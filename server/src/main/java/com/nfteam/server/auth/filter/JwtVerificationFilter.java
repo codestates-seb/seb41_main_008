@@ -9,6 +9,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", se);
             // 서명 검증에 실패했을 때 SecurityContext에 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (ExpiredJwtException ee) {
-            ee.printStackTrace();
-            request.setAttribute("exception", ee);
+            throw new AccessTokenExpiredException();
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("exception", e);
@@ -64,21 +64,12 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * 도구
      */
     private Map<String, Object> verifyJws(HttpServletRequest request) {
-        //액세스토큰 만료기한 확인
-        //TODO: ExpiredJwtException으로 자체적으로 처리?
-        int minutes = jwtTokenizer.getAccessTokenExpirationMinutes();
-        long now = new Date().getTime();
-
-        int expiration = (int) (jwtTokenizer.getTokenExpiration(minutes).getTime() - now);
-
-        if(expiration <= 0){
-            throw new AccessTokenExpiredException();
-        }
 
         String accessToken = request.getHeader("Authorization");
         String jws = accessToken.replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
+
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {

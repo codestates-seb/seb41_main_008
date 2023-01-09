@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api/auth")
 @Validated
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
-    @DeleteMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity logoutMember(
         HttpServletRequest request,@AuthenticationPrincipal MemberDetails memberDetails){
         authService.logout(request,memberDetails.getMemberId());

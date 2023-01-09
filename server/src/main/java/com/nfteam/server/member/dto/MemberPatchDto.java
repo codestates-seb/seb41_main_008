@@ -24,5 +24,5 @@ public class MemberPatchDto {
 
     private String password;
 
-    private String profileUrl;
+    private String profileImageName;
 }
