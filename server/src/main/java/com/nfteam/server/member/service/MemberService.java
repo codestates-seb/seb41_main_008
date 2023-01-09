@@ -22,7 +22,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
-    private final RedisRepository redisRepository;
+
 
 
     public Member createMember(Member member) {
@@ -42,10 +42,7 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public void logout(HttpServletRequest request, long memberId) {
-        String refreshToken = request.getHeader("RefreshToken");
-        redisRepository.expireRefreshToken(refreshToken);
-    }
+
 
     /**
      * 도구
