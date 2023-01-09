@@ -3,11 +3,13 @@ package com.nfteam.server.auth.filter;
 import com.nfteam.server.auth.jwt.JwtTokenizer;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
+import com.nfteam.server.exception.token.AccessTokenExpiredException;
 import com.nfteam.server.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.FilterChain;
@@ -62,7 +64,19 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * 도구
      */
     private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Authorization").replace("Bearer ", "");
+        //액세스토큰 만료기한 확인
+
+        int minutes = jwtTokenizer.getAccessTokenExpirationMinutes();
+        long now = new Date().getTime();
+
+        int expiration = (int) (jwtTokenizer.getTokenExpiration(minutes).getTime() - now);
+
+        if(expiration <= 0){
+            throw new AccessTokenExpiredException();
+        }
+
+        String accessToken = request.getHeader("Authorization");
+        String jws = accessToken.replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
     }
