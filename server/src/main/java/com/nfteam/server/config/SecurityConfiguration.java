@@ -56,10 +56,11 @@ public class SecurityConfiguration {
             .and()
             .apply(new CustomFilterConfigurer())
             .and()
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, oauthMemberRepository)))
             .authorizeHttpRequests(authorize -> authorize
                 .anyRequest().permitAll());
-//            .oauth2Login(oauth2 -> oauth2
-//                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, oauthMemberRepository)));
+
 
         return httpSecurity.build();
 
