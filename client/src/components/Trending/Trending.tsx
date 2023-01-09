@@ -1,6 +1,3 @@
-import VerifiedIcon from '@mui/icons-material/Verified';
-import CircleIcon from '@mui/icons-material/Circle';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import EthLogo from '../../assets/icons/eth-logo.png';
 import TrendingData from '../Trending/TrendingData.json';
@@ -22,7 +19,6 @@ const TrendingChart = () => {
                     <div className="middle">
                       <div className="topImgAvatar">
                         <img src={topData.img} alt="" />
-                        <VerifiedIcon className="verify-icon" />
                       </div>
                       <div className="mText">
                         <div className="topCollName">

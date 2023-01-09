@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Top.module.css';
-import Trending from './Trending/Trending';
+import Trending from '../Trending/Trending';
 
 const Home = () => {
   const [activeTab] = useState('trending');

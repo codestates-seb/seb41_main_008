@@ -1,11 +1,9 @@
-import Top from '../components/Top';
+import Top from '../Trending/Top';
 const ViewAll = () => {
   return (
     <div className="container Sth">
       <div className="inSth">
-        <div className="inSth-title">
-          <h2 className="sTitle"></h2>
-        </div>
+        <div className="inSth-title"></div>
         <div>
           <Top />
         </div>
