@@ -4,12 +4,12 @@ import com.nfteam.server.auth.jwt.JwtTokenizer;
 import com.nfteam.server.auth.repository.RedisRepository;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.exception.token.RefreshTokenExpiredException;
-import java.util.Date;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +19,20 @@ public class AuthService {
 
     private final JwtTokenizer jwtTokenizer;
 
-    public void logout(HttpServletRequest request, long memberId) {
-        String refreshToken = request.getHeader("RefreshToken");
-        redisRepository.expireRefreshToken(refreshToken);
+    private final RedisTemplate<String, String> redisTemplate;
+
+    public void logout(Long memberId) {
+        redisRepository.expireRefreshToken(String.valueOf(memberId));
     }
 
-    public String reissue(MemberDetails memberDetails, String refresh){
-        if(redisRepository.hasRefresh(refresh)){
+    public String reissue(MemberDetails memberDetails, String refreshToken) {
+
+        // 1차로 서버에서 리프레시 토큰 유효기한 검사
+        boolean isValidDate = jwtTokenizer.isValidDateToken(refreshToken);
+        String refreshTokenKey = String.valueOf(memberDetails.getMemberId());
+
+        // 서버에서 유효 + 레디스에서 해당 키를 가지고 있는지 이중 검사
+        if (isValidDate && redisTemplate.hasKey(refreshTokenKey)) {
             Map<String, Object> claims = new HashMap<>();
 
             claims.put("memberId", memberDetails.getMemberId());
@@ -33,17 +40,8 @@ public class AuthService {
             claims.put("roles", memberDetails.getRoles());
             String subject = memberDetails.getEmail();
 
-            Date expiration = jwtTokenizer.getTokenExpiration(
-                jwtTokenizer.getAccessTokenExpirationMinutes());
-
-            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
-                jwtTokenizer.getSecretKey());
-
-            String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration,
-                base64EncodedSecretKey);
-
-            return accessToken;
-        }else {
+            return jwtTokenizer.generateAccessToken(claims, subject);
+        } else {
             throw new RefreshTokenExpiredException();
         }
     }
