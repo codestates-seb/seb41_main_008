@@ -1,6 +1,6 @@
 package com.nfteam.server.advice;
 
-import com.nfteam.server.dto.ErrorResponse;
+import com.nfteam.server.dto.response.error.ErrorResponse;
 import com.nfteam.server.exception.NFTCustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +48,13 @@ public class GlobalExceptionAdvice {
                         message.deleteCharAt(message.lastIndexOf("/")).toString()));
     }
 
+    @ExceptionHandler(NFTCustomException.class)
+    public ResponseEntity<ErrorResponse> handleNFTCustomException(NFTCustomException exception) {
+        log.warn(LOG_MESSAGE, exception.getExceptionCode(), exception.getMessage(), exception.getClass().getSimpleName());
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.of(exception));
+    }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
         log.warn(LOG_MESSAGE, METHOD_NOT_ALLOWED.value(), exception.getMessage(), exception.getClass().getSimpleName());
@@ -55,11 +62,10 @@ public class GlobalExceptionAdvice {
                 .body(new ErrorResponse(METHOD_NOT_ALLOWED.name(), METHOD_NOT_ALLOWED.getReasonPhrase()));
     }
 
-    @ExceptionHandler(NFTCustomException.class)
-    public ResponseEntity<ErrorResponse> handleNFTCustomException(NFTCustomException exception) {
-        log.warn(LOG_MESSAGE, exception.getExceptionCode(), exception.getMessage(), exception.getClass().getSimpleName());
-        return ResponseEntity.badRequest()
-                .body(ErrorResponse.of(exception));
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
+        return ResponseEntity.internalServerError()
+                .body(new ErrorResponse(INTERNAL_SERVER_ERROR.getValue(), exception.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

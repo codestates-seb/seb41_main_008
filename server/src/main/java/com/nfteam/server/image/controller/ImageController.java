@@ -1,6 +1,6 @@
 package com.nfteam.server.image.controller;
 
-import com.nfteam.server.dto.response.ImageResponse;
+import com.nfteam.server.dto.response.image.ImageResponse;
 import com.nfteam.server.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -12,13 +12,13 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/images")
+@RequestMapping("/api/images")
 public class ImageController {
 
     private final ImageService imageService;
 
     @PostMapping(
-            path = "/item/{itemId}",
+            path = "/items/{itemId}",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}
     )
     public ResponseEntity<ImageResponse> upload(@PathVariable("itemId") Long itemId,

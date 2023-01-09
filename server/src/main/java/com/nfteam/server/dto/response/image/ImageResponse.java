@@ -1,4 +1,4 @@
-package com.nfteam.server.dto.response;
+package com.nfteam.server.dto.response.image;
 
 import lombok.Getter;
 

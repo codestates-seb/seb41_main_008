@@ -24,11 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 public class MemberController {
-    //멤버
 
     private final MemberService memberService;
     private final MemberMapper mapper;
 
+    // REST API 규칙 상 주소줄에 동사는 넣지 않고 HTTPMETHOD로 상태를 표시합니다.
+    // 여기서는 그냥 api/members 와 post 메서드를 사용하는 것만으로 회원가입을 나타냅니다.
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberDto){
         Member member = mapper.MemberPostDtoToMember(memberDto);
@@ -39,6 +40,8 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
+
+    // 로그인, 로그아웃, 토큰 갱신 등의 경우 Auth 에서 처리하는 API가 되어야 기능 분리가 알맞게 될 것 같습니다.
     @DeleteMapping("/logout")
     public ResponseEntity logoutMember(HttpServletRequest request,@AuthenticationPrincipal MemberDetails memberDetails){
         memberService.logout(request,memberDetails.getMemberId());

@@ -12,8 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberPostDto {
-    @NotBlank
     @Email
+    @NotBlank(message = "이메일은 필수값 입니다.")
     private String email;
 
     @NotBlank(message = "이름을 정해주세요")

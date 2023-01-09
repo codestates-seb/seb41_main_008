@@ -6,6 +6,7 @@ import com.nfteam.server.auth.utils.CustomAuthorityUtils;
 import com.nfteam.server.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,7 +32,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-        FilterChain filterChain) throws ServletException, IOException {
+                                    FilterChain filterChain) throws ServletException, IOException {
         //검증 실패했을 때 생기는 SignatureException 과 JWT가 만료될 경우에 생기는 ExpiredJwtException에대한 처리
 
         try {
@@ -61,8 +63,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      */
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
-            jwtTokenizer.getSecretKey());
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
     }
 
@@ -83,8 +84,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         MemberDetails memberDetails = new MemberDetails(authorityUtils, member);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, null,
-            authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

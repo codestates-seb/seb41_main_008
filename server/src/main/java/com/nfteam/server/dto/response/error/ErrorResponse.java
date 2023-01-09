@@ -1,4 +1,4 @@
-package com.nfteam.server.dto;
+package com.nfteam.server.dto.response.error;
 
 import com.nfteam.server.exception.NFTCustomException;
 import lombok.Getter;

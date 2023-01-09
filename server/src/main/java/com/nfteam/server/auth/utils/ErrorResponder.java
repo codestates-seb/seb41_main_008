@@ -1,7 +1,7 @@
 package com.nfteam.server.auth.utils;
 
 import com.google.gson.Gson;
-import com.nfteam.server.dto.ErrorResponse;
+import com.nfteam.server.dto.response.error.ErrorResponse;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;

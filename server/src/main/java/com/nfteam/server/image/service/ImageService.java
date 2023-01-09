@@ -1,8 +1,6 @@
 package com.nfteam.server.image.service;
 
-import com.nfteam.server.dto.response.ImageResponse;
-import com.nfteam.server.exception.item.ItemNotFoundException;
-import com.nfteam.server.item.entity.Item;
+import com.nfteam.server.dto.response.image.ImageResponse;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.support.S3ImageUploader;
 import lombok.RequiredArgsConstructor;

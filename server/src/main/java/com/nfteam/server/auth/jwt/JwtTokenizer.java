@@ -7,11 +7,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,54 +34,53 @@ public class JwtTokenizer {
     private int refreshTokenExpirationMinutes;
 
 
-
     public String generateAccessToken(Map<String, Object> claims,
-        String subject, Date expiration, String base64EncodedSecretKey){
+                                      String subject, Date expiration, String base64EncodedSecretKey) {
 
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
-            .setClaims(claims)
-            .setSubject(subject)
-            .setIssuedAt(Calendar.getInstance().getTime())
-            .setExpiration(expiration)
-            .signWith(key)
-            .compact();
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(Calendar.getInstance().getTime())
+                .setExpiration(expiration)
+                .signWith(key)
+                .compact();
     }
 
-    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey){
+    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
 
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
-            .setSubject(subject)
-            .setIssuedAt(Calendar.getInstance().getTime())
-            .setExpiration(expiration)
-            .signWith(key)
-            .compact();
+                .setSubject(subject)
+                .setIssuedAt(Calendar.getInstance().getTime())
+                .setExpiration(expiration)
+                .signWith(key)
+                .compact();
     }
 
-    public Date getTokenExpiration(int expirationMinutes){
+    public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE,expirationMinutes);
+        calendar.add(Calendar.MINUTE, expirationMinutes);
         Date expiration = calendar.getTime();
 
         return expiration;
     }
 
-    public String encodeBase64SecretKey(String secretKey){
+    public String encodeBase64SecretKey(String secretKey) {
         //secretKey -> encodeBase64SecretKey
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public Jws<Claims> getClaims(String jws, String base64EncodedSecertKey){
+    public Jws<Claims> getClaims(String jws, String base64EncodedSecertKey) {
         //JWT에 포함되어 있는 Signature를 검증함으로써 JWT의 위/변조 여부를 확인
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecertKey);
 
         Jws<Claims> claims = Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build()
-            .parseClaimsJws(jws);
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jws);
 
         return claims;
     }
@@ -94,7 +95,6 @@ public class JwtTokenizer {
 
         return key;
     }
-
 
 
 }

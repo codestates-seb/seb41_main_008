@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nfteam.server.auth.jwt.JwtTokenizer;
 import com.nfteam.server.auth.repository.RedisRepository;
 import com.nfteam.server.auth.userdetails.MemberDetails;
-import com.nfteam.server.dto.LoginDto;
+import com.nfteam.server.dto.request.auth.LoginDto;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,13 +46,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @SneakyThrows
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-        HttpServletResponse response) {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         ObjectMapper objectMapper = new ObjectMapper();
         //JSON to Java Object
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-            loginDto.getEmail(), loginDto.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -60,9 +60,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * 액세스토큰, 리프레시 토큰을 생성한다. 3. 리프레시 토큰을 redis에 저장한다. 4. 액세스,리프레시 토큰을 헤더에 담는다.
      */
     @Override
-    protected void successfulAuthentication(HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain chain, Authentication authentication) throws ServletException, IOException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws ServletException, IOException {
         MemberDetails member = (MemberDetails) authentication.getPrincipal();
 
         String accessToken = delegateAccessToken(member);
@@ -76,7 +74,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("memberId", String.valueOf(member.getMemberId()));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authentication);
-
     }
 
     /**
@@ -87,8 +84,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String subject = member.getEmail();
 
         //expiration
-        Date expiration = jwtTokenizer.getTokenExpiration(
-            jwtTokenizer.getRefreshTokenExpirationMinutes());
+        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
 
         //secretKey
         String secretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -110,15 +106,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String subject = member.getEmail();
 
         //expiration
-        Date expiration = jwtTokenizer.getTokenExpiration(
-            jwtTokenizer.getAccessTokenExpirationMinutes());
+        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
         //secretKey
         String secretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
         //액세스토큰 생성
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration,
-            secretKey);
+        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, secretKey);
 
         return accessToken;
 
