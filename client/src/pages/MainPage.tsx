@@ -1,8 +1,13 @@
-import Carousel from '../components/Carousel';
+import Carousel from '../components/carousel/Carousel';
+import MainCarousel from '../components/carousel/MainCarousel';
+
 const MainPage = () => {
   return (
     <div>
-      <Carousel />
+      <MainCarousel />
+      <Carousel title="Notable collections" page="2" />
+      <Carousel title="Top collector buys today" page="3" />
+      <Carousel title="Photography NFT spotlight" page="4" />
     </div>
   );
 };
