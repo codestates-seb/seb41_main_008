@@ -60,8 +60,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<ItemCollection> groupList = new ArrayList<>();
 
-    // 해당 멤버가 소유한 아이템을 조회하고 싶다면
-    // 연관관계 상 아이템쪽에서 memberId 를 조건으로 꺼내와야 합니다.
+    public Member(Long memberId) {
+        this.memberId = memberId;
+    }
 
     /** 회원가입 - 활동중
      *  1년 이상 로그인 x - 휴면상태

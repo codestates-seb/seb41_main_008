@@ -1,27 +1,41 @@
 package com.nfteam.server.exception;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ExceptionCode {
-    MEMBER_NOT_FOUND(404, "Member not found"),
-    MEMBER_EXISTS(409, "Member exists"),
 
-    NOT_AUTHORIZED(404, "not authorized"),
+    //COMMON
+    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR"),
+    INVALID_METHOD_ARGS("INVALID_METHOD_ARGS"),
+    INVALID_PATH_VARIABLE_ARGS("INVALID_PATH_VARIABLE_ARGS"),
+    INVALID_HTTP_REQUEST("INVALID_HTTP_REQUEST"),
 
-    TOKEN_NOT_FOUND(404, "token not found");
+    // MEMBER
+    MEMBER_NOT_FOUND("MEMBER_NOT_FOUND"),
+    MEMBER_EMAIL_EXIST("MEMBER_EMAIL_EXIST"),
+
+    // AUTH
+    NOT_AUTHORIZED("NOT_AUTHORIZED"),
+    TOKEN_NOT_FOUND("TOKEN_NOT_FOUND"),
+
+    // ITEM
+    ITEM_NOT_FOUND("ITEM_NOT_FOUND"),
+    ITEM_COLLECTION_NOT_FOUND("ITEM_NOT_FOUND"),
+
+    // SUPPORT
+    IMAGE_CONVERTING_FAILED("IMAGE_CONVERTING_FAILED");
 
 
+    private final String value;
 
-
-
-    @Getter
-    private int status;
-
-    @Getter
-    private String message;
-
-    ExceptionCode(int code, String message) {
-        this.status = code;
-        this.message = message;
+    ExceptionCode(final String value) {
+        this.value = value;
     }
+
+    // JSON 변환될 때 직렬화/역직렬화 되는 값 지정
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
 }

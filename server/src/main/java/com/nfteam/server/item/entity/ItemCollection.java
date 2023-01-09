@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Table(name = "item_collection")
 public class ItemCollection extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "collection_id")

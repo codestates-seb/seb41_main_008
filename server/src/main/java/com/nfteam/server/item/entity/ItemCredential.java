@@ -1,5 +1,6 @@
 package com.nfteam.server.item.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -19,18 +20,34 @@ public class ItemCredential {
     private String hashCode;
 
     // 해당 상품 거래 내역 암호화 문자열
-    @Column(name = "encryption_value", nullable = false, length = 100)
+    @Column(name = "encryption_value", length = 100)
     private String encryptionValue;
 
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
     protected ItemCredential() {
     }
 
-    public void assignItem(Item item) {
+    @Builder
+    public ItemCredential(Long credentialId, String hashCode, String encryptionValue, Item item) {
+        this.credentialId = credentialId;
+        this.hashCode = hashCode;
+        this.encryptionValue = encryptionValue;
         this.item = item;
+    }
+
+    public ItemCredential of(Item item) {
+        return ItemCredential.builder()
+                .hashCode(createItemHashCode(item.getItemImageUrl()))
+                .item(item)
+                .build();
+    }
+
+    private String createItemHashCode(String imgUrl) {
+        // 암호화 하는 라이브러리 찾기
+        return imgUrl;
     }
 
 

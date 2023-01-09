@@ -1,13 +1,11 @@
 package com.nfteam.server.item.entity;
 
 import com.nfteam.server.audit.BaseEntity;
-import com.nfteam.server.cart.entity.CartItemRel;
 import com.nfteam.server.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -19,9 +17,22 @@ public class Item extends BaseEntity {
     @Column(name = "item_id")
     private Long itemId;
 
+    @Column(name = "item_name", nullable = false)
+    private String itemName;
+
+    @Column(name = "item_price", nullable = false)
+    private Long itemPrice;
+
+    @Column(name = "item_img_url", nullable = false)
+    private String itemImageUrl;
+
     // 상품의 현재 판매가능 여부
     @Column(name = "on_sale", nullable = false)
-    private Boolean onSale = true;
+    private boolean onSale;
+
+    // 상품 고유 정보
+    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ItemCredential itemCredential;
 
     // 상품의 소속 그룹
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,13 +44,35 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "owner_member_id")
     private Member member;
 
-    // 현재 이 아이템이 속해있는 장바구니들의 목록
-    // 결제가 완료되어 판매 가능 여부 상태값이 변하면
-    // 모든 장바구니에서 해당 아이템을 삭제하는 로직이 필요
-    @OneToMany(mappedBy = "item")
-    private List<CartItemRel> relatedCartList = new ArrayList<>();
-
     protected Item() {
+    }
+
+    @Builder
+    public Item(Long itemId,
+                String itemName,
+                Long itemPrice,
+                String itemImageUrl,
+                boolean onSale) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+        this.itemImageUrl = itemImageUrl;
+        this.onSale = onSale;
+    }
+
+    public void assignItemCredential(ItemCredential itemCredential) {
+        this.itemCredential = itemCredential;
+    }
+
+    public void assignCollectionAndMember(ItemCollection collection, Member member){
+        this.collection = collection;
+        collection.getItemList().add(this);
+        collection.assignMember(member);
+    }
+
+
+    public void addImgUrl(String url) {
+        this.itemImageUrl = url;
     }
 
 }

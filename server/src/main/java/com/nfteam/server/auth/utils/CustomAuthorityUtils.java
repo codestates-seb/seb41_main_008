@@ -2,6 +2,7 @@ package com.nfteam.server.auth.utils;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -16,10 +17,10 @@ public class CustomAuthorityUtils {
 
     //권한 생성용
     private final List<GrantedAuthority> ADMIN_ROLES = AuthorityUtils.createAuthorityList(
-        "ROLE_ADMIN", "ROLE_USER");
+            "ROLE_ADMIN", "ROLE_USER");
 
     private final List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList(
-        "ROLE_USER");
+            "ROLE_USER");
 
     //DB 저장용
     private final List<String> ADMIN_ROLES_STRING = List.of("ADMIN", "USER");
@@ -27,8 +28,8 @@ public class CustomAuthorityUtils {
 
     public List<GrantedAuthority> createAuthorities(List<String> roles) {
         List<GrantedAuthority> authorities = roles.stream()
-            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-            .collect(Collectors.toList());
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
         return authorities;
     }
 
