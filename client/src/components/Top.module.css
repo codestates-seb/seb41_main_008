@@ -1,0 +1,90 @@
+.section {
+  padding: 0 10px;
+  width: 100%;
+}
+
+.statsSection {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 6px;
+}
+
+.statsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid rgb(227 227 227 / 80%);
+  grid-column: span 12;
+}
+
+.tabContainer {
+  display: flex;
+  gap: 40px;
+}
+
+.tabBtn {
+  font-family: inherit;
+  font-size: 24px;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  color: #707a83;
+  padding-bottom: 16px;
+  padding-right: 8px;
+  cursor: pointer;
+  transition: all 0.s ease-in;
+  border-bottom: 2px solid transparent;
+}
+
+.tabBtn:hover {
+  color: #353840;
+}
+
+.tabBtnActive {
+  color: #353840;
+  border-bottom: 2px solid #04111d;
+}
+
+.filterBtnsContainer {
+  display: flex;
+  gap: 16px;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  box-shadow: rgb(0 0 0 / 5%) 0px 2px 10px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgb(4, 17, 29);
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  border: 2px solid rgb(229, 232, 235);
+  padding: 8px 16px 8px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease 0s;
+}
+
+.filterBtn:hover {
+  box-shadow: rgb(0 0 0 / 10%) 0px 2px 10px;
+}
+
+.btnExpandIcon {
+  color: #8a939b;
+}
+
+
+@media screen and (max-width: 700px) {
+  .tabContainer {
+    gap: 16px;
+  }
+  .tabBtn {
+    font-size: 16px;
+  }
+  .filterBtn {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+}
+
