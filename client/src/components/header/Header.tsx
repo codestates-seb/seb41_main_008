@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import DropdownItems from '../Header/DropdownItems';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/hooks';
@@ -8,6 +7,8 @@ import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MobileDropdown from './MobileDropdown';
 import MobileDropdownList from './MobileDropdownLIst';
+import DropdownItems from './DropdownItems';
+
 const SearchInput = styled.input`
   display: flex;
   border: 1px solid black;
