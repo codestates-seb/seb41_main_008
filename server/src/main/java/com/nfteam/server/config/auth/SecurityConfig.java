@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final CustomOauth2UserService customOauth2UserService;
+    private final com.nfteam.server.config.auth.CustomOauth2UserService customOauth2UserService;
 
 
     @Override
