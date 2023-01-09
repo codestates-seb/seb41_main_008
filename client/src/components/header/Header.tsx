@@ -42,7 +42,7 @@ const Header = () => {
     setVisible(!visible);
   };
   return (
-    <header className="flex justify-center items-center border-2 p-4 sticky top-0  ">
+    <header className="flex justify-center items-center  z-50 p-4 sticky top-0 bg-white">
       <div className="flex gap-2 mr-2">
         <div>logo</div>
         <div>NFTeam</div>
