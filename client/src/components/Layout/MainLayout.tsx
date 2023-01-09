@@ -1,5 +1,4 @@
 import Header from '../Header/Header';
-import Footer from './Footer';
 import CartingModal from '../CartingModal/CartingModal';
 import { Outlet } from 'react-router-dom';
 const MainLayout = () => {
@@ -8,7 +7,6 @@ const MainLayout = () => {
       <Header />
       <CartingModal />
       <Outlet />
-      <Footer />
     </>
   );
 };

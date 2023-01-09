@@ -20,8 +20,11 @@ const ModalBack = styled.div`
   height: 100%;
   margin: auto;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
 `;
 export const ModalContainer = styled.div<ModalContainerProps>`
+  z-index: 60;
+
   display: flex;
   flex-direction: column;
   position: fixed;
