@@ -38,7 +38,7 @@ public class S3ImageUploader {
     }
 
     private Optional<File> convertFile(MultipartFile multipartFile) throws IOException {
-        File convertedFile = new File(multipartFile.getOriginalFilename());
+        File convertedFile = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + multipartFile.getOriginalFilename());
 
         if (convertedFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
