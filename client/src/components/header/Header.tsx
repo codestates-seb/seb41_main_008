@@ -29,7 +29,7 @@ const Header = () => {
   `;
 
   return (
-    <header className="flex justify-center items-center border-2 p-4 sticky top-0 bg-[#dbedfa]">
+    <header className="flex justify-center items-center border-2 p-4 sticky top-0 z-50 bg-[#dbedfa]">
       <div className="flex gap-2 mr-2">
         <div>logo</div>
         <div>domainName</div>
