@@ -6,6 +6,8 @@ import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -65,6 +67,11 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Item> itemList = new ArrayList<>();
 
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     public Member(Long memberId) {
         this.memberId = memberId;
     }
@@ -86,7 +93,23 @@ public class Member extends BaseEntity {
         }
     }
 
-    public enum OauthPlatform {
-        GOOGLE, GITHUB;
+    @Builder
+    public Member(String nickname, String email, String profileUrl, Role role){
+        this.nickname=nickname;
+        this.email=email;
+        this.profileUrl=profileUrl;
+        this.role=role;
+
+    }
+
+    // Oauth 리 다이렉트 시 업데이트 할 이름, 프로필
+    public Member update(String name, String profileUrl){
+        this.nickname=name;
+        this.profileUrl=profileUrl;
+        return this;
+    }
+    // Role의 키를 가져오는 역할
+    public String getRoleKey(){
+        return this.role.getKey();
     }
 }

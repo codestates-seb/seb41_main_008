@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import com.google.gson.Gson;
 import com.nfteam.server.auth.userdetails.MemberDetails;
+import com.nfteam.server.dto.response.auth.LoginResult;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
@@ -48,8 +49,15 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         findMember.setLastLogin(LocalDateTime.now());
         memberRepository.save(findMember);
 
+        // 로그인 결과를 보여주는 별도의 dto 생성 후 리턴
+        LoginResult loginResult = LoginResult.builder()
+                .memberId(memberDetails.getMemberId())
+                .email(memberEmail)
+                .roles(memberDetails.getRoles())
+                .lastLogin(memberDetails.getLastLogin()).build();
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(OK.value());
-        response.getWriter().write(gson.toJson(memberDetails, memberDetails.getClass()));
+        response.getWriter().write(gson.toJson(loginResult, LoginResult.class));
     }
 }
