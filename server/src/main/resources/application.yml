@@ -8,8 +8,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
-        hbm2ddl:
-          auto: update
 logging:
   level:
     org:
