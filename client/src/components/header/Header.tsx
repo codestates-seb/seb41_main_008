@@ -13,7 +13,6 @@ import MobileDropdown from './MobileDropdown';
 import MobileDropdownList from './MobileDropdownLIst';
 import { accessToken } from '../../utils/token';
 import { logout } from 'utils/api/api';
-
 import DropdownItems from './DropdownItems';
 
 const SearchInput = styled.input`
