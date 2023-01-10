@@ -14,7 +14,7 @@ export const signup = createAsyncThunk(
     console.log(data);
     try {
       const res = await axios.post(
-        'http://ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com/api/members/signup',
+        'http://ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com/api/members',
         data
       );
       return res.data;
