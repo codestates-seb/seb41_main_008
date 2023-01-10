@@ -1,34 +1,30 @@
 package com.nfteam.server.member.service;
 
-import com.nfteam.server.auth.repository.RedisRepository;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
-import com.nfteam.server.exception.ExceptionCode;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.entity.Member.MemberStatus;
 import com.nfteam.server.member.repository.MemberRepository;
-
-import java.util.List;
-import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
 
-
-
+    @Transactional
     public Member createMember(Member member) {
         //존재 여부 확인
         verifyExistsEmail(member.getEmail());
@@ -39,42 +35,36 @@ public class MemberService {
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
-
-        member.setProfileImageName("temp");
+        member.setProfileImageName("default-member-profile");
 
         return memberRepository.save(member);
     }
 
-    public Member updateMember(Member member, String email) {
-
-        Member findMember = findVerifiedMember(member.getMemberId(), email);
+    @Transactional
+    public Member updateMember(Member member, String email, Long memberId) {
+        Member findMember = findVerifiedMember(memberId, email);
 
         Optional.ofNullable(member.getNickname())
-            .ifPresent(name -> findMember.setNickname(name));
-        Optional.ofNullable(member.getMemberStatus())
-            .ifPresent(memberStatus -> findMember.setMemberStatus(memberStatus));
-        Optional.ofNullable(member.getPassword())
-            .ifPresent(password -> findMember.setPassword(password));
+                .ifPresent(name -> findMember.setNickname(name));
         Optional.ofNullable(member.getProfileImageName())
-            .ifPresent(url -> findMember.setProfileImageName(url));
+                .ifPresent(url -> findMember.setProfileImageName(url));
 
-        return memberRepository.save(findMember);
+        return findMember;
     }
 
     public Member findMember(long memberId, String email) {
         if (!email.isEmpty()) {
             return findVerifiedMember(memberId, email);
         }
-        return memberRepository.findByMemberIdAndMemberStatus(memberId, MemberStatus.MEMBER_ACTIVE).orElseThrow(
-            () -> new MemberNotFoundException(memberId));
+
+        return memberRepository.findByMemberIdAndMemberStatus(memberId, MemberStatus.MEMBER_ACTIVE)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
+    @Transactional
     public void deleteMember(int memberId, String email) {
-        Member findMember = findVerifiedMember(memberId,email);
-
+        Member findMember = findVerifiedMember(memberId, email);
         findMember.setMemberStatus(MemberStatus.MEMBER_QUIT);
-        findMember.setEmail("");
-        findMember.setNickname("");
     }
 
     /**
@@ -88,11 +78,10 @@ public class MemberService {
     }
 
     public Member findVerifiedMember(long memberId, String email) {
-        Optional<Member> optionalMember =
-            memberRepository.findById(memberId);
-        Member findMember =
-            optionalMember.orElseThrow(() ->
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Member findMember = optionalMember.orElseThrow(() ->
                 new MemberNotFoundException(memberId));
+
         if (findMember.getEmail().equals(email)) {
             return findMember;
         } else {
