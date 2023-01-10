@@ -15,6 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
+    //TODO: cartlist, grouplist 추가
+
     private long memberId;
 
     @NotBlank
@@ -25,7 +27,7 @@ public class MemberResponseDto {
 
     private MemberStatus memberStatus;
 
-    private String profileUrl;
+    private String profileImageName;
 
     private LocalDateTime createdDate;
 

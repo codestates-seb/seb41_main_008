@@ -18,8 +18,11 @@ public class MemberPatchDto {
     @Email
     private String email;
 
-    @NotBlank(message = "이름을 정해주세요")
     private String nickname;
 
     private MemberStatus memberStatus;
+
+    private String password;
+
+    private String profileImageName;
 }
