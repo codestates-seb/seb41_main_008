@@ -65,8 +65,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      */
     private Map<String, Object> verifyJws(HttpServletRequest request) {
 
-        String accessToken = request.getHeader("Authorization");
-        String jws = accessToken.replace("Bearer ", "");
+        String jws = request.getHeader("Authorization").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
 
@@ -77,7 +76,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
          -> Security Context에 MemberDetails 객체 저장
          -> 컨트롤러에서 @AuthenticatonPrincipal MemberDetails 로 조회 가능*/
 
-        long memberId = (long) claims.get("memberId");
+        long memberId = Long.parseLong(String.valueOf(claims.get("memberId")));
         String username = (String) claims.get("username");
         List<String> roles = (List<String>) claims.get("roles");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities(roles);

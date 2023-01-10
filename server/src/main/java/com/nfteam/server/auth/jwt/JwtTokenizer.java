@@ -4,6 +4,7 @@ import com.nfteam.server.auth.repository.RedisRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 public class JwtTokenizer {
+
     @Value("${jwt.secret-key}")
     private String secretKey;
 
