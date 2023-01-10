@@ -1,24 +1,14 @@
+/* eslint-disable */
 import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Collection from './Collection';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper';
-
-interface urls {
-  raw: string;
-}
-
-interface Collections {
-  likes: number;
-  color: string;
-  urls: urls;
-  id: string;
-  width?: number;
-}
+import BasicsCard from './BasicsCard';
+import { urls } from './MainCarousel';
 
 const Container = styled.div`
   padding: 2rem;
@@ -45,34 +35,37 @@ const Container = styled.div`
   }
 `;
 
-export default function Carousel({
-  title,
-  page,
-}: {
+interface Photo {
+  id: string;
+  urls: urls;
   title: string;
-  page: string;
-}) {
-  const [collection, setCollection] = useState<Collections[]>();
+}
+
+export default function BasicsCarousel() {
+  const [photos, setPhotos] = useState<Photo[]>();
 
   useEffect(() => {
-    const getCollection = async () => {
+    const getPhotos = async () => {
       try {
         const res = await axios.get(
-          `https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&page=${page}&per_page=10`
+          `https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&page=9&per_page=10`
         );
-        setCollection(res.data);
+        setPhotos(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);
       }
     };
 
-    getCollection();
-  }, [page]);
+    getPhotos();
+  }, []);
 
   return (
     <Container>
-      <h1 className="text-2xl font-bold mb-4">{title}</h1>
+      <div>
+        <h3>NFT 101</h3>
+        <p>Get comfortable with the basics.</p>
+      </div>
       <Swiper
         spaceBetween={15}
         loop={true}
@@ -102,14 +95,9 @@ export default function Carousel({
           },
         }}
       >
-        {collection?.map((piece) => (
-          <SwiperSlide key={piece.id} className="py-2">
-            <Collection
-              url={piece.urls?.raw + '&w=500&auto=format'}
-              price={piece.likes}
-              name={piece.color}
-              volume={piece.width}
-            />
+        {photos?.map((photo) => (
+          <SwiperSlide key={photo.id} className="py-2">
+            <BasicsCard url={photo.urls?.raw + '&w=500&auto=format'} />
           </SwiperSlide>
         ))}
       </Swiper>

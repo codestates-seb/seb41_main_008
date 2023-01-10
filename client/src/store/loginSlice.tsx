@@ -5,18 +5,22 @@ interface LoginProps {
   email: string;
   password: string;
   isFetching: boolean;
-  accessToken: string;
 }
-
+/**axios response 타입 any로 한것들 공부해서 타입수정필요 */
 export const login = createAsyncThunk(
   'login/login',
-  async (data: {}, thunkAPI) => {
+  async (data: {}, thunkAPI): Promise<any> => {
     try {
-      const res = await axios.post(
-        'http://ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com/api/members/login',
+      const res: any = await axios.post(
+        'http://ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com/auth/login',
         data
       );
-      return await res.data;
+      if (res.headers) {
+        localStorage.setItem('ACCESS_TOKEN', res.headers.authorization);
+        localStorage.setItem('REFRESH_TOKEN', res.headers.refreshtoken);
+      }
+      console.log(res);
+      return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response);
     }
@@ -27,7 +31,6 @@ const initialState: LoginProps = {
   email: '',
   password: '',
   isFetching: false,
-  accessToken: '',
 };
 
 const loginSlice = createSlice({

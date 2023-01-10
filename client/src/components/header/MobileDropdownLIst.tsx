@@ -1,16 +1,8 @@
+import MobileDropdownItems from './MobileDropdownItems';
 const MobileDropdownList = () => {
   return (
     <ul>
-      <li>as</li>
-      <li>as</li>
-
-      <li>as</li>
-
-      <li>as</li>
-
-      <li>as</li>
-
-      <li>as</li>
+      <MobileDropdownItems />
     </ul>
   );
 };
