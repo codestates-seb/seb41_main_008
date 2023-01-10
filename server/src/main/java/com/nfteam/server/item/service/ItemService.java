@@ -26,17 +26,9 @@ public class ItemService {
     public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) {
         Item item = itemCreateRequest.toItem();
 
-        // itemCredential + collection + member 정보 아이템에 추가
-        item.assignMember(new Member(memberDetails.getMemberId()));
-
-        Long itemCollectionId = Long.parseLong(itemCreateRequest.getItemCollectionId());
-        item.assignCollection(new ItemCollection(itemCollectionId));
-
+        item.assignMember(new Member(1L));
+        item.assignCollection(new ItemCollection(Long.parseLong(itemCreateRequest.getItemCollectionId())));
         itemRepository.save(item);
-
-        // Member member = getMemberById(memberDetails.getMemberId());
-        // ItemCollection itemCollection = getItemCollectionInfo(itemCreateRequest.getItemCollectionId());
-
         return item.getItemId();
     }
 

@@ -17,7 +17,7 @@ public class ItemCreateRequest {
     @NotNull(message = "해당 아이템 가격 정보가 없습니다.")
     private String itemPrice;
 
-    @NotNull(message = "해당 아이템 가격 정보가 없습니다.")
+    @NotNull(message = "해당 아이템 이미지 정보가 없습니다.")
     private String itemImgName;
 
     private ItemCreateRequest() {
