@@ -34,5 +34,18 @@ public class CollectionController {
         return ResponseEntity.created(URI.create("/api/collections" + updatedId)).build();
     }
 
+    @DeleteMapping("/{collectionId}")
+    public ResponseEntity delete(@PathVariable("collectionId") Long collectionId,
+                                 @AuthenticationPrincipal MemberDetails memberDetails) {
+        collectionService.delete(collectionId, memberDetails);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{collectionId}")
+    public ResponseEntity getCollection(@PathVariable("collectionId") Long collectionId) {
+        collectionService.getCollection(collectionId);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
