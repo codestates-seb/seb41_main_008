@@ -24,7 +24,6 @@ const ModalBack = styled.div`
 `;
 export const ModalContainer = styled.div<ModalContainerProps>`
   z-index: 60;
-
   display: flex;
   flex-direction: column;
   position: fixed;
