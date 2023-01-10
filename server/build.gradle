@@ -44,6 +44,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     implementation 'com.google.code.gson:gson'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
 
     compileOnly 'org.projectlombok:lombok'
 
@@ -62,6 +63,8 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
 
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+
 }
 
 ext {
