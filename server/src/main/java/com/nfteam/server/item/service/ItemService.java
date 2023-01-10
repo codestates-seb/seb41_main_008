@@ -6,7 +6,7 @@ import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
-import com.nfteam.server.item.repository.ItemCollectionRepository;
+import com.nfteam.server.item.repository.CollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
-    private final ItemCollectionRepository itemCollectionRepository;
+    private final CollectionRepository collectionRepository;
 
     @Transactional
     public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) {
@@ -38,7 +38,7 @@ public class ItemService {
     }
 
     private ItemCollection getItemCollectionInfo(String collectionId) {
-        return itemCollectionRepository.findById(Long.parseLong(collectionId))
+        return collectionRepository.findById(Long.parseLong(collectionId))
                 .orElseThrow(() -> new ItemCollectionNotFoundException(Long.parseLong(collectionId)));
     }
 }
