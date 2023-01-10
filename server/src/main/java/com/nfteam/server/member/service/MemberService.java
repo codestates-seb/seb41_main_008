@@ -2,8 +2,12 @@ package com.nfteam.server.member.service;
 
 import com.nfteam.server.auth.repository.RedisRepository;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
+import com.nfteam.server.exception.ExceptionCode;
+import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
+import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
+import com.nfteam.server.member.entity.Member.MemberStatus;
 import com.nfteam.server.member.repository.MemberRepository;
 
 import java.util.List;
@@ -36,13 +40,42 @@ public class MemberService {
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
 
-        //TODO : role, 기본 프로필사진 설정
-        member.setProfileUrl("temp");
+        member.setProfileImageName("temp");
 
         return memberRepository.save(member);
     }
 
+    public Member updateMember(Member member, String email) {
 
+        Member findMember = findVerifiedMember(member.getMemberId(), email);
+
+        Optional.ofNullable(member.getNickname())
+            .ifPresent(name -> findMember.setNickname(name));
+        Optional.ofNullable(member.getMemberStatus())
+            .ifPresent(memberStatus -> findMember.setMemberStatus(memberStatus));
+        Optional.ofNullable(member.getPassword())
+            .ifPresent(password -> findMember.setPassword(password));
+        Optional.ofNullable(member.getProfileImageName())
+            .ifPresent(url -> findMember.setProfileImageName(url));
+
+        return memberRepository.save(findMember);
+    }
+
+    public Member findMember(long memberId, String email) {
+        if (!email.isEmpty()) {
+            return findVerifiedMember(memberId, email);
+        }
+        return memberRepository.findByMemberIdAndMemberStatus(memberId, MemberStatus.MEMBER_ACTIVE).orElseThrow(
+            () -> new MemberNotFoundException(memberId));
+    }
+
+    public void deleteMember(int memberId, String email) {
+        Member findMember = findVerifiedMember(memberId,email);
+
+        findMember.setMemberStatus(MemberStatus.MEMBER_QUIT);
+        findMember.setEmail("");
+        findMember.setNickname("");
+    }
 
     /**
      * 도구
@@ -51,6 +84,19 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
             throw new MemberEmailExistException(email);
+        }
+    }
+
+    public Member findVerifiedMember(long memberId, String email) {
+        Optional<Member> optionalMember =
+            memberRepository.findById(memberId);
+        Member findMember =
+            optionalMember.orElseThrow(() ->
+                new MemberNotFoundException(memberId));
+        if (findMember.getEmail().equals(email)) {
+            return findMember;
+        } else {
+            throw new NotAuthorizedException();
         }
     }
 
