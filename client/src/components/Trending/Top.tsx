@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Home = () => {
   const [activeTab] = useState('trending');
@@ -18,24 +19,17 @@ const Home = () => {
             >
               Trending
             </button>
-            <button
-              className={`${styles.tabBtn} ${
-                activeTab === 'top' && styles.tabBtnActive
-              }`}
-            >
-              Top
-            </button>
           </div>
           <div className={styles.filterBtnsContainer}>
             <button className={styles.filterBtn}>
-              <span>24h</span>
+              <span> 24h </span>
+
               <span
                 className={`material-symbols-outlined ${styles.btnExpandIcon}`}
               >
-                ▽
+                <ExpandMoreIcon />
               </span>
             </button>
-            <button className={styles.filterBtn}>View all</button>
           </div>
         </header>
         {activeTab === 'trending' && <Trending />}
