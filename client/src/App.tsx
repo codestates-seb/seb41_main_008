@@ -3,6 +3,8 @@ import LoginPage from '../src/pages/LoginPage';
 import SignupPage from '../src/pages/SignupPage';
 import MainPage from '../src/pages/MainPage';
 import MainLayout from '../src/components/Layout/MainLayout';
+import CreateCollection from 'pages/CreateCollection';
+import MyCollectionPage from 'pages/MyCollectionPage';
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<MainPage />} />
+            <Route path="/collections" element={<MyCollectionPage />} />
+            <Route path="/collection/create" element={<CreateCollection />} />
           </Route>
 
           <Route path="login" element={<LoginPage />} />
