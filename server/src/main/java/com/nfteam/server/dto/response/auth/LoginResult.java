@@ -19,6 +19,7 @@ public class LoginResult {
         this.email = email;
         this.memberId = memberId;
         this.roles = roles;
+        if (lastLogin == null) lastLogin = LocalDateTime.now();
         this.lastLogin = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(lastLogin);
     }
 }

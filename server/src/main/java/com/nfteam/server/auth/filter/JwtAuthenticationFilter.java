@@ -49,7 +49,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //JSON to Java Object
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
         return authenticationManager.authenticate(authenticationToken);
     }

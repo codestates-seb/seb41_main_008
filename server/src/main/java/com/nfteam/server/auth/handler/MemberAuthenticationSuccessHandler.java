@@ -39,13 +39,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     private void sendSuccessResponse(HttpServletResponse response, Authentication authentication) throws IOException {
-        Gson gson = new Gson();
-
         MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
 
         String memberEmail = memberDetails.getEmail();
         Member findMember = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new MemberNotFoundException(memberEmail));
-
         findMember.setLastLogin(LocalDateTime.now());
         memberRepository.save(findMember);
 
@@ -58,6 +55,8 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(OK.value());
+
+        Gson gson = new Gson();
         response.getWriter().write(gson.toJson(loginResult, LoginResult.class));
     }
 }

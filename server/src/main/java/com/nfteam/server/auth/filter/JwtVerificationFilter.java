@@ -3,9 +3,9 @@ package com.nfteam.server.auth.filter;
 import com.nfteam.server.auth.jwt.JwtTokenizer;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
-import com.nfteam.server.exception.token.AccessTokenExpiredException;
 import com.nfteam.server.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -46,13 +45,16 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             // 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (SignatureException se) {
             se.printStackTrace();
-            throw new RuntimeException("시그니처 검증 오류");
+            request.setAttribute("exception", se);
+            throw new JwtException("JWT 시그니처 정보가 잘못되었습니다.");
         } catch (ExpiredJwtException ee) {
             ee.printStackTrace();
-            throw new AccessTokenExpiredException();
+            request.setAttribute("exception", ee);
+            throw new JwtException("JWT 유효기한이 만료되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RemoteException();
+            request.setAttribute("exception", e);
+            throw new JwtException("JWT 토큰을 검증하는 데 실패하였습니다.");
         }
 
         filterChain.doFilter(request, response);
@@ -88,8 +90,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         member.setMemberId(memberId);
         member.setEmail(username);
         member.setRoles(roles);
-
         MemberDetails memberDetails = new MemberDetails(authorityUtils, member);
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

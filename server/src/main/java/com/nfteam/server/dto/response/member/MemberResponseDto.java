@@ -1,10 +1,12 @@
 package com.nfteam.server.dto.response.member;
 
 import com.nfteam.server.member.entity.Member.MemberStatus;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

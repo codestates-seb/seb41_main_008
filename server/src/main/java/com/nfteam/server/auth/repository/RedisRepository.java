@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 @Repository
 @RequiredArgsConstructor
 public class RedisRepository {
+
     private final RedisTemplate<String, String> redisTemplate;
     private final JwtTokenizer jwtTokenizer;
 
