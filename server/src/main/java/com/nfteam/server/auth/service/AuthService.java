@@ -6,6 +6,7 @@ import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.exception.token.RefreshTokenExpiredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,15 +27,17 @@ public class AuthService {
     }
 
     public String reissue(MemberDetails memberDetails, String refreshToken) {
-
         // 1차로 서버에서 리프레시 토큰 유효기한 검사
         boolean isValidDate = jwtTokenizer.isValidDateToken(refreshToken);
+
+        // 2차로 레디스에서 리프레시 토큰 존재여부 검사
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String refreshTokenKey = String.valueOf(memberDetails.getMemberId());
+        String savedToken = valueOperations.get(refreshTokenKey);
+        boolean isEqual = savedToken.equals(refreshToken);
 
-        // 서버에서 유효 + 레디스에서 해당 키를 가지고 있는지 이중 검사
-        if (isValidDate && redisTemplate.hasKey(refreshTokenKey)) {
+        if (isValidDate && isEqual) {
             Map<String, Object> claims = new HashMap<>();
-
             claims.put("memberId", memberDetails.getMemberId());
             claims.put("username", memberDetails.getEmail());
             claims.put("roles", memberDetails.getRoles());
