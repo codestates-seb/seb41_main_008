@@ -1,6 +1,7 @@
 package com.nfteam.server.config;
 
 import com.nfteam.server.auth.filter.JwtAuthenticationFilter;
+import com.nfteam.server.auth.filter.JwtExceptionFilter;
 import com.nfteam.server.auth.filter.JwtVerificationFilter;
 import com.nfteam.server.auth.handler.*;
 import com.nfteam.server.auth.jwt.JwtTokenizer;
@@ -38,6 +39,8 @@ public class SecurityConfiguration {
     private final MemberRepository memberRepository;
 
     private final RedisRepository redisRepository;
+
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -81,6 +84,7 @@ public class SecurityConfiguration {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 
@@ -96,10 +100,9 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler()); //failure 핸들러
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
-
             builder.addFilter(jwtAuthenticationFilter)
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class)
-                    .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
+                    .addFilterAfter(jwtExceptionFilter, JwtAuthenticationFilter.class)
+                    .addFilterAfter(jwtVerificationFilter, JwtExceptionFilter.class);
         }
     }
 
