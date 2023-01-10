@@ -46,7 +46,7 @@ public class MemberService {
     }
 
     public Member updateMember(Member member, String email) {
-        //TODO:비밀번호 수정 로직 리팩토링
+
         Member findMember = findVerifiedMember(member.getMemberId(), email);
 
         Optional.ofNullable(member.getNickname())

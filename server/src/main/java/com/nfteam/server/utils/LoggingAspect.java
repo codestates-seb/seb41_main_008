@@ -1,4 +1,4 @@
-package com.nfteam.server.support;
+package com.nfteam.server.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

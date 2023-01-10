@@ -23,8 +23,8 @@ public class Item extends BaseEntity {
     @Column(name = "item_price", nullable = false)
     private Long itemPrice;
 
-    @Column(name = "item_img_url", nullable = false)
-    private String itemImageUrl;
+    @Column(name = "item_img_name", nullable = false)
+    private String itemImageName;
 
     // 상품의 현재 판매가능 여부
     @Column(name = "on_sale", nullable = false)
@@ -51,12 +51,12 @@ public class Item extends BaseEntity {
     public Item(Long itemId,
                 String itemName,
                 Long itemPrice,
-                String itemImageUrl,
+                String itemImageName,
                 boolean onSale) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
-        this.itemImageUrl = itemImageUrl;
+        this.itemImageName = itemImageName;
         this.onSale = onSale;
     }
 
@@ -64,15 +64,15 @@ public class Item extends BaseEntity {
         this.itemCredential = itemCredential;
     }
 
-    public void assignCollectionAndMember(ItemCollection collection, Member member){
+    public void assignCollection(ItemCollection collection) {
         this.collection = collection;
         collection.getItemList().add(this);
-        collection.assignMember(member);
     }
 
 
-    public void addImgUrl(String url) {
-        this.itemImageUrl = url;
+    public void assignMember(Member member) {
+        this.member = member;
+        member.getItemList().add(this);
     }
 
 }

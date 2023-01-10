@@ -1,7 +1,7 @@
 package com.nfteam.server.file.service;
 
 import com.nfteam.server.dto.response.file.FileResponse;
-import com.nfteam.server.support.S3ImageUploader;
+import com.nfteam.server.utils.S3ImageUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
