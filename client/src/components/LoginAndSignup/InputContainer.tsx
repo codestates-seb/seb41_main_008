@@ -28,7 +28,7 @@ const InputContainer = ({ isSignup }: Props) => {
     if (data.nickname) {
       dispatch(signup(data)).then(() => navigate('/login'));
     } else if (!data.nickname) {
-      dispatch(login(data)).then(() => navigate('/'));
+      dispatch(login(data)).then((res) => console.log(res));
     }
   };
   const onError = (error: {}) => {
@@ -49,7 +49,7 @@ const InputContainer = ({ isSignup }: Props) => {
             Sign up and have your own NFT
           </p>
         ) : (
-          <p className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          <p className="font-bold text-white shadow-[0px_20px_30px_-10px_rgb(38,57,77)]">
             Let`s go on a trip to the world of NFT
           </p>
         )}
@@ -65,7 +65,7 @@ const InputContainer = ({ isSignup }: Props) => {
         {isSignup && (
           <input
             id="nickname"
-            className="border-b-2 w-72 p-1 border-black focus:outline-none bg-transparent font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
+            className="border-b-2 w-72 p-1 border-black  focus:outline-none bg-transparent font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
             required
             {...register('nickname', {
               minLength: 2,
