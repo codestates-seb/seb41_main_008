@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "img": "https://i.im.ge/2022/07/04/uhBDop.png",
+    "sImg": "https://i.im.ge/2022/07/11/unUuA4.png",
+    "collectionName": "Sappy Seals",
+    "floorPrice": 0.004,
+    "sellChart": "-44.80%",
+    "totalVolume": "1,013.62"
+  },
+  {
+    "id": 2,
+    "img": "https://i.im.ge/2022/07/06/u9h76a.jpg",
+    "collectionName": "Azuki",
+    "floorPrice": 234.74,
+    "sellChart": "+89.44%",
+    "totalVolume": "662.8"
+  },
+  {
+    "id": 3,
+    "img": "https://i.im.ge/2022/07/06/uNmlUp.png",
+    "collectionName": "tfeetpix.wft",
+    "floorPrice": 90.5,
+    "sellChart": "-11.60%",
+    "totalVolume": "472.5"
+  },
+  {
+    "id": 4,
+    "img": "https://i.im.ge/2022/07/06/u9Dz1m.png",
+    "collectionName": "Autoglyphs",
+    "floorPrice": 299.95,
+    "sellChart": "-",
+    "totalVolume": "448.16"
+  },
+  {
+    "id": 5,
+    "img": "https://i.im.ge/2022/07/05/u0RxCK.png",
+    "collectionName": "Moonbirds",
+    "floorPrice": 26.01,
+    "sellChart": "-69.74%",
+    "totalVolume": "425.66"
+  },
+  {
+    "id": 6,
+    "img": "https://i.im.ge/2022/07/06/uNmqm0.png",
+    "collectionName": "Mutant Ape Yacht Club",
+    "floorPrice": 18.2,
+    "sellChart": "-3.11%",
+    "totalVolume": "385.35"
+  },
+  {
+    "id": 7,
+    "img": "https://i.im.ge/2022/07/06/uNmmZ6.png",
+    "collectionName": "CLONE X - X TAKASHI MURAKAMI",
+    "floorPrice": 12.16,
+    "sellChart": "+25.68%",
+    "totalVolume": "369.2"
+  },
+  {
+    "id": 8,
+    "img": "https://i.im.ge/2022/07/06/uNmtGX.gif",
+    "collectionName": "DegenTown",
+    "floorPrice": 13,
+    "sellChart": "+201.09%",
+    "totalVolume": "11,762.64"
+  },
+  {
+    "id": 9,
+    "img": "https://i.im.ge/2022/07/06/uNmbZ4.jpg",
+    "collectionName": "God Hates NFTees",
+    "floorPrice": 0.76,
+    "sellChart": "-58.03%",
+    "totalVolume": "357.09"
+  },
+  {
+    "id": 10,
+    "img": "https://i.im.ge/2022/07/06/uNmNhK.jpg",
+    "collectionName": "Doodles",
+    "floorPrice": 13.75,
+    "sellChart": "+104.23%",
+    "totalVolume": "320.73"
+  },
+  {
+    "id": 11,
+    "img": "https://i.im.ge/2022/07/06/uNm7oc.png",
+    "collectionName": "Art Blocks Curated",
+    "floorPrice": "-",
+    "sellChart": "+25.08%",
+    "totalVolume": "320"
+  },
+  {
+    "id": 12,
+    "img": "https://i.im.ge/2022/07/06/uNmAa8.png",
+    "collectionName": "Valhalla",
+    "floorPrice": "-",
+    "sellChart": "-",
+    "totalVolume": "300"
+  },
+  {
+    "id": 13,
+    "img": "https://i.im.ge/2022/07/06/utwB8z.png",
+    "collectionName": "The Potaoz",
+    "floorPrice": "-",
+    "sellChart": "+6.28%",
+    "totalVolume": "45.38"
+  },
+  {
+    "id": 14,
+    "img": "https://i.im.ge/2022/07/06/uNwxDG.jpg",
+    "collectionName": "On1 Force",
+    "floorPrice": 0.08,
+    "sellChart": "+23.37%",
+    "totalVolume": "12.12"
+  },
+  {
+    "id": 15,
+    "img": "https://i.im.ge/2022/07/06/uNmK71.png",
+    "collectionName": "Bored APe Kennel CLub",
+    "floorPrice": 3.7,
+    "sellChart": "+32.42%",
+    "totalVolume": "207.69"
+  }
+]
