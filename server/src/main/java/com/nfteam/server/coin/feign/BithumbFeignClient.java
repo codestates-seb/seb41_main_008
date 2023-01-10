@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "bithumb", url = "https://api.bithumb.com/public")
 public interface BithumbFeignClient {
+    //push
     @GetMapping("/ticker/{coin}")
     BithumbResponse<BithumbCoinPrice> getCoinPrice(@PathVariable("coin") String coin);
 }
