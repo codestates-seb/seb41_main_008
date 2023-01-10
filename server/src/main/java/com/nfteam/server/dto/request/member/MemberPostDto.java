@@ -1,6 +1,5 @@
-package com.nfteam.server.member.dto;
+package com.nfteam.server.dto.request.member;
 
-import com.nfteam.server.member.entity.Member.MemberStatus;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,17 +11,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberPatchDto {
-    private long memberId;
-
+public class MemberPostDto {
     @Email
+    @NotBlank(message = "이메일은 필수값 입니다.")
     private String email;
 
+    @NotBlank(message = "이름을 정해주세요")
     private String nickname;
 
-    private MemberStatus memberStatus;
-
+    @NotBlank(message = "비밀번호를 정해주세요")
     private String password;
 
-    private String profileImageName;
 }

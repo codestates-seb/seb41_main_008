@@ -3,6 +3,7 @@ package com.nfteam.server.auth.filter;
 import com.nfteam.server.auth.jwt.JwtTokenizer;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
+import com.nfteam.server.exception.token.AccessTokenExpiredException;
 import com.nfteam.server.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,13 +46,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             // 인증정보인 Authentication 객체가 저장되지 않는다.
         } catch (SignatureException se) {
             se.printStackTrace();
-            request.setAttribute("exception", se);
+            throw new RuntimeException("시그니처 검증 오류");
         } catch (ExpiredJwtException ee) {
             ee.printStackTrace();
-            request.setAttribute("exception", ee);
+            throw new AccessTokenExpiredException();
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("exception", e);
+            throw new RemoteException();
         }
 
         filterChain.doFilter(request, response);

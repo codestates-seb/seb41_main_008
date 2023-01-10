@@ -3,8 +3,10 @@ package com.nfteam.server.item.controller;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
+import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.item.service.CollectionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +44,9 @@ public class CollectionController {
     }
 
     @GetMapping("/{collectionId}")
-    public ResponseEntity getCollection(@PathVariable("collectionId") Long collectionId) {
-        collectionService.getCollection(collectionId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CollectionResponse> getCollection(@PathVariable("collectionId") Long collectionId) {
+        ;
+        return new ResponseEntity<>(collectionService.getCollection(collectionId), HttpStatus.OK);
     }
 
 

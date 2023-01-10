@@ -1,4 +1,4 @@
-package com.nfteam.server.member.dto;
+package com.nfteam.server.dto.response.member;
 
 import com.nfteam.server.member.entity.Member.MemberStatus;
 import java.time.LocalDateTime;
@@ -19,8 +19,6 @@ public class MemberResponseDto {
 
     private long memberId;
 
-    @NotBlank
-    @Email
     private String email;
 
     private String nickname;

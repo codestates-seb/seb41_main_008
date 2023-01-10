@@ -26,7 +26,6 @@ public class ItemCreateRequest {
     public Item toItem() {
         return Item.builder()
                 .itemName(itemName)
-                .itemPrice(Long.parseLong(itemPrice))
                 .itemImageName(itemImgName)
                 .build();
     }

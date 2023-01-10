@@ -1,7 +1,7 @@
 package com.nfteam.server.item.entity;
 
 import com.nfteam.server.audit.BaseEntity;
-import com.nfteam.server.dto.request.item.CollectionPatchRequest;
+import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -105,5 +105,16 @@ public class ItemCollection extends BaseEntity {
         item.assignCollection(this);
     }
 
-
+    public CollectionResponse toResponse() {
+        return CollectionResponse.builder()
+                .collectionId(collectionId)
+                .collectionName(collectionName)
+                .description(description)
+                .logoImgName(logoImgName)
+                .bannerImgName(bannerImgName)
+                .createdDate(getCreatedDate())
+                .ownerId(member.getMemberId())
+                .ownerName(member.getNickname())
+                .build();
+    }
 }

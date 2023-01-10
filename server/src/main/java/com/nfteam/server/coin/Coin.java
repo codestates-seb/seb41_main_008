@@ -24,9 +24,6 @@ public class Coin {
     @Column(name = "current_price", nullable = false, length = 400)
     private Long currentPrice;
 
-    @OneToMany(mappedBy = "coin")
-    private List<ItemPrice> itemPrices = new ArrayList<>();
-
     protected Coin() {
     }
 

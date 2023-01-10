@@ -3,14 +3,23 @@ package com.nfteam.server.item.service;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
+import com.nfteam.server.dto.response.item.CollectionResponse;
+import com.nfteam.server.dto.response.item.ItemResponseDto;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
+import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import com.nfteam.server.item.repository.CollectionRepository;
+import com.nfteam.server.item.repository.ItemRepository;
+import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CollectionService {
 
     private final CollectionRepository collectionRepository;
+    private final QItemRepository qitemRepository;
+    private final ItemRepository itemRepository;
 
     @Transactional
     public Long save(CollectionCreateRequest request, MemberDetails memberDetails) {
@@ -57,7 +68,44 @@ public class CollectionService {
                 .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
     }
 
-    public ItemCollection getCollection(Long collectionId) {
-        return getCollectionById(collectionId);
+    public CollectionResponse getCollection(Long collectionId) {
+        ItemCollection itemCollection = collectionRepository.findCollectionWithMember(collectionId)
+                .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
+        CollectionResponse response = itemCollection.toResponse();
+
+        List<Item> items = itemRepository.findItemsByCollectionId(collectionId);
+        calcItemMetaInfo(items, response);
+
+        List<ItemResponseDto> itemResponseDtos = items.stream().map(
+                Item::toResponse
+        ).collect(Collectors.toList());
+        response.addItemResponseDtos(itemResponseDtos);
+
+        return response;
     }
+
+    private void calcItemMetaInfo(List<Item> items, CollectionResponse response) {
+        Integer itemCount = items.size();
+
+        Double totalVolume = items.stream()
+                .mapToDouble(i -> i.getItemPrice().getCoinCount())
+                .sum();
+
+        Double highestPrice = items.stream()
+                .mapToDouble(i -> i.getItemPrice().getCoinCount())
+                .max().getAsDouble();
+
+        Double lowestPrice = items.stream()
+                .mapToDouble(i -> i.getItemPrice().getCoinCount())
+                .min().getAsDouble();
+
+        long ownerCount = items.stream()
+                .map(i -> i.getMember())
+                .distinct()
+                .count();
+
+        response.setMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, (int) ownerCount);
+    }
+
+
 }
