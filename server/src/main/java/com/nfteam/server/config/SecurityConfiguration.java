@@ -39,6 +39,8 @@ public class SecurityConfiguration {
 
     private final RedisRepository redisRepository;
 
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity

@@ -1,14 +1,16 @@
 package com.nfteam.server.member.service;
 
-import com.nfteam.server.auth.repository.RedisRepository;
+
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
+
 import com.nfteam.server.exception.member.MemberEmailExistException;
 import com.nfteam.server.member.entity.Member;
+
 import com.nfteam.server.member.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
+
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +24,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+
 
 
 
@@ -53,6 +56,8 @@ public class MemberService {
             throw new MemberEmailExistException(email);
         }
     }
+
+
 
 
 }

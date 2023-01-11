@@ -76,6 +76,16 @@ public class Member extends BaseEntity {
         this.memberId = memberId;
     }
 
+    public void changeRole(Role role) {
+        this.role=role;
+
+    }
+
+    public void changeProfile(String ProfileImage) {
+        this.profileUrl=ProfileImage;
+    }
+
+
     /** 회원가입 - 활동중
      *  1년 이상 로그인 x - 휴면상태
      *  회원탈퇴 - 탈퇴 상태
@@ -93,6 +103,13 @@ public class Member extends BaseEntity {
         }
     }
 
+
+    public static Member transToGoogle(String email) {
+        return Member.builder()
+                .email(email)
+                .nickname(email.substring(0,email.indexOf("@"))) //이메일에서 앞부분을 계정 정보로 가져옴
+                .build();
+    }
     @Builder
     public Member(String nickname, String email, String profileUrl, Role role){
         this.nickname=nickname;

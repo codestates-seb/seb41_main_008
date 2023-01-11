@@ -2,6 +2,7 @@ package com.nfteam.server.config.auth.dto;
 
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.entity.Role;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ import lombok.Getter;
 
 import java.util.Map;
 
+@Builder(access= AccessLevel.PRIVATE)
 @Getter //Oauth 인증시 필요한 데이터
 public class OAuthAttributes {
     private Map<String,Object> attributes;
