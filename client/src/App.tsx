@@ -3,8 +3,8 @@ import LoginPage from '../src/pages/LoginPage';
 import SignupPage from '../src/pages/SignupPage';
 import MainPage from '../src/pages/MainPage';
 import MainLayout from '../src/components/Layout/MainLayout';
-import CreateCollection from 'pages/CreateCollection';
 import MyCollectionPage from 'pages/MyCollectionPage';
+import CreateCollectionPage from 'pages/CreateCollectionPage';
 
 function App() {
   return (
@@ -14,7 +14,10 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<MainPage />} />
             <Route path="/collections" element={<MyCollectionPage />} />
-            <Route path="/collection/create" element={<CreateCollection />} />
+            <Route
+              path="/collection/create"
+              element={<CreateCollectionPage />}
+            />
           </Route>
 
           <Route path="login" element={<LoginPage />} />

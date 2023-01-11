@@ -1,20 +1,17 @@
-/* eslint-disable */
-
 import { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import styled from 'styled-components';
 import MainCollection from './MainCollection';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Navigation, Autoplay } from 'swiper';
 
-export interface urls {
+interface urls {
   raw: string;
 }
 
-export interface Collections {
+interface Collections {
   likes: number;
   color: string;
   urls: urls;
@@ -100,6 +97,7 @@ export default function MainCarousel() {
             slidesPerGroup: 4,
           },
         }}
+        className="rounded-2xl"
       >
         {collection?.map((piece) => (
           <SwiperSlide key={piece.id}>
