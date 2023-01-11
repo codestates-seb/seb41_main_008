@@ -100,7 +100,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
             //String encryptedPassword=passwordEncoder.encode(UUID.randomUUID().toString());
             //member.changePassword(encryptedPassword); // 위에서 암호화한 비밀번호로 변경
             member.changeRole(Role.USER); //사용자 권한으로 전환
-            member.changeProfile(member.getProfileUrl());
+            member.changeProfile(member.getProfileImageName());
             memberRepository.save(member);
 
         } else { //기존에 없는 회원이라면 테이블 새로운 회원으로 추가

@@ -7,15 +7,15 @@ import java.io.Serializable;
 
 @Getter
 public class SessionMember implements Serializable { //직렬화용 dto
-    private String nickname;
-    private String email;
+    private final String nickname;
+    private final String email;
 
-    private String profileUrl;
+    private final String profileUrl;
 
     public SessionMember(Member member){
         this.nickname=member.getNickname();
         this.email=member.getEmail();
-        this.profileUrl=member.getProfileUrl();
+        this.profileUrl=member.getProfileImageName();
     }
 
 }

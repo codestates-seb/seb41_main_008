@@ -86,7 +86,7 @@ public class Member extends BaseEntity {
     }
 
     public void changeProfile(String ProfileImage) {
-        this.profileUrl=ProfileImage;
+        this.profileImageName=ProfileImage;
     }
 
 
@@ -122,7 +122,7 @@ public class Member extends BaseEntity {
     public Member(String nickname, String email, String profileUrl, Role role){
         this.nickname=nickname;
         this.email=email;
-        this.profileUrl=profileUrl;
+        this.profileImageName=profileUrl;
         this.role=role;
 
     }
@@ -130,7 +130,7 @@ public class Member extends BaseEntity {
     // Oauth 리 다이렉트 시 업데이트 할 이름, 프로필
     public Member update(String name, String profileUrl){
         this.nickname=name;
-        this.profileUrl=profileUrl;
+        this.profileImageName=profileUrl;
         return this;
     }
     // Role의 키를 가져오는 역할

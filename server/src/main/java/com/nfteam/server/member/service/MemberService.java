@@ -3,7 +3,9 @@ package com.nfteam.server.member.service;
 
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
 
+import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
+import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
 
 import com.nfteam.server.member.repository.MemberRepository;
@@ -17,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -65,14 +65,14 @@ public class MemberService {
             return findVerifiedMember(memberId, email);
         }
 
-        return memberRepository.findByMemberIdAndMemberStatus(memberId, MemberStatus.MEMBER_ACTIVE)
+        return memberRepository.findByMemberIdAndMemberStatus(memberId, Member.MemberStatus.MEMBER_ACTIVE)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
     @Transactional
     public void deleteMember(int memberId, String email) {
         Member findMember = findVerifiedMember(memberId, email);
-        findMember.setMemberStatus(MemberStatus.MEMBER_QUIT);
+        findMember.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
     }
 
     /**
