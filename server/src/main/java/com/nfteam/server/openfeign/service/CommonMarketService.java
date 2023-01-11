@@ -1,4 +1,4 @@
-package com.nfteam.server.coin.service;
+package com.nfteam.server.openfeign.service;
 
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,3 +21,10 @@ public class CommonMarketService {
         return marketService.getCoinCurrentPrice(coin);
     }
 }
+/**
+ * 비트코인
+ * 이더리움
+ * 도지코인
+ * 이더리움클래식
+ * 솔라나
+ */

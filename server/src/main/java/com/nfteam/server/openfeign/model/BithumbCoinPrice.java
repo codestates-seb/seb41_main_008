@@ -1,4 +1,4 @@
-package com.nfteam.server.coin.model;
+package com.nfteam.server.openfeign.model;
 
 import lombok.Getter;
 

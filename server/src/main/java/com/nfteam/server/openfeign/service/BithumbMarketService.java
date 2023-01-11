@@ -1,6 +1,6 @@
-package com.nfteam.server.coin.service;
+package com.nfteam.server.openfeign.service;
 
-import com.nfteam.server.coin.feign.BithumbFeignClient;
+import com.nfteam.server.openfeign.feign.BithumbFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

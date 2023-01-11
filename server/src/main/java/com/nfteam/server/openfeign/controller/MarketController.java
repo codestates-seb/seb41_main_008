@@ -1,6 +1,6 @@
-package com.nfteam.server.coin.controller;
+package com.nfteam.server.openfeign.controller;
 
-import com.nfteam.server.coin.service.CommonMarketService;
+import com.nfteam.server.openfeign.service.CommonMarketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

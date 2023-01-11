@@ -1,4 +1,4 @@
-package com.nfteam.server.coin.service;
+package com.nfteam.server.openfeign.service;
 
 public interface MarketService {
 

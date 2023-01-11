@@ -1,6 +1,6 @@
-package com.nfteam.server.coin.feign;
+package com.nfteam.server.openfeign.feign;
 
-import com.nfteam.server.coin.model.UpbitCoinPrice;
+import com.nfteam.server.openfeign.model.UpbitCoinPrice;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
