@@ -18,6 +18,16 @@ public class Item extends BaseEntity {
     @Column(name = "item_id")
     private Long itemId;
 
+    // 소속 컬렉션
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id")
+    private ItemCollection collection;
+
+    // 아이템 현재 소유자
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_member_id")
+    private Member member;
+
     @Column(name = "item_name", nullable = false)
     private String itemName;
 
@@ -25,26 +35,16 @@ public class Item extends BaseEntity {
     private String itemImageName;
 
     // 상품의 현재 판매가능 여부
-    @Column(name = "on_sale", nullable = false)
+    @Column(name = "on_sale")
     private boolean onSale;
 
-    // 상품 가격
-    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ItemPrice itemPrice;
+    // 상품 가격 코인 갯수
+    @Column(name = "coin_count")
+    private Double coinCount;
 
     // 상품 고유 정보
-    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "item", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private ItemCredential itemCredential;
-
-    // 상품의 소속 그룹
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "collection_id")
-    private ItemCollection collection;
-
-    // 아이템 현재 소유자 정보
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_member_id")
-    private Member member;
 
     protected Item() {
     }
@@ -53,15 +53,18 @@ public class Item extends BaseEntity {
     public Item(Long itemId,
                 String itemName,
                 String itemImageName,
-                boolean onSale) {
+                boolean onSale,
+                Double coinCount) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
         this.onSale = onSale;
+        this.coinCount = coinCount;
     }
 
     public void assignItemCredential(ItemCredential itemCredential) {
         this.itemCredential = itemCredential;
+        itemCredential.assignItem(this);
     }
 
     public void assignCollection(ItemCollection collection) {
@@ -74,13 +77,15 @@ public class Item extends BaseEntity {
         member.getItemList().add(this);
     }
 
-    public ItemResponseDto toResponse() {
+    public ItemResponseDto toResponseDto(){
         return ItemResponseDto.builder()
                 .itemId(itemId)
+                .ownerId(member.getMemberId())
+                .ownerName(member.getNickname())
                 .itemName(itemName)
                 .itemImageName(itemImageName)
-                .priceCoin("아무 코인")
-                .priceCoinCount(getItemPrice().getCoinCount())
+                .onSale(onSale)
+                .coinCount(coinCount)
                 .build();
     }
 }

@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class CollectionCreateRequest {
 
+    @NotNull(message = "해당 컬렉션의 코인 정보가 없습니다.")
+    private String coinId;
+
     @NotNull(message = "해당 컬렉션의 이름 정보가 없습니다.")
     private String name;
 

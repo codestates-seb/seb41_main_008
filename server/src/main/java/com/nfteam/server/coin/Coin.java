@@ -1,12 +1,9 @@
 package com.nfteam.server.coin;
 
-import com.nfteam.server.item.entity.ItemPrice;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -25,6 +22,10 @@ public class Coin {
     private Long currentPrice;
 
     protected Coin() {
+    }
+
+    public Coin(Long coinId) {
+        this.coinId = coinId;
     }
 
     @Builder

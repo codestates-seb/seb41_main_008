@@ -1,7 +1,9 @@
 package com.nfteam.server.item.entity;
 
 import com.nfteam.server.audit.BaseEntity;
+import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.response.item.CollectionResponse;
+import com.nfteam.server.dto.response.item.UserCollectionResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +23,21 @@ public class ItemCollection extends BaseEntity {
     @Column(name = "collection_id")
     private Long collectionId;
 
-    @Column(name = "col_name", length = 100, nullable = false)
+    // 해당 그룹(컬렉션) 소유자
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    // 해당 그룹(컬렉션) 다루는 코인
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coin_id")
+    private Coin coin;
+
+    // 해당 아이템 그룹에 속한 아이템 리스트
+    @OneToMany(mappedBy = "collection")
+    private List<Item> itemList = new ArrayList<>();
+
+    @Column(name = "col_name", length = 200, nullable = false)
     private String collectionName;
 
     @Column(name = "col_desc", length = 1000, nullable = false)
@@ -32,15 +48,6 @@ public class ItemCollection extends BaseEntity {
 
     @Column(name = "banner_img_name")
     private String bannerImgName;
-
-    // 해당 그룹(컬렉션) 소유자
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    // 해당 아이템 그룹에 속한 아이템 리스트
-    @OneToMany(mappedBy = "collection")
-    private List<Item> itemList = new ArrayList<>();
 
     protected ItemCollection() {
     }
@@ -58,10 +65,10 @@ public class ItemCollection extends BaseEntity {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.description = description;
-        setImageInfo(logoImgName, bannerImgName);
+        initImageInfo(logoImgName, bannerImgName);
     }
 
-    private void setImageInfo(String logoImgName, String bannerImgName) {
+    private void initImageInfo(String logoImgName, String bannerImgName) {
         if (StringUtils.isEmpty(logoImgName)) {
             this.logoImgName = "col_default_logo";
         } else this.logoImgName = logoImgName;
@@ -94,10 +101,13 @@ public class ItemCollection extends BaseEntity {
         if (bannerImgName != null) this.bannerImgName = bannerImgName;
     }
 
-
     public void assignMember(Member member) {
         this.member = member;
         member.getGroupList().add(this);
+    }
+
+    public void assignCoin(Coin coin) {
+        this.coin = coin;
     }
 
     public void addItem(Item item) {
@@ -115,6 +125,21 @@ public class ItemCollection extends BaseEntity {
                 .createdDate(getCreatedDate())
                 .ownerId(member.getMemberId())
                 .ownerName(member.getNickname())
+                .coinId(coin.getCoinId())
+                .coinName(coin.getCoinName())
+                .build();
+    }
+
+    public UserCollectionResponse toUserResponse() {
+        return UserCollectionResponse.builder()
+                .collectionId(collectionId)
+                .collectionName(collectionName)
+                .description(description)
+                .logoImgName(logoImgName)
+                .bannerImgName(bannerImgName)
+                .createdDate(getCreatedDate())
+                .coinId(coin.getCoinId())
+                .coinName(coin.getCoinName())
                 .build();
     }
 }
