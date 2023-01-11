@@ -3,6 +3,7 @@ package com.nfteam.server.item.controller;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
+import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.item.service.CollectionService;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +25,19 @@ public class CollectionController {
     @PostMapping
     public ResponseEntity create(@RequestBody @Valid CollectionCreateRequest request, @AuthenticationPrincipal MemberDetails memberDetails) {
         Long createdId = collectionService.save(request, memberDetails);
-        return ResponseEntity.created(URI.create("/api/collections" + createdId)).build();
+        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.CREATED.name(), createdId), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{collectionId}")
     public ResponseEntity update(@PathVariable("collectionId") Long collectionId, @RequestBody CollectionPatchRequest request, @AuthenticationPrincipal MemberDetails memberDetails) {
         Long updatedId = collectionService.update(collectionId, request, memberDetails);
-        return ResponseEntity.created(URI.create("/api/collections" + updatedId)).build();
+        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.OK.name(), updatedId), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{collectionId}")
     public ResponseEntity delete(@PathVariable("collectionId") Long collectionId, @AuthenticationPrincipal MemberDetails memberDetails) {
         collectionService.delete(collectionId, memberDetails);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{collectionId}")
@@ -45,7 +46,7 @@ public class CollectionController {
         return new ResponseEntity<>(collectionService.getCollection(collectionId), HttpStatus.OK);
     }
 
-    @GetMapping("/member/{memberId}")
+    @GetMapping("/members/{memberId}")
     public ResponseEntity getUserCollection(@PathVariable("memberId") Long memberId) {
         return new ResponseEntity<>(collectionService.getUserCollection(memberId), HttpStatus.OK);
     }
