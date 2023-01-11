@@ -18,6 +18,7 @@ import java.util.List;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.Authentication;
 
 
 //TODO Setter,Mapstruct 리팩토링
@@ -36,7 +37,7 @@ public class Member extends BaseEntity {
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 400)
+    @Column(name = "password",  length = 400)
     private String password;
 
     @Column(name = "nickname", length = 100)
@@ -51,7 +52,7 @@ public class Member extends BaseEntity {
     private LocalDateTime lastLogin;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "member_status", length = 20, nullable = false)
+    @Column(name = "member_status", length = 20)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
     // 멤버의 장바구니 리스트
@@ -71,19 +72,17 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Item> itemList = new ArrayList<>();
 
+    //Oauth resource 서버 구분 ex> google, kakao, naver
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "Oauth")
+    private AuthMethod authMehod;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
 
     public Member(Long memberId) {
         this.memberId = memberId;
     }
 
-    public void changeRole(Role role) {
-        this.role=role;
 
-    }
 
     public void changeProfile(String ProfileImage) {
         this.profileImageName=ProfileImage;
@@ -111,6 +110,23 @@ public class Member extends BaseEntity {
         }
     }
 
+    //Oauth 구분
+
+    public enum AuthMethod{
+        GOOGLE("구글 로그인"),
+        NAVER("네이버 로그인"),
+        KAKAO("카카오 로그인"),
+
+        DEFAULT("기본 로그인");
+
+        @Getter
+        private String oauth;
+
+
+        AuthMethod(String AuthMethod){this.oauth= AuthMethod;}
+
+    }
+
 
     public static Member transToGoogle(String email) {
         return Member.builder()
@@ -119,11 +135,10 @@ public class Member extends BaseEntity {
                 .build();
     }
     @Builder
-    public Member(String nickname, String email, String profileUrl, Role role){
+    public Member(String nickname, String email, String profileUrl){
         this.nickname=nickname;
         this.email=email;
         this.profileImageName=profileUrl;
-        this.role=role;
 
     }
 
@@ -132,9 +147,5 @@ public class Member extends BaseEntity {
         this.nickname=name;
         this.profileImageName=profileUrl;
         return this;
-    }
-    // Role의 키를 가져오는 역할
-    public String getRoleKey(){
-        return this.role.getKey();
     }
 }

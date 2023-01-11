@@ -5,7 +5,6 @@ import com.nfteam.server.auth.repository.RedisRepository;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
 
 import com.nfteam.server.member.entity.Member;
-import com.nfteam.server.member.entity.Role;
 import com.nfteam.server.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;

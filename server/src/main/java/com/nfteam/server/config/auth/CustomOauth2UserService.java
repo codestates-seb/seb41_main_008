@@ -1,7 +1,7 @@
 package com.nfteam.server.config.auth;
 
 import com.nfteam.server.config.auth.dto.OAuthAttributes;
-import com.nfteam.server.config.auth.dto.SessionMember;
+//import com.nfteam.server.config.auth.dto.SessionMember;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +23,14 @@ import java.util.Collections;
 @Service
 public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final MemberRepository memberRepository;
-    private final HttpSession httpSession;
+
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
 
         OAuth2UserService delegate=new DefaultOAuth2UserService();// dk
-        OAuth2User oAuth2User= delegate.loadUser(userRequest); //유저리퀘스트로 받은
+        OAuth2User oAuth2User= delegate.loadUser(userRequest);
+        //각 Oauth 서비스 사에서 받은 유저 정보를 담고 있음
 
         //registrationid
         /*
@@ -44,22 +45,22 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
          * 네이버, 구글 로그인 동시 지원시 사용
          * */
 
-        String userNameAttributes=userRequest.getClientRegistration().getProviderDetails()
-                .getUserInfoEndpoint().getUserNameAttributeName(); // Oauth2request에서 PK 불러오는 과정
+        String userNameAttributes=userRequest.getClientRegistration()
+                                             .getProviderDetails()
+                                             .getUserInfoEndpoint()
+                                              .getUserNameAttributeName(); // Oauth2request에서 PK 불러오는 과정
 
+
+        // OAuth2 로그인을 통해 가져온 OAuth2User의 attribute를 담아주는 메소드.
         OAuthAttributes attributes= OAuthAttributes.
                 of(registrationId, userNameAttributes, oAuth2User.getAttributes());
 
         Member member=saveOrUpdate(attributes);
 
-        /*
-         * SessionMember
-         * 세션에 사용자 정보를 저장하기 위한 dto 클래스
-         */
-        httpSession.setAttribute("member",new SessionMember(member));
+
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())),
+                Collections.singleton(new SimpleGrantedAuthority("USER")),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
 
@@ -68,7 +69,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
     //멤버가 들어왔을 때, 멤버가 기존에 없는 멤버면 이메일로 조회를 통해서 기존에 없는 멤버인지 확인 후 없으면 저장, 있으면 멤버 정보 수정으로 전홙
     private Member saveOrUpdate(OAuthAttributes attributes){
         Member member=memberRepository.findByEmail(attributes.getEmail())
-                .map(entity->entity.update(attributes.getNickname(), attributes.getProfileUrl())).orElse(attributes.toEntity());
+                .map(entity->entity.update(attributes.getName(), attributes.getProfileUrl())).orElse(attributes.toEntity());
         return memberRepository.save(member);
     }
 
