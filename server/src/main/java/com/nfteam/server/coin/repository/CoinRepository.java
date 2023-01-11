@@ -1,8 +1,10 @@
 package com.nfteam.server.coin.repository;
 
 import com.nfteam.server.coin.Coin;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CoinRepository extends JpaRepository<Coin,Long> {
 
+public interface CoinRepository extends JpaRepository<Coin,Long> {
+    Optional<Coin> findByCoinName(String coinName);
 }

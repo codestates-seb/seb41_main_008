@@ -18,11 +18,11 @@ public class Coin {
     @Column(name = "coin_id")
     private Long coinId;
 
-    @Column(name = "coin_name", nullable = false, length = 100)
+    @Column(name = "coin_name", nullable = false, unique = true, length = 100)
     private String coinName;
 
-    @Column(name = "current_price", nullable = false, length = 400)
-    private Long currentPrice;
+    @Column(name = "trade_price", nullable = false, length = 400)
+    private double tradePrice;
 
     @OneToMany(mappedBy = "coin")
     private List<ItemPrice> itemPrices = new ArrayList<>();
@@ -31,8 +31,16 @@ public class Coin {
     }
 
     @Builder
-    public Coin(String coinName, Long currentPrice) {
+    public Coin(String coinName, double tradePrice) {
         this.coinName = coinName;
-        this.currentPrice = currentPrice;
+        this.tradePrice = tradePrice;
+    }
+
+    public void changeCoinName(final String coinName) {
+        this.coinName = coinName;
+    }
+
+    public void changeTradePrice(final double tradePrice) {
+        this.tradePrice = tradePrice;
     }
 }
