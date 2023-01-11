@@ -17,10 +17,10 @@ public class ItemPrice {
 
     // 코인의 갯수
     @Column(name = "coin_count", nullable = false)
-    private Integer coinCount;
+    private Double coinCount;
 
     // 상품의 종류
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 

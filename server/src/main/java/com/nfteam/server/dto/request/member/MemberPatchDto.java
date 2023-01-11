@@ -1,4 +1,4 @@
-package com.nfteam.server.member.dto;
+package com.nfteam.server.dto.request.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -15,34 +15,33 @@ public class ItemCredential {
     @Column(name = "credential_id")
     private Long credentialId;
 
-    // 해당 상품 고유 해시코드
-    @Column(name = "hash_code", nullable = false, length = 100)
-    private String hashCode;
-
-    // 해당 상품 거래 내역 암호화 문자열
-    @Column(name = "encryption_value", length = 100)
-    private String encryptionValue;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    // 상품 고유 코드
+    @Column(name = "item_code", nullable = false, length = 500)
+    private String itemCode;
+
+    // 상품 거래 내역 암호화 문자열
+    @Column(name = "trans_encryption", nullable = false, length = 2000)
+    private String transEncryption;
 
     protected ItemCredential() {
     }
 
     @Builder
-    public ItemCredential(Long credentialId, String hashCode, String encryptionValue, Item item) {
+    public ItemCredential(Long credentialId,
+                          String itemCode,
+                          String transEncryption) {
         this.credentialId = credentialId;
-        this.hashCode = hashCode;
-        this.encryptionValue = encryptionValue;
+        this.itemCode = itemCode;
+        this.transEncryption = transEncryption;
         this.item = item;
     }
 
-    public ItemCredential of(Item item) {
-        return ItemCredential.builder()
-                .hashCode(createItemHashCode(item.getItemImageName()))
-                .item(item)
-                .build();
+    public void assignItem(Item item) {
+        this.item = item;
     }
 
     private String createItemHashCode(String imgUrl) {

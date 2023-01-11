@@ -1,9 +1,9 @@
 package com.nfteam.server.member.controller;
 
 import com.nfteam.server.auth.userdetails.MemberDetails;
-import com.nfteam.server.member.dto.MemberPatchDto;
-import com.nfteam.server.member.dto.MemberPostDto;
-import com.nfteam.server.member.dto.MemberResponseDto;
+import com.nfteam.server.dto.request.member.MemberPatchDto;
+import com.nfteam.server.dto.request.member.MemberPostDto;
+import com.nfteam.server.dto.response.member.MemberResponseDto;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.mapper.MemberMapper;
 import com.nfteam.server.member.service.MemberService;

@@ -1,12 +1,9 @@
 package com.nfteam.server.coin;
 
-import com.nfteam.server.item.entity.ItemPrice;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -21,18 +18,19 @@ public class Coin {
     @Column(name = "coin_name", nullable = false, length = 100)
     private String coinName;
 
-    @Column(name = "current_price", nullable = false, length = 400)
-    private Long currentPrice;
-
-    @OneToMany(mappedBy = "coin")
-    private List<ItemPrice> itemPrices = new ArrayList<>();
+    @Column(name = "trade_price", nullable = false, length = 400)
+    private Long tradePrice;
 
     protected Coin() {
     }
 
+    public Coin(Long coinId) {
+        this.coinId = coinId;
+    }
+
     @Builder
-    public Coin(String coinName, Long currentPrice) {
+    public Coin(String coinName, Long tradePrice) {
         this.coinName = coinName;
-        this.currentPrice = currentPrice;
+        this.tradePrice = tradePrice;
     }
 }
