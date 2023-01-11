@@ -1,25 +1,19 @@
 package com.nfteam.server.member.dto;
 
-import com.nfteam.server.member.entity.Member.MemberStatus;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberPatchDto {
-    private long memberId;
 
-    @Email
-    private String email;
-
-    @NotBlank(message = "이름을 정해주세요")
     private String nickname;
 
-    private MemberStatus memberStatus;
+    private String profileImageName;
+
+    // TODO: 이메일은 바꿀 수 없으므로 지웠습니다.
+    // TODO: memberStatus는 회원이 변경하는 것이 아니라서 지웠습니다.
+    // TODO: 비밀번호는 별도의 암호화된 로직으로 변경해야 할 것 같아서 일단 여기에서는 지웠습니다.
 }

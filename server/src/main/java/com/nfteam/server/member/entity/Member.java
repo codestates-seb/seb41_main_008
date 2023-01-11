@@ -5,7 +5,9 @@ import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
+
 import java.time.LocalDateTime;
+
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +15,7 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -24,6 +27,7 @@ import lombok.Setter;
 @Table(name = "member")
 @NoArgsConstructor
 public class Member extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -35,19 +39,19 @@ public class Member extends BaseEntity {
     @Column(name = "password", nullable = false, length = 400)
     private String password;
 
-    @Column(name = "nickname",length = 100)
+    @Column(name = "nickname", length = 100)
     private String nickname;
 
     // 프로필 이미지 URL
-    @Column(name = "profile_url", length = 2500)
-    private String profileUrl;
+    @Column(name = "profile_image", length = 2500)
+    private String profileImageName;
 
     //회원상태관리를 위한 Column
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "member_status",length = 20, nullable = false)
+    @Column(name = "member_status", length = 20, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
     // 멤버의 장바구니 리스트
@@ -56,7 +60,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Cart> cartList = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
 
     // 멤버가 가진 그룹 리스트
@@ -89,6 +93,10 @@ public class Member extends BaseEntity {
     /** 회원가입 - 활동중
      *  1년 이상 로그인 x - 휴면상태
      *  회원탈퇴 - 탈퇴 상태
+    /**
+     * 회원가입 - 활동중
+     * 1년 이상 로그인 x - 휴면상태
+     * 회원탈퇴 - 탈퇴 상태
      */
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),

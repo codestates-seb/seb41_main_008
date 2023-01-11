@@ -5,6 +5,7 @@ import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.auth.utils.CustomAuthorityUtils;
 import com.nfteam.server.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,12 +46,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         } catch (SignatureException se) {
             se.printStackTrace();
             request.setAttribute("exception", se);
+            throw new JwtException("JWT 시그니처 정보가 잘못되었습니다.");
         } catch (ExpiredJwtException ee) {
             ee.printStackTrace();
             request.setAttribute("exception", ee);
+            throw new JwtException("JWT 유효기한이 만료되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("exception", e);
+            throw new JwtException("JWT 토큰을 검증하는 데 실패하였습니다.");
         }
 
         filterChain.doFilter(request, response);
@@ -86,8 +90,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         member.setMemberId(memberId);
         member.setEmail(username);
         member.setRoles(roles);
-
         MemberDetails memberDetails = new MemberDetails(authorityUtils, member);
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
