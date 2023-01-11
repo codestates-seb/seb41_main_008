@@ -29,6 +29,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
     public void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, Throwable exception) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(403);
         Map<String, Object> body = new HashMap<>();
         body.put("code", ExceptionCode.TOKEN_EXPIRED);
         body.put("message", exception.getMessage());

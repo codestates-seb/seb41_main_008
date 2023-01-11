@@ -26,9 +26,8 @@ public class AuthController {
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<Void> reissue(@RequestHeader(value = "RefreshToken") String refreshToken,
-                                        @AuthenticationPrincipal MemberDetails memberDetails) {
-        String reissuedAccessToken = authService.reissue(memberDetails, refreshToken);
+    public ResponseEntity<Void> reissue(@RequestHeader(value = "RefreshToken") String refreshToken) {
+        String reissuedAccessToken = authService.reissue(refreshToken);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + reissuedAccessToken)
                 .build();
