@@ -15,10 +15,10 @@ public class RedisRepository {
     private final RedisTemplate<String, String> redisTemplate;
     private final JwtTokenizer jwtTokenizer;
 
-    public void saveRefreshToken(String key, String refreshToken) {
-        // memberId(pk) - refreshToken K-V 형태로 레디스 저장
+    public void saveRefreshToken(String memberId, String refreshToken) {
+        // refreshToken - memberId(pk) K-V 형태로 레디스 저장
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(key, refreshToken, jwtTokenizer.getRefreshTokenExpirationMinutes(), TimeUnit.MINUTES);
+        valueOperations.set(refreshToken, memberId, jwtTokenizer.getRefreshTokenExpirationMinutes(), TimeUnit.MINUTES);
     }
 
     public void expireRefreshToken(String key) {
