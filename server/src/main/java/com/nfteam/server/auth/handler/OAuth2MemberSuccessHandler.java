@@ -70,7 +70,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("redis-cli -h ec2-43-200-106-60.ap-northeast-2.compute.amazonaws.com")
+                .host("nfteam-dev.c6ubke6u3uul.ap-northeast-2.rds.amazonaws.com")
                 .path("/")
                 .build()
                 .toUri();
