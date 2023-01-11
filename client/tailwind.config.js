@@ -3,8 +3,8 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      gridTemplateColumns: {
-        444: 'repeat(12, minmax(25%, 1fr))',
+      colors: {
+        'brand-color': 'rgb(32, 129, 226)',
       },
     },
   },

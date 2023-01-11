@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import styled from 'styled-components';
