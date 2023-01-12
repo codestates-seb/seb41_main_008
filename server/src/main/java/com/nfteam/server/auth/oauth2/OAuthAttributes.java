@@ -9,7 +9,13 @@ import java.util.function.Function;
 
 public enum OAuthAttributes {
     GOOGLE("google", (attributes) -> new OAuthMemberProfile((String) attributes.get("email"),
-            (String) attributes.get("name"), MemberPlatform.GOOGLE));
+            (String) attributes.get("name"), MemberPlatform.GOOGLE)),
+    KAKAO("kakao", (attributes) -> {
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
+        return new OAuthMemberProfile((String) kakaoAccount.get("email"), (String) kakaoProfile.get("nickname"),
+                MemberPlatform.KAKAO);
+    });
 
     private final String registrationId;
     private final Function<Map<String, Object>, OAuthMemberProfile> of;

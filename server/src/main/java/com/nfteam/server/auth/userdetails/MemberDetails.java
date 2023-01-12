@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 public class MemberDetails extends Member implements UserDetails {
 
-    private Long memberId;
     private String email;
     private String password;
     private String nickname;
@@ -21,7 +20,6 @@ public class MemberDetails extends Member implements UserDetails {
     private LocalDateTime lastLoginTime;
 
     public MemberDetails(Member member) {
-        this.memberId = member.getMemberId();
         this.email = member.getEmail();
         this.password = member.getPassword();
         this.nickname = member.getNickname();
@@ -29,13 +27,11 @@ public class MemberDetails extends Member implements UserDetails {
         this.lastLoginTime = member.getLastLoginTime();
     }
 
-    public MemberDetails(String memberId, String email, String nickname, String role) {
-        this.memberId = Long.parseLong(memberId);
+    public MemberDetails(String email, String nickname, String role) {
         this.email = email;
         this.nickname = nickname;
         this.role = role;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -35,7 +35,6 @@ public class JwtTokenizer {
 
     public String generateAccessToken(MemberDetails memberDetails) {
         return Jwts.builder()
-                .claim("memberId", memberDetails.getMemberId())
                 .claim("email", memberDetails.getEmail())
                 .claim("nickname", memberDetails.getNickname())
                 .claim("role", memberDetails.getRole())
@@ -60,7 +59,6 @@ public class JwtTokenizer {
             throw new TokenNotValidateException("토큰에 권한 정보가 존재하지 않습니다.");
         }
         MemberDetails memberDetails = new MemberDetails(
-                String.valueOf(claims.get("memberId")),
                 (String) claims.get("email"),
                 (String) claims.get("nickname"),
                 (String) claims.get("role")
