@@ -29,7 +29,7 @@ public class CoinController {
 //        return new ResponseEntity("최근거래가 업데이트 완료.", HttpStatus.OK);
 //    }
 
-    @Scheduled(cron = "0 0 10 25 * *")
+    @Scheduled(cron = "0 0 4 25 * *")
     @GetMapping("/withdrawl-fee")
     public void getWithdrwalFee() throws Exception {
         coinService.calculateFee(COIN);
