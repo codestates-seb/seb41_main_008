@@ -44,6 +44,8 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     implementation 'com.google.code.gson:gson'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
+    implementation 'org.jsoup:jsoup:1.12.1'
 
     compileOnly 'org.projectlombok:lombok'
 
@@ -60,8 +62,13 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'junit:junit:4.13.1'
+    testImplementation 'io.rest-assured:rest-assured:4.0.0'
+    testImplementation 'io.rest-assured:json-path:4.0.0'
+    testImplementation 'io.rest-assured:xml-path:4.0.0'
 
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+
 }
 
 ext {

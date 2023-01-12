@@ -36,7 +36,7 @@ public class Item extends BaseEntity {
 
     // 상품의 현재 판매가능 여부
     @Column(name = "on_sale")
-    private boolean onSale;
+    private Boolean onSale;
 
     // 상품 가격 코인 갯수
     @Column(name = "coin_count")
@@ -53,7 +53,7 @@ public class Item extends BaseEntity {
     public Item(Long itemId,
                 String itemName,
                 String itemImageName,
-                boolean onSale,
+                Boolean onSale,
                 Double coinCount) {
         this.itemId = itemId;
         this.itemName = itemName;
@@ -77,7 +77,7 @@ public class Item extends BaseEntity {
         member.getItemList().add(this);
     }
 
-    public ItemResponseDto toResponseDto(){
+    public ItemResponseDto toResponseDto() {
         return ItemResponseDto.builder()
                 .itemId(itemId)
                 .ownerId(member.getMemberId())

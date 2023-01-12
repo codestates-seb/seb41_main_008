@@ -2,8 +2,10 @@ package com.nfteam.server.coin;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -15,11 +17,15 @@ public class Coin {
     @Column(name = "coin_id")
     private Long coinId;
 
-    @Column(name = "coin_name", nullable = false, length = 100)
+    @Column(name = "coin_name", nullable = false, unique = true, length = 100)
     private String coinName;
 
-    @Column(name = "trade_price", nullable = false, length = 400)
-    private Long tradePrice;
+    @Column(name = "withdrwal_fee", length = 400)
+    private double withdrawlFee;
+
+    @CreatedDate
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     protected Coin() {
     }
@@ -29,8 +35,16 @@ public class Coin {
     }
 
     @Builder
-    public Coin(String coinName, Long tradePrice) {
+    public Coin(String coinName, double withdrawlFee) {
         this.coinName = coinName;
-        this.tradePrice = tradePrice;
+        this.withdrawlFee = withdrawlFee;
+    }
+
+    public void changeCoinName(final String coinName) {
+        this.coinName = coinName;
+    }
+
+    public void changeWithdrawlFee(final double withdrawlFee) {
+        this.withdrawlFee = withdrawlFee;
     }
 }

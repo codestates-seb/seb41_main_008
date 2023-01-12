@@ -1,17 +1,11 @@
 package com.nfteam.server.dto.request.member;
 
+import lombok.Getter;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class MemberPostDto {
 
     @Email
