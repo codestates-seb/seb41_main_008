@@ -20,8 +20,8 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/logout")
-    public ResponseEntity<Void> logout(@AuthenticationPrincipal MemberDetails memberDetails) {
-        authService.logout(memberDetails.getMemberId());
+    public ResponseEntity<Void> logout(@RequestHeader(value = "RefreshToken") String refreshToken) {
+        authService.logout(refreshToken);
         return new ResponseEntity(HttpStatus.OK);
     }
 

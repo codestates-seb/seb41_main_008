@@ -16,12 +16,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class MemberAccessDeniedHandler implements AccessDeniedHandler {
-    //인증에는 성공했지만 해당 리소스에 대한 권한이 없을 경우
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
         ErrorResponder.sendErrorResponse(response, HttpStatus.FORBIDDEN);
-        log.warn("AccessDenied happened: {}", accessDeniedException.getMessage());
+        log.warn("Security - AccessDeniedException : {}", accessDeniedException.getMessage());
     }
 }

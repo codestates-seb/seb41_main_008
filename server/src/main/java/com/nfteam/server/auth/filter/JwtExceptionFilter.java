@@ -1,8 +1,9 @@
 package com.nfteam.server.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nfteam.server.exception.ExceptionCode;
-import io.jsonwebtoken.JwtException;
+import com.nfteam.server.exception.NFTCustomException;
+import com.nfteam.server.exception.token.TokenNotValidateException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,16 +23,17 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (JwtException exception) {
+        } catch (TokenNotValidateException exception) {
             sendErrorResponse(request, response, exception);
         }
     }
 
-    public void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, Throwable exception) throws IOException {
+    public void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, NFTCustomException exception) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(403);
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+
         Map<String, Object> body = new HashMap<>();
-        body.put("code", ExceptionCode.TOKEN_EXPIRED);
+        body.put("code", exception.getExceptionCode());
         body.put("message", exception.getMessage());
 
         ObjectMapper mapper = new ObjectMapper();

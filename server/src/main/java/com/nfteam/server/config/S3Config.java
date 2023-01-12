@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class S3Config {
+
     private final String accessKey;
     private final String secretKey;
     private final String region;
