@@ -20,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+
     private final MemberRepository memberRepository;
 
     @Override
@@ -36,7 +37,6 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Map<String, Object> attributes = oAuth2User.getAttributes(); //Oauth 서비스의 유저 정보
         OAuthMemberProfile oAuthMemberProfile = OAuthAttributes.extract(registrationId, attributes);
-
         Member member = createOrUpdateMember(oAuthMemberProfile);
 
         return new DefaultOAuth2User(

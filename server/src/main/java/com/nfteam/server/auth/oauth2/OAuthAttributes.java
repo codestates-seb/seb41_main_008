@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public enum OAuthAttributes {
+
     GOOGLE("google", (attributes) -> new OAuthMemberProfile((String) attributes.get("email"),
             (String) attributes.get("name"), MemberPlatform.GOOGLE)),
     KAKAO("kakao", (attributes) -> {

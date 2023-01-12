@@ -44,6 +44,17 @@ public class JwtTokenizer {
                 .compact();
     }
 
+    public String generateOAuthAccessToken(OAuth2User oAuth2User) {
+        return Jwts.builder()
+                .claim("email", String.valueOf(oAuth2User.getAttributes().get("email")))
+                .claim("nickname", String.valueOf(oAuth2User.getAttributes().get("name")))
+                .claim("role", MemberRole.USER)
+                .setIssuedAt(Calendar.getInstance().getTime())
+                .setExpiration(getTokenExpiration(accessTokenExpirationMinutes))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String generateRefreshToken() {
         return Jwts.builder()
                 .setIssuedAt(Calendar.getInstance().getTime())
@@ -95,15 +106,4 @@ public class JwtTokenizer {
         }
     }
 
-
-    public String generateOAuthAccessToken(OAuth2User oAuth2User) {
-        return Jwts.builder()
-                .claim("email", String.valueOf(oAuth2User.getAttributes().get("email")))
-                .claim("nickname", String.valueOf(oAuth2User.getAttributes().get("name")))
-                .claim("role", MemberRole.USER)
-                .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(getTokenExpiration(accessTokenExpirationMinutes))
-                .signWith(secretKey, SignatureAlgorithm.HS256)
-                .compact();
-    }
 }

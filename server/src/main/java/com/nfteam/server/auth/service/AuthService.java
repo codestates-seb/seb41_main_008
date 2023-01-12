@@ -13,13 +13,11 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AuthService {
+
     private final MemberRepository memberRepository;
     private final RedisRepository redisRepository;
     private final JwtTokenizer jwtTokenizer;
@@ -31,7 +29,7 @@ public class AuthService {
 
     public String reissue(String refreshToken) {
         // 1차 서버 - 리프레시 토큰 유효기한 검사
-        boolean isValidDate = jwtTokenizer.isValidDateToken(refreshToken);
+        Boolean isValidDate = jwtTokenizer.isValidDateToken(refreshToken);
 
         // 2차 - 레디스 리프레시 토큰 존재여부 검사
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();

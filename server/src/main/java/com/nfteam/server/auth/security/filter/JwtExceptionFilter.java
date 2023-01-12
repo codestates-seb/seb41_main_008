@@ -24,11 +24,11 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (TokenNotValidateException exception) {
-            sendErrorResponse(request, response, exception);
+            sendErrorResponse(response, exception);
         }
     }
 
-    public void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, NFTCustomException exception) throws IOException {
+    public void sendErrorResponse(HttpServletResponse response, NFTCustomException exception) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.FORBIDDEN.value());
 
