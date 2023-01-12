@@ -5,10 +5,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Getter
 public class LoginResponse {
+
     private Long memberId;
     private String email;
     private String role;
