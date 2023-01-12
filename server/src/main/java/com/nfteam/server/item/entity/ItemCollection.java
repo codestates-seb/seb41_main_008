@@ -103,7 +103,7 @@ public class ItemCollection extends BaseEntity {
 
     public void assignMember(Member member) {
         this.member = member;
-        member.getGroupList().add(this);
+        member.getCollectionList().add(this);
     }
 
     public void assignCoin(Coin coin) {

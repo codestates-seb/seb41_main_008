@@ -1,16 +1,21 @@
 package com.nfteam.server.config;
 
-import com.nfteam.server.auth.filter.JwtAuthenticationFilter;
-import com.nfteam.server.auth.filter.JwtExceptionFilter;
-import com.nfteam.server.auth.filter.JwtVerificationFilter;
-import com.nfteam.server.auth.handler.*;
 import com.nfteam.server.auth.jwt.JwtTokenizer;
+import com.nfteam.server.auth.oauth2.CustomOauth2UserService;
+import com.nfteam.server.auth.oauth2.OAuth2MemberSuccessHandler;
 import com.nfteam.server.auth.repository.RedisRepository;
-import com.nfteam.server.auth.utils.CustomAuthorityUtils;
+import com.nfteam.server.auth.security.filter.JwtAuthenticationFilter;
+import com.nfteam.server.auth.security.filter.JwtExceptionFilter;
+import com.nfteam.server.auth.security.filter.JwtVerificationFilter;
+import com.nfteam.server.auth.security.handler.MemberAccessDeniedHandler;
+import com.nfteam.server.auth.security.handler.MemberAuthenticationEntryPoint;
+import com.nfteam.server.auth.security.handler.MemberAuthenticationFailureHandler;
+import com.nfteam.server.auth.security.handler.MemberAuthenticationSuccessHandler;
 import com.nfteam.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,13 +23,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -33,26 +36,25 @@ import java.util.List;
 public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
-
-    private final CustomAuthorityUtils authorityUtils;
-
     private final MemberRepository memberRepository;
-
     private final RedisRepository redisRepository;
-
     private final JwtExceptionFilter jwtExceptionFilter;
+    private final OAuth2MemberSuccessHandler oAuth2MemberSuccessHandler;
+    private final CustomOauth2UserService customOauth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .headers().frameOptions().disable()
                 .and()
+                .csrf().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .logout().logoutSuccessUrl("/")
                 .and()
-                .csrf().disable() //csrf security 비활성화
-                .cors().configurationSource(corsConfigurationSource())
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
@@ -60,7 +62,11 @@ public class SecurityConfiguration {
                 .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
-                .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, redisRepository)))
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2MemberSuccessHandler)
+                        .userInfoEndpoint()
+                        .userService(customOauth2UserService)
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         // TODO: 편의상 권한 적용은 개발 마지막 단계에 적용
                         // .antMatchers(HttpMethod.POST, "/api/members").permitAll()
@@ -76,11 +82,11 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setExposedHeaders(List.of("RefreshToken", HttpHeaders.LOCATION, HttpHeaders.LOCATION));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of("*"));
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -99,7 +105,9 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(memberRepository)); //success 핸들러
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler()); //failure 핸들러
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer);
+            JwtExceptionFilter jwtExceptionFilter = new JwtExceptionFilter();
+
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtExceptionFilter, JwtAuthenticationFilter.class)
                     .addFilterAfter(jwtVerificationFilter, JwtExceptionFilter.class);
