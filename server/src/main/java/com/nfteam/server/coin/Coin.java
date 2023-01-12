@@ -1,14 +1,11 @@
 package com.nfteam.server.coin;
 
-import com.nfteam.server.item.entity.ItemPrice;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.data.annotation.CreatedDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -30,10 +27,11 @@ public class Coin {
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "coin")
-    private List<ItemPrice> itemPrices = new ArrayList<>();
-
     protected Coin() {
+    }
+
+    public Coin(Long coinId) {
+        this.coinId = coinId;
     }
 
     @Builder
