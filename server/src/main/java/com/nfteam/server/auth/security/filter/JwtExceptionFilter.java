@@ -1,4 +1,4 @@
-package com.nfteam.server.auth.filter;
+package com.nfteam.server.auth.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nfteam.server.exception.NFTCustomException;

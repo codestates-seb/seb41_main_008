@@ -1,4 +1,4 @@
-package com.nfteam.server.auth.filter;
+package com.nfteam.server.auth.security.filter;
 
 import com.nfteam.server.auth.jwt.JwtTokenizer;
 import com.nfteam.server.exception.token.TokenNotValidateException;

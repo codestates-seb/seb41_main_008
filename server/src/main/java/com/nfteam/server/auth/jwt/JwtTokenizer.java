@@ -2,12 +2,14 @@ package com.nfteam.server.auth.jwt;
 
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.exception.token.TokenNotValidateException;
+import com.nfteam.server.member.entity.MemberRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -96,4 +98,14 @@ public class JwtTokenizer {
     }
 
 
+    public String generateOAuthAccessToken(OAuth2User oAuth2User) {
+        return Jwts.builder()
+                .claim("email", String.valueOf(oAuth2User.getAttributes().get("email")))
+                .claim("nickname", String.valueOf(oAuth2User.getAttributes().get("name")))
+                .claim("role", MemberRole.USER)
+                .setIssuedAt(Calendar.getInstance().getTime())
+                .setExpiration(getTokenExpiration(accessTokenExpirationMinutes))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
 }

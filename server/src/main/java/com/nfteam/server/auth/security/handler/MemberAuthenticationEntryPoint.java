@@ -1,4 +1,4 @@
-package com.nfteam.server.auth.handler;
+package com.nfteam.server.auth.security.handler;
 
 import com.nfteam.server.auth.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;

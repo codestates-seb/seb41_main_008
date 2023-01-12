@@ -12,6 +12,7 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -65,11 +66,24 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Item> itemList = new ArrayList<>();
 
-    protected Member() {
+    public Member() {
     }
 
+    // 연관관계 입력용 생성자
     public Member(Long memberId) {
         this.memberId = memberId;
+    }
+
+    // 소셜 로그인용 생성자
+    public Member(String email, String nickname, MemberPlatform memberPlatform) {
+        this.email = email;
+        this.nickname = nickname;
+        this.memberPlatform = memberPlatform;
+        this.password = UUID.randomUUID().toString();
+        this.memberRole = MemberRole.USER;
+        this.memberStatus = MemberStatus.MEMBER_ACTIVE;
+        this.profileImage = "default-profile-image";
+        this.lastLoginTime = LocalDateTime.now();
     }
 
     public void updateLastLoginTime() {
@@ -92,5 +106,9 @@ public class Member extends BaseEntity {
         this.password = encryptedPassword;
         this.memberRole = MemberRole.USER;
         this.profileImage = "default-profile-image";
+    }
+
+    public void updateMemberPlatform(MemberPlatform memberPlatform) {
+        this.memberPlatform = memberPlatform;
     }
 }

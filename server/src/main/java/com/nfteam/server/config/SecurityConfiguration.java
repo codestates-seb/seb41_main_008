@@ -1,11 +1,16 @@
 package com.nfteam.server.config;
 
-import com.nfteam.server.auth.filter.JwtAuthenticationFilter;
-import com.nfteam.server.auth.filter.JwtExceptionFilter;
-import com.nfteam.server.auth.filter.JwtVerificationFilter;
-import com.nfteam.server.auth.handler.*;
 import com.nfteam.server.auth.jwt.JwtTokenizer;
+import com.nfteam.server.auth.oauth2.CustomOauth2UserService;
+import com.nfteam.server.auth.oauth2.OAuth2MemberSuccessHandler;
 import com.nfteam.server.auth.repository.RedisRepository;
+import com.nfteam.server.auth.security.filter.JwtAuthenticationFilter;
+import com.nfteam.server.auth.security.filter.JwtExceptionFilter;
+import com.nfteam.server.auth.security.filter.JwtVerificationFilter;
+import com.nfteam.server.auth.security.handler.MemberAccessDeniedHandler;
+import com.nfteam.server.auth.security.handler.MemberAuthenticationEntryPoint;
+import com.nfteam.server.auth.security.handler.MemberAuthenticationFailureHandler;
+import com.nfteam.server.auth.security.handler.MemberAuthenticationSuccessHandler;
 import com.nfteam.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -36,6 +40,7 @@ public class SecurityConfiguration {
     private final RedisRepository redisRepository;
     private final JwtExceptionFilter jwtExceptionFilter;
     private final OAuth2MemberSuccessHandler oAuth2MemberSuccessHandler;
+    private final CustomOauth2UserService customOauth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -57,7 +62,11 @@ public class SecurityConfiguration {
                 .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
-                .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2MemberSuccessHandler))
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2MemberSuccessHandler)
+                        .userInfoEndpoint()
+                        .userService(customOauth2UserService)
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         // TODO: 편의상 권한 적용은 개발 마지막 단계에 적용
                         // .antMatchers(HttpMethod.POST, "/api/members").permitAll()
@@ -97,6 +106,8 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler()); //failure 핸들러
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer);
+            JwtExceptionFilter jwtExceptionFilter = new JwtExceptionFilter();
+
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtExceptionFilter, JwtAuthenticationFilter.class)
                     .addFilterAfter(jwtVerificationFilter, JwtExceptionFilter.class);

@@ -1,4 +1,4 @@
-package com.nfteam.server.auth.handler;
+package com.nfteam.server.auth.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nfteam.server.auth.userdetails.MemberDetails;
