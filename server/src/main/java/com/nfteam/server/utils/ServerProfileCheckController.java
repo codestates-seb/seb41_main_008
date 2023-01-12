@@ -28,6 +28,6 @@ public class ServerProfileCheckController {
 
     @GetMapping
     public String homeTest() {
-        return "개발 서버 정상 동작 확인 테스트 - 시큐리티 / Oauth 완료. ";
+        return "개발 서버 정상 동작 확인 테스트 - 시큐리티 / Oauth 설정 검수 완료. ";
     }
 }
