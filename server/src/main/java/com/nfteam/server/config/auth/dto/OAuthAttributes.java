@@ -9,11 +9,31 @@ public enum OAuthAttributes {
         MemberProfile memberProfile=new MemberProfile();
         memberProfile.setEmail((String) attributes.get("email"));
         return memberProfile;
-    });
+    }),
 
     /*
     * naver, Kakao 들어갈 예정?
     * */
+
+    KAKAO("Kakao",(attributes)->{
+
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+
+
+        MemberProfile memberProfile = new MemberProfile();
+        memberProfile.setEmail((String) kakaoAccount.get("email"));
+        return memberProfile;
+    }),
+
+    NAVER("Naver",(attributes)->{
+
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+
+        MemberProfile memberProfile = new MemberProfile();
+        memberProfile.setEmail((String) response.get("email"));
+        return memberProfile;
+    });
 
 
     private final String registrationId;
