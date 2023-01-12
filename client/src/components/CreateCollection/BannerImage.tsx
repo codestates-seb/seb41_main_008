@@ -1,11 +1,14 @@
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
+import { setBanner } from 'store/bannerSlice';
 
 export default function BannerImage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const banner = useAppSelector((state) => state.banner.url);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -21,12 +24,12 @@ export default function BannerImage() {
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onloadend = () => {
-        setPreview(reader.result as string);
+        dispatch(setBanner(reader.result as string));
       };
     } else {
-      setPreview(null);
+      dispatch(setBanner(''));
     }
-  }, [image]);
+  }, [image, dispatch]);
 
   return (
     <form className="flex flex-col items-center">
@@ -46,9 +49,9 @@ export default function BannerImage() {
         accept="image/*"
         onChange={handleChange}
       />
-      {preview ? (
+      {banner ? (
         <img
-          src={preview}
+          src={banner}
           alt="logo"
           role="presentation"
           className="h-60 w-full rounded-xl object-cover mt-3 cursor-pointer"

@@ -1,11 +1,15 @@
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
+import { setLogo } from 'store/logoSlice';
 
 export default function LogoImage() {
+  const dispatch = useAppDispatch();
+  const logo = useAppSelector((state) => state.logo.url);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -21,12 +25,13 @@ export default function LogoImage() {
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onloadend = () => {
-        setPreview(reader.result as string);
+        dispatch(setLogo(reader.result as string));
       };
     } else {
-      setPreview(null);
+      dispatch(setLogo(''));
     }
-  }, [image]);
+  }, [image, dispatch]);
+  console.log(logo);
   return (
     <form className="flex flex-col items-center">
       <h3 className="font-bold text-lg">
@@ -43,9 +48,9 @@ export default function LogoImage() {
         accept="image/*"
         onChange={handleChange}
       />
-      {preview ? (
+      {logo ? (
         <img
-          src={preview}
+          src={logo}
           alt="logo"
           role="presentation"
           className="h-44 w-44 rounded-full object-cover mt-3 cursor-pointer"
