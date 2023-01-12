@@ -18,7 +18,7 @@ import java.util.List;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.Authentication;
+import reactor.util.annotation.Nullable;
 
 
 //TODO Setter,Mapstruct 리팩토링
@@ -73,9 +73,10 @@ public class Member extends BaseEntity {
     private List<Item> itemList = new ArrayList<>();
 
     //Oauth resource 서버 구분 ex> google, kakao, naver
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "Oauth")
-    private AuthMethod authMehod;
+
+    @Nullable //클라이언트에서 로그인 시 null
+    @Column(name = "provider")
+    private String provider;
 
 
     public Member(Long memberId) {
@@ -87,6 +88,8 @@ public class Member extends BaseEntity {
     public void changeProfile(String ProfileImage) {
         this.profileImageName=ProfileImage;
     }
+
+
 
 
     /** 회원가입 - 활동중
@@ -135,17 +138,19 @@ public class Member extends BaseEntity {
                 .build();
     }
     @Builder
-    public Member(String nickname, String email, String profileUrl){
-        this.nickname=nickname;
+    public Member(String nickname, String email, String profileUrl,String provider){
+
         this.email=email;
+        this.provider=provider;
         this.profileImageName=profileUrl;
+        this.nickname=nickname;
 
     }
 
-    // Oauth 리 다이렉트 시 업데이트 할 이름, 프로필
-    public Member update(String name, String profileUrl){
-        this.nickname=name;
-        this.profileImageName=profileUrl;
+    // Oauth 리 다이렉트 시 업데이트 이메일
+    public Member update(String email, String nickname, String resourceProvider){
+        this.email=email;
+        this.nickname=nickname;
         return this;
     }
 }

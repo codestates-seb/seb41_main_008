@@ -40,8 +40,12 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                                          final HttpServletResponse response,
                                          final Authentication authentication) throws IOException {
         OAuth2User oAuth2User=(OAuth2User) authentication.getPrincipal();
+
+
         String email=String.valueOf(oAuth2User.getAttributes().get("email"));
         Member googleMember=createOrUpdateGoogleMember(email);
+
+
 
         redirect(request,response,email, googleMember);
     }
@@ -69,7 +73,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("nfteam-dev.c6ubke6u3uul.ap-northeast-2.rds.amazonaws.com")
+                .host("ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com")
                 .path("/")
                 .build()
                 .toUri();
@@ -98,7 +102,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
             member=Member.transToGoogle(email);
             //String encryptedPassword=passwordEncoder.encode(UUID.randomUUID().toString());
             //member.changePassword(encryptedPassword); // 위에서 암호화한 비밀번호로 변경
-            member.changeRole(Role.USER); //사용자 권한으로 전환
+
             member.changeProfile(member.getProfileImageName());
             memberRepository.save(member);
 

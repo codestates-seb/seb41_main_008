@@ -16,6 +16,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m left join fetch m.roles r where m.memberId =:memberId and m.memberStatus =:status")
     Optional<Member> findByMemberIdAndMemberStatus(Long memberId, MemberStatus status);
 
+    Optional<Member> findByEmailAndProvider(String email, String provider);
+
     Boolean existsByEmail(String email);
 
 

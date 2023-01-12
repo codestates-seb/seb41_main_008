@@ -1,5 +1,6 @@
 package com.nfteam.server.config.auth;
 
+import com.nfteam.server.config.auth.dto.MemberProfile;
 import com.nfteam.server.config.auth.dto.OAuthAttributes;
 //import com.nfteam.server.config.auth.dto.SessionMember;
 import com.nfteam.server.member.entity.Member;
@@ -15,8 +16,10 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,14 +31,14 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
 
-        OAuth2UserService delegate=new DefaultOAuth2UserService();// dk
+        OAuth2UserService delegate=new DefaultOAuth2UserService();
         OAuth2User oAuth2User= delegate.loadUser(userRequest);
         //각 Oauth 서비스 사에서 받은 유저 정보를 담고 있음
 
         //registrationid
         /*
          * 현재 로그인 징행 중인 서비스 구현하는 코드
-         * 이후에 여러가지 추가할 때 네이버읹지 구굴인지 구분해주는 코드
+         * 이후에 여러가지 추가할 때 네이버읹지 구굴인지 구분
          *  */
         String registrationId=userRequest.getClientRegistration().getRegistrationId();
         // userNameAttributes
@@ -50,27 +53,48 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
                                              .getUserInfoEndpoint()
                                               .getUserNameAttributeName(); // Oauth2request에서 PK 불러오는 과정
 
+        Map<String, Object> attributes=oAuth2User.getAttributes(); //Oauth 서비스의 유저 정보들
 
-        // OAuth2 로그인을 통해 가져온 OAuth2User의 attribute를 담아주는 메소드.
-        OAuthAttributes attributes= OAuthAttributes.
-                of(registrationId, userNameAttributes, oAuth2User.getAttributes());
+        MemberProfile memberProfile=OAuthAttributes.extract(registrationId,attributes); //registrationId에 따라, 유저 정보를 통해 공통된 User 객체를 만들어줌
 
-        Member member=saveOrUpdate(attributes);
+        memberProfile.setProvider(registrationId); // 리소스 Provider 정보를 memberProfile에 저장
+
+        Member member=saveOrUpdate(memberProfile);
+
+
+        Map<String, Object> customAttribute=customAttribute(attributes,userNameAttributes,memberProfile,registrationId);
+
+
 
 
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("USER")),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey());
+                customAttribute,
+                userNameAttributes);
 
     }
 
-    //멤버가 들어왔을 때, 멤버가 기존에 없는 멤버면 이메일로 조회를 통해서 기존에 없는 멤버인지 확인 후 없으면 저장, 있으면 멤버 정보 수정으로 전홙
-    private Member saveOrUpdate(OAuthAttributes attributes){
-        Member member=memberRepository.findByEmail(attributes.getEmail())
-                .map(entity->entity.update(attributes.getName(), attributes.getProfileUrl())).orElse(attributes.toEntity());
+    private Map<String, Object> customAttribute(Map<String, Object> attributes,
+                                                String userNameAttributes,
+                                                MemberProfile memberProfile,
+                                                String registrationId) {
+
+        Map<String, Object> customAttribute=new LinkedHashMap<>();
+        customAttribute.put(userNameAttributes,attributes.get(userNameAttributes));
+        customAttribute.put("provider",registrationId);
+        customAttribute.put("nickname",memberProfile.getNickname());
+        customAttribute.put("email",memberProfile.getEmail());
+        return attributes;
+    }
+
+    //이미 생성된 사용자인지 아닌지 처음 가입하는 사용자인지 이메일, ResourceProvider를 통해 구분
+    private Member saveOrUpdate(MemberProfile memberProfile){
+        Member member=memberRepository.findByEmailAndProvider(memberProfile.getEmail(),memberProfile.getResourceProvider())
+                .map(m->m.update(memberProfile.getEmail(),memberProfile.getNickname(),memberProfile.getResourceProvider())) //Oauth 정보에서 변경된 이메일이나 닉네임이 있으면 수정
+                .orElse(memberProfile.toMember());  //테이블에 일치하는 멤버가 없다면 수정
         return memberRepository.save(member);
+
     }
 
 }

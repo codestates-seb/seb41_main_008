@@ -1,63 +1,42 @@
 package com.nfteam.server.config.auth.dto;
-
-import com.nfteam.server.member.entity.Member;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-
-
-
+import java.util.Arrays;
 import java.util.Map;
-
-@Builder(access= AccessLevel.PRIVATE)
-@Getter //Oauth 인증시 필요한 데이터
-public class OAuthAttributes {
-    private final Map<String,Object> attributes;
-    private final String nameAttributeKey;
-    private final String name;
-    private final String email;
-    private final String profileUrl;
+import java.util.function.Function;
 
 
-    @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey,
-                           String name, String email, String profileUrl){
-        this.attributes=attributes;
-        this.nameAttributeKey=nameAttributeKey;
-        this.name=name;
-        this.email=email;
-        this.profileUrl=profileUrl;
-    }
+public enum OAuthAttributes {
+    GOOGLE("google",(attributes)->{
+        MemberProfile memberProfile=new MemberProfile();
+        memberProfile.setEmail((String) attributes.get("email"));
+        return memberProfile;
+    });
 
     /*
-     *OAuth 에 반환하는 사용자 정보는 Map 형태이므로 값 하나하나를 반환해줘야 함
-     */
+    * naver, Kakao 들어갈 예정?
+    * */
 
-    public static OAuthAttributes of(String registrationId, String userNameAttributeName,
-                                     Map<String, Object> attributes) {
-        return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .profileUrl((String) attributes.get("picture"))
-                .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
-                .build();
+
+    private final String registrationId;
+    private final Function<Map<String,Object>,MemberProfile> of;
+
+    //Function<T,R> T=입력 타입, R 리턴 타입
+    //-> Map 형태의 데이터를 받아 MemberProfile 형태의 데이터로 변환
+
+
+    OAuthAttributes(String registrationId,Function<Map<String,Object>, MemberProfile> of){
+        this.registrationId=registrationId;
+        this.of=of;
     }
 
-    /*
-     * toEntity()
-     * member 엔티티 생성
-     * OauthAttributes에서 엔티티 생성 시점은 처음 가입 시이다.
-     * OauthAttributes 클래스 생성이 끝났으면 같은 패키지에 SessionMember 클래스를 생성해줌
-     * */
 
-    public Member toEntity(){
-        return Member.
-                builder()
-                .nickname(name)
-                .email(email)
-                .profileUrl(profileUrl)
-                .role(Role.GUEST) //가장 기본 권한
-                .build();
+    public static MemberProfile extract(String registrationId, Map<String, Object> attributes) {
+
+        return Arrays.stream(values())
+                .filter(provider->registrationId.equals(provider.registrationId))
+                .findFirst() //registrationId와 일치하는 enum 데이터를 제공 (registarationId가 Kakao쪽이라면 카카오와 일치하는 데이터를
+                //stream에서 가장 빠른 걸 찾아서 반환 )
+                .orElseThrow(IllegalArgumentException::new)
+                .of.apply(attributes);
+        //Oauth RegisterId 가 memberProfile의 데이터와 일치하는지;
     }
 }
