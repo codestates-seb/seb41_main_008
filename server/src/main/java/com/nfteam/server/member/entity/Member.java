@@ -115,23 +115,9 @@ public class Member extends BaseEntity {
 
     //Oauth 구분
 
-    public enum AuthMethod{
-        GOOGLE("구글 로그인"),
-        NAVER("네이버 로그인"),
-        KAKAO("카카오 로그인"),
-
-        DEFAULT("기본 로그인");
-
-        @Getter
-        private String oauth;
 
 
-        AuthMethod(String AuthMethod){this.oauth= AuthMethod;}
-
-    }
-
-
-    public static Member transToGoogle(String email) {
+    public static Member transToOauth(String email) {
         return Member.builder()
                 .email(email)
                 .nickname(email.substring(0,email.indexOf("@"))) //이메일에서 앞부분을 계정 정보로 가져옴

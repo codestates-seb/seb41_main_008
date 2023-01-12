@@ -43,11 +43,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 
         String email=String.valueOf(oAuth2User.getAttributes().get("email"));
-        Member googleMember=createOrUpdateGoogleMember(email);
+        Member oauthMember=createOrUpdateMember(email);
 
 
 
-        redirect(request,response,email, googleMember);
+        redirect(request,response,email, oauthMember);
     }
 
     //로그인 후 리다이렉트
@@ -95,11 +95,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return jwtTokenizer.generateAccessToken(claims,googleMember.getEmail());
     }
 
-    private Member createOrUpdateGoogleMember(final String email) {
+    private Member createOrUpdateMember(final String email) {
         Member member;
 
         if(isFirstLogin(email)){
-            member=Member.transToGoogle(email);
+            member=Member.transToOauth(email);
             //String encryptedPassword=passwordEncoder.encode(UUID.randomUUID().toString());
             //member.changePassword(encryptedPassword); // 위에서 암호화한 비밀번호로 변경
 
