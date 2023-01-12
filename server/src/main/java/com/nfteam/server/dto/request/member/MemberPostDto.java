@@ -1,4 +1,4 @@
-package com.nfteam.server.member.dto;
+package com.nfteam.server.dto.request.member;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
