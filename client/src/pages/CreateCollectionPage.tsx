@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import BannerImage from 'components/CreateCollection/BannerImage';
 import Input from 'components/CreateCollection/Input';
 import LogoImage from 'components/CreateCollection/LogoImage';
