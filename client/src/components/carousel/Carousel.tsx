@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Collection from './Collection';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper';
 
@@ -101,6 +100,7 @@ export default function Carousel({
             slidesPerGroup: 5,
           },
         }}
+        className="rounded-md"
       >
         {collection?.map((piece) => (
           <SwiperSlide key={piece.id} className="py-2">
