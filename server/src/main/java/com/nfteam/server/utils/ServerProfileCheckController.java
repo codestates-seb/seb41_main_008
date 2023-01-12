@@ -28,6 +28,6 @@ public class ServerProfileCheckController {
 
     @GetMapping
     public String homeTest() {
-        return "개발 서버 정상 동작 확인 테스트 - 시큐리티 / Oauth 리다이렉트 변경 마지막 체크22";
+        return "개발 서버 정상 동작 확인 테스트 - 시큐리티 / Oauth 리다이렉트 변경 마지막 체크 333";
     }
 }
