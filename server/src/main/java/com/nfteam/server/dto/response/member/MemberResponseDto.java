@@ -1,6 +1,8 @@
 package com.nfteam.server.dto.response.member;
 
+import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.entity.MemberStatus;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ public class MemberResponseDto {
     private String modifiedDate;
     private String lastLogin;
 
+    @Builder
     public MemberResponseDto(Long memberId,
                              String email,
                              String nickname,
@@ -35,5 +38,18 @@ public class MemberResponseDto {
         this.createdDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(createdDate);
         this.modifiedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(modifiedDate);
         this.lastLogin = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(lastLogin);
+    }
+
+    public static MemberResponseDto of(Member member){
+        return MemberResponseDto.builder()
+                .memberId(member.getMemberId())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .memberStatus(member.getMemberStatus())
+                .profileImageName(member.getProfileImage())
+                .createdDate(member.getCreatedDate())
+                .modifiedDate(member.getModifiedDate())
+                .lastLogin(member.getLastLoginTime())
+                .build();
     }
 }

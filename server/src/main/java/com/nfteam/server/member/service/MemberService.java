@@ -1,10 +1,11 @@
 package com.nfteam.server.member.service;
 
+import com.nfteam.server.dto.request.member.MemberPatchDto;
+import com.nfteam.server.dto.request.member.MemberPostDto;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
-import com.nfteam.server.member.entity.MemberStatus;
 import com.nfteam.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,47 +23,42 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Member createMember(Member member) {
-        verifyExistsEmail(member.getEmail());
-        String encryptedPassword = passwordEncoder.encode(member.getPassword());
-        member.updateCreateInfo(encryptedPassword);
+    public Member createMember(MemberPostDto memberPostDto) {
+        verifyExistsEmail(memberPostDto.getEmail());
+        String encryptedPassword = passwordEncoder.encode(memberPostDto.getPassword());
+        Member member = new Member(memberPostDto.getEmail(), encryptedPassword, memberPostDto.getNickname());
         return memberRepository.save(member);
     }
 
     @Transactional
-    public Member updateMember(Member member, String email, Long memberId) {
+    public Member updateMember(MemberPatchDto memberPatchDto, Long memberId, String email) {
         Member findMember = findVerifiedMember(memberId, email);
-        Optional.ofNullable(member.getNickname())
+        Optional.ofNullable(memberPatchDto.getNickname())
                 .ifPresent(name -> findMember.updateNickname(name));
-        Optional.ofNullable(member.getProfileImage())
-                .ifPresent(profileImage -> findMember.updateProfileImg(profileImage));
+        Optional.ofNullable(memberPatchDto.getProfileImageName())
+                .ifPresent(profileImageName -> findMember.updateProfileImg(profileImageName));
         return findMember;
     }
 
-    public Member findMember(long memberId, String email) {
-        if (!email.isEmpty()) {
-            return findVerifiedMember(memberId, email);
-        }
-        return memberRepository.findByMemberIdAndMemberStatus(memberId, MemberStatus.MEMBER_ACTIVE)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    public Member findMember(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() ->
+                new MemberNotFoundException(memberId));
     }
 
     @Transactional
-    public void deleteMember(int memberId, String email) {
+    public void deleteMember(Long memberId, String email) {
         Member findMember = findVerifiedMember(memberId, email);
         findMember.updateMemberStatusQuit();
     }
 
     private void verifyExistsEmail(String email) {
-        Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isPresent()) {
+        if (memberRepository.existsByEmail(email)) {
             throw new MemberEmailExistException(email);
         }
     }
 
-    public Member findVerifiedMember(long memberId, String email) {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
-        Member findMember = optionalMember.orElseThrow(() ->
+    public Member findVerifiedMember(Long memberId, String email) {
+        Member findMember = memberRepository.findById(memberId).orElseThrow(() ->
                 new MemberNotFoundException(memberId));
 
         if (findMember.getEmail().equals(email)) {

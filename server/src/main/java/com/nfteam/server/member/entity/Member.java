@@ -4,12 +4,10 @@ import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
-
-import java.time.LocalDateTime;
-
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -86,6 +84,18 @@ public class Member extends BaseEntity {
         this.lastLoginTime = LocalDateTime.now();
     }
 
+    // 신규 회원용 생성자
+    public Member(String email, String password, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.memberPlatform = MemberPlatform.HOME;
+        this.memberRole = MemberRole.USER;
+        this.memberStatus = MemberStatus.MEMBER_ACTIVE;
+        this.profileImage = "default-profile-image";
+        this.lastLoginTime = LocalDateTime.now();
+    }
+
     public void updateLastLoginTime() {
         this.lastLoginTime = LocalDateTime.now();
     }
@@ -100,12 +110,6 @@ public class Member extends BaseEntity {
 
     public void updateProfileImg(String profileImage) {
         this.profileImage = profileImage;
-    }
-
-    public void updateCreateInfo(String encryptedPassword) {
-        this.password = encryptedPassword;
-        this.memberRole = MemberRole.USER;
-        this.profileImage = "default-profile-image";
     }
 
     public void updateMemberPlatform(MemberPlatform memberPlatform) {

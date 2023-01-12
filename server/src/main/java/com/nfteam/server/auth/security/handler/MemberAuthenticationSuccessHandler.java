@@ -36,6 +36,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         Member member = memberRepository.findByEmail(memberDetails.getEmail())
                 .orElseThrow(() -> new MemberNotFoundException(memberDetails.getEmail()));
         member.updateLastLoginTime();
+        memberRepository.save(member);
         sendSuccessResponse(response, memberDetails);
     }
 

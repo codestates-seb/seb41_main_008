@@ -38,7 +38,6 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
     private final RedisRepository redisRepository;
-    private final JwtExceptionFilter jwtExceptionFilter;
     private final OAuth2MemberSuccessHandler oAuth2MemberSuccessHandler;
     private final CustomOauth2UserService customOauth2UserService;
 
