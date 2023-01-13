@@ -17,7 +17,7 @@ export default function MyCollectionPage() {
         <div className="space-x-5 flex items-center">
           <Link
             to="/collection/create"
-            className="hover:opacity-80 bg-brand-color px-7 py-5 text-xl font-bold rounded-xl text-white"
+            className="hover:opacity-80 bg-emerald-700 px-7 py-5 text-xl font-bold rounded-xl text-white"
           >
             Create a collection
           </Link>

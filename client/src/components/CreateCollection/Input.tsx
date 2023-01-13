@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -23,6 +25,8 @@ export default function Input() {
   const banner = useAppSelector((state) => state.banner.url);
 
   const [open, setOpen] = useState(false);
+  const [nameFocus, setNameFocus] = useState(false);
+  const [descFocus, setDescFocus] = useState(false);
 
   const {
     register,
@@ -55,15 +59,22 @@ export default function Input() {
           <span className="text-red-500 text-xl font-bold align-top">*</span>
         </label>
         <div
-          className={`border-2 rounded-lg ${
-            errors.name ? 'border-red-600' : 'border-gray-300'
-          }`}
+          className={`border-2 duration-300 rounded-lg ${
+            errors.name
+              ? 'border-red-600'
+              : nameFocus
+              ? 'border-focused'
+              : 'border-gray-300'
+          }
+          `}
         >
           <input
             type="text"
             {...register('name')}
             placeholder="Example: Treasures of the Sea"
-            className="w-full outline-none rounded-lg p-3 text-lg"
+            className="w-full rounded-lg p-3 text-lg group outline-none h-full"
+            onFocus={() => setNameFocus(true)}
+            onBlur={() => setNameFocus(false)}
           />
         </div>
         {errors.name && (
@@ -80,13 +91,19 @@ export default function Input() {
           <span className="text-red-500 text-xl font-bold align-top">*</span>
         </label>
         <div
-          className={`border-2 rounded-lg ${
-            errors.description ? 'border-red-600' : 'border-gray-300'
+          className={`border-2 rounded-lg duration-300 ${
+            errors.description
+              ? 'border-red-600'
+              : descFocus
+              ? 'border-focused'
+              : 'border-gray-300'
           }`}
         >
           <textarea
             {...register('description')}
-            className="w-full outline-none overflow-hidden h-52 min-h-[3rem] rounded-lg p-3 text-lg"
+            className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg"
+            onFocus={() => setDescFocus(true)}
+            onBlur={() => setDescFocus(false)}
           />
         </div>
         {errors.description && (
@@ -106,10 +123,10 @@ export default function Input() {
         <Toast.Root
           open={open}
           onOpenChange={setOpen}
-          className="group ToastRoot"
+          className="ToastRoot"
           duration={3000}
         >
-          <Toast.Description className="ToastDescription group-hover:opacity-80">
+          <Toast.Description className="ToastDescription">
             {!logo || !banner ? (
               <p className="flex items-center gap-1 text-red-600">
                 <span>

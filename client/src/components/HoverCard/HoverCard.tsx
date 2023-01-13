@@ -22,7 +22,7 @@ export default function HoverCardOpen() {
             like Rarible or Mintable and import the items to OpenSea.{' '}
             <a
               href="https://opensea.io/blog/announcements/introducing-the-collection-manager/"
-              className="text-brand-color"
+              className="text-emerald-700 hover:opacity-80"
               target="_blank"
               rel="noreferrer"
             >
