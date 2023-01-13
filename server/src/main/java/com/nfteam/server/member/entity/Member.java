@@ -34,6 +34,9 @@ public class Member extends BaseEntity {
     @Column(name = "profile_image", length = 2500)
     private String profileImage;
 
+    @Column(name = "banner_image", length = 2500)
+    private String bannerImage;
+
     @Column(name = "last_login")
     private LocalDateTime lastLoginTime;
 
@@ -56,7 +59,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Cart> cartList = new ArrayList<>();
 
-    // 멤버가 가진 컬렉션 리스트
+    // 멤버가 만든 컬렉션 리스트
     @OneToMany(mappedBy = "member")
     private List<ItemCollection> collectionList = new ArrayList<>();
 
@@ -110,6 +113,10 @@ public class Member extends BaseEntity {
 
     public void updateProfileImg(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public void updateBannerImg(String bannerImage) {
+        this.bannerImage = bannerImage;
     }
 
     public void updateMemberPlatform(MemberPlatform memberPlatform) {
