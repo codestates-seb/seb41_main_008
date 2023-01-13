@@ -44,10 +44,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com")
+                .host("localhost:3000")
+                .path("/oauth2/redirect")
                 .queryParam(HttpHeaders.AUTHORIZATION, accessToken)
                 .queryParam("RefreshToken", refreshToken)
-                .path("/")
                 .build()
                 .toUri();
     }
