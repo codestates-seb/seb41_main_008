@@ -28,7 +28,7 @@ public class CollectionResponse {
 
     // 컬렉션 소속 아이템리스트 메타정보
     private Integer itemCount; // 아이템 갯수
-    private Double totalVolume; // 총 코인 가격 합
+    private Double totalVolume; // 총 코인 갯수(가격) 합
     private Double highestPrice; // 최고가
     private Double lowestPrice; // 최저가
     private Integer ownerCount; // 소유자 수
@@ -43,8 +43,10 @@ public class CollectionResponse {
                               String logoImgName,
                               String bannerImgName,
                               LocalDateTime createdDate,
-                              Long ownerId, String ownerName,
-                              Long coinId, String coinName) {
+                              Long ownerId,
+                              String ownerName,
+                              Long coinId,
+                              String coinName) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.description = description;

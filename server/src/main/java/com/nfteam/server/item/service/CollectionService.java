@@ -35,14 +35,13 @@ public class CollectionService {
     @Transactional
     public Long save(CollectionCreateRequest request, MemberDetails memberDetails) {
         ItemCollection itemCollection = request.toCollection();
-        Member member = findMember(memberDetails.getEmail());
+        Member member = findMemberByEmail(memberDetails.getEmail());
         itemCollection.assignMember(member);
         itemCollection.assignCoin(new Coin(Long.parseLong(request.getCoinId())));
-
         return collectionRepository.save(itemCollection).getCollectionId();
     }
 
-    private Member findMember(String email) {
+    private Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberNotFoundException(email));
     }
@@ -50,7 +49,7 @@ public class CollectionService {
     @Transactional
     public Long update(Long collectionId, CollectionPatchRequest request, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
-        checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
+        checkValidAuth(itemCollection.getOwner().getEmail(), memberDetails.getEmail());
         itemCollection.update(request.toCollection());
 
         return itemCollection.getCollectionId();
@@ -70,15 +69,14 @@ public class CollectionService {
     @Transactional
     public Long delete(Long collectionId, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
-        checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
+        checkValidAuth(itemCollection.getOwner().getEmail(), memberDetails.getEmail());
         collectionRepository.deleteById(collectionId);
 
         return itemCollection.getCollectionId();
     }
 
     public CollectionResponse getCollection(Long collectionId) {
-        ItemCollection itemCollection = collectionRepository.findCollectionWithMemberAndCoin(collectionId)
-                .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
+        ItemCollection itemCollection = getCollectionWithMemberAndCoin(collectionId);
         CollectionResponse response = itemCollection.toResponse();
 
         List<Item> items = itemRepository.findItemsByCollectionId(collectionId);
@@ -93,18 +91,19 @@ public class CollectionService {
         return response;
     }
 
+    private ItemCollection getCollectionWithMemberAndCoin(Long collectionId) {
+        return collectionRepository.findCollectionWithMemberAndCoin(collectionId)
+                .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
+    }
+
     private void calcItemMetaInfo(List<Item> items, CollectionResponse response) {
         Integer itemCount = items.size();
-
         Double totalVolume = items.stream()
                 .mapToDouble(i -> i.getItemPrice()).sum();
-
         Double highestPrice = items.stream()
                 .mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
-
         Double lowestPrice = items.stream()
                 .mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
-
         Long ownerCount = items.stream()
                 .map(i -> i.getMember()).distinct().count();
 

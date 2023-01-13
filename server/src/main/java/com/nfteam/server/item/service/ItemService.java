@@ -1,9 +1,9 @@
 package com.nfteam.server.item.service;
 
 import com.nfteam.server.auth.userdetails.MemberDetails;
-import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemPatchRequest;
+import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -27,10 +27,10 @@ public class ItemService {
     private final CollectionRepository collectionRepository;
 
     @Transactional
-    public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) {
-        Item item = itemCreateRequest.toItem();
+    public Long save(ItemCreateRequest request, MemberDetails memberDetails) {
+        Item item = request.toItem();
         item.assignMember(getMemberByEmail(memberDetails.getEmail()));
-        item.assignCollection(getItemCollectionById(itemCreateRequest.getItemCollectionId()));
+        item.assignCollection(getItemCollectionById(request.getItemCollectionId()));
         itemRepository.save(item);
         return item.getItemId();
     }
@@ -45,9 +45,22 @@ public class ItemService {
                 .orElseThrow(() -> new ItemCollectionNotFoundException(Long.parseLong(collectionId)));
     }
 
-//
-//    @Transactional
-//    public Long update(Long itemId, ItemPatchRequest itemPatchRequest, MemberDetails memberDetails) {
-//        itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(iem));
-//    }
+    @Transactional
+    public Long update(Long itemId, ItemPatchRequest request, MemberDetails memberDetails) {
+        Item item = findItem(itemId);
+        checkValidAuth(item.getMember().getEmail(), memberDetails.getEmail());
+        item.update(request.toItem());
+
+        return null;
+    }
+
+    private void checkValidAuth(String email, String authEmail) {
+        if(!email.equals(authEmail)){
+            throw new NotAuthorizedException();
+        }
+    }
+
+    private Item findItem(Long itemId) {
+        return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
+    }
 }

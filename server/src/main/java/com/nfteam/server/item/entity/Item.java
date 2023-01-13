@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -83,7 +85,17 @@ public class Item extends BaseEntity {
                 .itemName(itemName)
                 .itemImageName(itemImageName)
                 .onSale(onSale)
-                .coinCount(itemPrice)
+                .itemPrice(itemPrice)
                 .build();
+    }
+
+    public void update(Item item) {
+        Optional.ofNullable(item.getItemName())
+                .ifPresent(this::updateName);
+
+    }
+
+    public void updateName(String name){
+        this.itemName = name;
     }
 }
