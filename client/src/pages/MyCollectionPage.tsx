@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function MyCollectionPage() {
   return (
-    <div className="max-w-7xl p-6 m-auto">
+    <div className="max-w-7xl p-6 mx-auto">
       <h1 className="text-5xl font-bold mb-12">My Collections</h1>
       <div className="max-w-sm md:max-w-7xl mx-auto flex flex-col items-center md:block">
         <div className="mb-6 ">

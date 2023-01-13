@@ -5,6 +5,8 @@ import MainPage from '../src/pages/MainPage';
 import MainLayout from '../src/components/Layout/MainLayout';
 import MyCollectionPage from 'pages/MyCollectionPage';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
+import MissingPage from 'components/CreateCollection/MissingPage/MissingPage';
+import CollectionDetails from 'pages/CollectionDetails';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
               path="/collection/create"
               element={<CreateCollectionPage />}
             />
+            <Route path="collection/:id" element={<CollectionDetails />} />
+            <Route path="*" element={<MissingPage />} />
           </Route>
 
           <Route path="login" element={<LoginPage />} />
