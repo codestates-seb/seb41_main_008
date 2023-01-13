@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ItemTransHistoryResponse {
+public class ItemTradeHistoryResponse {
 
     // 거래 당사자
     private Long sellerId;
@@ -22,7 +22,7 @@ public class ItemTransHistoryResponse {
     private String dDay;
 
     @Builder
-    public ItemTransHistoryResponse(Long sellerId, String sellerName,
+    public ItemTradeHistoryResponse(Long sellerId, String sellerName,
                                     Long buyerId, String buyerName,
                                     String transCoinName,
                                     Double transPrice,

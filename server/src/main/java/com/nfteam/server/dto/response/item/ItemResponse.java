@@ -1,5 +1,6 @@
 package com.nfteam.server.dto.response.item;
 
+import com.nfteam.server.dto.response.coin.CoinResponse;
 import com.nfteam.server.item.entity.ItemCollection;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,10 +14,8 @@ public class ItemResponse {
     private Long collectionId;
     private String collectionName;
 
-    // 코인 정보
-    private Long coinId;
-    private String coinName;
-    private Double withdrawlFee;
+    // 거래 가능 코인 정보
+    private CoinResponse coinResponse;
 
     // 아이템 현재 소유자 정보
     private Long ownerId;
@@ -27,24 +26,18 @@ public class ItemResponse {
     private String itemName;
     private String itemImageName;
     private Boolean onSale;
-    private Double itemPrice; // 코인 갯수
+    private Double itemPrice; // 코인 갯수(가격)
 
     // 거래 가격 히스토리
-    private List<ItemPriceHistoryResponse> itemPriceHistory;
+    private List<ItemPriceHistoryResponse> priceHistory;
 
     // 거래 기록 히스토리
-    private List<ItemTransHistoryResponse> itemTransHistory;
+    private List<ItemTradeHistoryResponse> tradeHistory;
 
     @Builder
-    public ItemResponse(Long collectionId, String collectionName,
-                        Long coinId, String coinName,
-                        Long ownerId, String ownerName,
-                        Long itemId, String itemName,
-                        String itemImageName, Boolean onSale, Double itemPrice) {
+    public ItemResponse(Long collectionId, String collectionName, Long ownerId, String ownerName, Long itemId, String itemName, String itemImageName, Boolean onSale, Double itemPrice) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
-        this.coinId = coinId;
-        this.coinName = coinName;
         this.ownerId = ownerId;
         this.ownerName = ownerName;
         this.itemId = itemId;
@@ -58,4 +51,17 @@ public class ItemResponse {
         this.collectionId = collection.getCollectionId();
         this.collectionName = collection.getCollectionName();
     }
+
+    public void addCoinInfo(CoinResponse coinResponse){
+        this.coinResponse = coinResponse;
+    }
+
+    public void addPriceHistory(List<ItemPriceHistoryResponse> priceHistory){
+        this.priceHistory = priceHistory;
+    }
+
+    public void addTradeHistory(List<ItemTradeHistoryResponse> tradeHistory){
+        this.tradeHistory = tradeHistory;
+    }
+
 }
