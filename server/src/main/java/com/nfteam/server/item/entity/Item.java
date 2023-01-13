@@ -1,13 +1,12 @@
 package com.nfteam.server.item.entity;
 
 import com.nfteam.server.audit.BaseEntity;
-import com.nfteam.server.dto.response.item.ItemResponseDto;
+import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Getter
@@ -77,8 +76,8 @@ public class Item extends BaseEntity {
         member.getItemList().add(this);
     }
 
-    public ItemResponseDto toResponseDto() {
-        return ItemResponseDto.builder()
+    public ItemResponse toResponseDto() {
+        return ItemResponse.builder()
                 .itemId(itemId)
                 .ownerId(member.getMemberId())
                 .ownerName(member.getNickname())
@@ -92,10 +91,29 @@ public class Item extends BaseEntity {
     public void update(Item item) {
         Optional.ofNullable(item.getItemName())
                 .ifPresent(this::updateName);
-
+        Optional.of(item.getItemImageName())
+                .ifPresent(this::updateImage);
+        Optional.ofNullable(item.getOnSale())
+                .ifPresent(this::updateSaleStatus);
+        Optional.of(item.getItemPrice())
+                .ifPresent(this::updatePrice);
     }
 
-    public void updateName(String name){
+    public void updateName(String name) {
         this.itemName = name;
     }
+
+    public void updateImage(String itemImageName) {
+        this.itemImageName = itemImageName;
+    }
+
+    public void updatePrice(Double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
+    public void updateSaleStatus(Boolean onSale) {
+        this.onSale = onSale;
+    }
+
+
 }

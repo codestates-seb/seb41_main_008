@@ -1,10 +1,10 @@
 package com.nfteam.server.item.controller;
 
 import com.nfteam.server.auth.userdetails.MemberDetails;
-import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemPatchRequest;
 import com.nfteam.server.dto.response.common.SingleIdResponse;
+import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,10 +30,24 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity update(@PathVariable("itemId") Long itemId,
-                                 @RequestBody ItemPatchRequest itemPatchRequest,
+                                 @RequestBody ItemPatchRequest request,
                                  @AuthenticationPrincipal MemberDetails memberDetails) {
-        Long updatedId = itemService.update(itemId, itemPatchRequest, memberDetails);
+        Long updatedId = itemService.update(itemId, request, memberDetails);
         return new ResponseEntity<>(new SingleIdResponse(HttpStatus.OK.name(), updatedId), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity delete(@PathVariable("itemId") Long itemId,
+                                 @AuthenticationPrincipal MemberDetails memberDetails) {
+        itemService.delete(itemId, memberDetails);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{itemId}")
+    public ResponseEntity<ItemResponse> getCollection(@PathVariable("itemId") Long itemId) {
+        return new ResponseEntity<>(itemService.getItem(itemId), HttpStatus.OK);
+    }
+
+
 
 }

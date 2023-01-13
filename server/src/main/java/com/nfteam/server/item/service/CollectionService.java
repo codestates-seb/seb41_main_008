@@ -5,7 +5,7 @@ import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.ItemResponseDto;
+import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.dto.response.item.UserCollectionResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
@@ -67,12 +67,10 @@ public class CollectionService {
     }
 
     @Transactional
-    public Long delete(Long collectionId, MemberDetails memberDetails) {
+    public void delete(Long collectionId, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
         checkValidAuth(itemCollection.getOwner().getEmail(), memberDetails.getEmail());
         collectionRepository.deleteById(collectionId);
-
-        return itemCollection.getCollectionId();
     }
 
     public CollectionResponse getCollection(Long collectionId) {
@@ -82,11 +80,11 @@ public class CollectionService {
         List<Item> items = itemRepository.findItemsByCollectionId(collectionId);
         calcItemMetaInfo(items, response);
 
-        List<ItemResponseDto> itemResponseDtos = items.stream()
+        List<ItemResponse> itemResponses = items.stream()
                 .map(Item::toResponseDto)
                 .collect(Collectors.toList());
-        itemResponseDtos.forEach(r -> r.addCollectionInfo(itemCollection));
-        response.addItemResponseDtos(itemResponseDtos);
+        itemResponses.forEach(r -> r.addCollectionInfo(itemCollection));
+        response.addItemResponseDtos(itemResponses);
 
         return response;
     }

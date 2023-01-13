@@ -11,7 +11,6 @@ public class ItemPatchRequest {
     private Boolean onSale;
     private String itemPrice;
 
-
     public Item toItem(){
         return Item.builder()
                 .itemName(itemName)

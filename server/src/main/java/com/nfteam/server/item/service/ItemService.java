@@ -3,6 +3,7 @@ package com.nfteam.server.item.service;
 import com.nfteam.server.auth.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemPatchRequest;
+import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
@@ -22,9 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ItemService {
 
+    private final CollectionRepository collectionRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
-    private final CollectionRepository collectionRepository;
 
     @Transactional
     public Long save(ItemCreateRequest request, MemberDetails memberDetails) {
@@ -50,8 +51,7 @@ public class ItemService {
         Item item = findItem(itemId);
         checkValidAuth(item.getMember().getEmail(), memberDetails.getEmail());
         item.update(request.toItem());
-
-        return null;
+        return item.getItemId();
     }
 
     private void checkValidAuth(String email, String authEmail) {
@@ -61,6 +61,20 @@ public class ItemService {
     }
 
     private Item findItem(Long itemId) {
-        return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
+        return itemRepository.findById(itemId).orElseThrow(
+                () -> new ItemNotFoundException(itemId));
+    }
+
+    @Transactional
+    public void delete(Long itemId, MemberDetails memberDetails) {
+        Item findItem = findItem(itemId);
+        checkValidAuth(findItem.getMember().getEmail(), memberDetails.getEmail());
+        itemRepository.deleteById(itemId);
+    }
+
+
+    public ItemResponse getItem(Long itemId) {
+
+        return null;
     }
 }

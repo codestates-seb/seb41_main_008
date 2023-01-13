@@ -20,6 +20,9 @@ public class ItemCreateRequest {
     @NotNull(message = "해당 아이템 이미지 정보가 없습니다.")
     private String itemImgName;
 
+    @NotNull(message = "판매 여부를 입력해주세요.")
+    private Boolean onSale;
+
     private ItemCreateRequest() {
     }
 
@@ -28,6 +31,7 @@ public class ItemCreateRequest {
                 .itemName(itemName)
                 .itemPrice(Double.parseDouble(itemPrice))
                 .itemImageName(itemImgName)
+                .onSale(onSale)
                 .build();
     }
 

@@ -34,7 +34,7 @@ public class CollectionResponse {
     private Integer ownerCount; // 소유자 수
 
     // 소속 아이템 리스트
-    private List<ItemResponseDto> itemList;
+    private List<ItemResponse> itemList;
 
     @Builder
     public CollectionResponse(Long collectionId,
@@ -71,7 +71,7 @@ public class CollectionResponse {
         this.ownerCount = ownerCount;
     }
 
-    public void addItemResponseDtos(List<ItemResponseDto> items) {
+    public void addItemResponseDtos(List<ItemResponse> items) {
         this.itemList = items;
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class CollectionController {
     public ResponseEntity create(@RequestBody @Valid CollectionCreateRequest request,
                                  @AuthenticationPrincipal MemberDetails memberDetails) {
         Long createdId = collectionService.save(request, memberDetails);
-        return ResponseEntity.created(URI.create("/api/collections/" + createdId)).build();
+        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.CREATED.name(), createdId), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{collectionId}")
@@ -34,7 +33,7 @@ public class CollectionController {
                                  @RequestBody CollectionPatchRequest request,
                                  @AuthenticationPrincipal MemberDetails memberDetails) {
         Long updatedId = collectionService.update(collectionId, request, memberDetails);
-        return ResponseEntity.created(URI.create("/api/collections/" + updatedId)).build();
+        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.OK.name(), updatedId), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{collectionId}")
