@@ -7,6 +7,7 @@ import { useAppSelector } from 'hooks/hooks';
 import * as Toast from '@radix-ui/react-toast';
 import { useEffect, useRef, useState } from 'react';
 import { HiXCircle } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 
 interface Inputs {
   name: string;
@@ -23,6 +24,9 @@ export default function Input() {
   const banner = useAppSelector((state) => state.banner.url);
 
   const [open, setOpen] = useState(false);
+  const [nameFocus, setNameFocus] = useState(false);
+  const [descFocus, setDescFocus] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -42,6 +46,9 @@ export default function Input() {
     setOpen(false);
     window.clearTimeout(timeRef.current);
     timeRef.current = window.setTimeout(() => setOpen(true), 100);
+    if (logo && banner) {
+      navigate(`/collection/${data.name}`, { replace: true });
+    }
   };
 
   return (
