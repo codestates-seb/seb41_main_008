@@ -42,10 +42,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private URI createURI(String accessToken, String refreshToken) {
         return UriComponentsBuilder
-                .newInstance()
-                .scheme("http")
-                .host("localhost:3000")
-                .path("/oauth2/redirect")
+                .fromUriString("http://localhost:3000")
+                .path("/")
                 .queryParam(HttpHeaders.AUTHORIZATION, accessToken)
                 .queryParam("RefreshToken", refreshToken)
                 .build()

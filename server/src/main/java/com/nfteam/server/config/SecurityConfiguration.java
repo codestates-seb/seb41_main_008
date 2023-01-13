@@ -62,6 +62,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/")
                         .successHandler(oAuth2MemberSuccessHandler)
                         .userInfoEndpoint()
                         .userService(customOauth2UserService)
