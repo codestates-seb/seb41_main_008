@@ -1,4 +1,4 @@
-package com.nfteam.server.auth.handler;
+package com.nfteam.server.auth.security.handler;
 
 import com.nfteam.server.auth.utils.ErrorResponder;
 
@@ -20,7 +20,7 @@ public class MemberAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
-        log.error("Authentication failed: {}", exception.getMessage());
+        log.error("Security - Authentication failed: {}", exception.getMessage());
     }
 
 }

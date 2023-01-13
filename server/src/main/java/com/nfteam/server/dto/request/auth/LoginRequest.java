@@ -6,10 +6,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Getter
-public class LoginDto {
+public class LoginRequest {
+
     @Email
     @NotNull(message = "이메일은 필수 값 입니다.")
     private String email;
+
     @NotNull(message = "비밀번호는 필수 값 입니다.")
     private String password;
 

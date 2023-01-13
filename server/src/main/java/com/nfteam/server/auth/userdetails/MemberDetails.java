@@ -1,9 +1,9 @@
 package com.nfteam.server.auth.userdetails;
 
-import com.nfteam.server.auth.utils.CustomAuthorityUtils;
 import com.nfteam.server.member.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -11,37 +11,36 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class MemberDetails implements UserDetails {
+public class MemberDetails extends Member implements UserDetails {
 
-    private CustomAuthorityUtils authorityUtils;
-    private long memberId;
     private String email;
     private String password;
-    private List<String> roles;
-    private LocalDateTime lastLogin;
+    private String nickname;
+    private String role;
+    private LocalDateTime lastLoginTime;
 
-    public MemberDetails(CustomAuthorityUtils authorityUtils, Member member) {
-        this.authorityUtils = authorityUtils;
-        this.memberId = member.getMemberId();
+    public MemberDetails(Member member) {
         this.email = member.getEmail();
         this.password = member.getPassword();
-        this.roles = member.getRoles();
-        this.lastLogin = member.getLastLogin();
+        this.nickname = member.getNickname();
+        this.role = member.getMemberRole().getValue();
+        this.lastLoginTime = member.getLastLoginTime();
+    }
+
+    public MemberDetails(String email, String nickname, String role) {
+        this.email = email;
+        this.nickname = nickname;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorityUtils.createAuthorities(roles);
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
     @Override
     public String getUsername() {
         return this.email;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
     }
 
     @Override
