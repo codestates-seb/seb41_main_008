@@ -26,7 +26,9 @@ public class ItemCreateRequest {
     public Item toItem() {
         return Item.builder()
                 .itemName(itemName)
+                .itemPrice(Double.parseDouble(itemPrice))
                 .itemImageName(itemImgName)
                 .build();
     }
+
 }

@@ -38,9 +38,9 @@ public class Item extends BaseEntity {
     @Column(name = "on_sale")
     private Boolean onSale;
 
-    // 상품 가격 코인 갯수
-    @Column(name = "coin_count")
-    private Double coinCount;
+    // 상품 가격 - 코인 갯수
+    @Column(name = "item_price")
+    private Double itemPrice;
 
     // 상품 고유 정보
     @OneToOne(mappedBy = "item", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -50,16 +50,14 @@ public class Item extends BaseEntity {
     }
 
     @Builder
-    public Item(Long itemId,
-                String itemName,
+    public Item(String itemName,
                 String itemImageName,
                 Boolean onSale,
-                Double coinCount) {
-        this.itemId = itemId;
+                Double itemPrice) {
         this.itemName = itemName;
         this.itemImageName = itemImageName;
         this.onSale = onSale;
-        this.coinCount = coinCount;
+        this.itemPrice = itemPrice;
     }
 
     public void assignItemCredential(ItemCredential itemCredential) {
@@ -85,7 +83,7 @@ public class Item extends BaseEntity {
                 .itemName(itemName)
                 .itemImageName(itemImageName)
                 .onSale(onSale)
-                .coinCount(coinCount)
+                .coinCount(itemPrice)
                 .build();
     }
 }
