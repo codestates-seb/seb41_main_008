@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Link } from 'react-router-dom';
 
 export default function MissingPage() {
@@ -10,8 +8,8 @@ export default function MissingPage() {
         is lost.
       </h1>
       <p className="text-lg sm:text-2xl text-center text-gray-500">
-        We've explored deep and wide, <br className="sm:hidden" /> but we can't
-        find the page you were looking for.
+        We{"'"}ve explored deep and wide, <br className="sm:hidden" /> but we
+        can{"'"}t find the page you were looking for.
       </p>
       <Link
         to="/"

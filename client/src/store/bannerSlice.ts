@@ -1,27 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './store';
 
 interface bannerState {
-  url: string;
+  bannerString: string;
 }
 
 const initialState: bannerState = {
-  url: '',
+  bannerString: '',
 };
 
 export const bannerSlice = createSlice({
   name: 'banner',
   initialState,
   reducers: {
-    setBanner: (state, action: PayloadAction<string>) => {
-      state.url = action.payload;
+    setBannerString: (state, action: PayloadAction<string>) => {
+      state.bannerString = action.payload;
     },
   },
 });
 
-export const { setBanner } = bannerSlice.actions;
-
-export const selectLogo = (state: RootState) => state.logo.url;
+export const { setBannerString } = bannerSlice.actions;
 
 export default bannerSlice.reducer;

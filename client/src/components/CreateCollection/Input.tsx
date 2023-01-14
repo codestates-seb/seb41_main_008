@@ -10,10 +10,17 @@ import * as Toast from '@radix-ui/react-toast';
 import { useEffect, useRef, useState } from 'react';
 import { HiXCircle } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
+import customAxios from '../../utils/api/axios';
 
 interface Inputs {
   name: string;
   description: string;
+}
+
+interface Files {
+  logoFile: File | null;
+  bannerFile: File | null;
 }
 
 const schema = yup.object({
@@ -21,9 +28,10 @@ const schema = yup.object({
   description: yup.string().required('This field is required.'),
 });
 
-export default function Input() {
-  const logo = useAppSelector((state) => state.logo.url);
-  const banner = useAppSelector((state) => state.banner.url);
+export default function Input({ logoFile, bannerFile }: Files) {
+  const logoString = useAppSelector((state) => state.logo.logoString);
+
+  const bannerString = useAppSelector((state) => state.banner.bannerString);
 
   const [open, setOpen] = useState(false);
   const [nameFocus, setNameFocus] = useState(false);
@@ -44,12 +52,30 @@ export default function Input() {
     return () => clearTimeout(timeRef.current);
   }, []);
 
+  const uploadImages = async () => {
+    const logoFormData = new FormData();
+    logoFormData.append('file', logoFile!);
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/images`,
+        logoFormData
+      );
+      console.log(res.data);
+    } catch (error) {
+      const err = error as AxiosError;
+      console.log(err.response?.data);
+    }
+  };
+
   const onSubmit = (data: Inputs) => {
     setOpen(false);
     window.clearTimeout(timeRef.current);
     timeRef.current = window.setTimeout(() => setOpen(true), 100);
-    if (logo && banner) {
-      navigate(`/collection/${data.name}`, { replace: true });
+
+    if (logoString && bannerString) {
+      // navigate(`/collection/${data.name}`, { replace: true });
+      uploadImages();
     }
   };
 
@@ -132,7 +158,7 @@ export default function Input() {
           duration={3000}
         >
           <Toast.Description className="ToastDescription">
-            {!logo || !banner ? (
+            {!logoString || !bannerString ? (
               <p className="flex items-center gap-1 text-red-600">
                 <span>
                   <HiXCircle className="h-7 w-7" />
