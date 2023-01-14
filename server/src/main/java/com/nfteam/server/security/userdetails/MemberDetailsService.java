@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class MemberDetailsService implements UserDetailsService {
 
@@ -24,6 +24,7 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member findMember = memberRepository.findByEmail(username)
                 .orElseThrow(() -> new MemberNotFoundException(username));
+        findMember.updateLastLoginTime();
         return new MemberDetails(findMember);
     }
 }

@@ -1,18 +1,15 @@
 package com.nfteam.server.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.response.auth.LoginResponse;
-import com.nfteam.server.exception.member.MemberNotFoundException;
-import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +25,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final MemberRepository memberRepository;
 
-    @Transactional
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("Security - Authentication success");
         MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
-        Member member = memberRepository.findByEmail(memberDetails.getEmail())
-                .orElseThrow(() -> new MemberNotFoundException(memberDetails.getEmail()));
-        member.updateLastLoginTime();
-        memberRepository.save(member);
         sendSuccessResponse(response, memberDetails);
     }
 
