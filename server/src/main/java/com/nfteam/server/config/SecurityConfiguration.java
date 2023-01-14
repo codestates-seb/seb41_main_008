@@ -98,7 +98,6 @@ public class SecurityConfiguration {
 
         @Override
         public void configure(HttpSecurity builder) throws Exception {
-
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisRepository);

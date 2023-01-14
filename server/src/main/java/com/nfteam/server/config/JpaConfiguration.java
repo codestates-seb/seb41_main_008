@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 
 @EnableJpaAuditing
 @Configuration
-public class JpaConfig {
+public class JpaConfiguration {
 
     @PersistenceContext
     private EntityManager em;
