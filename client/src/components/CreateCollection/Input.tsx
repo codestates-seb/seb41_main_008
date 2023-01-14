@@ -11,7 +11,6 @@ import { useEffect, useRef, useState } from 'react';
 import { HiXCircle } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
-import customAxios from '../../utils/api/axios';
 
 interface Inputs {
   name: string;
@@ -53,18 +52,19 @@ export default function Input({ logoFile, bannerFile }: Files) {
   }, []);
 
   const uploadImages = async () => {
-    const logoFormData = new FormData();
-    logoFormData.append('file', logoFile!);
+    const formData = new FormData();
+    formData.append('file', logoFile!);
+    formData.append('file', bannerFile!);
 
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/images`,
-        logoFormData
+        formData
       );
       console.log(res.data);
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err.response?.data);
+      console.log(err);
     }
   };
 
