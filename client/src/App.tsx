@@ -5,6 +5,7 @@ import MainPage from '../src/pages/MainPage';
 import MainLayout from '../src/components/Layout/MainLayout';
 import CreateCollection from 'pages/CreateCollection';
 import MyCollectionPage from 'pages/MyCollectionPage';
+import AccountPage from 'pages/AccountPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/collections" element={<MyCollectionPage />} />
             <Route path="/collection/create" element={<CreateCollection />} />
+            <Route path="/account" element={<AccountPage />} />
           </Route>
 
           <Route path="login" element={<LoginPage />} />
@@ -24,6 +26,6 @@ function App() {
     </div>
   );
 }
-/**MainLayout 컴포넌트에는 전역에 보여주고싶은 컴포넌트들이 들어있다 ex)header,footer,cartModal */
+/**MainLayout 컴포넌트에는 전역에 보여주고싶은 컴포넌트들이 들어있다 ex)header,cartModal */
 /**MainLayout 에 감싸지는 페이지들은 MainLayout이 가지고있는 컴포넌트들을 다 보여주며 밖에있는 로그인,회원가입페이지는 header,footer등이 안보이게된다. */
 export default App;

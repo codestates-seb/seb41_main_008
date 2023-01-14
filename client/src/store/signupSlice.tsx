@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import customAxios from '../utils/api/axios';
 
 interface SignupProps {
   nickname: string;
@@ -13,10 +13,7 @@ export const signup = createAsyncThunk(
   async (data: {}, thunkAPI) => {
     console.log(data);
     try {
-      const res = await axios.post(
-        'http://ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com/api/members',
-        data
-      );
+      const res = await customAxios.post('/api/members', data);
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response);

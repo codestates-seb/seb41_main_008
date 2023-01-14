@@ -1,5 +1,4 @@
 import InputContainer from '../components/LoginAndSignup/InputContainer';
-
 const LoginPage = () => {
   return (
     <div className="flex justfy-center items-stretch min-h-screen ">

@@ -1,9 +1,12 @@
-import axios from 'axios';
-
+import customAxios from './axios';
+import { refreshToken } from 'utils/token';
 export const logout = () => {
-  return axios
-    .get(
-      'http://ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com/auth/logout'
-    )
-    .then(() => window.localStorage.clear());
+  return customAxios
+    .get('/auth/logout', {
+      headers: {
+        RefreshToken: refreshToken,
+      },
+    })
+    .then(() => window.localStorage.removeItem('ACCESS_TOKEN'))
+    .then(() => window.location.reload());
 };

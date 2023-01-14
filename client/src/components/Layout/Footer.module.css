@@ -1,5 +1,5 @@
 .footer {
-  background-color: #1868b7;
+  background-color: rgb(4 120 87);
   margin-top: 48px;
   padding: 0 120px;
 }
@@ -48,8 +48,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(32, 129, 226);
-  border: 2px solid rgb(32, 129, 226);
+  background-color: rgb(5 150 105);
   color: rgb(255, 255, 255);
   width: 54px;
   height: 54px;
@@ -66,7 +65,7 @@
 .socialBtn:hover {
   filter: brightness(1.1);
   border: 1px solid rgba(0, 0, 0, 0);
-  background-color: rgb(32, 129, 226);
+  background-color: rgb(16 185 129);
 }
 
 .form {
@@ -95,15 +94,14 @@
   font-weight: 600;
   line-height: 22px;
   padding: 12px 32px;
-  background-color: rgb(32, 129, 226);
-  border: 2px solid rgb(32, 129, 226);
+  background-color: rgb(5 150 105);
   color: rgb(255, 255, 255);
   cursor: pointer;
 }
 
 .form .signupButton:hover {
   filter: brightness(1.1);
-  background-color: rgb(32, 129, 226);
+  background-color: rgb(16 185 129);
 }
 
 .form .signupInput:focus {
