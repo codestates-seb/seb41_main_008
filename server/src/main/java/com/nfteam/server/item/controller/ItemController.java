@@ -1,6 +1,6 @@
 package com.nfteam.server.item.controller;
 
-import com.nfteam.server.auth.userdetails.MemberDetails;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.item.service.ItemService;

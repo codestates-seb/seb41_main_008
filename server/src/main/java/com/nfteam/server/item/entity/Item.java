@@ -1,6 +1,6 @@
 package com.nfteam.server.item.entity;
 
-import com.nfteam.server.audit.BaseEntity;
+import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.dto.response.item.ItemResponseDto;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;

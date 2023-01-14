@@ -1,6 +1,6 @@
 package com.nfteam.server.member.entity;
 
-import com.nfteam.server.audit.BaseEntity;
+import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
