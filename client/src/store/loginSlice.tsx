@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import customAxios from '../utils/api/axios';
 
 interface LoginProps {
   email: string;
@@ -11,10 +11,7 @@ export const login = createAsyncThunk(
   'login/login',
   async (data: {}, thunkAPI): Promise<any> => {
     try {
-      const res: any = await axios.post(
-        'http://ec2-3-35-204-189.ap-northeast-2.compute.amazonaws.com/auth/login',
-        data
-      );
+      const res: any = await customAxios.post('/auth/login', data);
       if (res.headers) {
         localStorage.setItem('ACCESS_TOKEN', res.headers.authorization);
         localStorage.setItem('REFRESH_TOKEN', res.headers.refreshtoken);

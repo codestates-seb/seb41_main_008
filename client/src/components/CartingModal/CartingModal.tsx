@@ -3,6 +3,9 @@ import CartItems from './CartItems';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { closeModal, viewModal } from '../../store/modalSlice';
 import { useEffect, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
 interface ModalContainerProps {
   visible: boolean;
 }
@@ -28,12 +31,14 @@ export const ModalContainer = styled.div<ModalContainerProps>`
   flex-direction: column;
   position: fixed;
   padding: 20px;
-  width: 350px;
-  height: 550px;
+  width: 400px;
+  height: 850px;
   right: 28px;
   top: 30px;
+
+  overflow: auto;
   border-radius: 20px;
-  background-color: white;
+  background-color: #ffffff;
   transition: 0.7s;
   box-shadow: 0 0 5px;
   /**opacity를 같이 활용하기위해 visibility를 사용 */
@@ -41,14 +46,24 @@ export const ModalContainer = styled.div<ModalContainerProps>`
   opacity: ${(props) => (props.visible ? '1' : '0')};
   transform: ${(props) =>
     props.visible ? 'translateX(0px)' : 'translateX(380px)'};
+  @media screen and (max-width: 1024px) {
+    position: fixed;
+    bottom: 0;
+
+    width: 100%;
+    height: auto;
+    border-radius: 20px 20px 0px 0px;
+    right: 0;
+    transform: ${(props) =>
+      props.visible ? 'translateY(0px)' : 'translateY(300px)'};
+  }
 `;
 
 /**카팅모달의 구역을 나눠주기 위한 컴포넌트 */
 const Line = styled.hr`
   margin-block-start: 0.5rem;
   margin-block-end: 0.5rem;
-  width: 350px;
-  margin-left: -20px;
+  width: 100%;
 `;
 
 const CartingModal = () => {
@@ -57,8 +72,8 @@ const CartingModal = () => {
   const dispatch = useAppDispatch();
 
   /**60~71 모달 오픈시 모달창영역밖 클릭했을떄 모달닫는 기능. *target 타입 수정필요 */
-  const modalClose = (e: any) => {
-    if (isOpen && ref.current?.contains(e.target)) {
+  const modalClose = (e: MouseEvent) => {
+    if (isOpen && ref.current?.contains(e.target as Node)) {
       dispatch(closeModal());
     }
   };
@@ -74,22 +89,21 @@ const CartingModal = () => {
     <>
       {isOpen && <ModalBack ref={ref}></ModalBack>}
       <ModalContainer visible={isOpen}>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center font-semibold text-2xl ">
           <span>Your cart</span>
-          <button onClick={() => dispatch(closeModal())}>x</button>
+          <FontAwesomeIcon
+            className="cursor-pointer"
+            icon={faXmark}
+            onClick={() => dispatch(closeModal())}
+          />
         </div>
         <Line />
-        <div className="flex justify-between py-4">
+        <div className="flex justify-between py-4 font-bold">
           <div>3 items</div>
           <button>Clear all</button>
         </div>
-        <ul className="h-72 overflow-auto">
+        <ul className="flex flex-col gap-2 h-auto overflow-auto ">
           <CartItems />
-          <CartItems />
-          <CartItems />
-          <CartItems />
-          <li>카팅모달 axios로 데이터 불러와보기</li>
-          fixed witn overflow 구글링해서 제대로 처리하기
         </ul>
         <Line />
         <div className="flex justify-between py-2">
@@ -99,8 +113,8 @@ const CartingModal = () => {
             <div>달러가격</div>
           </div>
         </div>
-        <div className="flex justify-center mt-5">
-          <button className="bg-[#2081e2] text-white px-10 py-3 rounded-lg">
+        <div className="flex justify-center mt-5 ">
+          <button className="bg-[#2081e2] text-white px-10 py-3 rounded-lg mb-5 w-full">
             Complete purchase
           </button>
         </div>

@@ -1,9 +1,13 @@
+import Button from './Button';
+import GoogleLogin from 'components/Oauth2.0/GoogleLogin';
+import { useState } from 'react';
+import { ErrorMessage } from '@hookform/error-message';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../../store/loginSlice';
-import Button from './Button';
 import { signup } from '../../store/signupSlice';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 type Props = {
   isSignup: boolean;
 };
@@ -13,6 +17,7 @@ interface FormValue {
   password: string;
 }
 const InputContainer = ({ isSignup }: Props) => {
+  const [unAuth, setUnAuth] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isFetching } = useAppSelector((state) => state.login);
@@ -21,39 +26,57 @@ const InputContainer = ({ isSignup }: Props) => {
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<FormValue>();
-
+  const unAuthHandler = () => {
+    setUnAuth(true);
+    setTimeout(() => {
+      setUnAuth(false);
+    }, 1000);
+  };
   const onClickSubmit: SubmitHandler<FormValue> = (data) => {
     if (data.nickname) {
       dispatch(signup(data)).then(() => navigate('/login'));
     } else if (!data.nickname) {
-      dispatch(login(data)).then((res) => console.log(res));
+      dispatch(login(data)).then((res) => {
+        if (res.payload.status === 401) {
+          unAuthHandler();
+        }
+        if (res.meta.requestStatus === 'fulfilled') {
+          window.location.replace('/');
+        }
+      });
     }
   };
   const onError = (error: {}) => {
     console.log(error);
   };
-
   return (
-    <div className="flex">
+    <div className="">
+      {unAuth && (
+        <div className="flex justify-start items-center fixed top-14 text-center  rounded-3xl p-4 bg-black bg-opacity-70 text-white font-semibold left-1/2 -translate-x-1/2 w-3/12 ">
+          <AiOutlineInfoCircle color="red" size="20" />
+          <span className="grow">Please check your Email or Password</span>
+        </div>
+      )}
+
       <form
-        className="flex flex-col p-10 bg-white transition-all gap-2 shadow-[0px_20px_30px_-10px_rgb(38,57,77)] rounded-md bg-transparent"
+        className="flex flex-col p-10 bg-white  gap-2 shadow-[0px_20px_30px_-10px_rgb(38,57,77)] rounded-md bg-transparent"
         onSubmit={handleSubmit(onClickSubmit, onError)}
       >
         <h1 className="mb-10 font-bold text-3xl text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)] flex-1 text-center">
           {isSignup ? 'Signup' : 'Login'}
         </h1>
         {isSignup ? (
-          <p className="font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+          <p className="font-bold text-center text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
             Sign up and have your own NFT
           </p>
         ) : (
-          <p className="font-bold text-white shadow-[0px_20px_30px_-10px_rgb(38,57,77)]">
+          <p className="font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
             Let`s go on a trip to the world of NFT
           </p>
         )}
-        <Button>{isSignup ? 'Signup with Google' : 'Login with Google'}</Button>
+        <GoogleLogin />
         {isSignup && (
           <label
             htmlFor="nickname"
@@ -68,8 +91,22 @@ const InputContainer = ({ isSignup }: Props) => {
             className="border-b-2 w-72 p-1 border-black  focus:outline-none bg-transparent font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
             required
             {...register('nickname', {
-              minLength: 2,
+              minLength: {
+                value: 2,
+                message: 'Please enter at least 2 characters.',
+              },
             })}
+          />
+        )}
+        {isSignup && (
+          <ErrorMessage
+            errors={errors}
+            name="nickname"
+            render={({ message }) => (
+              <span className="text-center bg-red-100 border-red-400 border-2 rounded text-red-500 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+                {message}
+              </span>
+            )}
           />
         )}
         <label
@@ -86,9 +123,18 @@ const InputContainer = ({ isSignup }: Props) => {
           {...register('email', {
             pattern: {
               value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-              message: '이메일 형식이 아닙니다.',
+              message: 'Please enter your email correctly.',
             },
           })}
+        />
+        <ErrorMessage
+          errors={errors}
+          name="email"
+          render={({ message }) => (
+            <span className="text-center bg-red-100 border-red-400 border-2 rounded text-red-600 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+              {message}
+            </span>
+          )}
         />
         <label
           htmlFor="password"
@@ -105,9 +151,18 @@ const InputContainer = ({ isSignup }: Props) => {
             pattern: {
               value:
                 /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/g,
-              message: '비밀번호 양식에 맞춰 입력해주세요.',
+              message: 'Please check the password form.',
             },
           })}
+        />
+        <ErrorMessage
+          errors={errors}
+          name="password"
+          render={({ message }) => (
+            <span className="text-center bg-red-100 border-red-400 border-2 rounded text-red-500 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+              {message}
+            </span>
+          )}
         />
         {isSignup && (
           <p className="text-xs w-[300px] text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">

@@ -1,4 +1,4 @@
-import Header from '../header/Header';
+import Header from '../Header/Header';
 import CartingModal from '../CartingModal/CartingModal';
 import { Outlet } from 'react-router-dom';
 const MainLayout = () => {
