@@ -38,8 +38,8 @@ public class GoogleOAuth2 implements OAuth2 {
 
     @Override
     @Transactional
-    public SocialLoginResponse proceedLogin(String socialToken) {
-        ResponseEntity<String> userInfoResponse = createGetInfoRequest(socialToken);
+    public SocialLoginResponse proceedLogin(String token) {
+        ResponseEntity<String> userInfoResponse = createGetInfoRequest(token);
         GoogleUser googleUser = getUserInfo(userInfoResponse);
 
         if (isFistLogin(googleUser)) {
