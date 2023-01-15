@@ -83,6 +83,7 @@ public class GoogleOAuth2 implements OAuth2 {
         Member member = memberRepository.findByEmail(googleUser.getEmail())
                 .orElseThrow(() -> new MemberNotFoundException(googleUser.getEmail()));
         member.updateNickname(googleUser.getName());
+        member.updateLastLoginTime();
 
         MemberDetails memberDetails = new MemberDetails(member);
         String accessToken = "Bearer " + jwtTokenizer.generateAccessToken(memberDetails);
