@@ -16,7 +16,8 @@ public class OAuth2Service {
             case GOOGLE:
                 return googleOAuth2.proceedLogin(code);
             default:
-                throw new RuntimeException("지원되지 않는 소셜 플랫폼 입니다.");
+                throw new RuntimeException("지원되지 않는 소셜 플랫폼입니다.");
         }
     }
+
 }
