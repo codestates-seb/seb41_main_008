@@ -54,11 +54,8 @@ public class GoogleOAuth2 implements OAuth2 {
 
     @Override
     @Transactional
-    public SocialLoginResponse proceedLogin(String code) {
-        ResponseEntity<String> accessTokenResponse = createGetAccessTokenRequest(code);
-        GoogleToken googleToken = getAccessToken(accessTokenResponse);
-
-        ResponseEntity<String> userInfoResponse = createGetInfoRequest(googleToken);
+    public SocialLoginResponse proceedLogin(String credential) {
+        ResponseEntity<String> userInfoResponse = createGetInfoRequest(credential);
         GoogleUser googleUser = getUserInfo(userInfoResponse);
 
         if (isFistLogin(googleUser)) {
@@ -94,11 +91,11 @@ public class GoogleOAuth2 implements OAuth2 {
         return googleToken;
     }
 
-    private ResponseEntity<String> createGetInfoRequest(GoogleToken googleToken) {
+    private ResponseEntity<String> createGetInfoRequest(String credential) {
         String url = "https://www.googleapis.com/oauth2/v1/userinfo";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + googleToken.getAccessToken());
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + credential);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(headers);
 
         return restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
