@@ -1,6 +1,6 @@
 package com.nfteam.server.coin;
 
-import com.nfteam.server.audit.BaseEntity;
+import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;

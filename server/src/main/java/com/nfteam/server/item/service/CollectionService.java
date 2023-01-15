@@ -1,6 +1,6 @@
 package com.nfteam.server.item.service;
 
-import com.nfteam.server.auth.userdetails.MemberDetails;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
@@ -96,12 +96,16 @@ public class CollectionService {
 
     private void calcItemMetaInfo(List<Item> items, CollectionResponse response) {
         Integer itemCount = items.size();
+
         Double totalVolume = items.stream()
                 .mapToDouble(i -> i.getItemPrice()).sum();
+
         Double highestPrice = items.stream()
                 .mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
+
         Double lowestPrice = items.stream()
                 .mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+
         Long ownerCount = items.stream()
                 .map(i -> i.getMember()).distinct().count();
 

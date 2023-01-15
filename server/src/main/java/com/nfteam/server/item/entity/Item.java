@@ -1,7 +1,7 @@
 package com.nfteam.server.item.entity;
 
-import com.nfteam.server.audit.BaseEntity;
-import com.nfteam.server.dto.response.item.ItemResponse;
+import com.nfteam.server.common.audit.BaseEntity;
+import com.nfteam.server.dto.response.item.ItemResponseDto;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +39,7 @@ public class Item extends BaseEntity {
     @Column(name = "on_sale")
     private Boolean onSale;
 
-    // 상품 가격 - 코인 갯수
+    // 상품 가격 코인 갯수
     @Column(name = "item_price")
     private Double itemPrice;
 
@@ -54,6 +54,8 @@ public class Item extends BaseEntity {
     public Item(String itemName,
                 String itemImageName,
                 Boolean onSale,
+                Double itemPrice) {
+        this.itemId = itemId;
                 Double itemPrice) {
         this.itemName = itemName;
         this.itemImageName = itemImageName;

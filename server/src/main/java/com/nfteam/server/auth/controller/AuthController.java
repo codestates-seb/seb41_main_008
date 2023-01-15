@@ -1,21 +1,41 @@
 package com.nfteam.server.auth.controller;
 
 import com.nfteam.server.auth.service.AuthService;
+import com.nfteam.server.auth.service.OAuth2Service;
+import com.nfteam.server.dto.response.auth.LoginResponse;
+import com.nfteam.server.dto.response.auth.SocialLoginResponse;
+import com.nfteam.server.member.entity.MemberPlatform;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final OAuth2Service oAuth2Service;
     private final AuthService authService;
+
+    @GetMapping("/login/{socialType}")
+    public ResponseEntity<LoginResponse> oauthLogin(@PathVariable(name = "socialType") String socialType,
+                                                    @RequestParam String code) {
+        MemberPlatform memberPlatform = MemberPlatform.valueOf(socialType.toUpperCase());
+        SocialLoginResponse socialLoginResponse = oAuth2Service.login(code, memberPlatform);
+
+        String email = socialLoginResponse.getLoginResponse().getEmail();
+        String accessToken = socialLoginResponse.getAccessToken();
+        String refreshToken = socialLoginResponse.getRefreshToken();
+        authService.login(refreshToken, email);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, accessToken);
+        headers.add("RefreshToken", refreshToken);
+
+        return new ResponseEntity<>(socialLoginResponse.getLoginResponse(), headers, HttpStatus.OK);
+    }
 
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(@RequestHeader(value = "RefreshToken") String refreshToken) {
@@ -30,4 +50,5 @@ public class AuthController {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + reissuedAccessToken)
                 .build();
     }
+
 }
