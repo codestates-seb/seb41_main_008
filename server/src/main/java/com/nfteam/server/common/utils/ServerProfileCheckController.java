@@ -28,6 +28,6 @@ public class ServerProfileCheckController {
 
     @GetMapping
     public String homeTest() {
-        return "개발 서버 정상 동작 확인 테스트 - Oauth 리다이렉트 변경 변경사항 반영";
+        return "개발 서버 정상 동작 확인 테스트 - Oauth 변경사항 반영";
     }
 }
