@@ -53,6 +53,7 @@ public class GoogleOAuth2 implements OAuth2 {
     }
 
     @Override
+    @Transactional
     public SocialLoginResponse proceedLogin(String code) {
         ResponseEntity<String> accessTokenResponse = createGetAccessTokenRequest(code);
         GoogleToken googleToken = getAccessToken(accessTokenResponse);
@@ -118,13 +119,11 @@ public class GoogleOAuth2 implements OAuth2 {
         return !memberRepository.existsByEmail(googleUser.getEmail());
     }
 
-    @Transactional
     public void signUp(GoogleUser googleUser) {
         Member member = new Member(googleUser.getEmail(), googleUser.getName(), MemberPlatform.GOOGLE);
         memberRepository.save(member);
     }
 
-    @Transactional
     public SocialLoginResponse makeSocialResponse(GoogleUser googleUser) {
         Member member = memberRepository.findByEmail(googleUser.getEmail())
                 .orElseThrow(() -> new MemberNotFoundException(googleUser.getEmail()));
