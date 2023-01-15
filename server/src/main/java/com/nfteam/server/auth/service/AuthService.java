@@ -1,8 +1,8 @@
 package com.nfteam.server.auth.service;
 
-import com.nfteam.server.auth.jwt.JwtTokenizer;
-import com.nfteam.server.auth.repository.RedisRepository;
-import com.nfteam.server.auth.userdetails.MemberDetails;
+import com.nfteam.server.common.utils.JwtTokenizer;
+import com.nfteam.server.redis.repository.RedisRepository;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.token.RefreshTokenExpiredException;
 import com.nfteam.server.member.entity.Member;
@@ -22,6 +22,10 @@ public class AuthService {
     private final RedisRepository redisRepository;
     private final JwtTokenizer jwtTokenizer;
     private final RedisTemplate<String, String> redisTemplate;
+
+    public void login(String refreshToken, String email) {
+        redisRepository.saveRefreshToken(refreshToken, email);
+    }
 
     public void logout(String refreshToken) {
         redisRepository.expireRefreshToken(refreshToken);
