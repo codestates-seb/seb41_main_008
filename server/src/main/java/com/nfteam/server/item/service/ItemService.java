@@ -1,6 +1,6 @@
 package com.nfteam.server.item.service;
 
-import com.nfteam.server.auth.userdetails.MemberDetails;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
