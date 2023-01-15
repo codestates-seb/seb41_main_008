@@ -1,37 +1,41 @@
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef } from 'react';
 import { BsImage } from 'react-icons/bs';
-import { setLogo } from 'store/logoSlice';
+import { setLogoString } from 'store/logoSlice';
 
-export default function LogoImage() {
+interface LogoFile {
+  logoFile: File | null;
+  setLogoFile: React.Dispatch<React.SetStateAction<File | null>>;
+}
+
+export default function LogoImage({ logoFile, setLogoFile }: LogoFile) {
   const dispatch = useAppDispatch();
-  const logo = useAppSelector((state) => state.logo.url);
+
+  const logoString = useAppSelector((state) => state.logo.logoString);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [image, setImage] = useState<File | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.substring(0, 5) === 'image') {
-      setImage(file);
+      setLogoFile(file);
     } else {
-      setImage(null);
+      setLogoFile(null);
     }
   };
 
   useEffect(() => {
-    if (image) {
+    if (logoFile) {
       const reader = new FileReader();
-      reader.readAsDataURL(image);
+      reader.readAsDataURL(logoFile);
       reader.onloadend = () => {
-        dispatch(setLogo(reader.result as string));
+        dispatch(setLogoString(reader.result as string));
       };
     } else {
-      dispatch(setLogo(''));
+      dispatch(setLogoString(''));
     }
-  }, [image, dispatch]);
-  console.log(logo);
+  }, [logoFile, dispatch]);
+
   return (
     <form className="flex flex-col items-center">
       <h3 className="font-bold text-lg">
@@ -48,13 +52,13 @@ export default function LogoImage() {
         accept="image/*"
         onChange={handleChange}
       />
-      {logo ? (
+      {logoString ? (
         <img
-          src={logo}
+          src={logoString}
           alt="logo"
           role="presentation"
           className="h-44 w-44 rounded-full object-cover mt-3 cursor-pointer"
-          onClick={() => setImage(null)}
+          onClick={() => setLogoFile(null)}
         />
       ) : (
         <button
