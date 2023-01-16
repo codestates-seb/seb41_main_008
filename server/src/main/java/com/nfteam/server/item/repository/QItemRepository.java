@@ -2,21 +2,17 @@ package com.nfteam.server.item.repository;
 
 import com.nfteam.server.dto.response.item.ItemResponse;
 import com.querydsl.core.types.ConstructorExpression;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.nfteam.server.item.entity.QItem.item;
 
 @Repository
 @RequiredArgsConstructor
 public class QItemRepository {
+
     private final JPAQueryFactory jpaQueryFactory;
 
     public ItemResponse findItem(Long itemId) {
@@ -27,10 +23,6 @@ public class QItemRepository {
                 .leftJoin(item.owner)
                 .where(item.itemId.eq(itemId))
                 .fetchOne();
-    }
-
-    private Predicate coinFindByCoinId(NumberPath<Long> coinId) {
-        return null;
     }
 
     private ConstructorExpression<ItemResponse> getItemResponseConstructor() {

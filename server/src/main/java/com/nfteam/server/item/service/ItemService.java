@@ -1,7 +1,5 @@
 package com.nfteam.server.item.service;
 
-import com.nfteam.server.item.repository.QItemRepository;
-import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemPatchRequest;
 import com.nfteam.server.dto.response.item.ItemResponse;
@@ -13,8 +11,10 @@ import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import com.nfteam.server.item.repository.CollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
+import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +62,7 @@ public class ItemService {
     }
 
     private void checkValidAuth(String email, String authEmail) {
-        if(!email.equals(authEmail)){
+        if (!email.equals(authEmail)) {
             throw new NotAuthorizedException();
         }
     }
@@ -76,6 +76,7 @@ public class ItemService {
 
     public ItemResponse getItem(Long itemId) {
         ItemResponse itemResponse = qItemRepository.findItem(itemId);
+        if (itemResponse == null) throw new ItemNotFoundException(itemId);
         return itemResponse;
     }
 }
