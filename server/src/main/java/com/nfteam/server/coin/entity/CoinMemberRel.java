@@ -1,4 +1,4 @@
-package com.nfteam.server.coin;
+package com.nfteam.server.coin.entity;
 
 import com.nfteam.server.audit.BaseEntity;
 import com.nfteam.server.member.entity.Member;
