@@ -1,7 +1,7 @@
 package com.nfteam.server.item.service;
 
-import com.nfteam.server.auth.userdetails.MemberDetails;
-import com.nfteam.server.coin.entity.Coin;
+import com.nfteam.server.security.userdetails.MemberDetails;
+import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionResponse;
@@ -97,13 +97,13 @@ public class CollectionService {
         Integer itemCount = items.size();
 
         Double totalVolume = items.stream()
-                .mapToDouble(i -> i.getCoinCount()).sum();
+                .mapToDouble(i -> i.getItemPrice()).sum();
 
         Double highestPrice = items.stream()
-                .mapToDouble(i -> i.getCoinCount()).max().getAsDouble();
+                .mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
 
         Double lowestPrice = items.stream()
-                .mapToDouble(i -> i.getCoinCount()).min().getAsDouble();
+                .mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
 
         Long ownerCount = items.stream()
                 .map(i -> i.getMember()).distinct().count();

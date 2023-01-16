@@ -1,6 +1,6 @@
 package com.nfteam.server.item.entity;
 
-import com.nfteam.server.audit.BaseEntity;
+import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.dto.response.item.ItemResponseDto;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
@@ -39,8 +39,8 @@ public class Item extends BaseEntity {
     private Boolean onSale;
 
     // 상품 가격 코인 갯수
-    @Column(name = "coin_count")
-    private Double coinCount;
+    @Column(name = "item_price")
+    private Double itemPrice;
 
     // 상품 고유 정보
     @OneToOne(mappedBy = "item", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -54,12 +54,12 @@ public class Item extends BaseEntity {
                 String itemName,
                 String itemImageName,
                 Boolean onSale,
-                Double coinCount) {
+                Double itemPrice) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
         this.onSale = onSale;
-        this.coinCount = coinCount;
+        this.itemPrice = itemPrice;
     }
 
     public void assignItemCredential(ItemCredential itemCredential) {
@@ -85,7 +85,7 @@ public class Item extends BaseEntity {
                 .itemName(itemName)
                 .itemImageName(itemImageName)
                 .onSale(onSale)
-                .coinCount(coinCount)
+                .itemPrice(itemPrice)
                 .build();
     }
 }

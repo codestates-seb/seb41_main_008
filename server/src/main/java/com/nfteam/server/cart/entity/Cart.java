@@ -1,6 +1,6 @@
 package com.nfteam.server.cart.entity;
 
-import com.nfteam.server.audit.BaseEntity;
+import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.member.entity.Member;
 import lombok.Getter;
 

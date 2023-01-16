@@ -1,6 +1,6 @@
 package com.nfteam.server.member.controller;
 
-import com.nfteam.server.auth.userdetails.MemberDetails;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.member.MemberPatchDto;
 import com.nfteam.server.dto.request.member.MemberPostDto;
 import com.nfteam.server.dto.response.member.MemberResponseDto;
