@@ -1,7 +1,7 @@
 package com.nfteam.server.item.service;
 
 import com.nfteam.server.security.userdetails.MemberDetails;
-import com.nfteam.server.coin.entity.Coin;
+import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionResponse;

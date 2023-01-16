@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class OAuthMemberProfile {
+
     private String email;
     private String nickname;
     private MemberPlatform memberPlatform;
@@ -16,7 +17,4 @@ public class OAuthMemberProfile {
         this.memberPlatform = memberPlatform;
     }
 
-    public Member toMember() {
-        return new Member(this.email, this.nickname, this.memberPlatform);
-    }
 }

@@ -15,23 +15,26 @@ public class ItemResponseDto {
     private String itemName;
     private String itemImageName;
     private boolean onSale;
-    private Double coinCount;
+    private Double itemPrice;
 
     @Builder
     public ItemResponseDto(Long itemId,
-                           Long ownerId, String ownerName,
-                           String itemName, String itemImageName,
-                           boolean onSale, Double coinCount) {
+                           Long ownerId,
+                           String ownerName,
+                           String itemName,
+                           String itemImageName,
+                           boolean onSale,
+                           Double itemPrice) {
         this.itemId = itemId;
         this.ownerId = String.valueOf(ownerId);
         this.ownerName = ownerName;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
         this.onSale = onSale;
-        this.coinCount = coinCount;
+        this.itemPrice = itemPrice;
     }
 
-    public void addCollectionInfo(ItemCollection collection){
+    public void addCollectionInfo(ItemCollection collection) {
         this.collectionId = collection.getCollectionId();
         this.collectionName = collection.getCollectionName();
     }
