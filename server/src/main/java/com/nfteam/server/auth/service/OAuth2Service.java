@@ -11,10 +11,10 @@ public class OAuth2Service {
 
     private final GoogleOAuth2 googleOAuth2;
 
-    public SocialLoginResponse login(String code, MemberPlatform memberPlatform) {
+    public SocialLoginResponse login(String token, MemberPlatform memberPlatform) {
         switch (memberPlatform) {
             case GOOGLE:
-                return googleOAuth2.proceedLogin(code);
+                return googleOAuth2.proceedLogin(token);
             default:
                 throw new RuntimeException("지원되지 않는 소셜 플랫폼입니다.");
         }
