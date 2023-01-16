@@ -1,7 +1,7 @@
 package com.nfteam.server.item.entity;
 
 import com.nfteam.server.common.audit.BaseEntity;
-import com.nfteam.server.dto.response.item.ItemResponseDto;
+import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class Item extends BaseEntity {
     // 아이템 현재 소유자
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_member_id")
-    private Member member;
+    private Member owner;
 
     @Column(name = "item_name", nullable = false)
     private String itemName;
@@ -39,7 +39,7 @@ public class Item extends BaseEntity {
     @Column(name = "on_sale")
     private Boolean onSale;
 
-    // 상품 가격 코인 갯수
+    // 상품 가격 == 코인 갯수
     @Column(name = "item_price")
     private Double itemPrice;
 
@@ -54,8 +54,6 @@ public class Item extends BaseEntity {
     public Item(String itemName,
                 String itemImageName,
                 Boolean onSale,
-                Double itemPrice) {
-        this.itemId = itemId;
                 Double itemPrice) {
         this.itemName = itemName;
         this.itemImageName = itemImageName;
@@ -74,15 +72,15 @@ public class Item extends BaseEntity {
     }
 
     public void assignMember(Member member) {
-        this.member = member;
+        this.owner = member;
         member.getItemList().add(this);
     }
 
     public ItemResponse toResponseDto() {
         return ItemResponse.builder()
                 .itemId(itemId)
-                .ownerId(member.getMemberId())
-                .ownerName(member.getNickname())
+                .ownerId(owner.getMemberId())
+                .ownerName(owner.getNickname())
                 .itemName(itemName)
                 .itemImageName(itemImageName)
                 .onSale(onSale)

@@ -83,7 +83,7 @@ public class CollectionService {
         List<ItemResponse> itemResponses = items.stream()
                 .map(Item::toResponseDto)
                 .collect(Collectors.toList());
-        itemResponses.forEach(r -> r.addCollectionInfo(itemCollection));
+//        itemResponses.forEach(r -> r.addCollectionInfo(itemCollection));
         response.addItemResponseDtos(itemResponses);
 
         return response;
@@ -107,7 +107,7 @@ public class CollectionService {
                 .mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
 
         Long ownerCount = items.stream()
-                .map(i -> i.getMember()).distinct().count();
+                .map(i -> i.getOwner()).distinct().count();
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }

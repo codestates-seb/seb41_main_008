@@ -30,10 +30,10 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity update(@PathVariable("itemId") Long itemId,
-                                 @RequestBody ItemPatchRequest request,
+                                 @RequestBody ItemPatchRequest itemPatchRequest,
                                  @AuthenticationPrincipal MemberDetails memberDetails) {
-        Long updatedId = itemService.update(itemId, request, memberDetails);
-        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.OK.name(), updatedId), HttpStatus.CREATED);
+        Long updatedId = itemService.update(itemId, itemPatchRequest, memberDetails);
+        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.OK.name(), updatedId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{itemId}")
@@ -44,7 +44,7 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<ItemResponse> getCollection(@PathVariable("itemId") Long itemId) {
+    public ResponseEntity<ItemResponse> getItem(@PathVariable("itemId") Long itemId) {
         return new ResponseEntity<>(itemService.getItem(itemId), HttpStatus.OK);
     }
 
