@@ -49,7 +49,7 @@ public class CollectionService {
     @Transactional
     public Long update(Long collectionId, CollectionPatchRequest request, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
-        checkValidAuth(itemCollection.getOwner().getEmail(), memberDetails.getEmail());
+        checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
         itemCollection.update(request.toCollection());
 
         return itemCollection.getCollectionId();
@@ -69,7 +69,7 @@ public class CollectionService {
     @Transactional
     public void delete(Long collectionId, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
-        checkValidAuth(itemCollection.getOwner().getEmail(), memberDetails.getEmail());
+        checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
         collectionRepository.deleteById(collectionId);
     }
 
@@ -83,7 +83,6 @@ public class CollectionService {
         List<ItemResponse> itemResponses = items.stream()
                 .map(Item::toResponseDto)
                 .collect(Collectors.toList());
-//        itemResponses.forEach(r -> r.addCollectionInfo(itemCollection));
         response.addItemResponseDtos(itemResponses);
 
         return response;
@@ -107,13 +106,13 @@ public class CollectionService {
                 .mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
 
         Long ownerCount = items.stream()
-                .map(i -> i.getOwner()).distinct().count();
+                .map(i -> i.getMember()).distinct().count();
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }
 
     public List<UserCollectionResponse> getUserCollection(Long memberId) {
-        return collectionRepository.findCollectionByMemberId(memberId)
+        return collectionRepository.findCollectionWithCoinByMemberId(memberId)
                 .stream().map(collection -> collection.toUserResponse())
                 .collect(Collectors.toList());
     }

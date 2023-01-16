@@ -28,6 +28,7 @@ public class ItemResponse {
     private Long itemId;
     private String itemName;
     private String itemImageName;
+    private String itemDescription;
     private Boolean onSale;
     private Double itemPrice; // 코인 갯수(가격)
 
@@ -49,6 +50,7 @@ public class ItemResponse {
                         Long itemId,
                         String itemName,
                         String itemImageName,
+                        String itemDescription,
                         Boolean onSale,
                         Double itemPrice) {
         this.collectionId = collectionId;
@@ -61,6 +63,7 @@ public class ItemResponse {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
+        this.itemDescription = itemDescription;
         this.onSale = onSale;
         this.itemPrice = itemPrice;
     }

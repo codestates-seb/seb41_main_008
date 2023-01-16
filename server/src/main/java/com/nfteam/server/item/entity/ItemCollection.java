@@ -26,8 +26,8 @@ public class ItemCollection extends BaseEntity {
 
     // 해당 그룹(컬렉션) 소유자
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
-    private Member owner;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     // 해당 그룹(컬렉션) 다루는 코인
     @ManyToOne(fetch = FetchType.LAZY)
@@ -107,7 +107,7 @@ public class ItemCollection extends BaseEntity {
     }
 
     public void assignMember(Member member) {
-        this.owner = member;
+        this.member = member;
         member.getCollectionList().add(this);
     }
 
@@ -128,8 +128,8 @@ public class ItemCollection extends BaseEntity {
                 .logoImgName(logoImgName)
                 .bannerImgName(bannerImgName)
                 .createdDate(getCreatedDate())
-                .ownerId(owner.getMemberId())
-                .ownerName(owner.getNickname())
+                .ownerId(member.getMemberId())
+                .ownerName(member.getNickname())
                 .coinId(coin.getCoinId())
                 .coinName(coin.getCoinName())
                 .build();

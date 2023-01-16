@@ -51,7 +51,7 @@ public class ItemService {
     @Transactional
     public Long update(Long itemId, ItemPatchRequest itemPatchRequest, MemberDetails memberDetails) {
         Item item = findItem(itemId);
-        checkValidAuth(item.getOwner().getEmail(), memberDetails.getEmail());
+        checkValidAuth(item.getMember().getEmail(), memberDetails.getEmail());
         item.update(itemPatchRequest.toItem());
         return item.getItemId();
     }
@@ -70,7 +70,7 @@ public class ItemService {
     @Transactional
     public void delete(Long itemId, MemberDetails memberDetails) {
         Item findItem = findItem(itemId);
-        checkValidAuth(findItem.getOwner().getEmail(), memberDetails.getEmail());
+        checkValidAuth(findItem.getMember().getEmail(), memberDetails.getEmail());
         itemRepository.deleteById(itemId);
     }
 

@@ -60,11 +60,11 @@ public class Member extends BaseEntity {
     private List<Cart> cartList = new ArrayList<>();
 
     // 멤버가 만든 컬렉션 리스트
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "member")
     private List<ItemCollection> collectionList = new ArrayList<>();
 
     // 멤버 소유 NFT 아이템 리스트
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "member")
     private List<Item> itemList = new ArrayList<>();
 
     public Member() {

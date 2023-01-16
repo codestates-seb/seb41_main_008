@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    @Query("select i from Item i left join fetch i.owner o where i.collection.collectionId =:collectionId")
+    @Query("select i from Item i left join fetch i.member m where i.collection.collectionId =:collectionId")
     List<Item> findItemsByCollectionId(Long collectionId);
 
-    @Query("select i from Item i left join fetch i.owner o where i.itemId =:itemId")
+    @Query("select i from Item i left join fetch i.member m where i.itemId =:itemId")
     Optional<Item> findItemWithOwner(Long itemId);
 
 }

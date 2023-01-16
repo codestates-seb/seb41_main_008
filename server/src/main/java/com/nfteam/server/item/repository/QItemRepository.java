@@ -20,7 +20,7 @@ public class QItemRepository {
                 .select(getItemResponseConstructor())
                 .from(item)
                 .leftJoin(item.collection)
-                .leftJoin(item.owner)
+                .leftJoin(item.member)
                 .where(item.itemId.eq(itemId))
                 .fetchOne();
     }
@@ -29,14 +29,15 @@ public class QItemRepository {
         return Projections.constructor(ItemResponse.class,
                 item.collection.collectionId,
                 item.collection.collectionName,
-                item.owner.memberId,
-                item.owner.nickname,
+                item.member.memberId,
+                item.member.nickname,
                 item.collection.coin.coinId,
                 item.collection.coin.coinName,
                 item.collection.coin.withdrawlFee,
                 item.itemId,
                 item.itemName,
                 item.itemImageName,
+                item.itemDescription,
                 item.onSale,
                 item.itemPrice);
     }

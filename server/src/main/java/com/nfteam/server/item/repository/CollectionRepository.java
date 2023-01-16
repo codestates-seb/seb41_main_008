@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface CollectionRepository extends JpaRepository<ItemCollection, Long> {
 
-    @Query("select c from ItemCollection c left join fetch c.owner left join fetch c.coin where c.collectionId =:id")
+    @Query("select c from ItemCollection c left join fetch c.member left join fetch c.coin where c.collectionId =:id")
     Optional<ItemCollection> findCollectionWithMemberAndCoin(Long id);
 
-    @Query("select c from ItemCollection c left join fetch c.coin co where c.owner.memberId =:id")
-    List<ItemCollection> findCollectionByMemberId(Long id);
+    @Query("select c from ItemCollection c left join fetch c.coin co where c.member.memberId =:id")
+    List<ItemCollection> findCollectionWithCoinByMemberId(Long id);
 }

@@ -27,13 +27,16 @@ public class Item extends BaseEntity {
     // 아이템 현재 소유자
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_member_id")
-    private Member owner;
+    private Member member;
 
     @Column(name = "item_name", nullable = false)
     private String itemName;
 
     @Column(name = "item_img_name", nullable = false)
     private String itemImageName;
+
+    @Column(name = "item_desc")
+    private String itemDescription;
 
     // 상품의 현재 판매가능 여부
     @Column(name = "on_sale")
@@ -53,12 +56,27 @@ public class Item extends BaseEntity {
     @Builder
     public Item(String itemName,
                 String itemImageName,
+                String itemDescription,
                 Boolean onSale,
                 Double itemPrice) {
         this.itemName = itemName;
         this.itemImageName = itemImageName;
+        this.itemDescription = itemDescription;
         this.onSale = onSale;
         this.itemPrice = itemPrice;
+    }
+
+    public ItemResponse toResponseDto() {
+        return ItemResponse.builder()
+                .itemId(itemId)
+                .ownerId(member.getMemberId())
+                .ownerName(member.getNickname())
+                .itemName(itemName)
+                .itemImageName(itemImageName)
+                .itemDescription(itemDescription)
+                .onSale(onSale)
+                .itemPrice(itemPrice)
+                .build();
     }
 
     public void assignItemCredential(ItemCredential itemCredential) {
@@ -72,20 +90,8 @@ public class Item extends BaseEntity {
     }
 
     public void assignMember(Member member) {
-        this.owner = member;
+        this.member = member;
         member.getItemList().add(this);
-    }
-
-    public ItemResponse toResponseDto() {
-        return ItemResponse.builder()
-                .itemId(itemId)
-                .ownerId(owner.getMemberId())
-                .ownerName(owner.getNickname())
-                .itemName(itemName)
-                .itemImageName(itemImageName)
-                .onSale(onSale)
-                .itemPrice(itemPrice)
-                .build();
     }
 
     public void update(Item item) {
@@ -93,6 +99,8 @@ public class Item extends BaseEntity {
                 .ifPresent(this::updateName);
         Optional.of(item.getItemImageName())
                 .ifPresent(this::updateImage);
+        Optional.of(item.getItemDescription())
+                .ifPresent(this::updateDesc);
         Optional.ofNullable(item.getOnSale())
                 .ifPresent(this::updateSaleStatus);
         Optional.of(item.getItemPrice())
@@ -105,6 +113,10 @@ public class Item extends BaseEntity {
 
     public void updateImage(String itemImageName) {
         this.itemImageName = itemImageName;
+    }
+
+    public void updateDesc(String itemDescription) {
+        this.itemDescription = itemDescription;
     }
 
     public void updatePrice(Double itemPrice) {
