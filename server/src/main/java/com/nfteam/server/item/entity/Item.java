@@ -1,13 +1,12 @@
 package com.nfteam.server.item.entity;
 
-import com.nfteam.server.audit.BaseEntity;
-import com.nfteam.server.dto.response.item.ItemResponse;
+import com.nfteam.server.common.audit.BaseEntity;
+import com.nfteam.server.dto.response.item.ItemResponseDto;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Getter
 @Entity
@@ -39,7 +38,7 @@ public class Item extends BaseEntity {
     @Column(name = "on_sale")
     private Boolean onSale;
 
-    // 상품 가격 - 코인 갯수
+    // 상품 가격 코인 갯수
     @Column(name = "item_price")
     private Double itemPrice;
 
@@ -51,10 +50,12 @@ public class Item extends BaseEntity {
     }
 
     @Builder
-    public Item(String itemName,
+    public Item(Long itemId,
+                String itemName,
                 String itemImageName,
                 Boolean onSale,
                 Double itemPrice) {
+        this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
         this.onSale = onSale;
@@ -76,8 +77,8 @@ public class Item extends BaseEntity {
         member.getItemList().add(this);
     }
 
-    public ItemResponse toResponseDto() {
-        return ItemResponse.builder()
+    public ItemResponseDto toResponseDto() {
+        return ItemResponseDto.builder()
                 .itemId(itemId)
                 .ownerId(member.getMemberId())
                 .ownerName(member.getNickname())
@@ -87,33 +88,4 @@ public class Item extends BaseEntity {
                 .itemPrice(itemPrice)
                 .build();
     }
-
-    public void update(Item item) {
-        Optional.ofNullable(item.getItemName())
-                .ifPresent(this::updateName);
-        Optional.of(item.getItemImageName())
-                .ifPresent(this::updateImage);
-        Optional.ofNullable(item.getOnSale())
-                .ifPresent(this::updateSaleStatus);
-        Optional.of(item.getItemPrice())
-                .ifPresent(this::updatePrice);
-    }
-
-    public void updateName(String name) {
-        this.itemName = name;
-    }
-
-    public void updateImage(String itemImageName) {
-        this.itemImageName = itemImageName;
-    }
-
-    public void updatePrice(Double itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
-    public void updateSaleStatus(Boolean onSale) {
-        this.onSale = onSale;
-    }
-
-
 }
