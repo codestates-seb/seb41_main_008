@@ -24,6 +24,7 @@ public class CoinController {
     @Scheduled(cron = "0 0 4 25 * *")
     @GetMapping("/withdrawl-fee")
     public void getWithdrwalFee() throws Exception {
+        //insert,update
         coinService.saveFeeHistory(COIN);
         coinService.updateFee(COIN);
         log.info("withdrawlfee updated successfully!");
