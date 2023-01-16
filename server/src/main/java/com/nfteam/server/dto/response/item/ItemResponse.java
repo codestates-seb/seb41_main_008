@@ -1,7 +1,5 @@
 package com.nfteam.server.dto.response.item;
 
-import com.nfteam.server.dto.response.coin.CoinResponse;
-import com.nfteam.server.item.entity.ItemCollection;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +14,8 @@ public class ItemResponse {
     private String collectionName;
 
     // 아이템 현재 소유자 정보
-    private Long ownerId;
-    private String ownerName;
+    private Long memberId;
+    private String memberName;
 
     // 거래 가능 코인 정보
     private Long coinId;
@@ -42,8 +40,8 @@ public class ItemResponse {
     @QueryProjection
     public ItemResponse(Long collectionId,
                         String collectionName,
-                        Long ownerId,
-                        String ownerName,
+                        Long memberId,
+                        String memberName,
                         Long coinId,
                         String coinName,
                         Double withdrawlFee,
@@ -55,8 +53,8 @@ public class ItemResponse {
                         Double itemPrice) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
-        this.ownerId = ownerId;
-        this.ownerName = ownerName;
+        this.memberId = memberId;
+        this.memberName = memberName;
         this.coinId = coinId;
         this.coinName = coinName;
         this.withdrawlFee = withdrawlFee;

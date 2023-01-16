@@ -69,8 +69,8 @@ public class Item extends BaseEntity {
     public ItemResponse toResponseDto() {
         return ItemResponse.builder()
                 .itemId(itemId)
-                .ownerId(member.getMemberId())
-                .ownerName(member.getNickname())
+                .memberId(member.getMemberId())
+                .memberName(member.getNickname())
                 .itemName(itemName)
                 .itemImageName(itemImageName)
                 .itemDescription(itemDescription)

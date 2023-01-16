@@ -7,6 +7,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import static com.nfteam.server.item.entity.QItem.item;
 
 @Repository
@@ -23,6 +25,16 @@ public class QItemRepository {
                 .leftJoin(item.member)
                 .where(item.itemId.eq(itemId))
                 .fetchOne();
+    }
+
+    public List<ItemResponse> findItemByMember(Long memberId) {
+        return jpaQueryFactory
+                .select(getItemResponseConstructor())
+                .from(item)
+                .leftJoin(item.collection)
+                .leftJoin(item.member)
+                .where(item.member.memberId.eq(memberId))
+                .fetch();
     }
 
     private ConstructorExpression<ItemResponse> getItemResponseConstructor() {
