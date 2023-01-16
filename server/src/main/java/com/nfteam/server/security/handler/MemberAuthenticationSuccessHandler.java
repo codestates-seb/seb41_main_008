@@ -37,6 +37,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
                 .email(memberDetails.getEmail())
                 .role(memberDetails.getRole())
                 .lastLoginTime(memberDetails.getLastLoginTime())
+                .profileImage(memberDetails.getProfileImage())
                 .build();
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
