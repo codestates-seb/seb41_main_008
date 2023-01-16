@@ -1,4 +1,4 @@
-package com.nfteam.server.coin;
+package com.nfteam.server.coin.entity;
 
 import lombok.Builder;
 import lombok.Getter;
