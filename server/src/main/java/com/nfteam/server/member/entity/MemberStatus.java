@@ -23,4 +23,5 @@ public enum MemberStatus {
     public String getStatus() {
         return status;
     }
+
 }

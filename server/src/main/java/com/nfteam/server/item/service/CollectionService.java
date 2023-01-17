@@ -3,7 +3,9 @@ package com.nfteam.server.item.service;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
+import com.nfteam.server.dto.response.item.CollectionItemResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
+import com.nfteam.server.dto.response.item.MemberCollectionResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -114,4 +116,5 @@ public class CollectionService {
                 .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
     }
+
 }

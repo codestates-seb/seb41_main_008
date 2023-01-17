@@ -6,9 +6,8 @@ import lombok.Getter;
 public class MemberPatchRequest {
 
     private String nickname;
-
+    private String description;
     private String profileImageName;
-
     private String bannerImageName;
 
 }

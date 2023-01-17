@@ -32,8 +32,7 @@ public class TransActionService {
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     @Transactional
-    public Long savePurchaseRecord(TransActionCreateRequest transActionCreateRequest,
-                                   MemberDetails memberDetails) throws Exception {
+    public Long savePurchaseRecord(TransActionCreateRequest transActionCreateRequest, MemberDetails memberDetails) throws Exception {
         Item item = getItemByIdWithOwnerAndCredential(transActionCreateRequest.getItemId());
         ItemCollection collection = getCollectionByIdWithCoin(transActionCreateRequest.getCollectionId());
 

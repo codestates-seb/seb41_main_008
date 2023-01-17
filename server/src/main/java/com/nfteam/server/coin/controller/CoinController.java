@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class CoinController {
 
-    private final List<String> COIN = List.of("SOL", "BTC", "DOGE", "ETH", "ETC");
+    private static final List<String> COIN = List.of("SOL", "BTC", "DOGE", "ETH", "ETC");
     private final CoinService coinService;
 
     @Scheduled(cron = "0 0 4 25 * *")

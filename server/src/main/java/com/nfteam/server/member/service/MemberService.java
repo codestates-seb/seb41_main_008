@@ -41,6 +41,8 @@ public class MemberService {
         Member findMember = findVerifiedMember(memberId, email);
         Optional.ofNullable(memberPatchRequest.getNickname())
                 .ifPresent(name -> findMember.updateNickname(name));
+        Optional.ofNullable(memberPatchRequest.getDescription())
+                .ifPresent(desc -> findMember.updateDescription(desc));
         Optional.ofNullable(memberPatchRequest.getProfileImageName())
                 .ifPresent(profileImageName -> findMember.updateProfileImg(profileImageName));
         Optional.ofNullable(memberPatchRequest.getBannerImageName())
@@ -74,6 +76,5 @@ public class MemberService {
         Member findMember = findVerifiedMember(memberId, email);
         findMember.updateMemberStatusQuit();
     }
-
 
 }
