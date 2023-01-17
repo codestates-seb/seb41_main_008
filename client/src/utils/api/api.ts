@@ -7,6 +7,6 @@ export const logout = () => {
         RefreshToken: refreshToken,
       },
     })
-    .then(() => window.localStorage.removeItem('ACCESS_TOKEN'))
+    .then(() => window.localStorage.clear())
     .then(() => window.location.reload());
 };

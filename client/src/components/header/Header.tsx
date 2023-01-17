@@ -4,7 +4,7 @@ import MobileDropdown from './MobileDropdown';
 import MobileDropdownList from './MobileDropdownLIst';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { openModal } from '../../store/modalSlice';
 import {
   faBars,
@@ -14,7 +14,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { accessToken } from '../../utils/token';
 import { logout } from 'utils/api/api';
-
 const SearchInput = styled.input`
   display: flex;
   border: 1px solid black;
@@ -24,14 +23,15 @@ const SearchInput = styled.input`
   border: none;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 `;
-
 const Header = () => {
+  const profileImage = useAppSelector((state) => state.google?.profileImage);
+  console.log('헤더구글이미지', profileImage);
+  console.log(accessToken);
   const dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
   const visibleHandler = () => {
     setVisible(!visible);
   };
-
   return (
     <header className="flex justify-center  items-center font-bold z-50 p-4 sticky top-0 border-b-2 bg-white text-lg">
       <div className="flex gap-2 mr-2">
@@ -49,7 +49,7 @@ const Header = () => {
               <div className="w-8 h-8 ">
                 <img
                   className="object-cover w-full h-full rounded-full"
-                  src="https://i.seadn.io/gae/4_jjlcK-9NHUw0dlYseaQt1g5bKjgBuxvYMxrrFuArSBe-pbVxaLUDHqnio4hNgVBQUPpwMwOVDMnikYBLOmY5nfkj2vXlEHxKbzBXk?auto=format&w=1000"
+                  src={`${profileImage}`}
                   alt=""
                 />
               </div>
@@ -70,7 +70,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faCartShopping} />
           </button>
 
-          <button className="hidden max-[640px]:flex" onClick={visibleHandler}>
+          <button className="hidden max-[1040px]:flex" onClick={visibleHandler}>
             {visible ? (
               <FontAwesomeIcon icon={faXmark} />
             ) : (
