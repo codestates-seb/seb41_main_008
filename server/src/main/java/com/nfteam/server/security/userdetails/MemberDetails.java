@@ -15,6 +15,7 @@ public class MemberDetails extends Member implements UserDetails {
 
     private Long memberId;
     private String email;
+    private String password;
     private String nickname;
     private String role;
     private LocalDateTime lastLoginTime;
@@ -23,6 +24,7 @@ public class MemberDetails extends Member implements UserDetails {
     public MemberDetails(Member member) {
         this.memberId = member.getMemberId();
         this.email = member.getEmail();
+        this.password = member.getPassword();
         this.nickname = member.getNickname();
         this.role = member.getMemberRole().getValue();
         this.lastLoginTime = member.getLastLoginTime();
