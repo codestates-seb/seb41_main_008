@@ -55,4 +55,5 @@ public class MemberResponseDto {
                 .lastLogin(member.getLastLoginTime())
                 .build();
     }
+
 }

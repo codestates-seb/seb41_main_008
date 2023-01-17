@@ -115,11 +115,6 @@ public class ItemCollection extends BaseEntity {
         this.coin = coin;
     }
 
-    public void addItem(Item item) {
-        this.itemList.add(item);
-        item.assignCollection(this);
-    }
-
     public CollectionResponse toResponse() {
         return CollectionResponse.builder()
                 .collectionId(collectionId)
@@ -135,7 +130,7 @@ public class ItemCollection extends BaseEntity {
                 .build();
     }
 
-    public MemberCollectionResponse toUserResponse() {
+    public MemberCollectionResponse toMemberResponse() {
         return MemberCollectionResponse.builder()
                 .collectionId(collectionId)
                 .collectionName(collectionName)
@@ -147,4 +142,5 @@ public class ItemCollection extends BaseEntity {
                 .coinName(coin.getCoinName())
                 .build();
     }
+
 }

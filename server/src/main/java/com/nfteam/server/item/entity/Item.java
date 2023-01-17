@@ -1,7 +1,6 @@
 package com.nfteam.server.item.entity;
 
 import com.nfteam.server.common.audit.BaseEntity;
-import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -66,19 +65,6 @@ public class Item extends BaseEntity {
         this.itemPrice = itemPrice;
     }
 
-    public ItemResponse toResponseDto() {
-        return ItemResponse.builder()
-                .itemId(itemId)
-                .memberId(member.getMemberId())
-                .memberName(member.getNickname())
-                .itemName(itemName)
-                .itemImageName(itemImageName)
-                .itemDescription(itemDescription)
-                .onSale(onSale)
-                .itemPrice(itemPrice)
-                .build();
-    }
-
     public void assignItemCredential(ItemCredential itemCredential) {
         this.itemCredential = itemCredential;
         itemCredential.assignItem(this);
@@ -126,6 +112,5 @@ public class Item extends BaseEntity {
     public void updateSaleStatus(Boolean onSale) {
         this.onSale = onSale;
     }
-
 
 }

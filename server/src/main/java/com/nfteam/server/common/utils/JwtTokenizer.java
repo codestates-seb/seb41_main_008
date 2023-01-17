@@ -1,7 +1,7 @@
 package com.nfteam.server.common.utils;
 
-import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.exception.token.TokenNotValidateException;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
@@ -33,6 +33,7 @@ public class JwtTokenizer {
 
     public String generateAccessToken(MemberDetails memberDetails) {
         return Jwts.builder()
+                .claim("id", memberDetails.getMemberId())
                 .claim("email", memberDetails.getEmail())
                 .claim("nickname", memberDetails.getNickname())
                 .claim("role", memberDetails.getRole())
@@ -57,6 +58,7 @@ public class JwtTokenizer {
             throw new TokenNotValidateException("토큰에 권한 정보가 존재하지 않습니다.");
         }
         MemberDetails memberDetails = new MemberDetails(
+                (String) claims.get("id"),
                 (String) claims.get("email"),
                 (String) claims.get("nickname"),
                 (String) claims.get("role")
@@ -67,9 +69,7 @@ public class JwtTokenizer {
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
-        Date expiration = calendar.getTime();
-
-        return expiration;
+        return calendar.getTime();
     }
 
     public Claims getClaims(String jws) {

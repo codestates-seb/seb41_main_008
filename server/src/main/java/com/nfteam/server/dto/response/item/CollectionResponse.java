@@ -74,4 +74,5 @@ public class CollectionResponse {
     public void addItemResponseDtos(List<CollectionItemResponse> items) {
         this.itemList = items;
     }
+
 }

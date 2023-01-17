@@ -1,5 +1,6 @@
 package com.nfteam.server.dto.response.auth;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -14,10 +15,15 @@ public class GoogleUser {
     private String picture;
     private String locale;
 
-    public GoogleUser() {
-    }
-
-    public GoogleUser(String id, String email, Boolean verifiedEmail, String name, String givenName, String familyName, String picture, String locale) {
+    @Builder
+    public GoogleUser(String id,
+                      String email,
+                      Boolean verifiedEmail,
+                      String name,
+                      String givenName,
+                      String familyName,
+                      String picture,
+                      String locale) {
         this.id = id;
         this.email = email;
         this.verifiedEmail = verifiedEmail;
@@ -27,4 +33,5 @@ public class GoogleUser {
         this.picture = picture;
         this.locale = locale;
     }
+
 }

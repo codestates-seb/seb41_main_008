@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 public class MemberCollectionResponse {
-    // 유저 마이페이지 컬렉션 리스트
 
     // 컬렉션 기본 정보
     private Long collectionId;
@@ -40,4 +39,5 @@ public class MemberCollectionResponse {
         this.coinId = coinId;
         this.coinName = coinName;
     }
+
 }

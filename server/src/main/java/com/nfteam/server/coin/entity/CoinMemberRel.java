@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "coin_member_rel")
-public class CoinMemberRel extends BaseEntity  {
+public class CoinMemberRel extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

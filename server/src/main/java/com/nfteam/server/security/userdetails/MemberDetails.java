@@ -13,23 +13,24 @@ import java.util.List;
 @Getter
 public class MemberDetails extends Member implements UserDetails {
 
+    private Long memberId;
     private String email;
-    private String password;
     private String nickname;
     private String role;
     private LocalDateTime lastLoginTime;
     private String profileImageName;
 
     public MemberDetails(Member member) {
+        this.memberId = member.getMemberId();
         this.email = member.getEmail();
-        this.password = member.getPassword();
         this.nickname = member.getNickname();
         this.role = member.getMemberRole().getValue();
         this.lastLoginTime = member.getLastLoginTime();
         this.profileImageName = member.getProfileImageName();
     }
 
-    public MemberDetails(String email, String nickname, String role) {
+    public MemberDetails(String memberId, String email, String nickname, String role) {
+        this.memberId = Long.parseLong(memberId);
         this.email = email;
         this.nickname = nickname;
         this.role = role;
