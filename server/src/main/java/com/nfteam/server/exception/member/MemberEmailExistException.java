@@ -10,4 +10,5 @@ public class MemberEmailExistException extends NFTCustomException {
     public MemberEmailExistException(String email) {
         super(ExceptionCode.MEMBER_EMAIL_EXIST, String.format("%s - 중복된 이메일 : %s", message, email));
     }
+
 }

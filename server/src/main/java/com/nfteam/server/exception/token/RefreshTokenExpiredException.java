@@ -9,4 +9,5 @@ public class RefreshTokenExpiredException extends NFTCustomException {
     public RefreshTokenExpiredException() {
         super(ExceptionCode.TOKEN_EXPIRED, message);
     }
+
 }

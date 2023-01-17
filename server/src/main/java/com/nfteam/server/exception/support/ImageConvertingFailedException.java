@@ -10,4 +10,5 @@ public class ImageConvertingFailedException extends NFTCustomException {
     public ImageConvertingFailedException() {
         super(ExceptionCode.IMAGE_CONVERTING_FAILED, message);
     }
+
 }

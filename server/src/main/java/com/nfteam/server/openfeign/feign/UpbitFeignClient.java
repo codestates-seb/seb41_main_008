@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "upbit", url = "https://api.upbit.com/v1")
 public interface UpbitFeignClient {
+
     @GetMapping("/ticker")
     List<UpbitCoinPrice> getCoinPrice(@RequestParam("markets") String coin);
+
 }

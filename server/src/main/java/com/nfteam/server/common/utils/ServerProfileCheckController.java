@@ -30,4 +30,5 @@ public class ServerProfileCheckController {
     public String homeTest() {
         return "개발 서버 정상 동작 확인 테스트 - 종합 리팩토링 업로드";
     }
+
 }

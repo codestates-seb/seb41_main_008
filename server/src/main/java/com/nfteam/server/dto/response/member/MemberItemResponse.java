@@ -55,7 +55,7 @@ public class MemberItemResponse {
                 .collectionName(itemResponse.getCollectionName())
                 .coinId(itemResponse.getCoinId())
                 .coinName(itemResponse.getCoinName())
-                .coinWithdrawFee(itemResponse.getWithdrawlFee())
+                .coinWithdrawFee(itemResponse.getWithdrawFee())
                 .itemId(itemResponse.getItemId())
                 .itemName(itemResponse.getItemName())
                 .itemImageName(itemResponse.getItemImageName())
@@ -64,4 +64,5 @@ public class MemberItemResponse {
                 .itemPrice(itemResponse.getItemPrice())
                 .build();
     }
+
 }

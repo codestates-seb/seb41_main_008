@@ -13,6 +13,7 @@ import java.io.IOException;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FileService {
+
     private final S3ImageUploader s3ImageUploader;
 
     @Transactional
@@ -23,4 +24,5 @@ public class FileService {
     private String getExtension(MultipartFile multipartFile) {
         return multipartFile.getContentType().split("/")[1];
     }
+
 }

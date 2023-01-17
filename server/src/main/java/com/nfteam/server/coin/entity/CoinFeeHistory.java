@@ -1,25 +1,23 @@
 package com.nfteam.server.coin.entity;
 
-import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @Table(name = "coin_history")
 public class CoinFeeHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coin_id")
     private Long coinId;
 
-    @Column(name = "coin_name", nullable = false,length = 100)
+    @Column(name = "coin_name", nullable = false, length = 100)
     private String coinName;
 
     @Column(name = "withdrwal_fee", length = 400)

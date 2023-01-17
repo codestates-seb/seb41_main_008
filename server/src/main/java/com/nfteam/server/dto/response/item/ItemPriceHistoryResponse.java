@@ -13,8 +13,7 @@ public class ItemPriceHistoryResponse {
     private String transDate;
 
     @Builder
-    public ItemPriceHistoryResponse(Double transPrice,
-                                    LocalDateTime transDate) {
+    public ItemPriceHistoryResponse(Double transPrice, LocalDateTime transDate) {
         this.transPrice = transPrice;
         this.transDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(transDate);
     }

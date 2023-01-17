@@ -1,12 +1,12 @@
 package com.nfteam.server.auth.service;
 
 import com.nfteam.server.common.utils.JwtTokenizer;
-import com.nfteam.server.redis.repository.RedisRepository;
-import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.token.RefreshTokenExpiredException;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
+import com.nfteam.server.redis.repository.RedisRepository;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -48,4 +48,5 @@ public class AuthService {
             throw new RefreshTokenExpiredException();
         }
     }
+
 }

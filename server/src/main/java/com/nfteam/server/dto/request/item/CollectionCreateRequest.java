@@ -32,4 +32,5 @@ public class CollectionCreateRequest {
                 .bannerImgName(bannerImgName)
                 .build();
     }
+
 }
