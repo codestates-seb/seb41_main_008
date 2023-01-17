@@ -50,7 +50,7 @@ public class CollectionController {
 
     @GetMapping("/members/{memberId}")
     public ResponseEntity getUserCollection(@PathVariable("memberId") Long memberId) {
-        return new ResponseEntity<>(collectionService.getUserCollection(memberId), HttpStatus.OK);
+        return new ResponseEntity<>(collectionService.getMemberCollectionList(memberId), HttpStatus.OK);
     }
 
 }

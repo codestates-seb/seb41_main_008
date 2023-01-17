@@ -1,9 +1,9 @@
 package com.nfteam.server.item.entity;
 
+import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.audit.BaseEntity;
-import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.UserCollectionResponse;
+import com.nfteam.server.dto.response.item.MemberCollectionResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -135,8 +135,8 @@ public class ItemCollection extends BaseEntity {
                 .build();
     }
 
-    public UserCollectionResponse toUserResponse() {
-        return UserCollectionResponse.builder()
+    public MemberCollectionResponse toUserResponse() {
+        return MemberCollectionResponse.builder()
                 .collectionId(collectionId)
                 .collectionName(collectionName)
                 .description(description)

@@ -1,6 +1,6 @@
 package com.nfteam.server.transaction.entity;
 
-import com.nfteam.server.coin.Coin;
+import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.member.entity.Member;

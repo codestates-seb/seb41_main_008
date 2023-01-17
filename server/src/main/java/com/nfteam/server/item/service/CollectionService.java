@@ -1,12 +1,13 @@
 package com.nfteam.server.item.service;
 
+import com.nfteam.server.coin.entity.Coin;
+import com.nfteam.server.dto.response.item.CollectionItemResponse;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.dto.response.item.ItemResponse;
-import com.nfteam.server.dto.response.item.UserCollectionResponse;
+import com.nfteam.server.dto.response.item.MemberCollectionResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -80,8 +81,8 @@ public class CollectionService {
         List<Item> items = itemRepository.findItemsByCollectionId(collectionId);
         calcItemMetaInfo(items, response);
 
-        List<ItemResponse> itemResponses = items.stream()
-                .map(Item::toResponseDto)
+        List<CollectionItemResponse> itemResponses = items.stream()
+                .map(CollectionItemResponse::of)
                 .collect(Collectors.toList());
         response.addItemResponseDtos(itemResponses);
 
@@ -111,7 +112,7 @@ public class CollectionService {
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }
 
-    public List<UserCollectionResponse> getUserCollection(Long memberId) {
+    public List<MemberCollectionResponse> getMemberCollectionList(Long memberId) {
         return collectionRepository.findCollectionWithCoinByMemberId(memberId)
                 .stream().map(collection -> collection.toUserResponse())
                 .collect(Collectors.toList());

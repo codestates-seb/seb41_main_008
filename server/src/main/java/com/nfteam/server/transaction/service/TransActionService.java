@@ -1,6 +1,6 @@
 package com.nfteam.server.transaction.service;
 
-import com.nfteam.server.coin.Coin;
+import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.transaction.TransActionCreateRequest;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
