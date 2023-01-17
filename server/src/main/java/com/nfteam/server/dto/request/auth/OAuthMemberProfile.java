@@ -1,6 +1,5 @@
 package com.nfteam.server.dto.request.auth;
 
-import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.entity.MemberPlatform;
 import lombok.Getter;
 
