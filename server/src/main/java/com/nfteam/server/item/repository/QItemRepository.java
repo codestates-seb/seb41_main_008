@@ -54,5 +54,4 @@ public class QItemRepository {
                 item.itemPrice);
     }
 
-
 }

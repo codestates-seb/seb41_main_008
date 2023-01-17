@@ -23,4 +23,5 @@ public class MemberAccessDeniedHandler implements AccessDeniedHandler {
         ErrorResponder.sendErrorResponse(response, HttpStatus.FORBIDDEN);
         log.warn("Security - AccessDeniedException : {}", accessDeniedException.getMessage());
     }
+
 }

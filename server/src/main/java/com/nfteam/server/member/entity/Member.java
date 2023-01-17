@@ -31,6 +31,9 @@ public class Member extends BaseEntity {
     @Column(name = "nickname", length = 100)
     private String nickname;
 
+    @Column(name = "member_desc", length = 3000)
+    private String description;
+
     @Column(name = "profile_image_name", length = 2500)
     private String profileImageName;
 
@@ -80,6 +83,7 @@ public class Member extends BaseEntity {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+        this.description = "자기소개를 입력해주세요.";
         this.memberPlatform = MemberPlatform.HOME;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
@@ -93,6 +97,7 @@ public class Member extends BaseEntity {
         this.email = email;
         this.password = UUID.randomUUID().toString();
         this.nickname = nickname;
+        this.description = "자기소개를 입력해주세요.";
         this.memberPlatform = memberPlatform;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
@@ -111,6 +116,10 @@ public class Member extends BaseEntity {
 
     public void updateNickname(String name) {
         this.nickname = name;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
     }
 
     public void updateProfileImg(String profileImage) {

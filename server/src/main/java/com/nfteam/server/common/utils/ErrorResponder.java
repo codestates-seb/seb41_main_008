@@ -17,4 +17,5 @@ public class ErrorResponder {
         response.setStatus(status.value());
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
+
 }

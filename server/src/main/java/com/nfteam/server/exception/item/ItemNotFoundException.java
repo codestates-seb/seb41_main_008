@@ -10,4 +10,5 @@ public class ItemNotFoundException extends NFTCustomException {
     public ItemNotFoundException(Long itemId) {
         super(ExceptionCode.ITEM_NOT_FOUND, String.format("%s - 상품 아이디 : %d", message, itemId));
     }
+
 }

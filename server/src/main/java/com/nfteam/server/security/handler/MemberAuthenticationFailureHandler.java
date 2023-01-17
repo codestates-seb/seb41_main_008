@@ -18,7 +18,8 @@ import org.springframework.stereotype.Component;
 public class MemberAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
         ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
         log.error("Security - Authentication failed: {}", exception.getMessage());
     }

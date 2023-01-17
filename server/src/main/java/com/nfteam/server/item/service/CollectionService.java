@@ -77,7 +77,7 @@ public class CollectionService {
         ItemCollection itemCollection = getCollectionWithMemberAndCoin(collectionId);
         CollectionResponse response = itemCollection.toResponse();
 
-        List<Item> items = itemRepository.findItemsByCollectionId(collectionId);
+        List<Item> items = itemRepository.findItemsWithOwnerByCollectionId(collectionId);
         calcItemMetaInfo(items, response);
 
         List<CollectionItemResponse> itemResponses = items.stream()
@@ -113,7 +113,8 @@ public class CollectionService {
 
     public List<MemberCollectionResponse> getMemberCollectionList(Long memberId) {
         return collectionRepository.findCollectionWithCoinByMemberId(memberId)
-                .stream().map(collection -> collection.toUserResponse())
+                .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
     }
+
 }

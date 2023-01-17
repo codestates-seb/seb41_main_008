@@ -54,5 +54,4 @@ public class ItemController {
         return new ResponseEntity<>(itemService.getMemberItemList(memberId), HttpStatus.OK);
     }
 
-
 }

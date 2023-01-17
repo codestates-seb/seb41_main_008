@@ -39,4 +39,5 @@ public class ItemTradeHistoryResponse {
         this.coinWithdrawFee = coinWithdrawFee;
         this.transDate = transDate;
     }
+
 }

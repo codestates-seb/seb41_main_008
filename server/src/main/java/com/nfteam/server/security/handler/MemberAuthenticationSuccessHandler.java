@@ -2,9 +2,7 @@ package com.nfteam.server.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nfteam.server.dto.response.auth.LoginResponse;
-import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -20,10 +18,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class MemberAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
-    private final MemberRepository memberRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -46,4 +41,5 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(loginResponse));
     }
+
 }

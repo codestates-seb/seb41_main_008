@@ -14,6 +14,7 @@ public class MemberResponseDto {
     private Long memberId;
     private String email;
     private String nickname;
+    private String description;
     private MemberStatus memberStatus;
     private String profileImageName;
     private String bannerImageName;
@@ -25,6 +26,7 @@ public class MemberResponseDto {
     public MemberResponseDto(Long memberId,
                              String email,
                              String nickname,
+                             String description,
                              MemberStatus memberStatus,
                              String profileImageName,
                              String bannerImageName,
@@ -34,6 +36,7 @@ public class MemberResponseDto {
         this.memberId = memberId;
         this.email = email;
         this.nickname = nickname;
+        this.description = description;
         this.memberStatus = memberStatus;
         this.profileImageName = profileImageName;
         this.bannerImageName = bannerImageName;
@@ -47,6 +50,7 @@ public class MemberResponseDto {
                 .memberId(member.getMemberId())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
+                .description(member.getDescription())
                 .memberStatus(member.getMemberStatus())
                 .profileImageName(member.getProfileImageName())
                 .bannerImageName(member.getBannerImageName())
@@ -55,4 +59,5 @@ public class MemberResponseDto {
                 .lastLogin(member.getLastLoginTime())
                 .build();
     }
+
 }

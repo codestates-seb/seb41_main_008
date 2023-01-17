@@ -23,4 +23,5 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
         Exception exception = (Exception) request.getAttribute("exception");
         log.warn("Security - Unauthorized Exception: {}", exception != null ? exception.getMessage() : authException.getMessage());
     }
+
 }

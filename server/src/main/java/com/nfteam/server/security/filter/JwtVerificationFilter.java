@@ -67,4 +67,5 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private boolean isRefreshRequest(HttpServletRequest request) {
         return request.getRequestURI().contains("/auth/reissue");
     }
+
 }

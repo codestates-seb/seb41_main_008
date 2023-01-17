@@ -10,4 +10,5 @@ public class ItemCollectionNotFoundException extends NFTCustomException {
     public ItemCollectionNotFoundException(Long collectionId) {
         super(ExceptionCode.ITEM_COLLECTION_NOT_FOUND, String.format("%s - 컬렉션 아이디 : %d", message, collectionId));
     }
+
 }

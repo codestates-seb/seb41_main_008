@@ -14,13 +14,13 @@ public class ItemResponse {
     private String collectionName;
 
     // 아이템 현재 소유자 정보
-    private Long memberId;
-    private String memberName;
+    private Long ownerId;
+    private String ownerName;
 
     // 거래 가능 코인 정보
     private Long coinId;
     private String coinName;
-    private Double withdrawlFee;
+    private Double withdrawFee;
 
     // 아이템 정보
     private Long itemId;
@@ -40,11 +40,11 @@ public class ItemResponse {
     @QueryProjection
     public ItemResponse(Long collectionId,
                         String collectionName,
-                        Long memberId,
-                        String memberName,
+                        Long ownerId,
+                        String ownerName,
                         Long coinId,
                         String coinName,
-                        Double withdrawlFee,
+                        Double withdrawFee,
                         Long itemId,
                         String itemName,
                         String itemImageName,
@@ -53,11 +53,11 @@ public class ItemResponse {
                         Double itemPrice) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
-        this.memberId = memberId;
-        this.memberName = memberName;
+        this.ownerId = ownerId;
+        this.ownerName = ownerName;
         this.coinId = coinId;
         this.coinName = coinName;
-        this.withdrawlFee = withdrawlFee;
+        this.withdrawFee = withdrawFee;
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;

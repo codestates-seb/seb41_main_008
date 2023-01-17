@@ -40,7 +40,11 @@ public class Coin {
         this.withdrawlFee = withdrawlFee;
     }
 
-    public void changeWithdrawlFee(Double fee) {
-        this.withdrawlFee = fee;
+    public void changeCoinName(final String coinName) {
+        this.coinName = coinName;
+    }
+
+    public void changeWithdrawlFee(final double withdrawlFee) {
+        this.withdrawlFee = withdrawlFee;
     }
 }

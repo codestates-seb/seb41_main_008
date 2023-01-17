@@ -68,4 +68,5 @@ public class MemberController {
         memberService.deleteMember(memberId, memberDetails.getEmail());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

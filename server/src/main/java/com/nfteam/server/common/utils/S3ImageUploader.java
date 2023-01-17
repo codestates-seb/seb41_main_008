@@ -21,19 +21,16 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class S3ImageUploader {
-    private final AmazonS3Client amazonS3Client;
 
+    private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public FileResponse uploadImage(MultipartFile file, String extension) throws IOException {
         File convertedFile = convertFile(file).orElseThrow(ImageConvertingFailedException::new);
-
         String fileName = UUID.randomUUID() + "." + extension;
         String fileUrl = pushToS3(convertedFile, fileName);
-
         deleteLocalFile(convertedFile);
-
         return new FileResponse(fileUrl, fileName);
     }
 
@@ -63,4 +60,5 @@ public class S3ImageUploader {
             log.warn("로컬 파일 삭제 실패");
         }
     }
+
 }

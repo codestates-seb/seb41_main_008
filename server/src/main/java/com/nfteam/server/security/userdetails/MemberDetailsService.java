@@ -27,4 +27,5 @@ public class MemberDetailsService implements UserDetailsService {
         findMember.updateLastLoginTime();
         return new MemberDetails(findMember);
     }
+
 }
