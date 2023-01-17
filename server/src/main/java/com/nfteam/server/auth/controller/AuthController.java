@@ -21,9 +21,9 @@ public class AuthController {
 
     @GetMapping("/login/{socialType}")
     public ResponseEntity<LoginResponse> oauthLogin(@PathVariable(name = "socialType") String socialType,
-                                                    @RequestParam String code) {
+                                                    @RequestHeader(value = "googleToken") String token) {
         MemberPlatform memberPlatform = MemberPlatform.valueOf(socialType.toUpperCase());
-        SocialLoginResponse socialLoginResponse = oAuth2Service.login(code, memberPlatform);
+        SocialLoginResponse socialLoginResponse = oAuth2Service.login(token, memberPlatform);
 
         String email = socialLoginResponse.getLoginResponse().getEmail();
         String accessToken = socialLoginResponse.getAccessToken();
