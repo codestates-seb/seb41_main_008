@@ -4,18 +4,17 @@ import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.coin.entity.CoinFeeHistory;
 import com.nfteam.server.coin.repository.CoinHistoryRepository;
 import com.nfteam.server.coin.repository.CoinRepository;
-import com.nfteam.server.exception.member.MemberNotFoundException;
-import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.openfeign.feign.UpbitFeeFeignClient;
 import com.nfteam.server.openfeign.feign.UpbitFeignClient;
 import com.nfteam.server.openfeign.model.UpbitEachWithdrawalFee;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CoinService {
