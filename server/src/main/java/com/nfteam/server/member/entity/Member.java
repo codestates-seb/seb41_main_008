@@ -31,8 +31,11 @@ public class Member extends BaseEntity {
     @Column(name = "nickname", length = 100)
     private String nickname;
 
-    @Column(name = "profile_image", length = 2500)
-    private String profileImage;
+    @Column(name = "profile_image_name", length = 2500)
+    private String profileImageName;
+
+    @Column(name = "banner_image_name", length = 2500)
+    private String bannerImageName;
 
     @Column(name = "last_login")
     private LocalDateTime lastLoginTime;
@@ -75,12 +78,13 @@ public class Member extends BaseEntity {
     // 소셜 로그인용 생성자
     public Member(String email, String nickname, MemberPlatform memberPlatform) {
         this.email = email;
+        this.password = UUID.randomUUID().toString();
         this.nickname = nickname;
         this.memberPlatform = memberPlatform;
-        this.password = UUID.randomUUID().toString();
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImage = "default-profile-image";
+        this.profileImageName = "default-user-profile-image";
+        this.bannerImageName = "default-user-profile-banner";
         this.lastLoginTime = LocalDateTime.now();
     }
 
@@ -92,7 +96,8 @@ public class Member extends BaseEntity {
         this.memberPlatform = MemberPlatform.HOME;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImage = "default-profile-image";
+        this.profileImageName = "default-user-profile-image";
+        this.bannerImageName = "default-user-profile-banner";
         this.lastLoginTime = LocalDateTime.now();
     }
 
@@ -109,10 +114,11 @@ public class Member extends BaseEntity {
     }
 
     public void updateProfileImg(String profileImage) {
-        this.profileImage = profileImage;
+        this.profileImageName = profileImage;
     }
 
-    public void updateMemberPlatform(MemberPlatform memberPlatform) {
-        this.memberPlatform = memberPlatform;
+    public void updateBannerImg(String bannerImage) {
+        this.bannerImageName = bannerImage;
     }
+
 }

@@ -28,7 +28,7 @@ public class LoginResponse {
                 .email(member.getEmail())
                 .role(member.getMemberRole().getValue())
                 .lastLoginTime(member.getLastLoginTime())
-                .profileImage(member.getProfileImage())
+                .profileImage(member.getProfileImageName())
                 .build();
     }
 

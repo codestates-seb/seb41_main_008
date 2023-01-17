@@ -26,7 +26,7 @@ public class MemberDetails extends Member implements UserDetails {
         this.nickname = member.getNickname();
         this.role = member.getMemberRole().getValue();
         this.lastLoginTime = member.getLastLoginTime();
-        this.profileImage = member.getProfileImage();
+        this.profileImage = member.getProfileImageName();
     }
 
     public MemberDetails(String email, String nickname, String role) {

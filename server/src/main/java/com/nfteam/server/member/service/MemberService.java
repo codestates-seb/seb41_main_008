@@ -1,7 +1,7 @@
 package com.nfteam.server.member.service;
 
-import com.nfteam.server.dto.request.member.MemberPatchDto;
-import com.nfteam.server.dto.request.member.MemberPostDto;
+import com.nfteam.server.dto.request.member.MemberCreateRequest;
+import com.nfteam.server.dto.request.member.MemberPatchRequest;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -23,32 +23,11 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Member createMember(MemberPostDto memberPostDto) {
-        verifyExistsEmail(memberPostDto.getEmail());
-        String encryptedPassword = passwordEncoder.encode(memberPostDto.getPassword());
-        Member member = new Member(memberPostDto.getEmail(), encryptedPassword, memberPostDto.getNickname());
-        return memberRepository.save(member);
-    }
-
-    @Transactional
-    public Member updateMember(MemberPatchDto memberPatchDto, Long memberId, String email) {
-        Member findMember = findVerifiedMember(memberId, email);
-        Optional.ofNullable(memberPatchDto.getNickname())
-                .ifPresent(name -> findMember.updateNickname(name));
-        Optional.ofNullable(memberPatchDto.getProfileImageName())
-                .ifPresent(profileImageName -> findMember.updateProfileImg(profileImageName));
-        return findMember;
-    }
-
-    public Member findMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(() ->
-                new MemberNotFoundException(memberId));
-    }
-
-    @Transactional
-    public void deleteMember(Long memberId, String email) {
-        Member findMember = findVerifiedMember(memberId, email);
-        findMember.updateMemberStatusQuit();
+    public Long createMember(MemberCreateRequest memberCreateRequest) {
+        verifyExistsEmail(memberCreateRequest.getEmail());
+        String encryptedPassword = passwordEncoder.encode(memberCreateRequest.getPassword());
+        Member member = new Member(memberCreateRequest.getEmail(), encryptedPassword, memberCreateRequest.getNickname());
+        return memberRepository.save(member).getMemberId();
     }
 
     private void verifyExistsEmail(String email) {
@@ -57,9 +36,21 @@ public class MemberService {
         }
     }
 
+    @Transactional
+    public Long updateMember(MemberPatchRequest memberPatchRequest, Long memberId, String email) {
+        Member findMember = findVerifiedMember(memberId, email);
+        Optional.ofNullable(memberPatchRequest.getNickname())
+                .ifPresent(name -> findMember.updateNickname(name));
+        Optional.ofNullable(memberPatchRequest.getProfileImageName())
+                .ifPresent(profileImageName -> findMember.updateProfileImg(profileImageName));
+        Optional.ofNullable(memberPatchRequest.getBannerImageName())
+                .ifPresent(bannerImageName -> findMember.updateProfileImg(bannerImageName));
+        return findMember.getMemberId();
+    }
+
     public Member findVerifiedMember(Long memberId, String email) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(() ->
-                new MemberNotFoundException(memberId));
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
 
         if (findMember.getEmail().equals(email)) {
             return findMember;
@@ -67,4 +58,19 @@ public class MemberService {
             throw new NotAuthorizedException();
         }
     }
+
+    public Member findMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    }
+
+    @Transactional
+    public void deleteMember(Long memberId, String email) {
+        Member findMember = findVerifiedMember(memberId, email);
+        findMember.updateMemberStatusQuit();
+    }
+
+
+
+
 }
