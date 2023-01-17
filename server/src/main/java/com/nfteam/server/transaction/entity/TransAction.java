@@ -49,4 +49,5 @@ public class TransAction extends BaseEntity {
         this.coin = coin;
         this.transPrice = transPrice;
     }
+
 }

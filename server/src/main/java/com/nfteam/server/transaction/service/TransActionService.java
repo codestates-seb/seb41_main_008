@@ -34,14 +34,14 @@ public class TransActionService {
     @Transactional
     public Long savePurchaseRecord(TransActionCreateRequest transActionCreateRequest,
                                    MemberDetails memberDetails) throws Exception {
-        Item item = findItemById(transActionCreateRequest.getItemId());
-        ItemCollection collection = findCollectionById(transActionCreateRequest.getCollectionId());
+        Item item = getItemByIdWithOwnerAndCredential(transActionCreateRequest.getItemId());
+        ItemCollection collection = getCollectionByIdWithCoin(transActionCreateRequest.getCollectionId());
 
         Member seller = item.getMember();
         Member buyer = getMemberByEmail(memberDetails.getEmail());
         Coin coin = collection.getCoin();
 
-        // 판매가능 상품 체크
+        // 판매 가능 상품 체크
         checkSaleStatus(item.getOnSale());
         // 상품 컬렉션 정보 검증
         checkItemCollectionValidate(item.getCollection().getCollectionId(), collection.getCollectionId());
@@ -68,21 +68,14 @@ public class TransActionService {
         return transActionRepository.save(transAction).getTransId();
     }
 
-    private void checkItemCollectionValidate(Long itemCollectionId, Long requestCollectionId) {
-        if (itemCollectionId != requestCollectionId) {
-            throw new TransRecordNotValidException("아이템 소속 컬렉션 정보가 올바르지 않습니다.");
-        }
-    }
-
-    private Item findItemById(String itemId) {
+    private Item getItemByIdWithOwnerAndCredential(String itemId) {
         return itemRepository.findItemWithOwnerAndCredential(Long.parseLong(itemId))
                 .orElseThrow(() -> new ItemNotFoundException(Long.parseLong(itemId)));
     }
 
-    private ItemCollection findCollectionById(String collectionId) {
-        Long id = Long.parseLong(collectionId);
-        return collectionRepository.findCollectionWithCoin(id)
-                .orElseThrow(() -> new ItemCollectionNotFoundException(id));
+    private ItemCollection getCollectionByIdWithCoin(String collectionId) {
+        return collectionRepository.findCollectionWithCoin(Long.parseLong(collectionId))
+                .orElseThrow(() -> new ItemCollectionNotFoundException(Long.parseLong(collectionId)));
     }
 
     private Member getMemberByEmail(String email) {
@@ -111,6 +104,12 @@ public class TransActionService {
             // 거래 불가 처리
             item.updateSaleStatus(false);
             throw new TransRecordNotValidException("거래 수단 코인이 올바르지 않습니다.");
+        }
+    }
+
+    private void checkItemCollectionValidate(Long itemCollectionId, Long requestCollectionId) {
+        if (itemCollectionId != requestCollectionId) {
+            throw new TransRecordNotValidException("아이템 소속 컬렉션 정보가 올바르지 않습니다.");
         }
     }
 
