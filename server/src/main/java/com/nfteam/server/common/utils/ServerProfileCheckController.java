@@ -28,6 +28,6 @@ public class ServerProfileCheckController {
 
     @GetMapping
     public String homeTest() {
-        return "개발 서버 정상 동작 확인 테스트 - Oauth 변경사항 반영 재배포 22";
+        return "개발 서버 정상 동작 확인 테스트 - 파일업로드 설정 수정";
     }
 }
