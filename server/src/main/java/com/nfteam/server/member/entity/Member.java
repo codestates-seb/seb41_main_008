@@ -75,12 +75,12 @@ public class Member extends BaseEntity {
         this.memberId = memberId;
     }
 
-    // 소셜 로그인용 생성자
-    public Member(String email, String nickname, MemberPlatform memberPlatform) {
+    // 신규 회원용 생성자
+    public Member(String email, String password, String nickname) {
         this.email = email;
-        this.password = UUID.randomUUID().toString();
+        this.password = password;
         this.nickname = nickname;
-        this.memberPlatform = memberPlatform;
+        this.memberPlatform = MemberPlatform.HOME;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
         this.profileImageName = "default-user-profile-image";
@@ -88,12 +88,12 @@ public class Member extends BaseEntity {
         this.lastLoginTime = LocalDateTime.now();
     }
 
-    // 신규 회원용 생성자
-    public Member(String email, String password, String nickname) {
+    // 소셜 로그인용 생성자
+    public Member(String email, String nickname, MemberPlatform memberPlatform) {
         this.email = email;
-        this.password = password;
+        this.password = UUID.randomUUID().toString();
         this.nickname = nickname;
-        this.memberPlatform = MemberPlatform.HOME;
+        this.memberPlatform = memberPlatform;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
         this.profileImageName = "default-user-profile-image";

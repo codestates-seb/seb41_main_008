@@ -44,7 +44,7 @@ public class MemberService {
         Optional.ofNullable(memberPatchRequest.getProfileImageName())
                 .ifPresent(profileImageName -> findMember.updateProfileImg(profileImageName));
         Optional.ofNullable(memberPatchRequest.getBannerImageName())
-                .ifPresent(bannerImageName -> findMember.updateProfileImg(bannerImageName));
+                .ifPresent(bannerImageName -> findMember.updateBannerImg(bannerImageName));
         return findMember.getMemberId();
     }
 

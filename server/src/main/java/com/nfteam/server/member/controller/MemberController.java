@@ -4,7 +4,8 @@ import com.nfteam.server.dto.request.member.MemberCreateRequest;
 import com.nfteam.server.dto.request.member.MemberPatchRequest;
 import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.dto.response.member.MemberResponseDto;
-import com.nfteam.server.member.entity.Member;
+import com.nfteam.server.item.service.CollectionService;
+import com.nfteam.server.item.service.ItemService;
 import com.nfteam.server.member.service.MemberService;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ import javax.validation.constraints.Positive;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ItemService itemService;
+    private final CollectionService collectionService;
 
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberCreateRequest memberCreateRequest) {
@@ -39,9 +42,8 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") Long memberId) {
-        return new ResponseEntity<>(
-                MemberResponseDto.of(memberService.findMember(memberId)),
-                HttpStatus.OK);
+        MemberResponseDto memberResponseDto = MemberResponseDto.of(memberService.findMember(memberId));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
