@@ -5,7 +5,7 @@ import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.ItemResponseDto;
+import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.dto.response.item.UserCollectionResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
@@ -35,14 +35,13 @@ public class CollectionService {
     @Transactional
     public Long save(CollectionCreateRequest request, MemberDetails memberDetails) {
         ItemCollection itemCollection = request.toCollection();
-        Member member = findMember(memberDetails.getEmail());
+        Member member = findMemberByEmail(memberDetails.getEmail());
         itemCollection.assignMember(member);
         itemCollection.assignCoin(new Coin(Long.parseLong(request.getCoinId())));
-
         return collectionRepository.save(itemCollection).getCollectionId();
     }
 
-    private Member findMember(String email) {
+    private Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberNotFoundException(email));
     }
@@ -50,7 +49,7 @@ public class CollectionService {
     @Transactional
     public Long update(Long collectionId, CollectionPatchRequest request, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
-        checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
+        checkValidAuth(itemCollection.getOwner().getEmail(), memberDetails.getEmail());
         itemCollection.update(request.toCollection());
 
         return itemCollection.getCollectionId();
@@ -68,29 +67,31 @@ public class CollectionService {
     }
 
     @Transactional
-    public Long delete(Long collectionId, MemberDetails memberDetails) {
+    public void delete(Long collectionId, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
-        checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
+        checkValidAuth(itemCollection.getOwner().getEmail(), memberDetails.getEmail());
         collectionRepository.deleteById(collectionId);
-
-        return itemCollection.getCollectionId();
     }
 
     public CollectionResponse getCollection(Long collectionId) {
-        ItemCollection itemCollection = collectionRepository.findCollectionWithMemberAndCoin(collectionId)
-                .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
+        ItemCollection itemCollection = getCollectionWithMemberAndCoin(collectionId);
         CollectionResponse response = itemCollection.toResponse();
 
         List<Item> items = itemRepository.findItemsByCollectionId(collectionId);
         calcItemMetaInfo(items, response);
 
-        List<ItemResponseDto> itemResponseDtos = items.stream()
+        List<ItemResponse> itemResponses = items.stream()
                 .map(Item::toResponseDto)
                 .collect(Collectors.toList());
-        itemResponseDtos.forEach(r -> r.addCollectionInfo(itemCollection));
-        response.addItemResponseDtos(itemResponseDtos);
+//        itemResponses.forEach(r -> r.addCollectionInfo(itemCollection));
+        response.addItemResponseDtos(itemResponses);
 
         return response;
+    }
+
+    private ItemCollection getCollectionWithMemberAndCoin(Long collectionId) {
+        return collectionRepository.findCollectionWithMemberAndCoin(collectionId)
+                .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
     }
 
     private void calcItemMetaInfo(List<Item> items, CollectionResponse response) {
@@ -106,7 +107,7 @@ public class CollectionService {
                 .mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
 
         Long ownerCount = items.stream()
-                .map(i -> i.getMember()).distinct().count();
+                .map(i -> i.getOwner()).distinct().count();
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }

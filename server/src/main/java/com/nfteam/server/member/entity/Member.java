@@ -64,7 +64,7 @@ public class Member extends BaseEntity {
     private List<ItemCollection> collectionList = new ArrayList<>();
 
     // 멤버 소유 NFT 아이템 리스트
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "owner")
     private List<Item> itemList = new ArrayList<>();
 
     public Member() {

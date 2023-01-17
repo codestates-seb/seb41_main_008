@@ -1,5 +1,6 @@
 package com.nfteam.server.item.service;
 
+import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemPatchRequest;
@@ -26,12 +27,13 @@ public class ItemService {
     private final CollectionRepository collectionRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+    private final QItemRepository qItemRepository;
 
     @Transactional
-    public Long save(ItemCreateRequest request, MemberDetails memberDetails) {
-        Item item = request.toItem();
+    public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) {
+        Item item = itemCreateRequest.toItem();
         item.assignMember(getMemberByEmail(memberDetails.getEmail()));
-        item.assignCollection(getItemCollectionById(request.getItemCollectionId()));
+        item.assignCollection(getItemCollectionById(itemCreateRequest.getItemCollectionId()));
         itemRepository.save(item);
         return item.getItemId();
     }
@@ -47,11 +49,16 @@ public class ItemService {
     }
 
     @Transactional
-    public Long update(Long itemId, ItemPatchRequest request, MemberDetails memberDetails) {
+    public Long update(Long itemId, ItemPatchRequest itemPatchRequest, MemberDetails memberDetails) {
         Item item = findItem(itemId);
-        checkValidAuth(item.getMember().getEmail(), memberDetails.getEmail());
-        item.update(request.toItem());
+        checkValidAuth(item.getOwner().getEmail(), memberDetails.getEmail());
+        item.update(itemPatchRequest.toItem());
         return item.getItemId();
+    }
+
+    private Item findItem(Long itemId) {
+        return itemRepository.findItemWithOwner(itemId).orElseThrow(
+                () -> new ItemNotFoundException(itemId));
     }
 
     private void checkValidAuth(String email, String authEmail) {
@@ -60,21 +67,15 @@ public class ItemService {
         }
     }
 
-    private Item findItem(Long itemId) {
-        return itemRepository.findById(itemId).orElseThrow(
-                () -> new ItemNotFoundException(itemId));
-    }
-
     @Transactional
     public void delete(Long itemId, MemberDetails memberDetails) {
         Item findItem = findItem(itemId);
-        checkValidAuth(findItem.getMember().getEmail(), memberDetails.getEmail());
+        checkValidAuth(findItem.getOwner().getEmail(), memberDetails.getEmail());
         itemRepository.deleteById(itemId);
     }
 
-
     public ItemResponse getItem(Long itemId) {
-
-        return null;
+        ItemResponse itemResponse = qItemRepository.findItem(itemId);
+        return itemResponse;
     }
 }
