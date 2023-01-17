@@ -7,4 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CoinRepository extends JpaRepository<Coin,Long> {
     Optional<Coin> findByCoinName(String coinName);
+
+    Optional<Coin> findByCurrentPrice(String coinName);
+
+    Optional<Coin> findByCoinId(Long coinId);
 }
