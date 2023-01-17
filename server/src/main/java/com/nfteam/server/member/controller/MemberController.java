@@ -1,56 +1,71 @@
 package com.nfteam.server.member.controller;
 
-import com.nfteam.server.security.userdetails.MemberDetails;
-import com.nfteam.server.dto.request.member.MemberPatchDto;
-import com.nfteam.server.dto.request.member.MemberPostDto;
+import com.nfteam.server.dto.request.member.MemberCreateRequest;
+import com.nfteam.server.dto.request.member.MemberPatchRequest;
+import com.nfteam.server.dto.response.common.SingleIdResponse;
+import com.nfteam.server.dto.response.item.ItemResponse;
+import com.nfteam.server.dto.response.item.MemberCollectionResponse;
+import com.nfteam.server.dto.response.member.MemberMyPageResponseDto;
 import com.nfteam.server.dto.response.member.MemberResponseDto;
+import com.nfteam.server.item.service.CollectionService;
+import com.nfteam.server.item.service.ItemService;
 import com.nfteam.server.member.entity.Member;
-import com.nfteam.server.member.mapper.MemberMapper;
 import com.nfteam.server.member.service.MemberService;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/members")
-@Validated
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberMapper mapper;
+    private final ItemService itemService;
+    private final CollectionService collectionService;
 
     @PostMapping
-    public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
-        Member createdMember = memberService.createMember(memberPostDto);
-        return new ResponseEntity<>(MemberResponseDto.of(createdMember), HttpStatus.CREATED);
+    public ResponseEntity postMember(@Valid @RequestBody MemberCreateRequest memberCreateRequest) {
+        Long savedId = memberService.createMember(memberCreateRequest);
+        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.CREATED.name(), savedId), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@Valid @PathVariable("member-id") Long memberId,
-                                      @RequestBody MemberPatchDto memberPatchDto,
+    public ResponseEntity patchMember(@PathVariable("member-id") Long memberId,
+                                      @RequestBody MemberPatchRequest memberPatchRequest,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
-        Member updatedMember = memberService.updateMember(memberPatchDto, memberId, memberDetails.getEmail());
-        return new ResponseEntity<>(MemberResponseDto.of(updatedMember), HttpStatus.CREATED);
+        Long updatedId = memberService.updateMember(memberPatchRequest, memberId, memberDetails.getEmail());
+        return new ResponseEntity<>(new SingleIdResponse(HttpStatus.OK.name(), updatedId), HttpStatus.OK);
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@Positive @PathVariable("member-id") Long memberId) {
-        Member member = memberService.findMember(memberId);
-        return new ResponseEntity<>(MemberResponseDto.of(member), HttpStatus.OK);
+    public ResponseEntity getMember(@PathVariable("member-id") Long memberId) {
+        MemberResponseDto member = MemberResponseDto.of(memberService.findMember(memberId));
+        List<ItemResponse> items = itemService.getMemberItemList(memberId);
+        List<MemberCollectionResponse> collections = collectionService.getMemberCollectionList(memberId);
+        return new ResponseEntity<>(new MemberMyPageResponseDto(member, items, collections), HttpStatus.OK);
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity getMyPage(@AuthenticationPrincipal MemberDetails memberDetails) {
+        Member findMember = memberService.findMemberByEmail(memberDetails.getEmail());
+        MemberResponseDto member = MemberResponseDto.of(findMember);
+        List<ItemResponse> items = itemService.getMemberItemList(findMember.getMemberId());
+        List<MemberCollectionResponse> collections = collectionService.getMemberCollectionList(findMember.getMemberId());
+        return new ResponseEntity<>(new MemberMyPageResponseDto(member, items, collections), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId,
                                        @AuthenticationPrincipal MemberDetails memberDetails) {
-        String email = memberDetails.getEmail();
-        memberService.deleteMember(memberId, email);
+        memberService.deleteMember(memberId, memberDetails.getEmail());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

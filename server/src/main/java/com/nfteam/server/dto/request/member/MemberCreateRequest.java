@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class MemberPostDto {
+public class MemberCreateRequest {
 
     @Email
     @NotBlank(message = "이메일은 필수값 입니다.")

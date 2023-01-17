@@ -10,13 +10,13 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 public class MemberResponseDto {
-    //TODO: cartList, collectionList 추가
 
     private Long memberId;
     private String email;
     private String nickname;
     private MemberStatus memberStatus;
     private String profileImageName;
+    private String bannerImageName;
     private String createdDate;
     private String modifiedDate;
     private String lastLogin;
@@ -27,6 +27,7 @@ public class MemberResponseDto {
                              String nickname,
                              MemberStatus memberStatus,
                              String profileImageName,
+                             String bannerImageName,
                              LocalDateTime createdDate,
                              LocalDateTime modifiedDate,
                              LocalDateTime lastLogin) {
@@ -35,18 +36,20 @@ public class MemberResponseDto {
         this.nickname = nickname;
         this.memberStatus = memberStatus;
         this.profileImageName = profileImageName;
+        this.bannerImageName = bannerImageName;
         this.createdDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(createdDate);
         this.modifiedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(modifiedDate);
         this.lastLogin = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(lastLogin);
     }
 
-    public static MemberResponseDto of(Member member){
+    public static MemberResponseDto of(Member member) {
         return MemberResponseDto.builder()
                 .memberId(member.getMemberId())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .memberStatus(member.getMemberStatus())
-                .profileImageName(member.getProfileImage())
+                .profileImageName(member.getProfileImageName())
+                .bannerImageName(member.getBannerImageName())
                 .createdDate(member.getCreatedDate())
                 .modifiedDate(member.getModifiedDate())
                 .lastLogin(member.getLastLoginTime())
