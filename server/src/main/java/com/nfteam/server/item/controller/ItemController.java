@@ -24,7 +24,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity create(@RequestBody @Valid ItemCreateRequest itemCreateRequest,
-                                 @AuthenticationPrincipal MemberDetails memberDetails) {
+                                 @AuthenticationPrincipal MemberDetails memberDetails) throws Exception {
         Long createdId = itemService.save(itemCreateRequest, memberDetails);
         return new ResponseEntity<>(new SingleIdResponse(HttpStatus.CREATED.name(), createdId), HttpStatus.CREATED);
     }

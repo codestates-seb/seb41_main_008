@@ -25,29 +25,31 @@ public class ItemCredential {
 
     // 상품 거래 내역 암호화 문자열
     @Column(name = "trans_encryption", nullable = false, length = 2000)
-    private String transEncryption;
+    private String transEncryption = "";
 
     protected ItemCredential() {
     }
 
-    @Builder
-    public ItemCredential(Long credentialId,
-                          String itemCode,
-                          String transEncryption) {
-        this.credentialId = credentialId;
+    public ItemCredential(String itemCode, String transEncryption) {
         this.itemCode = itemCode;
         this.transEncryption = transEncryption;
+    }
+
+    @Builder
+    public ItemCredential(Long credentialId, Item item, String itemCode, String transEncryption) {
+        this.credentialId = credentialId;
         this.item = item;
+        this.itemCode = itemCode;
+        this.transEncryption = transEncryption;
     }
 
     public void assignItem(Item item) {
         this.item = item;
     }
 
-    private String createItemHashCode(String imgUrl) {
-        // 암호화 하는 라이브러리 찾기
-        return imgUrl;
+    public void addNewTransEncryptionRecord(String record) {
+        this.transEncryption += ",";
+        this.transEncryption += record;
     }
-
 
 }
