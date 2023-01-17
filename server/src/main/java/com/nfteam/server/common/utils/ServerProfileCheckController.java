@@ -28,6 +28,6 @@ public class ServerProfileCheckController {
 
     @GetMapping
     public String homeTest() {
-        return "개발 서버 정상 동작 확인 테스트 - 파일업로드 설정 수정";
+        return "개발 서버 정상 동작 확인 테스트 - 종합 리팩토링 업로드";
     }
 }
