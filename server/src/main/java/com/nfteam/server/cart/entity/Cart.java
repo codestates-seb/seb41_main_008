@@ -2,6 +2,7 @@ package com.nfteam.server.cart.entity;
 
 import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -30,13 +31,13 @@ public class Cart extends BaseEntity {
     @OneToMany(mappedBy = "cart")
     private List<CartItemRel> itemList = new ArrayList<>();
 
-    protected Cart() {
-    }
-
     // 카트 주인 설정
     public void assignOwner(Member member) {
         this.member = member;
         member.getCartList().add(this);
+    }
+    public void changePaymentYn(Boolean paymentYn){
+        this.paymentYn = paymentYn;
     }
 
 }
