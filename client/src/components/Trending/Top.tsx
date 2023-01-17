@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Home = () => {
   const [activeTab] = useState('trending');
@@ -27,7 +27,7 @@ const Home = () => {
               <span
                 className={`material-symbols-outlined ${styles.btnExpandIcon}`}
               >
-                <ExpandMoreIcon />
+                {/* <ExpandMoreIcon /> */}
               </span>
             </button>
           </div>
