@@ -64,13 +64,16 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
+    public Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberNotFoundException(email));
+    }
+
     @Transactional
     public void deleteMember(Long memberId, String email) {
         Member findMember = findVerifiedMember(memberId, email);
         findMember.updateMemberStatusQuit();
     }
-
-
 
 
 }

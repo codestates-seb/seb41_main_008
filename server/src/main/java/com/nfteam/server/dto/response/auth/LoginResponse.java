@@ -13,14 +13,14 @@ public class LoginResponse {
     private String email;
     private String role;
     private String lastLoginTime;
-    private String profileImage;
+    private String profileImageName;
 
     @Builder
-    public LoginResponse(String email, String role, LocalDateTime lastLoginTime, String profileImage) {
+    public LoginResponse(String email, String role, LocalDateTime lastLoginTime, String profileImageName) {
         this.email = email;
         this.role = role;
         this.lastLoginTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(lastLoginTime);
-        this.profileImage = profileImage;
+        this.profileImageName = profileImageName;
     }
 
     public static LoginResponse of(Member member) {
@@ -28,7 +28,7 @@ public class LoginResponse {
                 .email(member.getEmail())
                 .role(member.getMemberRole().getValue())
                 .lastLoginTime(member.getLastLoginTime())
-                .profileImage(member.getProfileImageName())
+                .profileImageName(member.getProfileImageName())
                 .build();
     }
 
