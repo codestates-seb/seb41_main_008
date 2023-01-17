@@ -4,11 +4,10 @@ import BuyAndCartButton from './CartButton/BuyAndCartButton';
 type cartBtnType = {
   hide: boolean;
 };
-
 const HideWrapper = styled.div<cartBtnType>`
   div {
+    border-radius: 0px 0px 15px 15px;
     transition: 0.2s;
-
     visibility: ${(props) => (props.hide ? 'visible' : 'hidden')};
     opacity: ${(props) => (props.hide ? '1' : '0')};
     transform: ${(props) =>
