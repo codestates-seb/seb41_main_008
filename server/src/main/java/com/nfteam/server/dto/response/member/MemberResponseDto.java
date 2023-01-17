@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 public class MemberResponseDto {
-    //TODO: cartList, collectionList 추가
 
     private Long memberId;
     private String email;

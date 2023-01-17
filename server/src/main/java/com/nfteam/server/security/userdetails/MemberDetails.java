@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 public class MemberDetails extends Member implements UserDetails {
 
+    private Long memberId;
     private String email;
     private String password;
     private String nickname;
@@ -21,6 +22,7 @@ public class MemberDetails extends Member implements UserDetails {
     private String profileImage;
 
     public MemberDetails(Member member) {
+        this.memberId = member.getMemberId();
         this.email = member.getEmail();
         this.password = member.getPassword();
         this.nickname = member.getNickname();
@@ -29,7 +31,8 @@ public class MemberDetails extends Member implements UserDetails {
         this.profileImage = member.getProfileImage();
     }
 
-    public MemberDetails(String email, String nickname, String role) {
+    public MemberDetails(Long memberId, String email, String nickname, String role) {
+        this.memberId = memberId;
         this.email = email;
         this.nickname = nickname;
         this.role = role;
