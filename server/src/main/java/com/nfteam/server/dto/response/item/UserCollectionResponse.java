@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 public class UserCollectionResponse {
     // 유저 마이페이지 컬렉션 리스트
 
-    // 컬렉션 정보
+    // 컬렉션 기본 정보
     private Long collectionId;
     private String collectionName;
     private String description;

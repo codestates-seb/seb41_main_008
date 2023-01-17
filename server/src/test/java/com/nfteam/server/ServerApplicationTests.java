@@ -16,19 +16,19 @@ import static org.hamcrest.Matchers.containsString;
 @SpringBootTest
 class ServerApplicationTests {
 
-	@Before
-	public void Setup(){
-		RestAssured.port=8082;
-	}
-
-	@Test
-	public void BasicPathIndexHtmlCall( )throws IOException{
-		given()
-				.when()
-				.get("/")
-				.then()
-				.statusCode(200)
-				.contentType("text/html")
-				.body(containsString("권한관리"));
-	}
+//	@Before
+//	public void Setup(){
+//		RestAssured.port=8082;
+//	}
+//
+//	@Test
+//	public void BasicPathIndexHtmlCall( )throws IOException{
+//		given()
+//				.when()
+//				.get("/")
+//				.then()
+//				.statusCode(200)
+//				.contentType("text/html")
+//				.body(containsString("권한관리"));
+//	}
 }

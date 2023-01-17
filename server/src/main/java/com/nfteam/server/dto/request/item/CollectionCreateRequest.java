@@ -28,8 +28,8 @@ public class CollectionCreateRequest {
         return ItemCollection.builder()
                 .collectionName(name)
                 .description(description)
-                .bannerImgName(bannerImgName)
                 .logoImgName(logoImgName)
+                .bannerImgName(bannerImgName)
                 .build();
     }
 }

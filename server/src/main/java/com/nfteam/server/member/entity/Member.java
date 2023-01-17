@@ -59,7 +59,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Cart> cartList = new ArrayList<>();
 
-    // 멤버가 가진 컬렉션 리스트
+    // 멤버가 만든 컬렉션 리스트
     @OneToMany(mappedBy = "member")
     private List<ItemCollection> collectionList = new ArrayList<>();
 
