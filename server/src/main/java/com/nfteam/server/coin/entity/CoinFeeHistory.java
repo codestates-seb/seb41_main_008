@@ -9,19 +9,19 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@Table(name = "coin_history")
+@Table(name = "coin_fee_history")
 public class CoinFeeHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coin_id")
-    private Long coinId;
+    @Column(name = "coin_history_id")
+    private Long coinHistoryId;
 
     @Column(name = "coin_name", nullable = false, length = 100)
     private String coinName;
 
-    @Column(name = "withdrwal_fee", length = 400)
-    private double withdrawlFee;
+    @Column(name = "withdraw_fee", nullable = false, length = 400)
+    private Double withdrawFee;
 
     @CreatedDate
     @Column(name = "created_date", updatable = false)
@@ -30,14 +30,14 @@ public class CoinFeeHistory {
     protected CoinFeeHistory() {
     }
 
-    public CoinFeeHistory(Long coinId) {
-        this.coinId = coinId;
+    public CoinFeeHistory(Long coinHistoryId) {
+        this.coinHistoryId = coinHistoryId;
     }
 
     @Builder
-    public CoinFeeHistory(String coinName, double withdrawlFee) {
+    public CoinFeeHistory(String coinName, Double withdrawFee) {
         this.coinName = coinName;
-        this.withdrawlFee = withdrawlFee;
+        this.withdrawFee = withdrawFee;
     }
 
 }

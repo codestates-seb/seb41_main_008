@@ -28,6 +28,4 @@ public class TransActionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
-
 }

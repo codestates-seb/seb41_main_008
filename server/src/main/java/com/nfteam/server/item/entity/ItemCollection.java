@@ -34,10 +34,6 @@ public class ItemCollection extends BaseEntity {
     @JoinColumn(name = "coin_id")
     private Coin coin;
 
-    // 해당 아이템 그룹에 속한 아이템 리스트
-    @OneToMany(mappedBy = "collection")
-    private List<Item> itemList = new ArrayList<>();
-
     @Column(name = "col_name", length = 200, nullable = false)
     private String collectionName;
 
@@ -49,6 +45,10 @@ public class ItemCollection extends BaseEntity {
 
     @Column(name = "banner_img_name")
     private String bannerImgName;
+
+    // 해당 아이템 그룹에 속한 아이템 리스트
+    @OneToMany(mappedBy = "collection")
+    private List<Item> itemList = new ArrayList<>();
 
     protected ItemCollection() {
     }

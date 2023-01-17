@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/coins")
+@RequestMapping("/api/coins")
 @Slf4j
 public class CoinController {
 
@@ -21,12 +20,12 @@ public class CoinController {
     private final CoinService coinService;
 
     @Scheduled(cron = "0 0 4 25 * *")
-    @GetMapping("/withdrawl-fee")
-    public void getWithdrwalFee() throws Exception {
+    @GetMapping("/withdraw-fee")
+    public void getWithdrawFee() throws Exception {
         //insert,update
         coinService.saveFeeHistory(COIN);
         coinService.updateFee(COIN);
-        log.info("withdrawlfee updated successfully!");
+        log.info("withdraw-fee updated successfully!");
     }
 
 }

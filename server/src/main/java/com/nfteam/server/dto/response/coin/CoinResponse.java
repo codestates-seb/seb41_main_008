@@ -10,20 +10,20 @@ public class CoinResponse {
 
     private Long coinId;
     private String coinName;
-    private Double withdrawlFee;
+    private Double withdrawFee;
 
     @Builder
-    public CoinResponse(Long coinId, String coinName, Double withdrawlFee) {
+    public CoinResponse(Long coinId, String coinName, Double withdrawFee) {
         this.coinId = coinId;
         this.coinName = coinName;
-        this.withdrawlFee = withdrawlFee;
+        this.withdrawFee = withdrawFee;
     }
 
     public static CoinResponse of(Coin coin) {
         return CoinResponse.builder()
                 .coinId(coin.getCoinId())
                 .coinName(coin.getCoinName())
-                .withdrawlFee(coin.getWithdrawlFee())
+                .withdrawFee(coin.getWithdrawFee())
                 .build();
     }
 

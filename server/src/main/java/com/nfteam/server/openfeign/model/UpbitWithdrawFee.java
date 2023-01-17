@@ -10,13 +10,13 @@ import java.util.List;
 
 @Setter
 @Getter
-public class UpbitWithdrawalFee {
+public class UpbitWithdrawFee {
 
     private boolean success;
     private String data;
     private static ObjectMapper mapper = new ObjectMapper();
 
-    public List<UpbitEachWithdrawalFee> getData() throws IOException {
+    public List<UpbitEachWithdrawFee> getData() throws IOException {
         return mapper.readValue(data, new TypeReference<>() {});
     }
 

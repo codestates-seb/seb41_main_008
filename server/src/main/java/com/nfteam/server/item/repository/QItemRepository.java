@@ -45,7 +45,7 @@ public class QItemRepository {
                 item.member.nickname,
                 item.collection.coin.coinId,
                 item.collection.coin.coinName,
-                item.collection.coin.withdrawlFee,
+                item.collection.coin.withdrawFee,
                 item.itemId,
                 item.itemName,
                 item.itemImageName,
