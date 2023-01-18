@@ -31,8 +31,14 @@ public class Member extends BaseEntity {
     @Column(name = "nickname", length = 100)
     private String nickname;
 
-    @Column(name = "profile_image", length = 2500)
-    private String profileImage;
+    @Column(name = "member_desc", length = 3000)
+    private String description;
+
+    @Column(name = "profile_image_name", length = 2500)
+    private String profileImageName;
+
+    @Column(name = "banner_image_name", length = 2500)
+    private String bannerImageName;
 
     @Column(name = "last_login")
     private LocalDateTime lastLoginTime;
@@ -56,7 +62,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Cart> cartList = new ArrayList<>();
 
-    // 멤버가 가진 컬렉션 리스트
+    // 멤버가 만든 컬렉션 리스트
     @OneToMany(mappedBy = "member")
     private List<ItemCollection> collectionList = new ArrayList<>();
 
@@ -72,27 +78,31 @@ public class Member extends BaseEntity {
         this.memberId = memberId;
     }
 
-    // 소셜 로그인용 생성자
-    public Member(String email, String nickname, MemberPlatform memberPlatform) {
-        this.email = email;
-        this.nickname = nickname;
-        this.memberPlatform = memberPlatform;
-        this.password = UUID.randomUUID().toString();
-        this.memberRole = MemberRole.USER;
-        this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImage = "default-profile-image";
-        this.lastLoginTime = LocalDateTime.now();
-    }
-
     // 신규 회원용 생성자
     public Member(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+        this.description = "자기소개를 입력해주세요.";
         this.memberPlatform = MemberPlatform.HOME;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImage = "default-profile-image";
+        this.profileImageName = "default-user-profile-image";
+        this.bannerImageName = "default-user-profile-banner";
+        this.lastLoginTime = LocalDateTime.now();
+    }
+
+    // 소셜 로그인용 생성자
+    public Member(String email, String nickname, MemberPlatform memberPlatform) {
+        this.email = email;
+        this.password = UUID.randomUUID().toString();
+        this.nickname = nickname;
+        this.description = "자기소개를 입력해주세요.";
+        this.memberPlatform = memberPlatform;
+        this.memberRole = MemberRole.USER;
+        this.memberStatus = MemberStatus.MEMBER_ACTIVE;
+        this.profileImageName = "default-user-profile-image";
+        this.bannerImageName = "default-user-profile-banner";
         this.lastLoginTime = LocalDateTime.now();
     }
 
@@ -108,11 +118,16 @@ public class Member extends BaseEntity {
         this.nickname = name;
     }
 
-    public void updateProfileImg(String profileImage) {
-        this.profileImage = profileImage;
+    public void updateDescription(String description) {
+        this.description = description;
     }
 
-    public void updateMemberPlatform(MemberPlatform memberPlatform) {
-        this.memberPlatform = memberPlatform;
+    public void updateProfileImg(String profileImage) {
+        this.profileImageName = profileImage;
     }
+
+    public void updateBannerImg(String bannerImage) {
+        this.bannerImageName = bannerImage;
+    }
+
 }

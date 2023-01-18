@@ -16,4 +16,5 @@ public class MemberNotFoundException extends NFTCustomException {
     public MemberNotFoundException(String email) {
         super(ExceptionCode.MEMBER_NOT_FOUND, String.format("%s - 회원 이메일 : %s", message, email));
     }
+
 }

@@ -10,15 +10,12 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "coin_member_rel")
-public class CoinMemberRel extends BaseEntity  {
+public class CoinMemberRel extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rel_id")
     private Long relId;
-
-    @Column(name = "coin_count")
-    private Double coinCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coin_id")
@@ -28,13 +25,17 @@ public class CoinMemberRel extends BaseEntity  {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(name = "coin_count")
+    private Double coinCount;
+
     protected CoinMemberRel() {
     }
 
     @Builder
-    public CoinMemberRel(Coin coin, Member member) {
+    public CoinMemberRel(Coin coin, Member member, Double coinCount) {
         this.coin = coin;
         this.member = member;
+        this.coinCount = coinCount;
     }
 
     public void addCoinCount(Double cnt) {
@@ -44,4 +45,5 @@ public class CoinMemberRel extends BaseEntity  {
     public void minusCoinCount(Double cnt) {
         this.coinCount -= cnt;
     }
+
 }

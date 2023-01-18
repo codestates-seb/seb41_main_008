@@ -15,4 +15,5 @@ public class SocialLoginResponse {
         this.refreshToken = refreshToken;
         this.loginResponse = LoginResponse.of(member);
     }
+
 }

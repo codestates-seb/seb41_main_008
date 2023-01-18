@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UpbitEachWithdrawalFee {
+public class UpbitEachWithdrawFee {
 
     private String currency;
     private Double withdrawFee;

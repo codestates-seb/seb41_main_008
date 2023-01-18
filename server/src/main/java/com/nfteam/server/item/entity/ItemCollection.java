@@ -1,9 +1,9 @@
 package com.nfteam.server.item.entity;
 
+import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.audit.BaseEntity;
-import com.nfteam.server.coin.Coin;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.UserCollectionResponse;
+import com.nfteam.server.dto.response.item.MemberCollectionResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -33,10 +34,6 @@ public class ItemCollection extends BaseEntity {
     @JoinColumn(name = "coin_id")
     private Coin coin;
 
-    // 해당 아이템 그룹에 속한 아이템 리스트
-    @OneToMany(mappedBy = "collection")
-    private List<Item> itemList = new ArrayList<>();
-
     @Column(name = "col_name", length = 200, nullable = false)
     private String collectionName;
 
@@ -48,6 +45,10 @@ public class ItemCollection extends BaseEntity {
 
     @Column(name = "banner_img_name")
     private String bannerImgName;
+
+    // 해당 아이템 그룹에 속한 아이템 리스트
+    @OneToMany(mappedBy = "collection")
+    private List<Item> itemList = new ArrayList<>();
 
     protected ItemCollection() {
     }
@@ -79,26 +80,30 @@ public class ItemCollection extends BaseEntity {
     }
 
     public void update(ItemCollection collection) {
-        updateName(collection.getCollectionName());
-        updateDesc(collection.getDescription());
-        updateLogoImg(collection.getLogoImgName());
-        updateBannerImg(collection.getBannerImgName());
+        Optional.ofNullable(collection.getCollectionName())
+                .ifPresent(this::updateName);
+        Optional.ofNullable(collection.getDescription())
+                .ifPresent(this::updateDesc);
+        Optional.ofNullable(collection.getLogoImgName())
+                .ifPresent(this::updateLogoImg);
+        Optional.ofNullable(collection.getBannerImgName())
+                .ifPresent(this::updateBannerImg);
     }
 
     private void updateName(String name) {
-        if (name != null) this.collectionName = name;
+        this.collectionName = name;
     }
 
     private void updateDesc(String description) {
-        if (description != null) this.description = description;
+        this.description = description;
     }
 
     private void updateLogoImg(String logoImgName) {
-        if (logoImgName != null) this.logoImgName = logoImgName;
+        this.logoImgName = logoImgName;
     }
 
     private void updateBannerImg(String bannerImgName) {
-        if (bannerImgName != null) this.bannerImgName = bannerImgName;
+        this.bannerImgName = bannerImgName;
     }
 
     public void assignMember(Member member) {
@@ -108,11 +113,6 @@ public class ItemCollection extends BaseEntity {
 
     public void assignCoin(Coin coin) {
         this.coin = coin;
-    }
-
-    public void addItem(Item item) {
-        this.itemList.add(item);
-        item.assignCollection(this);
     }
 
     public CollectionResponse toResponse() {
@@ -130,8 +130,8 @@ public class ItemCollection extends BaseEntity {
                 .build();
     }
 
-    public UserCollectionResponse toUserResponse() {
-        return UserCollectionResponse.builder()
+    public MemberCollectionResponse toMemberResponse() {
+        return MemberCollectionResponse.builder()
                 .collectionId(collectionId)
                 .collectionName(collectionName)
                 .description(description)
@@ -142,4 +142,5 @@ public class ItemCollection extends BaseEntity {
                 .coinName(coin.getCoinName())
                 .build();
     }
+
 }

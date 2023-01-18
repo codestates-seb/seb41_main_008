@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cart_item_rel")
 public class CartItemRel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rel_id")
@@ -31,4 +32,5 @@ public class CartItemRel {
         this.cart = cart;
         this.item = item;
     }
+
 }

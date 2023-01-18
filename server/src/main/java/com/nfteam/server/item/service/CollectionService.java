@@ -1,12 +1,11 @@
 package com.nfteam.server.item.service;
 
-import com.nfteam.server.security.userdetails.MemberDetails;
-import com.nfteam.server.coin.Coin;
+import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
+import com.nfteam.server.dto.response.item.CollectionItemResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.ItemResponseDto;
-import com.nfteam.server.dto.response.item.UserCollectionResponse;
+import com.nfteam.server.dto.response.item.MemberCollectionResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -16,6 +15,7 @@ import com.nfteam.server.item.repository.CollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +35,13 @@ public class CollectionService {
     @Transactional
     public Long save(CollectionCreateRequest request, MemberDetails memberDetails) {
         ItemCollection itemCollection = request.toCollection();
-        Member member = findMember(memberDetails.getEmail());
+        Member member = findMemberByEmail(memberDetails.getEmail());
         itemCollection.assignMember(member);
         itemCollection.assignCoin(new Coin(Long.parseLong(request.getCoinId())));
-
         return collectionRepository.save(itemCollection).getCollectionId();
     }
 
-    private Member findMember(String email) {
+    private Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberNotFoundException(email));
     }
@@ -68,29 +67,30 @@ public class CollectionService {
     }
 
     @Transactional
-    public Long delete(Long collectionId, MemberDetails memberDetails) {
+    public void delete(Long collectionId, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
         checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
         collectionRepository.deleteById(collectionId);
-
-        return itemCollection.getCollectionId();
     }
 
     public CollectionResponse getCollection(Long collectionId) {
-        ItemCollection itemCollection = collectionRepository.findCollectionWithMemberAndCoin(collectionId)
-                .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
+        ItemCollection itemCollection = getCollectionWithMemberAndCoin(collectionId);
         CollectionResponse response = itemCollection.toResponse();
 
-        List<Item> items = itemRepository.findItemsByCollectionId(collectionId);
+        List<Item> items = itemRepository.findItemsWithOwnerByCollectionId(collectionId);
         calcItemMetaInfo(items, response);
 
-        List<ItemResponseDto> itemResponseDtos = items.stream()
-                .map(Item::toResponseDto)
+        List<CollectionItemResponse> itemResponses = items.stream()
+                .map(CollectionItemResponse::of)
                 .collect(Collectors.toList());
-        itemResponseDtos.forEach(r -> r.addCollectionInfo(itemCollection));
-        response.addItemResponseDtos(itemResponseDtos);
+        response.addItemResponseDtos(itemResponses);
 
         return response;
+    }
+
+    private ItemCollection getCollectionWithMemberAndCoin(Long collectionId) {
+        return collectionRepository.findCollectionWithMemberAndCoin(collectionId)
+                .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
     }
 
     private void calcItemMetaInfo(List<Item> items, CollectionResponse response) {
@@ -111,9 +111,10 @@ public class CollectionService {
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }
 
-    public List<UserCollectionResponse> getUserCollection(Long memberId) {
-        return collectionRepository.findCollectionByMemberId(memberId)
-                .stream().map(collection -> collection.toUserResponse())
+    public List<MemberCollectionResponse> getMemberCollectionList(Long memberId) {
+        return collectionRepository.findCollectionWithCoinByMemberId(memberId)
+                .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
     }
+
 }

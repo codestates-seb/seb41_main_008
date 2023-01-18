@@ -39,4 +39,5 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), body);
     }
+
 }

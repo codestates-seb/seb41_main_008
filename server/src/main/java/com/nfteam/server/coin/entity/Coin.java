@@ -1,16 +1,15 @@
 package com.nfteam.server.coin.entity;
 
+import com.nfteam.server.common.audit.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
 @Table(name = "coin")
-public class Coin {
+public class Coin extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +19,8 @@ public class Coin {
     @Column(name = "coin_name", nullable = false, unique = true, length = 100)
     private String coinName;
 
-    @Column(name = "withdrwal_fee", length = 400)
-    private double withdrawlFee;
-
-    @CreatedDate
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate = LocalDateTime.now();
+    @Column(name = "withdraw_fee", nullable = false, length = 400)
+    private Double withdrawFee;
 
     protected Coin() {
     }
@@ -34,17 +29,24 @@ public class Coin {
         this.coinId = coinId;
     }
 
+    public Coin(String coinName, Double withdrawFee) {
+        this.coinName = coinName;
+        this.withdrawFee = withdrawFee;
+    }
+
     @Builder
-    public Coin(String coinName, double withdrawlFee) {
+    public Coin(Long coinId, String coinName, Double withdrawFee) {
+        this.coinId = coinId;
         this.coinName = coinName;
-        this.withdrawlFee = withdrawlFee;
+        this.withdrawFee = withdrawFee;
     }
 
-    public void changeCoinName(final String coinName) {
+    public void changeCoinName(String coinName) {
         this.coinName = coinName;
     }
 
-    public void changeWithdrawlFee(final double withdrawlFee) {
-        this.withdrawlFee = withdrawlFee;
+    public void changeWithdrawFee(Double withdrawFee) {
+        this.withdrawFee = withdrawFee;
     }
+
 }

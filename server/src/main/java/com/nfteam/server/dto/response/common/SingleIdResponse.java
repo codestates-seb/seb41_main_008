@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class SingleIdResponse {
+
     private String status;
     private Long id;
 
@@ -11,4 +12,5 @@ public class SingleIdResponse {
         this.status = status;
         this.id = id;
     }
+
 }

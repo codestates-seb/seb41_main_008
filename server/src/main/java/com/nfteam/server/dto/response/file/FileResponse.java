@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class FileResponse {
+
     private String imageUrl;
     private String imageName;
 
@@ -11,4 +12,5 @@ public class FileResponse {
         this.imageUrl = imageUrl;
         this.imageName = imageName;
     }
+
 }
