@@ -49,7 +49,7 @@ public class CartService {
         Item item = itemRepository.findById(itemId)
             .orElseThrow(() -> new ItemNotFoundException(itemId));
         try {
-            //item을 넣으려고 할때 카트가 생성되어있지 않다면 카트 생성
+            //item을 넣으려고 할때 카트가 생성되어있지 않다면 카트생성
             cart = this.findVerifiedCart(memberId);
             cartItemRel = CartItemRel.builder().item(item).cart(cart).build();
         } catch (CartNotFoundException e) {
