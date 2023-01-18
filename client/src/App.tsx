@@ -4,9 +4,8 @@ import SignupPage from '../src/pages/SignupPage';
 import MainPage from '../src/pages/MainPage';
 import MainLayout from '../src/components/Layout/MainLayout';
 import MyCollectionPage from 'pages/MyCollectionPage';
-import AccountPage from 'pages/AccountPage';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
-import MissingPage from 'components/CreateCollection/MissingPage/MissingPage';
+import MissingPage from 'components/MissingPage/MissingPage';
 import CollectionDetails from 'pages/CollectionDetails';
 import Purchase from 'pages/Purchase';
 

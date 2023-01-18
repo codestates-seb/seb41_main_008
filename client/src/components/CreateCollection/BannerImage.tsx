@@ -1,35 +1,40 @@
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef } from 'react';
 import { BsImage } from 'react-icons/bs';
-import { setBanner } from 'store/bannerSlice';
+import { setBannerString } from 'store/bannerSlice';
 
-export default function BannerImage() {
+interface BannerFile {
+  bannerFile: File | null;
+  setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
+}
+
+export default function BannerImage({ bannerFile, setBannerFile }: BannerFile) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [image, setImage] = useState<File | null>(null);
   const dispatch = useAppDispatch();
-  const banner = useAppSelector((state) => state.banner.url);
+
+  const bannerString = useAppSelector((state) => state.banner.bannerString);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.substring(0, 5) === 'image') {
-      setImage(file);
+      setBannerFile(file);
     } else {
-      setImage(null);
+      setBannerFile(null);
     }
   };
 
   useEffect(() => {
-    if (image) {
+    if (bannerFile) {
       const reader = new FileReader();
-      reader.readAsDataURL(image);
+      reader.readAsDataURL(bannerFile);
       reader.onloadend = () => {
-        dispatch(setBanner(reader.result as string));
+        dispatch(setBannerString(reader.result as string));
       };
     } else {
-      dispatch(setBanner(''));
+      dispatch(setBannerString(''));
     }
-  }, [image, dispatch]);
+  }, [bannerFile, dispatch]);
 
   return (
     <form className="flex flex-col items-center">
@@ -49,13 +54,13 @@ export default function BannerImage() {
         accept="image/*"
         onChange={handleChange}
       />
-      {banner ? (
+      {bannerString ? (
         <img
-          src={banner}
+          src={bannerString}
           alt="logo"
           role="presentation"
           className="h-60 w-full rounded-xl object-cover mt-3 cursor-pointer"
-          onClick={() => setImage(null)}
+          onClick={() => setBannerFile(null)}
         />
       ) : (
         <button

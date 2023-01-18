@@ -12,11 +12,11 @@ import { logout } from 'utils/api/api';
 const MobileDropdownItems = () => {
   return (
     <>
-      <Link
-        to={accessToken ? '/' : '/login'}
-        className="flex justify-between border-b-2"
+      <a
+        href={accessToken ? '/' : '/login'}
+        className="flex justify-between  hover:text-blue-600 "
       >
-        <div className="flex items-center p-6">
+        <div className="flex items-center p-6 ">
           <FontAwesomeIcon icon={faRightToBracket} className="mr-2" />
           {accessToken ? (
             <button onClick={logout} className="font-bold text-xl">
@@ -29,10 +29,13 @@ const MobileDropdownItems = () => {
         <div className="p-6">
           <FontAwesomeIcon icon={faGreaterThan} />
         </div>
-      </Link>
+      </a>
 
       {accessToken ? null : (
-        <Link to={'/signup'} className="flex justify-between border-b-2">
+        <a
+          href={'/signup'}
+          className="flex justify-between hover:text-blue-600"
+        >
           <div className="flex items-center p-6">
             <FontAwesomeIcon icon={faHand} className="mr-2" />
             <div className="font-bold text-xl">Signup</div>
@@ -40,9 +43,9 @@ const MobileDropdownItems = () => {
           <div className="p-6">
             <FontAwesomeIcon icon={faGreaterThan} />
           </div>
-        </Link>
+        </a>
       )}
-      <Link to={'/'} className="flex justify-between border-b-2">
+      <a href={'/account'} className="flex justify-between hover:text-blue-600">
         <div className="flex items-center p-6">
           <FontAwesomeIcon icon={faUser} className="mr-2" />
           <div className="font-bold text-xl">Mypage</div>
@@ -50,8 +53,8 @@ const MobileDropdownItems = () => {
         <div className="p-6">
           <FontAwesomeIcon icon={faGreaterThan} />
         </div>
-      </Link>
-      <Link to={'/'} className="flex justify-between border-b-2">
+      </a>
+      <a href={'/'} className="flex justify-between hover:text-blue-600">
         <div className="flex items-center p-6">
           <FontAwesomeIcon icon={faPaintBrush} className="mr-2" />
           <div className="font-bold text-xl">Create</div>
@@ -59,7 +62,7 @@ const MobileDropdownItems = () => {
         <div className="p-6">
           <FontAwesomeIcon icon={faGreaterThan} />
         </div>
-      </Link>
+      </a>
     </>
   );
 };

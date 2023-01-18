@@ -3,6 +3,7 @@ import MainCarousel from 'components/carousel/MainCarousel';
 import Footer from 'components/Layout/Footer';
 import Top from '../components/Trending/Top';
 
+
 const MainPage = () => {
   return (
     <div>

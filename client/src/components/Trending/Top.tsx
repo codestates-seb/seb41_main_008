@@ -5,6 +5,7 @@ import Trending from '../Trending/Trending';
 import { IoIosArrowDown } from 'react-icons/io';
 
 
+
 const Home = () => {
   const [activeTab] = useState('trending');
   return (
@@ -30,6 +31,8 @@ const Home = () => {
               <span
                 className={`material-symbols-outlined ${styles.btnExpandIcon}`}
               ></span>
+              >
+              </span>
             </button>
           </div>
         </header>
