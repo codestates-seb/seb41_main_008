@@ -15,6 +15,9 @@ public class GoogleUser {
     private String picture;
     private String locale;
 
+    protected GoogleUser() {
+    }
+
     @Builder
     public GoogleUser(String id,
                       String email,

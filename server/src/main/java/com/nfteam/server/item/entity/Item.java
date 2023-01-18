@@ -46,7 +46,7 @@ public class Item extends BaseEntity {
     private Double itemPrice;
 
     // 상품 고유 정보
-    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "item", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private ItemCredential itemCredential;
 
     protected Item() {
