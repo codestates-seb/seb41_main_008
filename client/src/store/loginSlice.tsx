@@ -2,9 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import customAxios from '../utils/api/axios';
 
 interface LoginProps {
-  email: string;
-  password: string;
   isFetching: boolean;
+  isLogin: boolean;
+  profileImage?: string;
 }
 /**axios response 타입 any로 한것들 공부해서 타입수정필요 */
 export const login = createAsyncThunk(
@@ -23,11 +23,27 @@ export const login = createAsyncThunk(
     }
   }
 );
-
+export const googleLogin = createAsyncThunk(
+  'login/googleLogin',
+  async (token: string) => {
+    const res: any = await customAxios.get(`/auth/login/google`, {
+      headers: {
+        googleToken: token,
+      },
+    });
+    console.log(res);
+    if (res.headers) {
+      localStorage.setItem('ACCESS_TOKEN', res.headers.authorization);
+      localStorage.setItem('REFRESH_TOKEN', res.headers.refreshtoken);
+    }
+    return res.data;
+  }
+);
+/**구글 로그인 타입 추가 */
 const initialState: LoginProps = {
-  email: '',
-  password: '',
+  isLogin: false,
   isFetching: false,
+  profileImage: '',
 };
 
 const loginSlice = createSlice({
@@ -37,19 +53,33 @@ const loginSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
+        console.log('로그인 중');
         state.isFetching = true;
       })
-      .addCase(login.fulfilled, (state, { payload }) => {
-        state.email = payload.email;
-        state.password = payload.password;
+      .addCase(login.fulfilled, (state) => {
+        console.log('로그인 성공');
         state.isFetching = false;
-        // state.accessToken = payload.headers.authorization;
+        state.isLogin = true;
       })
       .addCase(login.rejected, (state) => {
+        console.log('로그인 실패');
         state.isFetching = false;
+      });
+    builder
+      .addCase(googleLogin.pending, () => {
+        console.log('구글 로그인 중');
+      })
+      .addCase(googleLogin.fulfilled, (state, action) => {
+        console.log('구글 로그인 성공');
+        state.isLogin = true;
+        state.profileImage = action.payload.profileImageName;
+      })
+      .addCase(googleLogin.rejected, () => {
+        console.log('구글 로그인 실패');
       });
   },
 });
 
 export const loginAction = loginSlice.actions;
+
 export default loginSlice.reducer;

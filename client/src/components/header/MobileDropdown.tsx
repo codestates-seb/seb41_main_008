@@ -11,7 +11,7 @@ const MobileDropdownContainer = styled.div<MobileDropdownProps>`
   top: 70px;
   background-color: white;
   visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
-  @media screen and (min-width: 640px) {
+  @media screen and (min-width: 1040px) {
     visibility: hidden;
   }
 `;

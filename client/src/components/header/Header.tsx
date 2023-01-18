@@ -3,8 +3,8 @@ import Dropdown from './Dropdown';
 import MobileDropdown from './MobileDropdown';
 import MobileDropdownList from './MobileDropdownLIst';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/hooks';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { openModal } from '../../store/modalSlice';
 import {
   faBars,
@@ -12,8 +12,7 @@ import {
   faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { accessToken } from '../../utils/token';
-import { logout } from 'utils/api/api';
+import { logout, getMyProFile } from 'utils/api/api';
 
 const SearchInput = styled.input`
   display: flex;
@@ -24,19 +23,27 @@ const SearchInput = styled.input`
   border: none;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 `;
-
 const Header = () => {
+  const profileImage = useAppSelector((state) => state.login.profileImage);
+  const { isLogin } = useAppSelector((state) => state.login);
+  console.log('isLogin', isLogin);
+  console.log('profileImage', profileImage);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [visible, setVisible] = useState(false);
   const visibleHandler = () => {
     setVisible(!visible);
   };
-
+  const goToMypage = () => {
+    getMyProFile().then((res: any) => {
+      navigate(`/account/${res.data.member.memberId}`);
+    });
+  };
   return (
     <header className="flex justify-center  items-center font-bold z-50 p-4 sticky top-0 border-b-2 bg-white text-lg">
       <div className="flex gap-2 mr-2">
-        <div>logo</div>
-        <div>NFTeam</div>
+        <Link to={'/'}>logo</Link>
+        <Link to={'/'}>NFTeam</Link>
       </div>
       <div className="w-full">
         <SearchInput placeholder="Search items, collections, and accoutns..." />
@@ -44,22 +51,22 @@ const Header = () => {
       <Dropdown />
       <nav className="cursor-pointer">
         <ul className="flex gap-5 items-center">
-          {accessToken ? (
-            <Link to={'/account'}>
+          {isLogin ? (
+            <button onClick={goToMypage}>
               <div className="w-8 h-8 ">
                 <img
                   className="object-cover w-full h-full rounded-full"
-                  src="https://i.seadn.io/gae/4_jjlcK-9NHUw0dlYseaQt1g5bKjgBuxvYMxrrFuArSBe-pbVxaLUDHqnio4hNgVBQUPpwMwOVDMnikYBLOmY5nfkj2vXlEHxKbzBXk?auto=format&w=1000"
+                  src={`${profileImage}`}
                   alt=""
                 />
               </div>
-            </Link>
+            </button>
           ) : (
             <Link to={'/signup'} className="p-2 max-[640px]:hidden">
               Signup
             </Link>
           )}
-          {accessToken ? (
+          {isLogin ? (
             <button onClick={logout}>Logout</button>
           ) : (
             <Link to={'/login'} className="p-2 max-[640px]:hidden">
@@ -70,7 +77,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faCartShopping} />
           </button>
 
-          <button className="hidden max-[640px]:flex" onClick={visibleHandler}>
+          <button className="hidden max-[1040px]:flex" onClick={visibleHandler}>
             {visible ? (
               <FontAwesomeIcon icon={faXmark} />
             ) : (
