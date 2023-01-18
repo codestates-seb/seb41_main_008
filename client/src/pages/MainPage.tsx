@@ -1,4 +1,4 @@
-import Carousel from 'components/Trending/Carousel';
+import Carousel from 'components/carousel/Carousel';
 import MainCarousel from 'components/carousel/MainCarousel';
 import Footer from 'components/Layout/Footer';
 import Top from '../components/Trending/Top';
