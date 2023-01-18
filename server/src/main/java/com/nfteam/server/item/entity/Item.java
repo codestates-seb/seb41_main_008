@@ -28,6 +28,11 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "owner_member_id")
     private Member member;
 
+    // 상품 고유 정보
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credential_id")
+    private ItemCredential itemCredential;
+
     @Column(name = "item_name", nullable = false)
     private String itemName;
 
@@ -44,10 +49,6 @@ public class Item extends BaseEntity {
     // 상품 가격 == 코인 갯수
     @Column(name = "item_price")
     private Double itemPrice;
-
-    // 상품 고유 정보
-    @OneToOne(mappedBy = "item", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private ItemCredential itemCredential;
 
     protected Item() {
     }
