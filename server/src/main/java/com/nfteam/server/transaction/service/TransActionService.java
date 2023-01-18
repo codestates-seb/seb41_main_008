@@ -1,8 +1,11 @@
 package com.nfteam.server.transaction.service;
 
+import com.nfteam.server.cart.entity.Cart;
+import com.nfteam.server.cart.repository.CartRepository;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.transaction.TransActionCreateRequest;
+import com.nfteam.server.exception.cart.CartNotFoundException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -32,14 +35,20 @@ public class TransActionService {
     private final ItemCollectionRepository itemCollectionRepository;
     private final MemberRepository memberRepository;
     private final TransActionRepository transActionRepository;
+    private final CartRepository cartRepository;
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     @Transactional
     public void saveOnePurchaseRecord(TransActionCreateRequest transActionCreateRequest, MemberDetails memberDetails) throws Exception {
         Member buyer = getMemberByEmail(memberDetails.getEmail());
         TransAction transAction = makeTransAction(transActionCreateRequest, buyer);
+
+        // 거래 기록 저장.
         transActionRepository.save(transAction);
-        // TODO: 카트 거래 완료 표시하기
+
+        // 카트 거래 완료 체크.
+        Cart cart = findCart(buyer);
+        cart.changePaymentYn(true);
     }
 
     @Transactional
@@ -56,8 +65,12 @@ public class TransActionService {
                     }
                 });
 
+        // 거래 기록 저장
         transActionRepository.saveAll(transActions);
-        // TODO: 카트 거래 완료 표시하기
+
+        // 카트 거래 완료 체크.
+        Cart cart = findCart(buyer);
+        cart.changePaymentYn(true);
     }
 
     public TransAction makeTransAction(TransActionCreateRequest transActionCreateRequest, Member buyer) throws Exception {
@@ -157,6 +170,11 @@ public class TransActionService {
 
         item.getItemCredential()
                 .addNewTransEncryptionRecord(credentialEncryptUtils.encryptRecordByAES256(record.toString()));
+    }
+
+    private Cart findCart(Member buyer) {
+        return cartRepository.findCartByMemberAndPaymentYn(buyer, false)
+                .orElseThrow(() -> new CartNotFoundException());
     }
 
 }
