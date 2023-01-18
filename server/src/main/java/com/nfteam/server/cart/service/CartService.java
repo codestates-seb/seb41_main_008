@@ -23,9 +23,7 @@ public class CartService {
 
     private final MemberService memberService;
     private final CartRepository cartRepository;
-
     private final CartItemRelRepository cartItemRelRepository;
-
     private final ItemRepository itemRepository;
 
     public Cart createCart(Long memberId) {
@@ -40,10 +38,30 @@ public class CartService {
     public Cart updateCart(Long memberId) {
         Cart findCart = this.findVerifiedCart(memberId);
         findCart.changePaymentYn(!findCart.getPaymentYn());
+        //결제가 완료되면 다시 새로운 카트 생성
+        this.createCart(memberId);
         return findCart;
     }
 
+    public CartItemRel insertCartItem(Long memberId, Long itemId) {
+        Cart cart;
+        CartItemRel cartItemRel = CartItemRel.builder().build();
+        Item item = itemRepository.findById(itemId)
+            .orElseThrow(() -> new ItemNotFoundException(itemId));
+        try {
+            //item을 넣으려고 할때 카트가 생성되어있지 않다면 카트 생성
+            cart = this.findVerifiedCart(memberId);
+            cartItemRel = CartItemRel.builder().item(item).cart(cart).build();
+        } catch (CartNotFoundException e) {
+            this.createCart(memberId);
+        }
+
+        return cartItemRelRepository.save(cartItemRel);
+
+    }
+
     public Cart findVerifiedCart(Long memberId) {
+        //멤버의 결제가 아직되지 않은 카트 가져온다
         Cart findCart = cartRepository.findCartByMemberAndPaymentYn(new Member(memberId), false)
             .orElseThrow(() ->
                 new CartNotFoundException());
@@ -52,6 +70,7 @@ public class CartService {
     }
 
     public void verifyCart(Long memberId) {
+        //존재하는지 확인
         Optional<Cart> cartByMember = cartRepository.findCartByMemberAndPaymentYn(
             new Member(memberId), false);
         if (cartByMember.isPresent()) {
@@ -59,15 +78,5 @@ public class CartService {
         }
     }
 
-    public CartItemRel insertCartItem(Long cartId, Long itemId) {
-        Item item = itemRepository.findById(itemId)
-            .orElseThrow(() -> new ItemNotFoundException(itemId));
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException());
-
-        CartItemRel cartItemRel = CartItemRel.builder().item(item).cart(cart).build();
-
-        return cartItemRelRepository.save(cartItemRel);
-
-    }
 
 }

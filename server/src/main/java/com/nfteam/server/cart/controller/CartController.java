@@ -34,14 +34,15 @@ public class CartController {
     }
 
     @PatchMapping
-    public ResponseEntity checkOutCart(@AuthenticationPrincipal MemberDetails memberDetails){
+    public ResponseEntity checkOutCart(@AuthenticationPrincipal MemberDetails memberDetails) {
         Cart updatedCart = cartService.updateCart(memberDetails.getMemberId());
         return new ResponseEntity<>(CartResponseDto.of(updatedCart), HttpStatus.OK);
     }
+
     @PostMapping("/added-cart")
-    public ResponseEntity additemToCart(@Positive @RequestParam(name = "cart") Long cartId,
-                                        @Positive @RequestParam(name = "item") Long itemId){
-        CartItemRel cartItemRel = cartService.insertCartItem(cartId, itemId);
+    public ResponseEntity additemToCart(@AuthenticationPrincipal MemberDetails memberDetails,
+        @Positive @RequestParam(name = "item") Long itemId) {
+        cartService.insertCartItem(memberDetails.getMemberId(), itemId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
