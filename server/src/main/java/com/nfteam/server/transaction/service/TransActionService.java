@@ -98,6 +98,7 @@ public class TransActionService {
         return TransAction.builder()
                 .seller(seller)
                 .buyer(buyer)
+                .collection(collection)
                 .item(item)
                 .coin(coin)
                 .transPrice(Double.parseDouble(transActionCreateRequest.getTransPrice()))
