@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import customAxios from '../utils/api/axios';
 
 interface SignupProps {
-  nickname: string;
-  email: string;
-  password: string;
   isFetching: boolean;
 }
 
@@ -22,9 +19,6 @@ export const signup = createAsyncThunk(
 );
 
 const initialState: SignupProps = {
-  nickname: '',
-  email: '',
-  password: '',
   isFetching: false,
 };
 
@@ -38,9 +32,6 @@ const signupSlice = createSlice({
         state.isFetching = true;
       })
       .addCase(signup.fulfilled, (state, { payload }) => {
-        state.nickname = payload.nickname;
-        state.email = payload.email;
-        state.password = payload.password;
         state.isFetching = false;
       })
       .addCase(signup.rejected, (state) => {

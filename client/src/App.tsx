@@ -24,7 +24,7 @@ function App() {
             />
             <Route path="collection/:id" element={<CollectionDetails />} />
             <Route path="*" element={<MissingPage />} />
-            <Route path="/account" element={<AccountPage />} />
+            <Route path="/account/:memberId" element={<AccountPage />} />
           </Route>
 
           <Route path="login" element={<LoginPage />} />

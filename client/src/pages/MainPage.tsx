@@ -1,7 +1,7 @@
 import Footer from 'components/Layout/Footer';
 import Top from '../components/Trending/Top';
-import Carousel from 'components/Carousel/Carousel';
-import MainCarousel from 'components/Carousel/MainCarousel';
+import Carousel from 'components/carousel/Carousel';
+import MainCarousel from 'components/carousel/MainCarousel';
 
 const MainPage = () => {
   return (

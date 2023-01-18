@@ -14,7 +14,7 @@ export default function LogoImage({ logoFile, setLogoFile }: LogoFile) {
   const logoString = useAppSelector((state) => state.logo.logoString);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  console.log(fileInputRef);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.substring(0, 5) === 'image') {

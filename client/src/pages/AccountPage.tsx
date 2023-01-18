@@ -1,47 +1,91 @@
 import Card from '../components/Card';
+import { useParams } from 'react-router-dom';
+import { getUserProFile } from 'utils/api/api';
+import { useState, useEffect, useCallback } from 'react';
+interface UserType {
+  member: {
+    nickname: string;
+    bannerImageName: string;
+    profileImageName: string;
+    description: string;
+  };
+  items: [];
+  collections: [];
+}
 const AccountPage = () => {
+  const { memberId }: any = useParams();
+  const [data, setData] = useState<UserType>();
+  const [filter, setFilter] = useState<string>('Collected');
+  console.log('data', data);
+  console.log(filter);
+  useEffect(() => {
+    getUserProFile(memberId).then((res) => setData(res.data));
+  }, [memberId]);
+  const onFilter = useCallback(
+    (filterType: string) => {
+      setFilter(filterType);
+    },
+    [filter]
+  );
+
   return (
     <div className="flex flex-col w-full">
       <div className="h-64 relative ">
         <span className="absolute top-0 left-0 bottom-0 right-0 ">
           <img
-            className="absolute top-0 left-0 bottom-0 right-0 object-cover max-w-full max-h-full min-w-full min-h-full h-0 w-0"
-            src="https://i.seadn.io/gae/6J0osUqHJKoXWlnNvGr7131EETmpX7lWJJfBWcvIoIzZNUpX65N-0TdR0GsNBZdcmWdo-Y1D2Kj4DPsKBbNwvGwq2micjwwkbgEvTg?auto=format&w=1920"
+            className="absolute top-0 left-0 bottom-0 right-0 object-cover max-w-full max-h-full min-w-full min-h-full"
+            src={
+              `${process.env.REACT_APP_IMAGE}` + data?.member.bannerImageName
+            }
             alt=""
           />
         </span>
       </div>
       <div className="absolute  mt-32 ml-6 w-[160px] h-[160px] ">
         <img
-          className="w-full h-full object-cover rounded-full border-8 "
+          className="w-full h-full object-cover rounded-full border-8 border-[#ffffff]"
           alt=""
-          src="https://i.seadn.io/gae/6J0osUqHJKoXWlnNvGr7131EETmpX7lWJJfBWcvIoIzZNUpX65N-0TdR0GsNBZdcmWdo-Y1D2Kj4DPsKBbNwvGwq2micjwwkbgEvTg?auto=format&w=1920"
+          src={data?.member.profileImageName}
         />
       </div>
       <div className="h-10 w-full "></div>
       <div className="p-10">
-        <div className="w-6/12">
-          <div className="font-bold text-3xl">닉네임</div>
-          <div className="">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure rerum,
-            exercitationem, voluptatem laborum praesentium nobis
+        <div className="w-full">
+          <div className="font-bold text-3xl">{data?.member.nickname}</div>
+          <div className="flex justify-between">
+            <span>{data?.member.description}</span>
+            <button className="border-2 p-2">Profile Edit</button>
           </div>
         </div>
+
         <div className="mt-5">
           <ul className="flex flex-row gap-5 text-lg font-semibold ">
-            <li className=" border-b-2 border-black">Created</li>
-            <li>Collected</li>
+            <button
+              onClick={() => onFilter('Collected')}
+              className={`${
+                filter === 'Collected' && 'border-b-2 border-black'
+              }`}
+            >
+              Collected
+            </button>
+            <button
+              onClick={() => onFilter('Created')}
+              className={`${filter === 'Created' && 'border-b-2 border-black'}`}
+            >
+              Created
+            </button>
           </ul>
         </div>
-        <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2  rounded">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+
+        <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
+          {filter === 'Collected' &&
+            data?.items.map((el: any) => {
+              return <Card key={el.collectionId} {...el} filter={filter} />;
+            })}
+          {filter === 'Created' &&
+            data?.collections.map((el: any) => {
+              return <Card key={el.collectionId} {...el} filter={filter} />;
+            })}
         </div>
       </div>
     </div>

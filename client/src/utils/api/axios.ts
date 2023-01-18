@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { refreshToken } from 'utils/token';
 const baseURL = process.env.REACT_APP_API_URL;
 const customAxios = axios.create({
   baseURL,
@@ -31,7 +30,7 @@ customAxios.interceptors.response.use(
       try {
         const res: any = await axios.get(`${baseURL}/auth/reissue`, {
           headers: {
-            RefreshToken: refreshToken,
+            RefreshToken: localStorage.getItem('REFRESH_TOKEN'),
           },
         });
         if (res) {
