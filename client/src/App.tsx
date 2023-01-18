@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import LoginPage from '../src/pages/LoginPage';
 import SignupPage from '../src/pages/SignupPage';
 import MainPage from '../src/pages/MainPage';
@@ -8,7 +7,7 @@ import MyCollectionPage from 'pages/MyCollectionPage';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
 import MissingPage from 'components/MissingPage/MissingPage';
 import CollectionDetails from 'pages/CollectionDetails';
-import AccountPage from 'pages/AccountPage';
+import Purchase from 'pages/Purchase';
 
 function App() {
   return (
@@ -24,7 +23,8 @@ function App() {
             />
             <Route path="collection/:id" element={<CollectionDetails />} />
             <Route path="*" element={<MissingPage />} />
-            <Route path="/account/:memberId" element={<AccountPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/Purchase" element={<Purchase />} />
           </Route>
 
           <Route path="login" element={<LoginPage />} />

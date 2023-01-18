@@ -1,7 +1,10 @@
+/* eslint-disable */
 import { useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
-// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { IoIosArrowDown } from 'react-icons/io';
+
+
 
 const Home = () => {
   const [activeTab] = useState('trending');
@@ -23,11 +26,12 @@ const Home = () => {
           <div className={styles.filterBtnsContainer}>
             <button className={styles.filterBtn}>
               <span> 24h </span>
+                 <IoIosArrowDown />
 
               <span
                 className={`material-symbols-outlined ${styles.btnExpandIcon}`}
+              ></span>
               >
-                {/* <ExpandMoreIcon /> */}
               </span>
             </button>
           </div>
