@@ -54,7 +54,7 @@ const InputContainer = ({ isSignup }: Props) => {
   return (
     <div className="">
       {unAuth && (
-        <div className="flex justify-start items-center fixed top-14 text-center  rounded-3xl p-4 bg-black bg-opacity-70 text-white font-semibold left-1/2 -translate-x-1/2 w-3/12 ">
+        <div className="flex justify-start items-center fixed top-14 text-center  rounded-3xl p-4 bg-black bg-opacity-70 text-white font-semibold left-1/2 -translate-x-1/2 w-96">
           <AiOutlineInfoCircle color="red" size="20" />
           <span className="grow">Please check your Email or Password</span>
         </div>
