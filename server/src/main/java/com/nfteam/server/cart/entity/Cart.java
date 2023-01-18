@@ -41,4 +41,8 @@ public class Cart extends BaseEntity {
         this.paymentYn = paymentYn;
     }
 
+    public void insertItem(CartItemRel cartItemRel){
+        this.itemList.add(cartItemRel);
+    }
+
 }
