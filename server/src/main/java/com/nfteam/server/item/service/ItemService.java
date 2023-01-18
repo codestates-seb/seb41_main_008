@@ -58,6 +58,7 @@ public class ItemService {
         ItemCredential itemCredential = new ItemCredential(newItemCord, newTransRecord);
         itemCredentialRepository.save(itemCredential);
 
+        // 아이템에 크레덴셜 배정
         item.assignItemCredential(itemCredential);
 
         return itemRepository.save(item).getItemId();
