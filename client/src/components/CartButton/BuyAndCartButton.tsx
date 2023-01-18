@@ -6,6 +6,8 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   color: white;
+  width: 100%;
+  height: 100%;
 `;
 const BuyAndCartButton = () => {
   return (

@@ -1,7 +1,8 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import styled from 'styled-components';
-import { googleLogin } from 'store/oauthSlice';
+import { googleLogin } from 'store/loginSlice';
 import { useAppDispatch } from 'hooks/hooks';
+import { useNavigate } from 'react-router-dom';
 const GoogleButton = styled.button`
   background-color: white;
   padding: 8px;
@@ -16,10 +17,12 @@ export type Props = {
 };
 const GoogleLoginButton = ({ isSignup }: Props) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const login = useGoogleLogin({
     onSuccess: (codeResponse: any) => {
+      console.log(codeResponse);
       dispatch(googleLogin(codeResponse.access_token)).then(() =>
-        window.location.replace('/')
+        navigate('/')
       );
     },
   });

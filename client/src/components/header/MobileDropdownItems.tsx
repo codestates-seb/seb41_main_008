@@ -7,18 +7,27 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { accessToken } from '../../utils/token';
-import { logout } from 'utils/api/api';
+import { useAppSelector } from '../../hooks/hooks';
+import { getMyProFile, logout } from 'utils/api/api';
+import { useState, useEffect } from 'react';
 const MobileDropdownItems = () => {
+  const { isLogin } = useAppSelector((state) => state.login);
+  const [userId, setUserId] = useState();
+  useEffect(() => {
+    getMyProFile().then((res: any) => {
+      console.log(res);
+      setUserId(res.data.member.memberId);
+    });
+  }, [userId]);
   return (
     <>
-      <a
-        href={accessToken ? '/' : '/login'}
+      <Link
+        to={isLogin ? '/' : '/login'}
         className="flex justify-between  hover:text-blue-600 "
       >
         <div className="flex items-center p-6 ">
           <FontAwesomeIcon icon={faRightToBracket} className="mr-2" />
-          {accessToken ? (
+          {isLogin ? (
             <button onClick={logout} className="font-bold text-xl">
               Logout
             </button>
@@ -29,11 +38,11 @@ const MobileDropdownItems = () => {
         <div className="p-6">
           <FontAwesomeIcon icon={faGreaterThan} />
         </div>
-      </a>
+      </Link>
 
-      {accessToken ? null : (
-        <a
-          href={'/signup'}
+      {isLogin ? null : (
+        <Link
+          to={'/signup'}
           className="flex justify-between hover:text-blue-600"
         >
           <div className="flex items-center p-6">
@@ -43,9 +52,12 @@ const MobileDropdownItems = () => {
           <div className="p-6">
             <FontAwesomeIcon icon={faGreaterThan} />
           </div>
-        </a>
+        </Link>
       )}
-      <a href={'/account'} className="flex justify-between hover:text-blue-600">
+      <Link
+        to={`/account/${userId}`}
+        className="flex justify-between hover:text-blue-600"
+      >
         <div className="flex items-center p-6">
           <FontAwesomeIcon icon={faUser} className="mr-2" />
           <div className="font-bold text-xl">Mypage</div>
@@ -53,8 +65,8 @@ const MobileDropdownItems = () => {
         <div className="p-6">
           <FontAwesomeIcon icon={faGreaterThan} />
         </div>
-      </a>
-      <a href={'/'} className="flex justify-between hover:text-blue-600">
+      </Link>
+      <Link to={'/'} className="flex justify-between hover:text-blue-600">
         <div className="flex items-center p-6">
           <FontAwesomeIcon icon={faPaintBrush} className="mr-2" />
           <div className="font-bold text-xl">Create</div>
@@ -62,7 +74,7 @@ const MobileDropdownItems = () => {
         <div className="p-6">
           <FontAwesomeIcon icon={faGreaterThan} />
         </div>
-      </a>
+      </Link>
     </>
   );
 };

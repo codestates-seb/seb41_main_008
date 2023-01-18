@@ -9,7 +9,6 @@ import { login } from '../../store/loginSlice';
 import { signup } from '../../store/signupSlice';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { accessToken } from '../../utils/token';
 type Props = {
   isSignup: boolean;
 };
@@ -45,8 +44,7 @@ const InputContainer = ({ isSignup }: Props) => {
           unAuthHandler();
         }
         if (res.meta.requestStatus === 'fulfilled') {
-          window.location.replace('/');
-          // navigate('/');
+          navigate('/');
         }
       });
     }
@@ -97,7 +95,7 @@ const InputContainer = ({ isSignup }: Props) => {
         {isSignup && (
           <input
             id="nickname"
-            className="border-b-2 w-72 p-1 border-black  focus:outline-none bg-transparent font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
+            className="border-b-2 w-full p-1 border-black  focus:outline-none bg-transparent font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
             required
             {...register('nickname', {
               minLength: {
@@ -126,7 +124,7 @@ const InputContainer = ({ isSignup }: Props) => {
         </label>
         <input
           id="email"
-          className="border-b-2 w-72 p-1 border-black focus:outline-none bg-transparent font-bold placeholder-black text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
+          className="border-b-2 w-full p-1 border-black focus:outline-none bg-transparent font-bold placeholder-black text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
           required
           placeholder="ex) kanye123@gmail.com"
           {...register('email', {
@@ -140,7 +138,7 @@ const InputContainer = ({ isSignup }: Props) => {
           errors={errors}
           name="email"
           render={({ message }) => (
-            <span className="text-center bg-red-100 border-red-400 border-2 rounded-md p-1 text-red-600 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+            <span className="text-center bg-red-100  border-red-400 border-2 rounded-md p-1 text-red-600 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
               {message}
             </span>
           )}
@@ -153,7 +151,7 @@ const InputContainer = ({ isSignup }: Props) => {
         </label>
         <input
           id="password"
-          className="border-b-2 w-72 p-1 border-black mb-5 focus:outline-none bg-transparent "
+          className="border-b-2 w-full p-1 border-black mb-5 focus:outline-none bg-transparent "
           type="password"
           required
           {...register('password', {

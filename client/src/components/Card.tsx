@@ -1,12 +1,12 @@
-import styled from 'styled-components';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
 type cartBtnType = {
   hide: boolean;
 };
 const HideWrapper = styled.div<cartBtnType>`
   div {
-    border-radius: 0px 0px 15px 15px;
     transition: 0.2s;
     visibility: ${(props) => (props.hide ? 'visible' : 'hidden')};
     opacity: ${(props) => (props.hide ? '1' : '0')};
@@ -14,10 +14,18 @@ const HideWrapper = styled.div<cartBtnType>`
       props.hide ? 'translateY(0px)' : 'translateY(20px)'};
   }
 `;
-const Card = () => {
+const Card = ({
+  collectionName,
+  logoImgName,
+  itemImageName,
+  itemPrice,
+  itemDescription,
+  filter,
+  coinName,
+}: any) => {
   const [hide, setHide] = useState<boolean>(false);
   return (
-    <div className="shadow rounded-b-xl">
+    <div className="shadow hover:shadow-2xl rounded-b-xl">
       <article
         onMouseEnter={() => {
           setHide(true);
@@ -26,23 +34,32 @@ const Card = () => {
           setHide(false);
         }}
       >
-        <div className="flex flex-col h-full w-full ">
-          <div className="overflow-hidden rounded-t-xl">
+        <Link to={'/'} className="flex flex-col h-full w-full hover:shadow ">
+          <div className="overflow-hidden rounded-t-xl h-64 w-full">
             <img
-              className="rounded-t-xl object-fit hover:scale-125  duration-500"
-              src="https://i.seadn.io/gcs/files/d3781f86c3ff626070559d01a85b1f0f.png?auto=format&w=1000"
-              alt=""
+              className="rounded-t-xl object-fit hover:scale-125  duration-500 h-full w-full"
+              src={
+                filter === 'Collected'
+                  ? process.env.REACT_APP_IMAGE + itemImageName
+                  : process.env.REACT_APP_IMAGE + logoImgName
+              }
+              alt="NFTImage"
             />
           </div>
           <div className="flex flex-col  p-4 rounded-b-xl">
-            <div>nftnumber</div>
-            <div>nftcollectionname</div>
-            <div>nftprice</div>
+            <div>{itemDescription}</div>
+            <div>{collectionName}</div>
+            <div className="flex">
+              <span className="mr-2">{itemPrice}</span>
+              <span>{filter === 'Collected' && coinName}</span>
+            </div>
           </div>
+        </Link>
+        {filter !== 'Created' && (
           <HideWrapper hide={hide}>
             <BuyAndCartButton />
           </HideWrapper>
-        </div>
+        )}
       </article>
     </div>
   );

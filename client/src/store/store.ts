@@ -4,14 +4,13 @@ import loginSlice from './loginSlice';
 import signupSlice from './signupSlice';
 import logoReducer from './logoSlice';
 import bannerReducer from './bannerSlice';
-import googleLoginSlice from './oauthSlice';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['login', 'signup'],
+  blacklist: ['signup'],
 };
 const reducer = combineReducers({
   modal: modalSlice,
@@ -19,7 +18,6 @@ const reducer = combineReducers({
   signup: signupSlice,
   logo: logoReducer,
   banner: bannerReducer,
-  google: googleLoginSlice,
 });
 const persistedReducer = persistReducer(persistConfig, reducer);
 export const store = configureStore({
