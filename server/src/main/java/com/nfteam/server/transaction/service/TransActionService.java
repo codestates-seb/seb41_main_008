@@ -9,7 +9,7 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.transaction.TransRecordNotValidException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
-import com.nfteam.server.item.repository.CollectionRepository;
+import com.nfteam.server.item.repository.ItemCollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransActionService {
 
     private final ItemRepository itemRepository;
-    private final CollectionRepository collectionRepository;
+    private final ItemCollectionRepository itemCollectionRepository;
     private final MemberRepository memberRepository;
     private final TransActionRepository transActionRepository;
     private final CredentialEncryptUtils credentialEncryptUtils;
@@ -73,7 +73,7 @@ public class TransActionService {
     }
 
     private ItemCollection getCollectionByIdWithCoin(String collectionId) {
-        return collectionRepository.findCollectionWithCoin(Long.parseLong(collectionId))
+        return itemCollectionRepository.findCollectionWithCoin(Long.parseLong(collectionId))
                 .orElseThrow(() -> new ItemCollectionNotFoundException(Long.parseLong(collectionId)));
     }
 

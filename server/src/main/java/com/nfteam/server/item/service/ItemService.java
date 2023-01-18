@@ -13,7 +13,8 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import com.nfteam.server.item.entity.ItemCredential;
-import com.nfteam.server.item.repository.CollectionRepository;
+import com.nfteam.server.item.repository.ItemCollectionRepository;
+import com.nfteam.server.item.repository.ItemCredentialRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
@@ -32,7 +33,8 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class ItemService {
 
-    private final CollectionRepository collectionRepository;
+    private final ItemCollectionRepository itemCollectionRepository;
+    private final ItemCredentialRepository itemCredentialRepository;
     private final ItemRepository itemRepository;
     private final QItemRepository qItemRepository;
     private final MemberRepository memberRepository;
@@ -53,8 +55,9 @@ public class ItemService {
         // 아이템 크레덴셜 신규 기록
         String newItemCord = UUID.randomUUID().toString();
         String newTransRecord = "," + makeNewCredentialRecord(item, itemCollection.getCoin());
-
         ItemCredential itemCredential = new ItemCredential(newItemCord, newTransRecord);
+        itemCredentialRepository.save(itemCredential);
+
         item.assignItemCredential(itemCredential);
 
         return itemRepository.save(item).getItemId();
@@ -66,7 +69,7 @@ public class ItemService {
     }
 
     private ItemCollection getItemCollectionById(String collectionId) {
-        return collectionRepository.findCollectionWithCoin(Long.parseLong(collectionId))
+        return itemCollectionRepository.findCollectionWithCoin(Long.parseLong(collectionId))
                 .orElseThrow(() -> new ItemCollectionNotFoundException(Long.parseLong(collectionId)));
     }
 

@@ -15,8 +15,7 @@ public class ItemCredential {
     @Column(name = "credential_id")
     private Long credentialId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @OneToOne(mappedBy = "itemCredential")
     private Item item;
 
     // 상품 고유 코드
