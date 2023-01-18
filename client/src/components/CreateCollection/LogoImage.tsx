@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
 import { setLogoString } from 'store/logoSlice';
 
@@ -10,16 +10,37 @@ interface LogoFile {
 
 export default function LogoImage({ logoFile, setLogoFile }: LogoFile) {
   const dispatch = useAppDispatch();
-
   const logoString = useAppSelector((state) => state.logo.logoString);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  console.log(fileInputRef);
+
+  const [logoTypeError, setLogoTypeError] = useState(false);
+  const [logoSizeError, setLogoSizeError] = useState(false);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.type.substring(0, 5) === 'image') {
-      setLogoFile(file);
+
+    if (file && file.type.substring(0, 5) !== 'image') {
+      setLogoTypeError(true);
     } else {
+      setLogoTypeError(false);
+    }
+
+    if (file && file.size > 30000000) {
+      setLogoSizeError(true);
+    } else {
+      setLogoSizeError(false);
+    }
+
+    if (
+      file &&
+      file.type.substring(0, 5) === 'image' &&
+      file.size <= 30000000
+    ) {
+      setLogoFile(file);
+    }
+
+    if (!file) {
       setLogoFile(null);
     }
   };
@@ -71,6 +92,22 @@ export default function LogoImage({ logoFile, setLogoFile }: LogoFile) {
           <BsImage className="h-20 w-20 text-gray-400  absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" />
           <div className="rounded-full bg-black/60 w-[calc(100%-0.5rem)] h-[calc(100%-0.5rem)] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 hidden group-hover:block" />
         </button>
+      )}
+      {logoTypeError && (
+        <div className="mt-3 text-center">
+          <h5 className="font-bold text-gray-500">Unsupported file type</h5>
+          <p className="text-red-500 font-semibold">
+            File type must be image/*
+          </p>
+        </div>
+      )}
+      {logoSizeError && (
+        <div className="mt-2 text-center">
+          <h5 className="font-bold text-gray-500">File too large</h5>
+          <p className="text-red-500 font-semibold">
+            File is larger than 30,000,000 bytes
+          </p>
+        </div>
       )}
     </form>
   );

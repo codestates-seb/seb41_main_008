@@ -1,16 +1,13 @@
-/* eslint-disable */
-
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { RxCross2 } from 'react-icons/rx';
-import { BsCheckCircleFill } from 'react-icons/bs';
-import { useAppSelector } from 'hooks/hooks';
-import * as Toast from '@radix-ui/react-toast';
-import { useEffect, useRef, useState } from 'react';
-import { HiXCircle } from 'react-icons/hi';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
+import customAxios from 'utils/api/axios';
+import { setOpen } from 'store/toastSlice';
 
 interface Inputs {
   name: string;
@@ -22,6 +19,11 @@ interface Files {
   bannerFile: File | null;
 }
 
+interface Collection {
+  status: string;
+  id: number;
+}
+
 const schema = yup.object({
   name: yup.string().required('This field is required.'),
   description: yup.string().required('This field is required.'),
@@ -29,12 +31,15 @@ const schema = yup.object({
 
 export default function Input({ logoFile, bannerFile }: Files) {
   const logoString = useAppSelector((state) => state.logo.logoString);
-
   const bannerString = useAppSelector((state) => state.banner.bannerString);
+  const dispatch = useAppDispatch();
 
-  const [open, setOpen] = useState(false);
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
+  const [logoName, setLogoName] = useState('');
+  const [bannerName, setBannerName] = useState('');
+  const [collection, setCollection] = useState<Collection>();
+
   const navigate = useNavigate();
 
   const {
@@ -45,15 +50,24 @@ export default function Input({ logoFile, bannerFile }: Files) {
     resolver: yupResolver(schema),
   });
 
-  const timeRef = useRef(0);
-
-  useEffect(() => {
-    return () => clearTimeout(timeRef.current);
-  }, []);
-
-  const uploadImages = async () => {
+  const uploadLogo = async () => {
     const formData = new FormData();
     formData.append('file', logoFile!);
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/images`,
+        formData
+      );
+      setLogoName(res.data.imageName);
+    } catch (error) {
+      const err = error as AxiosError;
+      console.log(err);
+    }
+  };
+
+  const uploadBanner = async () => {
+    const formData = new FormData();
     formData.append('file', bannerFile!);
 
     try {
@@ -61,23 +75,42 @@ export default function Input({ logoFile, bannerFile }: Files) {
         `${process.env.REACT_APP_API_URL}/images`,
         formData
       );
-      console.log(res.data);
+      setBannerName(res.data.imageName);
     } catch (error) {
       const err = error as AxiosError;
       console.log(err);
     }
   };
 
-  const onSubmit = (data: Inputs) => {
-    setOpen(false);
-    window.clearTimeout(timeRef.current);
-    timeRef.current = window.setTimeout(() => setOpen(true), 100);
+  const onSubmit = async (data: Inputs) => {
+    dispatch(setOpen(true));
 
     if (logoString && bannerString) {
-      // navigate(`/collection/${data.name}`, { replace: true });
-      uploadImages();
+      uploadLogo();
+      uploadBanner();
+
+      try {
+        const res = await customAxios.post('/api/collections', {
+          coinId: '1',
+          name: data.name,
+          description: data.description,
+          logoImgName: logoName,
+          bannerImgName: bannerName,
+        });
+
+        setCollection(res.data);
+      } catch (error) {
+        const err = error as AxiosError;
+        console.log(err);
+      }
     }
   };
+
+  useEffect(() => {
+    if (collection) {
+      navigate(`/collection/${collection.id}`);
+    }
+  }, [collection, navigate]);
 
   return (
     <form
@@ -145,39 +178,12 @@ export default function Input({ logoFile, bannerFile }: Files) {
         )}
       </div>
 
-      <Toast.Provider>
-        <input
-          type="submit"
-          className="bg-emerald-700 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
-          value="Create"
-        />
-        <Toast.Root
-          open={open}
-          onOpenChange={setOpen}
-          className="ToastRoot"
-          duration={3000}
-        >
-          <Toast.Description className="ToastDescription">
-            {!logoString || !bannerString ? (
-              <p className="flex items-center gap-1 text-red-600">
-                <span>
-                  <HiXCircle className="h-7 w-7" />
-                </span>{' '}
-                Please select your image.
-              </p>
-            ) : (
-              <p className="flex items-center gap-1 text-emerald-700">
-                <span>
-                  <BsCheckCircleFill className="h-7 w-7" />
-                </span>{' '}
-                Created!
-              </p>
-            )}
-          </Toast.Description>
-        </Toast.Root>
-
-        <Toast.Viewport className="ToastViewport" />
-      </Toast.Provider>
+      <input
+        type="submit"
+        className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
+        value="Create"
+        disabled={!logoString || !bannerString}
+      />
     </form>
   );
 }

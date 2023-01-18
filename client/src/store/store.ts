@@ -6,6 +6,7 @@ import logoReducer from './logoSlice';
 import bannerReducer from './bannerSlice';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import toastReducer from './toastSlice';
 
 const persistConfig = {
   key: 'root',
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   signup: signupSlice,
   logo: logoReducer,
   banner: bannerReducer,
+  toast: toastReducer,
 });
 const persistedReducer = persistReducer(persistConfig, reducer);
 export const store = configureStore({
