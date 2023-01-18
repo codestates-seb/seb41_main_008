@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +23,17 @@ public class TransActionController {
     private final TransActionService transActionService;
 
     @PostMapping
-    public ResponseEntity buy(@RequestBody @Valid TransActionCreateRequest transActionCreateRequest,
-                              @AuthenticationPrincipal MemberDetails memberDetails) throws Exception {
-        Long savedTransId = transActionService.savePurchaseRecord(transActionCreateRequest, memberDetails);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Void> buy(@RequestBody @Valid TransActionCreateRequest transActionCreateRequest,
+                                    @AuthenticationPrincipal MemberDetails memberDetails) throws Exception {
+        transActionService.saveOnePurchaseRecord(transActionCreateRequest, memberDetails);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<Void> bulkBuy(@RequestBody @Valid List<TransActionCreateRequest> transActionCreateRequestList,
+                                        @AuthenticationPrincipal MemberDetails memberDetails) throws Exception {
+        transActionService.saveBulkPurchaseRecord(transActionCreateRequestList, memberDetails);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
