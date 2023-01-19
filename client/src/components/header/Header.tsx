@@ -1,7 +1,4 @@
 import styled from 'styled-components';
-import Dropdown from './Dropdown';
-import MobileDropdown from './MobileDropdown';
-import MobileDropdownList from './MobileDropdownLIst';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -13,6 +10,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { logout, getMyProFile } from 'utils/api/api';
+import MobileDropdownList from './MobileDropdownLIst';
+import MobileDropdown from './MobileDropdown';
+import Dropdown from './Dropdown';
 
 const SearchInput = styled.input`
   display: flex;
