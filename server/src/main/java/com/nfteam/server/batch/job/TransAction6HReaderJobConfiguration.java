@@ -19,9 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 @Configuration
@@ -31,14 +29,12 @@ public class TransAction6HReaderJobConfiguration {
 
     public static final String JOB_NAME = "ranking6HReaderJob";
     private static final String STEP_NAME = "ranking6HReaderStep";
-    private static final int chunkSize = 15;
+    private static final int chunkSize = 10;
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final TransActionRepository transActionRepository;
     private final Ranking6HRepository ranking6HRepository;
-
-    private List<Long> rankList = new ArrayList<>();
 
     @Bean
     public Job ranking6HReaderJob() throws Exception {
@@ -53,9 +49,9 @@ public class TransAction6HReaderJobConfiguration {
     public Step ranking6HReaderStep() throws Exception {
         return stepBuilderFactory
                 .get(STEP_NAME)
-                .<TransAction,List<Long>>chunk(chunkSize)
-                .reader(ranking6HReader()) // 해당 시간대 범위의 모든 거래 기록을 읽어온다.
-                .processor(ranking6HProcessor()) // 거래 기록 중 랭킹 상위 15개를 구한다.
+                .<TransAction, Ranking6H>chunk(chunkSize)
+                .reader(ranking6HReader()) // 해당 시간대 범위의 모든 거래 기록을 랭킹을 읽어온다.
+                .processor(ranking6HProcessor()) // 거래 기록 랭킹을 String 값으로 전환한다.
                 .writer(ranking6HWriter()) // 랭킹 테이블에 저장한다.
                 .build();
     }
@@ -67,7 +63,7 @@ public class TransAction6HReaderJobConfiguration {
                 .repository(transActionRepository)
                 .methodName("findByCreatedDateAfter")
                 .pageSize(chunkSize)
-                .arguments(LocalDateTime.now().minusHours(80))
+                .arguments(LocalDateTime.now().minusHours(60))
                 .sorts(Collections.singletonMap("createdDate", Sort.Direction.ASC))
                 .name("ranking6HReader")
                 .build();
@@ -75,24 +71,20 @@ public class TransAction6HReaderJobConfiguration {
 
     @Bean
     @StepScope
-    public ItemProcessor<TransAction, List<Long>> ranking6HProcessor() {
+    public ItemProcessor<TransAction, Ranking6H> ranking6HProcessor() {
+        Ranking6H ranking6H = new Ranking6H();
         return transActions -> {
-            rankList.add(transActions.getCollection().getCollectionId());
-            return rankList;
+            ranking6H.addString(transActions.getCollection().getCollectionId());
+            return ranking6H;
         };
     }
 
     @Bean
     @StepScope
-    public RepositoryItemWriter<List<Long>> ranking6HWriter() {
-
-        while(rankList.size() < 15){
-            rankList.add(99L);
-        }
-
-        ranking6HRepository.save(new Ranking6H(rankList));
-        return null;
+    public RepositoryItemWriter<Ranking6H> ranking6HWriter() {
+        return new RepositoryItemWriterBuilder<Ranking6H>()
+                .repository(ranking6HRepository)
+                .build();
     }
-
 
 }

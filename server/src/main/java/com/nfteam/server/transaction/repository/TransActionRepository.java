@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public interface TransActionRepository extends JpaRepository<TransAction, Long> {
 
-    @Query("select t from TransAction t group by t.collection order by count(t.item) desc")
+    @Query("select t from TransAction t where t.createdDate >:localDateTime group by t.collection order by count(t.item) desc")
     Page<TransAction> findByCreatedDateAfter(LocalDateTime localDateTime, Pageable pageable);
 
 }
