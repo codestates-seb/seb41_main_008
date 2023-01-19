@@ -4,6 +4,7 @@ import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.cart.entity.CartItemRel;
 import com.nfteam.server.cart.repository.CartItemRelRepository;
 import com.nfteam.server.cart.repository.CartRepository;
+import com.nfteam.server.dto.request.cart.CartPatchDto;
 import com.nfteam.server.exception.cart.CartExistException;
 import com.nfteam.server.exception.cart.CartNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
@@ -11,6 +12,7 @@ import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.service.MemberService;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,21 +45,24 @@ public class CartService {
         return findCart;
     }
 
-    public CartItemRel insertCartItem(Long memberId, Long itemId) {
+    public void insertCartItem(Long memberId,CartPatchDto cartPatchDto) {
         Cart cart;
-        CartItemRel cartItemRel = CartItemRel.builder().build();
-        Item item = itemRepository.findById(itemId)
-            .orElseThrow(() -> new ItemNotFoundException(itemId));
+        CartItemRel cartItemRel;
+        List<Long> itemIdList = cartPatchDto.getItemIdList();
+
         try {
-            //item을 넣으려고 할때 카트가 생성되어있지 않다면 카트생성
             cart = this.findVerifiedCart(memberId);
-            cartItemRel = CartItemRel.builder().item(item).cart(cart).build();
+
+            for (Long itemId : itemIdList) {
+                Item item = itemRepository.findById(itemId)
+                    .orElseThrow(() -> new ItemNotFoundException(itemId));
+
+                cartItemRel = CartItemRel.builder().item(item).cart(cart).build();
+                cartItemRelRepository.save(cartItemRel);
+            }
         } catch (CartNotFoundException e) {
             this.createCart(memberId);
         }
-
-        return cartItemRelRepository.save(cartItemRel);
-
     }
 
     public Cart findVerifiedCart(Long memberId) {
