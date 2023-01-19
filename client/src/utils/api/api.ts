@@ -22,3 +22,5 @@ export const getUserProFile = async (memberId: string) => {
 export const getItemsData = async (itemId: string | undefined) => {
   return await customAxios.get(`/api/items/${itemId}`);
 };
+
+// export

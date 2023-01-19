@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import modalSlice from './modalSlice';
 import loginSlice from './loginSlice';
 import signupSlice from './signupSlice';
+import cartSlice from './cartSlice';
 import logoReducer from './logoSlice';
 import bannerReducer from './bannerSlice';
 import { persistReducer } from 'redux-persist';
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   logo: logoReducer,
   banner: bannerReducer,
   toast: toastReducer,
+  cart: cartSlice,
 });
 const persistedReducer = persistReducer(persistConfig, reducer);
 export const store = configureStore({

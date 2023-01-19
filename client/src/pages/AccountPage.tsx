@@ -3,7 +3,7 @@ import NoCard from '../components/Account/NoCard';
 import { useParams } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
 import { useState, useEffect } from 'react';
-
+import { useAppSelector } from 'hooks/hooks';
 interface UserType {
   member: {
     nickname: string;
@@ -19,10 +19,8 @@ const AccountPage = () => {
   const { memberId }: any = useParams();
   const [data, setData] = useState<UserType>();
   const [filter, setFilter] = useState<string>('Collected');
-  const [collection, setCollections] = useState<any>([]);
-  console.log('data', data);
-  console.log('filter', filter);
-  console.log('collection', collection);
+  const [, setCollections] = useState<any>([]);
+
   useEffect(() => {
     getUserProFile(memberId).then((res) => {
       setCollections(res.data?.collections);
