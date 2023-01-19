@@ -151,7 +151,15 @@
   }
 
   .shadowBtn {
+    @apply rounded-full p-1.5 bg-white;
+  }
+
+  .shadowBtn:hover {
     box-shadow: rgb(0 0 0 / 10%) 0px 2px 10px;
     transition: all 500ms;
+  }
+
+  .text {
+    @apply text-lg text-[#707A83] font-semibold;
   }
 }

@@ -8,6 +8,7 @@ import { HiOutlineStar, HiShare } from 'react-icons/hi';
 import * as Toast from '@radix-ui/react-toast';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setOpen } from 'store/toastSlice';
+import Card from 'components/Card';
 
 interface Item {
   itemDescription: string;
@@ -78,7 +79,7 @@ export default function CollectionDetails() {
             />
           </span>
         </div>
-        <div className="absolute  mt-32 ml-6 w-[160px] h-[160px] ">
+        <div className="absolute mt-32 ml-6 w-[160px] h-[160px]">
           <img
             className="w-full h-full object-cover rounded-full border-8 border-[#ffffff]"
             alt="Collection logo"
@@ -86,14 +87,15 @@ export default function CollectionDetails() {
           />
         </div>
       </section>
+
       <section className="px-8 space-y-3 text-[#04111D]">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold">{collection?.collectionName}</h1>
           <div className="space-x-3 flex">
-            <button className="rounded-full p-1.5 bg-white hover:shadowBtn">
+            <button className="shadowBtn">
               <HiOutlineStar className="h-6 w-6" />
             </button>
-            <button className="rounded-full p-1.5 bg-white hover:shadowBtn">
+            <button className="shadowBtn">
               <HiShare className="h-6 w-6" />
             </button>
           </div>
@@ -123,25 +125,35 @@ export default function CollectionDetails() {
             <div className="font-semibold text-2xl">
               {collection?.totalVolume} ETH
             </div>
-            <div className="text-lg text-[#707A83] font-semibold">
-              total volume
-            </div>
+            <div className="text">total volume</div>
           </div>
           <div className="text-center">
             <div className="font-semibold text-2xl">
               {collection?.lowestPrice} ETH
             </div>
-            <div className="text-lg text-[#707A83] font-semibold">
-              floor price
-            </div>
+            <div className="text">floor price</div>
           </div>
           <div className="text-center">
             <div className="font-semibold text-2xl">
               {collection?.ownerCount}
             </div>
-            <div className="text-lg text-[#707A83] font-semibold">owners</div>
+            <div className="text">owners</div>
           </div>
         </div>
+      </section>
+
+      <section className="px-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        {collection?.itemList.map((item) => (
+          <Card
+            collectionName={collection.collectionName}
+            logoImgName={collection.logoImgName}
+            itemImageName={item.itemImageName}
+            itemPrice={item.itemPrice}
+            itemDescription={item.itemDescription}
+            coinName={collection.coinName}
+            filter="collected"
+          />
+        ))}
       </section>
       <Toast.Provider>
         <Toast.Root open={open} onOpenChange={setOpen} className="ToastRoot">
