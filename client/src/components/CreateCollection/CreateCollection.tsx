@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { RxCross2 } from 'react-icons/rx';
-import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
@@ -14,7 +14,7 @@ interface Inputs {
   description: string;
 }
 
-interface Files {
+interface Images {
   logoFile: File | null;
   bannerFile: File | null;
 }
@@ -29,9 +29,7 @@ const schema = yup.object({
   description: yup.string().required('This field is required.'),
 });
 
-export default function Input({ logoFile, bannerFile }: Files) {
-  const logoString = useAppSelector((state) => state.logo.logoString);
-  const bannerString = useAppSelector((state) => state.banner.bannerString);
+export default function CreateCollection({ logoFile, bannerFile }: Images) {
   const dispatch = useAppDispatch();
 
   const [nameFocus, setNameFocus] = useState(false);
@@ -85,7 +83,7 @@ export default function Input({ logoFile, bannerFile }: Files) {
   const onSubmit = async (data: Inputs) => {
     dispatch(setOpen(true));
 
-    if (logoString && bannerString) {
+    if (logoFile && bannerFile) {
       uploadLogo();
       uploadBanner();
 
@@ -182,7 +180,7 @@ export default function Input({ logoFile, bannerFile }: Files) {
         type="submit"
         className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
         value="Create"
-        disabled={!logoString || !bannerString}
+        disabled={!logoFile || !bannerFile}
       />
     </form>
   );
