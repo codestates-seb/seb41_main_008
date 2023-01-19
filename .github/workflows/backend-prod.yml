@@ -9,7 +9,7 @@ name: 백엔드 운영서버 배포 자동화
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "release" ]
 
 defaults:
   run:
