@@ -78,7 +78,12 @@ public class CollectionService {
         CollectionResponse response = itemCollection.toResponse();
 
         List<Item> items = itemRepository.findItemsWithOwnerByCollectionId(collectionId);
-        calcItemMetaInfo(items, response);
+        // 아이템 메타정보 계산
+        if (items.size() != 0) {
+            calcItemMetaInfo(items, response);
+        } else {
+            response.addMetaInfo(0, 0.0, 0.0, 0.0, 0);
+        }
 
         List<CollectionItemResponse> itemResponses = items.stream()
                 .map(CollectionItemResponse::of)
@@ -95,18 +100,10 @@ public class CollectionService {
 
     private void calcItemMetaInfo(List<Item> items, CollectionResponse response) {
         Integer itemCount = items.size();
-
-        Double totalVolume = items.stream()
-                .mapToDouble(i -> i.getItemPrice()).sum();
-
-        Double highestPrice = items.stream()
-                .mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
-
-        Double lowestPrice = items.stream()
-                .mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
-
-        Long ownerCount = items.stream()
-                .map(i -> i.getMember()).distinct().count();
+        Double totalVolume = items.stream().mapToDouble(i -> i.getItemPrice()).sum();
+        Double highestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
+        Double lowestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+        Long ownerCount = items.stream().map(i -> i.getMember()).distinct().count();
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }

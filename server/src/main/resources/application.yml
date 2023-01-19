@@ -24,4 +24,4 @@ server:
 jwt:
   secret-key: j3904hj3bni3nb390bj9380q5jg309qjbi3ej4nb9053qjb90j35q0bjq90jASGASGASGSASGHRWEEWGDS         # 민감한 정보는 시스템 환경 변수에서 로드한다.
   access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 3880
+  refresh-token-expiration-minutes: 10080
