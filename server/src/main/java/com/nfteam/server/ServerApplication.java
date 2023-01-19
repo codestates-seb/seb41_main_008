@@ -7,8 +7,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
-@EnableFeignClients
 @EnableBatchProcessing
+@EnableFeignClients
 @SpringBootApplication
 public class ServerApplication {
 

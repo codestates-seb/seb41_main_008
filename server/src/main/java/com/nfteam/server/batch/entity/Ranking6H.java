@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Entity
@@ -35,22 +36,22 @@ public class Ranking6H extends BaseEntity {
     }
 
     @Builder
-    public Ranking6H(Long rank1, Long rank2, Long rank3, Long rank4, Long rank5, Long rank6, Long rank7, Long rank8, Long rank9, Long rank10, Long rank11, Long rank12, Long rank13, Long rank14, Long rank15) {
-        this.rank1 = rank1;
-        this.rank2 = rank2;
-        this.rank3 = rank3;
-        this.rank4 = rank4;
-        this.rank5 = rank5;
-        this.rank6 = rank6;
-        this.rank7 = rank7;
-        this.rank8 = rank8;
-        this.rank9 = rank9;
-        this.rank10 = rank10;
-        this.rank11 = rank11;
-        this.rank12 = rank12;
-        this.rank13 = rank13;
-        this.rank14 = rank14;
-        this.rank15 = rank15;
+    public Ranking6H(List<Long> rankList) {
+        this.rank1 = rankList.get(0) == null ? 0 : rankList.get(0);
+        this.rank2 = rankList.get(1) == null ? 0 : rankList.get(1);
+        this.rank3 = rankList.get(2) == null ? 0 : rankList.get(2);
+        this.rank4 = rankList.get(3) == null ? 0 : rankList.get(3);
+        this.rank5 = rankList.get(4) == null ? 0 : rankList.get(4);
+        this.rank6 = rankList.get(5) == null ? 0 : rankList.get(5);
+        this.rank7 = rankList.get(6) == null ? 0 : rankList.get(6);
+        this.rank8 = rankList.get(7) == null ? 0 : rankList.get(7);
+        this.rank9 = rankList.get(8) == null ? 0 : rankList.get(8);
+        this.rank10 = rankList.get(9) == null ? 0 : rankList.get(9);
+        this.rank11 = rankList.get(10) == null ? 0 : rankList.get(10);
+        this.rank12 = rankList.get(11) == null ? 0 : rankList.get(11);
+        this.rank13 = rankList.get(12) == null ? 0 : rankList.get(12);
+        this.rank14 = rankList.get(13) == null ? 0 : rankList.get(13);
+        this.rank15 = rankList.get(14) == null ? 0 : rankList.get(14);
     }
 
 }

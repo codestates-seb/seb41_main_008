@@ -24,7 +24,7 @@ public class TransActionReaderJobScheduler {
     private final JobLauncher jobLauncher;
     private final TransAction6HReaderJobConfiguration transAction6HReaderJobConfiguration;
 
-    @Scheduled(cron = "0 0 6 * * *") //초 분 시 일 월 요일
+    @Scheduled(cron = "20 * * * * *") //초 분 시 일 월 요일
     public void run6HJob() {
 
         Map<String, JobParameter> map = new HashMap<>();
@@ -32,8 +32,7 @@ public class TransActionReaderJobScheduler {
         JobParameters jobParameters = new JobParameters(map);
 
         try {
-            jobLauncher.run(transAction6HReaderJobConfiguration.transActionRankingReaderJob(), jobParameters);
-
+            jobLauncher.run(transAction6HReaderJobConfiguration.ranking6HReaderJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -41,41 +40,4 @@ public class TransActionReaderJobScheduler {
             e.printStackTrace();
         }
     }
-
-    @Scheduled(cron = "0 0 12 * * *") //초 분 시 일 월 요일
-    public void run12HJob() {
-
-        Map<String, JobParameter> map = new HashMap<>();
-        map.put("time", new JobParameter(System.currentTimeMillis()));
-        JobParameters jobParameters = new JobParameters(map);
-
-        try {
-            jobLauncher.run(transAction6HReaderJobConfiguration.transActionRankingReaderJob(), jobParameters);
-
-        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-                 | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Scheduled(cron = "0 0 0 1 * *") //초 분 시 일 월 요일
-    public void run24HJob() {
-
-        Map<String, JobParameter> map = new HashMap<>();
-        map.put("time", new JobParameter(System.currentTimeMillis()));
-        JobParameters jobParameters = new JobParameters(map);
-
-        try {
-            jobLauncher.run(transAction6HReaderJobConfiguration.transActionRankingReaderJob(), jobParameters);
-
-        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-                 | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }
