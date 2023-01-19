@@ -1,7 +1,9 @@
 import Card from '../components/Card';
+import NoCard from '../components/Account/NoCard';
 import { useParams } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+
 interface UserType {
   member: {
     nickname: string;
@@ -12,21 +14,25 @@ interface UserType {
   items: [];
   collections: [];
 }
+
 const AccountPage = () => {
   const { memberId }: any = useParams();
   const [data, setData] = useState<UserType>();
   const [filter, setFilter] = useState<string>('Collected');
+  const [collection, setCollections] = useState<any>([]);
   console.log('data', data);
-  console.log(filter);
+  console.log('filter', filter);
+  console.log('collection', collection);
   useEffect(() => {
-    getUserProFile(memberId).then((res) => setData(res.data));
+    getUserProFile(memberId).then((res) => {
+      setCollections(res.data?.collections);
+      setData(res.data);
+    });
   }, [memberId]);
-  const onFilter = useCallback(
-    (filterType: string) => {
-      setFilter(filterType);
-    },
-    [filter]
-  );
+
+  const onFilter = (filterType: string) => {
+    setFilter(filterType);
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -78,14 +84,25 @@ const AccountPage = () => {
         </div>
 
         <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
-          {filter === 'Collected' &&
-            data?.items.map((el: any) => {
-              return <Card key={el.collectionId} {...el} filter={filter} />;
-            })}
-          {filter === 'Created' &&
-            data?.collections.map((el: any) => {
-              return <Card key={el.collectionId} {...el} filter={filter} />;
-            })}
+          {filter === 'Collected' ? (
+            data?.items.length !== 0 ? (
+              data?.items.map((el: any) => {
+                return <Card key={el.collectionId} {...el} filter={filter} />;
+              })
+            ) : (
+              <NoCard />
+            )
+          ) : null}
+
+          {filter === 'Created' ? (
+            data?.collections.length !== 0 ? (
+              data?.collections.map((el: any) => {
+                return <Card key={el.collectionId} {...el} filter={filter} />;
+              })
+            ) : (
+              <NoCard />
+            )
+          ) : null}
         </div>
       </div>
     </div>

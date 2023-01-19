@@ -25,7 +25,6 @@ const Home = () => {
             <button className={styles.filterBtn}>
               <span> 24h </span>
               <IoIosArrowDown />
-
               <span
                 className={`material-symbols-outlined ${styles.btnExpandIcon}`}
               ></span>

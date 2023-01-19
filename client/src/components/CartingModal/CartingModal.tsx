@@ -32,7 +32,7 @@ export const ModalContainer = styled.div<ModalContainerProps>`
   position: fixed;
   padding: 20px;
   width: 400px;
-  height: 850px;
+  height: 750px;
   right: 28px;
   top: 30px;
 
@@ -103,6 +103,11 @@ const CartingModal = () => {
           <button>Clear all</button>
         </div>
         <ul className="flex flex-col gap-2 h-auto overflow-auto ">
+          <CartItems />
+          <CartItems />
+          <CartItems />
+          <CartItems />
+          <CartItems />
           <CartItems />
         </ul>
         <Line />
