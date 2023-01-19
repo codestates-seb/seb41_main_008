@@ -18,3 +18,7 @@ export const getMyProFile = async () => {
 export const getUserProFile = async (memberId: string) => {
   return await customAxios.get(`/api/members/${memberId}`);
 };
+
+export const getItemsData = async (itemId: string | undefined) => {
+  return await customAxios.get(`/api/items/${itemId}`);
+};

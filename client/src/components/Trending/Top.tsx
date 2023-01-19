@@ -4,8 +4,6 @@ import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
 import { IoIosArrowDown } from 'react-icons/io';
 
-
-
 const Home = () => {
   const [activeTab] = useState('trending');
   return (
@@ -26,13 +24,10 @@ const Home = () => {
           <div className={styles.filterBtnsContainer}>
             <button className={styles.filterBtn}>
               <span> 24h </span>
-                 <IoIosArrowDown />
-
+              <IoIosArrowDown />
               <span
                 className={`material-symbols-outlined ${styles.btnExpandIcon}`}
               ></span>
-              >
-              </span>
             </button>
           </div>
         </header>
