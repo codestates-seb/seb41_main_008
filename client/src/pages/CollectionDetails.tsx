@@ -9,7 +9,7 @@ import * as Toast from '@radix-ui/react-toast';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setOpen } from 'store/toastSlice';
 import Card from 'components/Card';
-import MissingPage from '../components/MissingPage/MissingPage';
+import MissingPage from 'components/MissingPage/MissingPage';
 
 interface Item {
   itemDescription: string;
@@ -147,19 +147,23 @@ export default function CollectionDetails() {
             </div>
           </section>
 
-          <section className="px-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {collection?.itemList.map((item) => (
-              <Card
-                collectionName={collection.collectionName}
-                logoImgName={collection.logoImgName}
-                itemImageName={item.itemImageName}
-                itemPrice={item.itemPrice}
-                itemDescription={item.itemDescription}
-                coinName={collection.coinName}
-                filter="collected"
-              />
-            ))}
-          </section>
+          {collection.itemCount ? (
+            <section className="px-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+              {collection?.itemList.map((item) => (
+                <Card
+                  collectionName={collection.collectionName}
+                  logoImgName={collection.logoImgName}
+                  itemImageName={item.itemImageName}
+                  itemPrice={item.itemPrice}
+                  itemDescription={item.itemDescription}
+                  coinName={collection.coinName}
+                  filter="collected"
+                />
+              ))}
+            </section>
+          ) : (
+            <p className="px-8 text-4xl text-[#40111D]">No items to display</p>
+          )}
           <Toast.Provider>
             <Toast.Root
               open={open}
