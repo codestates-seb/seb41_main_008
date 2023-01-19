@@ -1,5 +1,6 @@
-package com.nfteam.server.transaction.repository;
+package com.nfteam.server.batch.repository;
 
+import com.nfteam.server.batch.entity.Ranking6H;
 import com.nfteam.server.transaction.entity.TransAction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,8 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 
-public interface TransActionRepository extends JpaRepository<TransAction, Long> {
-
-    Page<TransAction> findByCreatedDateAfter(LocalDateTime localDateTime, Pageable pageable);
-
+public interface Ranking6HRepository extends JpaRepository<Ranking6H, Long> {
 }
