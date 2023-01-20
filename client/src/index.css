@@ -162,4 +162,12 @@
   .text {
     @apply text-lg text-[#707A83] font-semibold;
   }
+
+  li:first-child {
+    @apply rounded-t-lg;
+  }
+
+  li:last-child {
+    @apply rounded-b-lg;
+  }
 }

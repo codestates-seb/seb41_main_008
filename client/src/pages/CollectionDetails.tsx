@@ -57,6 +57,7 @@ export default function CollectionDetails() {
         const res = await customAxios.get(`/api/collections/${id}`);
 
         setCollection(res.data);
+        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err);
