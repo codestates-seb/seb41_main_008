@@ -34,6 +34,7 @@ public class TransActionService {
     private final ItemRepository itemRepository;
     private final ItemCollectionRepository itemCollectionRepository;
     private final MemberRepository memberRepository;
+    private final CartRepository cartRepository;
     private final TransActionRepository transActionRepository;
     private final CartRepository cartRepository;
     private final CredentialEncryptUtils credentialEncryptUtils;
@@ -94,6 +95,8 @@ public class TransActionService {
         recordNewTransHistory(transActionCreateRequest, buyer, item);
         // item 소유자 변경
         item.assignMember(buyer);
+        // 현재 구매자에게 새로운 장바구니 부여
+        cartRepository.save(new Cart(buyer));
 
         return TransAction.builder()
                 .seller(seller)

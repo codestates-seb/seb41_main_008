@@ -1,5 +1,6 @@
 package com.nfteam.server.common.config;
 
+import com.nfteam.server.cart.service.CartService;
 import com.nfteam.server.common.utils.JwtTokenizer;
 import com.nfteam.server.redis.repository.RedisRepository;
 import com.nfteam.server.security.filter.JwtAuthenticationFilter;
@@ -9,7 +10,6 @@ import com.nfteam.server.security.handler.MemberAccessDeniedHandler;
 import com.nfteam.server.security.handler.MemberAuthenticationEntryPoint;
 import com.nfteam.server.security.handler.MemberAuthenticationFailureHandler;
 import com.nfteam.server.security.handler.MemberAuthenticationSuccessHandler;
-import com.nfteam.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +35,7 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final RedisRepository redisRepository;
+    private final CartService cartService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -89,7 +90,7 @@ public class SecurityConfiguration {
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisRepository);
             jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(cartService));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer);

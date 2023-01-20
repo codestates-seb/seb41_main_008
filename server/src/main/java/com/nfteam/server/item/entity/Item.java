@@ -53,6 +53,10 @@ public class Item extends BaseEntity {
     protected Item() {
     }
 
+    public Item(Long itemId) {
+        this.itemId = itemId;
+    }
+
     @Builder
     public Item(String itemName,
                 String itemImageName,
