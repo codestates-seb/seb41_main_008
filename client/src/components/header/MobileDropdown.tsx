@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-
-const MobileDropdownContainer = styled.div<MobileDropdownProps>`
+import { Dispatch, SetStateAction } from 'react';
+const MobileDropdownContainer = styled.div<any>`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -19,11 +19,19 @@ const MobileDropdownContainer = styled.div<MobileDropdownProps>`
 interface MobileDropdownProps {
   visible: boolean;
   children: React.ReactNode;
+  setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-const MobileDropdown = ({ visible, children }: MobileDropdownProps) => {
+const MobileDropdown = ({
+  visible,
+  children,
+  setVisible,
+}: MobileDropdownProps) => {
   return (
-    <MobileDropdownContainer visible={visible}>
+    <MobileDropdownContainer
+      visible={visible}
+      onClick={() => setVisible(false)}
+    >
       {visible && children}
     </MobileDropdownContainer>
   );

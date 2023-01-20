@@ -105,7 +105,6 @@ const CartingModal = () => {
         </div>
         <ul className="flex flex-col gap-2 h-auto overflow-auto ">
           {cartItems.map((el: any) => {
-            console.log(el);
             return <CartItems key={el.itemId} {...el} />;
           })}
         </ul>

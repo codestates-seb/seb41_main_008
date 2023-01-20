@@ -37,6 +37,7 @@ const Asset = () => {
   const { itemId } = useParams();
   const { cartItems } = useAppSelector((state) => state.cart);
   console.log(cartItems);
+  console.log(data);
   useEffect(() => {
     getItemsData(itemId).then((res) => setData(res.data));
   }, [itemId]);
