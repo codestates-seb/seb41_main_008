@@ -89,9 +89,10 @@ public class CollectionService {
 
         List<CollectionItemResponse> itemResponses = items.stream()
                 .map(CollectionItemResponse::of)
+                .sorted(CollectionItemResponse::compareTo)
                 .collect(Collectors.toList());
-        response.addItemResponseDtos(itemResponses);
 
+        response.addItemResponseDtos(itemResponses);
         return response;
     }
 

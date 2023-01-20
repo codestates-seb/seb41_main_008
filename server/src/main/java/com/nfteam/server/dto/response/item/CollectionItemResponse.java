@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CollectionItemResponse {
+public class CollectionItemResponse implements Comparable<CollectionItemResponse> {
 
     // 현재 컬렉션 정보
     private Long collectionId;
@@ -71,4 +71,12 @@ public class CollectionItemResponse {
                 .build();
     }
 
+    @Override
+    public int compareTo(CollectionItemResponse o) {
+        if (o.onSale == this.onSale) {
+            return Double.compare(this.itemPrice, o.itemPrice);
+        } else {
+            return Boolean.compare(o.onSale, this.onSale);
+        }
+    }
 }
