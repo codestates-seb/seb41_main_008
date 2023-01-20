@@ -21,10 +21,9 @@ public class Ranking6H extends BaseEntity {
     public Ranking6H() {
     }
 
-    public void addString(Long num){
+    public void addString(Long num) {
         this.rankString += num;
         this.rankString += ",";
     }
-
 
 }
