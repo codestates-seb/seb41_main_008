@@ -1,7 +1,7 @@
 package com.nfteam.server.item.controller;
 
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
-import com.nfteam.server.dto.request.item.ItemPatchRequest;
+import com.nfteam.server.dto.request.item.ItemSellRequest;
 import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.item.service.ItemService;
@@ -13,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,17 +22,17 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody @Valid ItemCreateRequest itemCreateRequest,
-                                 @AuthenticationPrincipal MemberDetails memberDetails) throws Exception {
+    public ResponseEntity<SingleIdResponse> create(@RequestBody @Valid ItemCreateRequest itemCreateRequest,
+                                                   @AuthenticationPrincipal MemberDetails memberDetails) throws Exception {
         Long createdId = itemService.save(itemCreateRequest, memberDetails);
         return new ResponseEntity<>(new SingleIdResponse(HttpStatus.CREATED.name(), createdId), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{itemId}")
-    public ResponseEntity update(@PathVariable("itemId") Long itemId,
-                                 @RequestBody ItemPatchRequest itemPatchRequest,
-                                 @AuthenticationPrincipal MemberDetails memberDetails) {
-        Long updatedId = itemService.update(itemId, itemPatchRequest, memberDetails);
+    @PostMapping("/sell/{itemId}")
+    public ResponseEntity<SingleIdResponse> sell(@PathVariable("itemId") Long itemId,
+                                                 @RequestBody ItemSellRequest itemSellRequest,
+                                                 @AuthenticationPrincipal MemberDetails memberDetails) {
+        Long updatedId = itemService.sell(itemId, itemSellRequest, memberDetails);
         return new ResponseEntity<>(new SingleIdResponse(HttpStatus.OK.name(), updatedId), HttpStatus.OK);
     }
 
@@ -47,11 +46,6 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public ResponseEntity<ItemResponse> getItem(@PathVariable("itemId") Long itemId) {
         return new ResponseEntity<>(itemService.getItem(itemId), HttpStatus.OK);
-    }
-
-    @GetMapping("/member/{memberId}")
-    public ResponseEntity<List<ItemResponse>> getMemberItem(@PathVariable("memberId") Long memberId) {
-        return new ResponseEntity<>(itemService.getMemberItemList(memberId), HttpStatus.OK);
     }
 
 }

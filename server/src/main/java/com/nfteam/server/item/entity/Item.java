@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Getter
 @Entity
@@ -29,8 +28,7 @@ public class Item extends BaseEntity {
     private Member member;
 
     // 상품 고유 정보
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credential_id")
+    @OneToOne(mappedBy = "item", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private ItemCredential itemCredential;
 
     @Column(name = "item_name", nullable = false)
@@ -66,9 +64,9 @@ public class Item extends BaseEntity {
         this.itemPrice = itemPrice;
     }
 
-    public void assignItemCredential(ItemCredential itemCredential) {
-        this.itemCredential = itemCredential;
-        itemCredential.assignItem(this);
+    public void assignMember(Member member) {
+        this.member = member;
+        member.getItemList().add(this);
     }
 
     public void assignCollection(ItemCollection collection) {
@@ -76,34 +74,9 @@ public class Item extends BaseEntity {
         collection.getItemList().add(this);
     }
 
-    public void assignMember(Member member) {
-        this.member = member;
-        member.getItemList().add(this);
-    }
-
-    public void update(Item item) {
-        Optional.ofNullable(item.getItemName())
-                .ifPresent(this::updateName);
-        Optional.of(item.getItemImageName())
-                .ifPresent(this::updateImage);
-        Optional.of(item.getItemDescription())
-                .ifPresent(this::updateDesc);
-        Optional.ofNullable(item.getOnSale())
-                .ifPresent(this::updateSaleStatus);
-        Optional.of(item.getItemPrice())
-                .ifPresent(this::updatePrice);
-    }
-
-    public void updateName(String name) {
-        this.itemName = name;
-    }
-
-    public void updateImage(String itemImageName) {
-        this.itemImageName = itemImageName;
-    }
-
-    public void updateDesc(String itemDescription) {
-        this.itemDescription = itemDescription;
+    public void assignItemCredential(ItemCredential itemCredential) {
+        this.itemCredential = itemCredential;
+        itemCredential.assignItem(this);
     }
 
     public void updatePrice(Double itemPrice) {
