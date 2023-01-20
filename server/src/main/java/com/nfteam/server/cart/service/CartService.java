@@ -78,11 +78,13 @@ public class CartService {
 
         // 본인 카트 검증
         validateOwnCart(member, cart);
+
         // 기존 장바구니 연관관계 기록은 삭제
         cartItemRelRepository.deleteByCartId(cart.getCartId());
 
         // 장바구니에 아이템이 존재하면 연관관계 생성 후 저장
         if (!cartPurchaseRequest.getItemIdList().isEmpty()) {
+            // 아이템 존재 여부 검증 및 아이템 리스트 로드
             List<Item> items = cartPurchaseRequest
                     .getItemIdList()
                     .stream()

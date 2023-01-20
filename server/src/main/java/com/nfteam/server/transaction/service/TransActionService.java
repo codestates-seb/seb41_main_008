@@ -5,7 +5,8 @@ import com.nfteam.server.cart.repository.CartRepository;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.transaction.TransActionCreateRequest;
-import com.nfteam.server.exception.cart.CartNotFoundException;
+import com.nfteam.server.exception.ExceptionCode;
+import com.nfteam.server.exception.NFTCustomException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -36,7 +37,6 @@ public class TransActionService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final TransActionRepository transActionRepository;
-    private final CartRepository cartRepository;
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     @Transactional
@@ -50,6 +50,9 @@ public class TransActionService {
         // 카트 거래 완료 체크.
         Cart cart = findCart(buyer);
         cart.changePaymentYn(true);
+
+        // 현재 구매자에게 새로운 장바구니 부여
+        cartRepository.save(new Cart(buyer));
     }
 
     @Transactional
@@ -57,14 +60,13 @@ public class TransActionService {
         List<TransAction> transActions = new ArrayList<>();
         Member buyer = getMemberByEmail(memberDetails.getEmail());
 
-        requests.stream().forEach(
-                request -> {
-                    try {
-                        transActions.add(makeTransAction(request, buyer));
-                    } catch (Exception e) {
-                        throw new TransRecordNotValidException("대량 거래 기록 변환에 실패하였습니다. 다시 시도해 주세요.");
-                    }
-                });
+        requests.stream().forEach(request -> {
+            try {
+                transActions.add(makeTransAction(request, buyer));
+            } catch (Exception e) {
+                throw new NFTCustomException(ExceptionCode.TRANSACTION_FAILED, e.getMessage());
+            }
+        });
 
         // 거래 기록 저장
         transActionRepository.saveAll(transActions);
@@ -72,6 +74,9 @@ public class TransActionService {
         // 카트 거래 완료 체크.
         Cart cart = findCart(buyer);
         cart.changePaymentYn(true);
+
+        // 현재 구매자에게 새로운 장바구니 부여
+        cartRepository.save(new Cart(buyer));
     }
 
     public TransAction makeTransAction(TransActionCreateRequest transActionCreateRequest, Member buyer) throws Exception {
@@ -95,8 +100,8 @@ public class TransActionService {
         recordNewTransHistory(transActionCreateRequest, buyer, item);
         // item 소유자 변경
         item.assignMember(buyer);
-        // 현재 구매자에게 새로운 장바구니 부여
-        cartRepository.save(new Cart(buyer));
+        // item 판매 불가 변경
+        item.updateSaleStatus(false);
 
         return TransAction.builder()
                 .seller(seller)
@@ -177,8 +182,9 @@ public class TransActionService {
     }
 
     private Cart findCart(Member buyer) {
-        return cartRepository.findCartByMemberAndPaymentYn(buyer, false)
-                .orElseThrow(() -> new CartNotFoundException());
+        List<Cart> carts = cartRepository.findCartByMemberAndPaymentYn(buyer, false);
+        if (carts.size() != 1) throw new TransRecordNotValidException("결제되지 않은 카트가 중복 존재 (기록 이상)");
+        else return carts.get(0);
     }
 
 }
