@@ -10,7 +10,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.*;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
@@ -26,10 +25,10 @@ import java.util.Collections;
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
-public class TransAction6HReaderJobConfiguration {
+public class TransAction12HReaderJobConfiguration {
 
-    public static final String JOB_NAME = "ranking6HReaderJob";
-    private static final String STEP_NAME = "ranking6HReaderStep";
+    public static final String JOB_NAME = "ranking12HReaderJob";
+    private static final String STEP_NAME = "ranking12HReaderStep";
     private static final int chunkSize = 10;
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -82,8 +81,7 @@ public class TransAction6HReaderJobConfiguration {
 
     @Bean
     @StepScope
-    public ItemWriter<Ranking6H> ranking6HWriter() {
-
+    public RepositoryItemWriter<Ranking6H> ranking6HWriter() {
         return new RepositoryItemWriterBuilder<Ranking6H>()
                 .repository(ranking6HRepository)
                 .build();
