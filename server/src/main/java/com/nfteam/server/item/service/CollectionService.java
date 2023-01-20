@@ -75,9 +75,11 @@ public class CollectionService {
 
     public CollectionResponse getCollection(Long collectionId) {
         ItemCollection itemCollection = getCollectionWithMemberAndCoin(collectionId);
+        List<Item> items = itemRepository.findItemsWithOwnerByCollectionId(collectionId);
+        items.stream().forEach(i -> i.assignCollection(itemCollection));
+
         CollectionResponse response = itemCollection.toResponse();
 
-        List<Item> items = itemRepository.findItemsWithOwnerByCollectionId(collectionId);
         // 아이템 메타정보 계산
         if (items.size() != 0) {
             calcItemMetaInfo(items, response);
