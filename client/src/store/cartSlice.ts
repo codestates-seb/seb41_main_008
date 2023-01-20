@@ -13,7 +13,15 @@ const cartSlice = createSlice({
     addTocart: (state, action) => {
       console.log(action);
       console.log(current(state.cartItems));
-      state.cartItems.push(action.payload);
+      // state.cartItems.push(action.payload);
+      if (Array.isArray(action.payload) === true) {
+        action.payload.map((el: any) => {
+          return state.cartItems.push(el);
+        });
+      } else {
+        state.cartItems.push(action.payload);
+      }
+      // state.cartItems.push(action.payload);
     },
   },
 });

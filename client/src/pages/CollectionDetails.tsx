@@ -66,7 +66,7 @@ export default function CollectionDetails() {
 
     getCollection();
   }, [id]);
-
+  console.log(collection?.itemList);
   return (
     <div className="space-y-16">
       <section className="flex flex-col w-full">
@@ -145,6 +145,10 @@ export default function CollectionDetails() {
       <section className="px-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         {collection?.itemList.map((item) => (
           <Card
+            onSale={item.onSale}
+            key={item.itemId}
+            itemId={item.itemId}
+            data={collection.itemList}
             collectionName={collection.collectionName}
             logoImgName={collection.logoImgName}
             itemImageName={item.itemImageName}
