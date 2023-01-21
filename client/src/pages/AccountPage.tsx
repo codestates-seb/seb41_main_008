@@ -3,7 +3,6 @@ import NoCard from '../components/Account/NoCard';
 import { useParams } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
 import { useState, useEffect } from 'react';
-
 interface UserType {
   member: {
     nickname: string;
@@ -19,10 +18,8 @@ const AccountPage = () => {
   const { memberId }: any = useParams();
   const [data, setData] = useState<UserType>();
   const [filter, setFilter] = useState<string>('Collected');
-  const [collection, setCollections] = useState<any>([]);
-  console.log('data', data);
-  console.log('filter', filter);
-  console.log('collection', collection);
+  const [, setCollections] = useState<any>([]);
+  console.log(data);
   useEffect(() => {
     getUserProFile(memberId).then((res) => {
       setCollections(res.data?.collections);
@@ -86,8 +83,8 @@ const AccountPage = () => {
         <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
           {filter === 'Collected' ? (
             data?.items.length !== 0 ? (
-              data?.items.map((el: any) => {
-                return <Card key={el.collectionId} {...el} filter={filter} />;
+              data?.items.map((el: any, index) => {
+                return <Card key={index} {...el} filter={filter} />;
               })
             ) : (
               <NoCard />
@@ -96,8 +93,8 @@ const AccountPage = () => {
 
           {filter === 'Created' ? (
             data?.collections.length !== 0 ? (
-              data?.collections.map((el: any) => {
-                return <Card key={el.collectionId} {...el} filter={filter} />;
+              data?.collections.map((el: any, index) => {
+                return <Card key={index} {...el} filter={filter} />;
               })
             ) : (
               <NoCard />

@@ -2,9 +2,35 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
+
 type cartBtnType = {
   hide: boolean;
 };
+
+interface Item {
+  itemDescription: string;
+  itemId: number;
+  itemImageName: string;
+  itemName: string;
+  itemPrice: number;
+  onSale: boolean;
+  ownerId: number;
+  ownerName: string;
+}
+
+type CardType = {
+  itemId: number;
+  data: Item[];
+  collectionName: string;
+  logoImgName: string;
+  itemImageName: string;
+  itemPrice: number;
+  itemDescription: string;
+  filter: string;
+  coinName: string;
+  onSale: boolean;
+};
+
 const HideWrapper = styled.div<cartBtnType>`
   div {
     transition: 0.2s;
@@ -15,6 +41,9 @@ const HideWrapper = styled.div<cartBtnType>`
   }
 `;
 const Card = ({
+  onSale,
+  data,
+  itemId,
   collectionName,
   logoImgName,
   itemImageName,
@@ -22,8 +51,9 @@ const Card = ({
   itemDescription,
   filter,
   coinName,
-}: any) => {
+}: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
+  console.log(onSale);
   return (
     <div className="shadow hover:shadow-2xl rounded-b-xl">
       <article
@@ -34,10 +64,10 @@ const Card = ({
           setHide(false);
         }}
       >
-        <Link to={'/'} className="flex flex-col h-full w-full hover:shadow ">
-          <div className="overflow-hidden rounded-t-xl h-64 w-full">
+        <Link to={'/'} className="flex flex-col hover:shadow">
+          <div className="overflow-hidden rounded-t-xl w-full aspect-square">
             <img
-              className="rounded-t-xl object-fit hover:scale-125  duration-500 h-full w-full"
+              className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"
               src={
                 filter === 'Collected'
                   ? process.env.REACT_APP_IMAGE + itemImageName
@@ -46,7 +76,7 @@ const Card = ({
               alt="NFTImage"
             />
           </div>
-          <div className="flex flex-col  p-4 rounded-b-xl">
+          <div className="flex flex-col p-4 rounded-b-xl">
             <div>{itemDescription}</div>
             <div>{collectionName}</div>
             <div className="flex">
@@ -57,7 +87,16 @@ const Card = ({
         </Link>
         {filter !== 'Created' && (
           <HideWrapper hide={hide}>
-            <BuyAndCartButton />
+            {onSale === true && (
+              <BuyAndCartButton
+                onSale={onSale}
+                data={
+                  data?.filter((el) => {
+                    return el.itemId === itemId;
+                  })[0]
+                }
+              />
+            )}
           </HideWrapper>
         )}
       </article>

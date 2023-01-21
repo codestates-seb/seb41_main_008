@@ -13,17 +13,35 @@ import { getItemsData } from 'utils/api/api';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-
+import { useAppSelector } from 'hooks/hooks';
 const asset = BORED_APE[0];
 const ETH_TO_USD = 1549.95;
-
+interface ItemProps {
+  coinId: number;
+  coinName: string;
+  collectionId: string;
+  itemDescription: string;
+  itemId: number;
+  itemImageName: string;
+  itemName: string;
+  itemPrice: number;
+  onSale: boolean;
+  trueownerId: number;
+  ownerName: string;
+  priceHistory: null;
+  tradeHistory: null;
+  withdrawFee: number;
+}
 const Asset = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
+  const { cartItems } = useAppSelector((state) => state.cart);
+  console.log(cartItems);
+  console.log(data);
   useEffect(() => {
     getItemsData(itemId).then((res) => setData(res.data));
   }, [itemId]);
-  console.log(data);
+
   return (
     <div className="asset">
       <div className="container">
@@ -70,7 +88,7 @@ const Asset = () => {
                     ($128,009.94)
                   </div>
                 </div>
-                <BuyAndCartButton />
+                <BuyAndCartButton data={data} />
               </div>
             </div>
             <div className="card">

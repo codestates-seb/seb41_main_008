@@ -5,7 +5,6 @@ import { closeModal, viewModal } from '../../store/modalSlice';
 import { useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
 interface ModalContainerProps {
   visible: boolean;
 }
@@ -67,6 +66,8 @@ const Line = styled.hr`
 `;
 
 const CartingModal = () => {
+  const { cartItems } = useAppSelector((state) => state.cart);
+
   const ref = useRef<HTMLDivElement>(null);
   const isOpen = useAppSelector(viewModal);
   const dispatch = useAppDispatch();
@@ -99,16 +100,13 @@ const CartingModal = () => {
         </div>
         <Line />
         <div className="flex justify-between py-4 font-bold">
-          <div>3 items</div>
+          <div>{cartItems.length} items</div>
           <button>Clear all</button>
         </div>
         <ul className="flex flex-col gap-2 h-auto overflow-auto ">
-          <CartItems />
-          <CartItems />
-          <CartItems />
-          <CartItems />
-          <CartItems />
-          <CartItems />
+          {cartItems.map((el: any) => {
+            return <CartItems key={el.itemId} {...el} />;
+          })}
         </ul>
         <Line />
         <div className="flex justify-between py-2">
