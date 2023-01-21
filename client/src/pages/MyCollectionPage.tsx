@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import DropMenu from 'components/DropdownMenu/DropdownMenu';
+import DropMenu from 'components/DropdownMenu/DropMenu';
 import HoverCardOpen from 'components/HoverCard/HoverCard';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
