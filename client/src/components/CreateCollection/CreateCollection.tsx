@@ -8,15 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import customAxios from 'utils/api/axios';
 import { setOpen } from 'store/toastSlice';
+import Modal from 'components/Dialog/Modal';
 
 interface Inputs {
   name: string;
   description: string;
 }
 
-interface Images {
-  logoFile: File | null;
-  bannerFile: File | null;
+interface Blockchain {
+  name: string;
+  id: number;
 }
 
 interface Collection {
@@ -24,12 +25,24 @@ interface Collection {
   id: number;
 }
 
+interface Props {
+  selectedCoin: Blockchain | null;
+  setSelectedCoin: React.Dispatch<React.SetStateAction<Blockchain | null>>;
+  logoFile: File | null;
+  bannerFile: File | null;
+}
+
 const schema = yup.object({
   name: yup.string().required('This field is required.'),
   description: yup.string().required('This field is required.'),
 });
 
-export default function CreateCollection({ logoFile, bannerFile }: Images) {
+export default function CreateCollection({
+  selectedCoin,
+  setSelectedCoin,
+  logoFile,
+  bannerFile,
+}: Props) {
   const dispatch = useAppDispatch();
 
   const [nameFocus, setNameFocus] = useState(false);
@@ -89,7 +102,7 @@ export default function CreateCollection({ logoFile, bannerFile }: Images) {
 
       try {
         const res = await customAxios.post('/api/collections', {
-          coinId: '1',
+          coinId: selectedCoin?.id,
           name: data.name,
           description: data.description,
           logoImgName: logoName,
@@ -176,12 +189,15 @@ export default function CreateCollection({ logoFile, bannerFile }: Images) {
         )}
       </div>
 
-      <input
-        type="submit"
-        className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
-        value="Create"
-        disabled={!logoFile || !bannerFile}
-      />
+      <div className="space-y-3">
+        <Modal selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} />
+        <input
+          type="submit"
+          className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
+          value="Create"
+          disabled={!logoFile || !bannerFile || !selectedCoin}
+        />
+      </div>
     </form>
   );
 }
