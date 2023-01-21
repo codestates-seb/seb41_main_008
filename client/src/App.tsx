@@ -9,6 +9,7 @@ import MissingPage from 'components/MissingPage/MissingPage';
 import CollectionDetails from 'pages/CollectionDetails';
 import ItemDetailPage from 'pages/ItemDetailPage';
 import AccountPage from 'pages/AccountPage';
+import CreateItemPage from 'pages/CreateItemPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               element={<CreateCollectionPage />}
             />
             <Route path="collection/:id" element={<CollectionDetails />} />
+            <Route path="asset/create" element={<CreateItemPage />} />
             <Route path="*" element={<MissingPage />} />
             <Route path="/account/:memberId" element={<AccountPage />} />
             <Route path="/items/:itemId" element={<ItemDetailPage />} />

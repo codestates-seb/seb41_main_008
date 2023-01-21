@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { RxCross2 } from 'react-icons/rx';
-import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
@@ -14,12 +14,11 @@ interface Inputs {
   description: string;
 }
 
-interface Files {
-  logoFile: File | null;
-  bannerFile: File | null;
+interface Image {
+  itemFile: File | null;
 }
 
-interface Collection {
+interface Item {
   status: string;
   id: number;
 }
@@ -29,16 +28,13 @@ const schema = yup.object({
   description: yup.string().required('This field is required.'),
 });
 
-export default function Input({ logoFile, bannerFile }: Files) {
-  const logoString = useAppSelector((state) => state.logo.logoString);
-  const bannerString = useAppSelector((state) => state.banner.bannerString);
+export default function CreateCollection({ itemFile }: Image) {
   const dispatch = useAppDispatch();
 
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [logoName, setLogoName] = useState('');
-  const [bannerName, setBannerName] = useState('');
-  const [collection, setCollection] = useState<Collection>();
+  const [itemName, setItemName] = useState('');
+  const [item, setItem] = useState<Item>();
 
   const navigate = useNavigate();
 
@@ -50,32 +46,16 @@ export default function Input({ logoFile, bannerFile }: Files) {
     resolver: yupResolver(schema),
   });
 
-  const uploadLogo = async () => {
+  const uploadItemImage = async () => {
     const formData = new FormData();
-    formData.append('file', logoFile!);
+    formData.append('file', itemFile!);
 
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/images`,
         formData
       );
-      setLogoName(res.data.imageName);
-    } catch (error) {
-      const err = error as AxiosError;
-      console.log(err);
-    }
-  };
-
-  const uploadBanner = async () => {
-    const formData = new FormData();
-    formData.append('file', bannerFile!);
-
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        formData
-      );
-      setBannerName(res.data.imageName);
+      setItemName(res.data.imageName);
     } catch (error) {
       const err = error as AxiosError;
       console.log(err);
@@ -85,20 +65,20 @@ export default function Input({ logoFile, bannerFile }: Files) {
   const onSubmit = async (data: Inputs) => {
     dispatch(setOpen(true));
 
-    if (logoString && bannerString) {
-      uploadLogo();
-      uploadBanner();
+    if (itemFile) {
+      uploadItemImage();
 
       try {
-        const res = await customAxios.post('/api/collections', {
-          coinId: '1',
-          name: data.name,
-          description: data.description,
-          logoImgName: logoName,
-          bannerImgName: bannerName,
+        const res = await customAxios.post('/api/items', {
+          // itemCollectionId: number;
+          itemName: data.name,
+          itemDescription: data.description,
+          itemImgName: itemName,
+          onSale: true,
+          // itemPrice: number
         });
 
-        setCollection(res.data);
+        setItem(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err);
@@ -107,10 +87,10 @@ export default function Input({ logoFile, bannerFile }: Files) {
   };
 
   useEffect(() => {
-    if (collection) {
-      navigate(`/collection/${collection.id}`);
+    if (item) {
+      navigate(`/assets/${item.id}`);
     }
-  }, [collection, navigate]);
+  }, [item, navigate]);
 
   return (
     <form
@@ -135,7 +115,7 @@ export default function Input({ logoFile, bannerFile }: Files) {
           <input
             type="text"
             {...register('name')}
-            placeholder="Example: Treasures of the Sea"
+            placeholder="Item name"
             className="w-full rounded-lg p-3 text-lg group outline-none h-full"
             onFocus={() => setNameFocus(true)}
             onBlur={() => setNameFocus(false)}
@@ -168,6 +148,7 @@ export default function Input({ logoFile, bannerFile }: Files) {
             className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg"
             onFocus={() => setDescFocus(true)}
             onBlur={() => setDescFocus(false)}
+            placeholder="Provide a detailed description of your item."
           />
         </div>
         {errors.description && (
@@ -182,7 +163,7 @@ export default function Input({ logoFile, bannerFile }: Files) {
         type="submit"
         className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
         value="Create"
-        disabled={!logoString || !bannerString}
+        disabled={!itemFile}
       />
     </form>
   );

@@ -1,21 +1,23 @@
-import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
-import { setBannerString } from 'store/bannerSlice';
 
-interface BannerFile {
+interface Banner {
   bannerFile: File | null;
   setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
+  bannerString: string;
+  setBannerString: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function BannerImage({ bannerFile, setBannerFile }: BannerFile) {
+export default function BannerImage({
+  bannerFile,
+  setBannerFile,
+  bannerString,
+  setBannerString,
+}: Banner) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [bannerTypeError, setBannerTypeError] = useState(false);
   const [bannerSizeError, setBannerSizeError] = useState(false);
-
-  const dispatch = useAppDispatch();
-  const bannerString = useAppSelector((state) => state.banner.bannerString);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -49,15 +51,15 @@ export default function BannerImage({ bannerFile, setBannerFile }: BannerFile) {
       const reader = new FileReader();
       reader.readAsDataURL(bannerFile);
       reader.onloadend = () => {
-        dispatch(setBannerString(reader.result as string));
+        setBannerString(reader.result as string);
       };
     } else {
-      dispatch(setBannerString(''));
+      setBannerString('');
     }
-  }, [bannerFile, dispatch]);
+  }, [bannerFile, setBannerString]);
 
   return (
-    <form className="flex flex-col items-center">
+    <form className="flex flex-col items-center w-full">
       <h3 className="font-bold text-lg">
         Banner image{' '}
         <span className="text-red-500 text-xl font-bold align-top">*</span>

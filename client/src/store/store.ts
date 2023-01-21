@@ -3,8 +3,6 @@ import modalSlice from './modalSlice';
 import loginSlice from './loginSlice';
 import signupSlice from './signupSlice';
 import cartSlice from './cartSlice';
-import logoReducer from './logoSlice';
-import bannerReducer from './bannerSlice';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import toastReducer from './toastSlice';
@@ -18,8 +16,6 @@ const reducer = combineReducers({
   modal: modalSlice,
   login: loginSlice,
   signup: signupSlice,
-  logo: logoReducer,
-  banner: bannerReducer,
   toast: toastReducer,
   cart: cartSlice,
 });
