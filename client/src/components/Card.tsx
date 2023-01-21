@@ -7,7 +7,20 @@ type cartBtnType = {
   hide: boolean;
 };
 
+interface Item {
+  itemDescription: string;
+  itemId: number;
+  itemImageName: string;
+  itemName: string;
+  itemPrice: number;
+  onSale: boolean;
+  ownerId: number;
+  ownerName: string;
+}
+
 type CardType = {
+  itemId: number;
+  data: Item[];
   collectionName: string;
   logoImgName: string;
   itemImageName: string;
@@ -15,6 +28,7 @@ type CardType = {
   itemDescription: string;
   filter: string;
   coinName: string;
+  onSale: boolean;
 };
 
 const HideWrapper = styled.div<cartBtnType>`
@@ -26,8 +40,10 @@ const HideWrapper = styled.div<cartBtnType>`
       props.hide ? 'translateY(0px)' : 'translateY(20px)'};
   }
 `;
-
 const Card = ({
+  onSale,
+  data,
+  itemId,
   collectionName,
   logoImgName,
   itemImageName,
@@ -37,6 +53,7 @@ const Card = ({
   coinName,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
+  console.log(onSale);
   return (
     <div className="shadow hover:shadow-2xl rounded-b-xl">
       <article
@@ -70,7 +87,16 @@ const Card = ({
         </Link>
         {filter !== 'Created' && (
           <HideWrapper hide={hide}>
-            <BuyAndCartButton />
+            {onSale === true && (
+              <BuyAndCartButton
+                onSale={onSale}
+                data={
+                  data?.filter((el) => {
+                    return el.itemId === itemId;
+                  })[0]
+                }
+              />
+            )}
           </HideWrapper>
         )}
       </article>
