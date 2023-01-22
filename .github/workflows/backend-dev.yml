@@ -19,8 +19,8 @@ env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: nfteam-dev-008
   PROJECT_NAME: server
-  CODE_DEPLOY_APPLICATION_NAME: nfteam-dev
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: nfteam-dev-group
+  CODE_DEPLOY_APPLICATION_NAME: nfteam-api
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: nfteam-api-group
 
 jobs:
   build:
