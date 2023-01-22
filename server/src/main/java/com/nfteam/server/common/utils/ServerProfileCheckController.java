@@ -28,7 +28,7 @@ public class ServerProfileCheckController {
 
     @GetMapping
     public String homeTest() {
-        return "개발 서버 정상 동작 확인 테스트 - 운영 서버 테스트";
+        return "서버 정상 동작 확인 테스트 - 운영 서버 정상 배포 확인 테스트";
     }
 
 }
