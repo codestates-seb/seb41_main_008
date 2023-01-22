@@ -33,6 +33,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private static final String HTTPS_SERVER_DOMAIN = "https://www.nfteam008.com";
+    private static final String HTTP_SERVER_DOMAIN = "http://www.nfteam008.com";
+    private static final String LOCALHOST = "http://localhost:3000";
+
     private final JwtTokenizer jwtTokenizer;
     private final RedisRepository redisRepository;
     private final CartService cartService;
@@ -70,7 +74,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080"));
+        configuration.setAllowedOrigins(List.of(HTTPS_SERVER_DOMAIN, HTTP_SERVER_DOMAIN, LOCALHOST));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
         configuration.setExposedHeaders(List.of("RefreshToken", HttpHeaders.AUTHORIZATION, HttpHeaders.LOCATION));
         configuration.setAllowedHeaders(List.of("*"));

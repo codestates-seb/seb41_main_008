@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: deploy2
     import:
-      - config/application-dev.yml
+      - config/application-prod.yml
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
