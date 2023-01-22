@@ -1,12 +1,6 @@
 REPOSITORY=/home/ec2-user/deploy
 PROJECT_NAME=server-0.0.1-SNAPSHOT.jar
 
-echo "> 기존 디렉터리 삭제"
-if [ -d /home/ec2-user/deploy ]; then
-    sudo rm -rf /home/ec2-user/deploy/
-fi
-sudo mkdir -vp /home/ec2-user/deploy/
-
 echo "> Build 파일 복사"
 sudo cp $REPOSITORY/build/libs/*.jar $REPOSITORY/
 
