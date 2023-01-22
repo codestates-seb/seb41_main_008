@@ -9,7 +9,7 @@ name: 백엔드 운영서버 배포 자동화
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "release111" ]
 
 defaults:
   run:
@@ -19,8 +19,8 @@ env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: nfteam-008
   PROJECT_NAME: server
-  CODE_DEPLOY_APPLICATION_NAME: nfteam-prod
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: nfteam-prod-group
+  CODE_DEPLOY_APPLICATION_NAME: nfteam
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: nfteam-group
 
 jobs:
   build:
