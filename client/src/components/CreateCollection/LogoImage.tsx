@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
 
@@ -6,6 +7,8 @@ interface Logo {
   setLogoFile: React.Dispatch<React.SetStateAction<File | null>>;
   logoString: string;
   setLogoString: React.Dispatch<React.SetStateAction<string>>;
+  logoName: string;
+  setLogoName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function LogoImage({
@@ -13,6 +16,8 @@ export default function LogoImage({
   setLogoFile,
   logoString,
   setLogoString,
+  logoName,
+  setLogoName,
 }: Logo) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,6 +54,24 @@ export default function LogoImage({
 
   useEffect(() => {
     if (logoFile) {
+      const uploadLogo = async () => {
+        const formData = new FormData();
+        formData.append('file', logoFile);
+
+        try {
+          const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/images`,
+            formData
+          );
+          setLogoName(res.data.imageName);
+        } catch (error) {
+          const err = error as AxiosError;
+          console.log(err);
+        }
+      };
+
+      uploadLogo();
+
       const reader = new FileReader();
       reader.readAsDataURL(logoFile);
       reader.onloadend = () => {
@@ -57,7 +80,7 @@ export default function LogoImage({
     } else {
       setLogoString('');
     }
-  }, [logoFile, setLogoString]);
+  }, [logoFile, setLogoString, setLogoName]);
 
   return (
     <form className="flex flex-col items-center">

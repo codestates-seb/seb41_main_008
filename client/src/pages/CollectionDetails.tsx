@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setOpen } from 'store/toastSlice';
 import Card from 'components/Card';
 import MissingPage from 'components/MissingPage/MissingPage';
+import { format } from 'date-fns';
 
 interface Item {
   itemDescription: string;
@@ -43,12 +44,12 @@ interface Collection {
 
 export default function CollectionDetails() {
   const { id } = useParams();
+  const [collection, setCollection] = useState<Collection>();
   const open = useAppSelector((state) => state.toast.open);
   const dispatch = useAppDispatch();
-  const [collection, setCollection] = useState<Collection>();
 
   useEffect(() => {
-    setTimeout(() => dispatch(setOpen(false)), 3000);
+    setTimeout(() => dispatch(setOpen(false)), 5000);
   }, [dispatch]);
 
   useEffect(() => {
@@ -66,10 +67,10 @@ export default function CollectionDetails() {
 
     getCollection();
   }, [id]);
-  console.log(collection?.itemList);
+  // console.log(collection?.itemList);
   return (
     <>
-      {collection?.totalVolume ? (
+      {collection ? (
         <div className="space-y-16">
           <section className="flex flex-col w-full">
             <div className="h-64 relative">
@@ -116,7 +117,9 @@ export default function CollectionDetails() {
               <span className="font-bold">{' · '}</span>
               <span className="text-lg">
                 Created{' '}
-                <span className="font-semibold">{collection?.createdDate}</span>
+                <span className="font-semibold">
+                  {format(new Date(collection?.createdDate), 'MMM yyyy')}
+                </span>
               </span>
               <span className="font-bold">{' · '}</span>
               <span className="text-lg">
@@ -147,24 +150,29 @@ export default function CollectionDetails() {
               </div>
             </div>
           </section>
-
-          <section className="px-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {collection?.itemList.map((item) => (
-              <Card
-                onSale={item.onSale}
-                key={item.itemId}
-                itemId={item.itemId}
-                data={collection.itemList}
-                collectionName={collection.collectionName}
-                logoImgName={collection.logoImgName}
-                itemImageName={item.itemImageName}
-                itemPrice={item.itemPrice}
-                itemDescription={item.itemDescription}
-                coinName={collection.coinName}
-                filter="collected"
-              />
-            ))}
-          </section>
+          {collection.itemCount ? (
+            <section className="px-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+              {collection?.itemList.map((item) => (
+                <Card
+                  onSale={item.onSale}
+                  key={item.itemId}
+                  itemId={item.itemId}
+                  data={collection.itemList}
+                  collectionName={collection.collectionName}
+                  logoImgName={collection.logoImgName}
+                  itemImageName={item.itemImageName}
+                  itemPrice={item.itemPrice}
+                  itemDescription={item.itemDescription}
+                  coinName={collection.coinName}
+                  filter="collected"
+                />
+              ))}
+            </section>
+          ) : (
+            <section className="border text-[#04111D] flex justify-center items-center border-gray-300 mx-8 h-64 rounded-lg">
+              <h2 className="text-3xl">No items to display</h2>
+            </section>
+          )}
           <Toast.Provider>
             <Toast.Root
               open={open}

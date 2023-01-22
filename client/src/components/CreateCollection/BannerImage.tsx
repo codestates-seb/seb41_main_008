@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
 
 interface Banner {
@@ -6,6 +7,8 @@ interface Banner {
   setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
   bannerString: string;
   setBannerString: React.Dispatch<React.SetStateAction<string>>;
+  bannerName: string;
+  setBannerName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function BannerImage({
@@ -13,6 +16,8 @@ export default function BannerImage({
   setBannerFile,
   bannerString,
   setBannerString,
+  bannerName,
+  setBannerName,
 }: Banner) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -48,6 +53,24 @@ export default function BannerImage({
 
   useEffect(() => {
     if (bannerFile) {
+      const uploadBanner = async () => {
+        const formData = new FormData();
+        formData.append('file', bannerFile);
+
+        try {
+          const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/images`,
+            formData
+          );
+          setBannerName(res.data.imageName);
+        } catch (error) {
+          const err = error as AxiosError;
+          console.log(err);
+        }
+      };
+
+      uploadBanner();
+
       const reader = new FileReader();
       reader.readAsDataURL(bannerFile);
       reader.onloadend = () => {
@@ -56,7 +79,7 @@ export default function BannerImage({
     } else {
       setBannerString('');
     }
-  }, [bannerFile, setBannerString]);
+  }, [bannerFile, setBannerString, setBannerName]);
 
   return (
     <form className="flex flex-col items-center w-full">

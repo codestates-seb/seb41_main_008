@@ -13,6 +13,8 @@ export default function CreateCollectionPage() {
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [logoString, setLogoString] = useState<string>('');
   const [bannerString, setBannerString] = useState<string>('');
+  const [logoName, setLogoName] = useState<string>('');
+  const [bannerName, setBannerName] = useState<string>('');
   const [selectedCoin, setSelectedCoin] = useState<Blockchain | null>(null);
 
   return (
@@ -28,18 +30,24 @@ export default function CreateCollectionPage() {
           setLogoFile={setLogoFile}
           logoString={logoString}
           setLogoString={setLogoString}
+          logoName={logoName}
+          setLogoName={setLogoName}
         />
         <BannerImage
           bannerFile={bannerFile}
           setBannerFile={setBannerFile}
           bannerString={bannerString}
           setBannerString={setBannerString}
+          bannerName={bannerName}
+          setBannerName={setBannerName}
         />
         <CreateCollection
           selectedCoin={selectedCoin}
           setSelectedCoin={setSelectedCoin}
           logoFile={logoFile}
           bannerFile={bannerFile}
+          logoName={logoName}
+          bannerName={bannerName}
         />
       </div>
     </div>

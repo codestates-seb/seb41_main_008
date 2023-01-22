@@ -5,7 +5,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import customAxios from 'utils/api/axios';
 import { setOpen } from 'store/toastSlice';
 import Modal from 'components/Dialog/Modal';
@@ -30,6 +30,8 @@ interface Props {
   setSelectedCoin: React.Dispatch<React.SetStateAction<Blockchain | null>>;
   logoFile: File | null;
   bannerFile: File | null;
+  logoName: string;
+  bannerName: string;
 }
 
 const schema = yup.object({
@@ -42,13 +44,13 @@ export default function CreateCollection({
   setSelectedCoin,
   logoFile,
   bannerFile,
+  logoName,
+  bannerName,
 }: Props) {
   const dispatch = useAppDispatch();
 
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [logoName, setLogoName] = useState('');
-  const [bannerName, setBannerName] = useState('');
   const [collection, setCollection] = useState<Collection>();
 
   const navigate = useNavigate();
@@ -61,45 +63,10 @@ export default function CreateCollection({
     resolver: yupResolver(schema),
   });
 
-  const uploadLogo = async () => {
-    const formData = new FormData();
-    formData.append('file', logoFile!);
-
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        formData
-      );
-      setLogoName(res.data.imageName);
-    } catch (error) {
-      const err = error as AxiosError;
-      console.log(err);
-    }
-  };
-
-  const uploadBanner = async () => {
-    const formData = new FormData();
-    formData.append('file', bannerFile!);
-
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        formData
-      );
-      setBannerName(res.data.imageName);
-    } catch (error) {
-      const err = error as AxiosError;
-      console.log(err);
-    }
-  };
-
   const onSubmit = async (data: Inputs) => {
     dispatch(setOpen(true));
 
     if (logoFile && bannerFile) {
-      uploadLogo();
-      uploadBanner();
-
       try {
         const res = await customAxios.post('/api/collections', {
           coinId: selectedCoin?.id,
@@ -126,7 +93,7 @@ export default function CreateCollection({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="text-center w-full space-y-3"
+      className="text-center w-full space-y-10"
     >
       <div className="space-y-3">
         <label htmlFor="name" className="mx-auto font-bold text-lg">
@@ -189,7 +156,7 @@ export default function CreateCollection({
         )}
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-10">
         <Modal selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} />
         <input
           type="submit"
