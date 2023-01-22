@@ -35,6 +35,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private void sendSuccessResponse(HttpServletResponse response, MemberDetails memberDetails) throws IOException {
         LoginResponse loginResponse = LoginResponse.builder()
+                .id(memberDetails.getMemberId())
                 .email(memberDetails.getEmail())
                 .role(memberDetails.getRole())
                 .lastLoginTime(memberDetails.getLastLoginTime())

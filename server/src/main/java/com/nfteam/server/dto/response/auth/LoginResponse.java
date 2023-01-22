@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 public class LoginResponse {
 
+    private Long id;
     private String email;
     private String role;
     private String lastLoginTime;
@@ -18,7 +19,8 @@ public class LoginResponse {
     private CartResponse cart;
 
     @Builder
-    public LoginResponse(String email, String role, LocalDateTime lastLoginTime, String profileImageName) {
+    public LoginResponse(Long id, String email, String role, LocalDateTime lastLoginTime, String profileImageName) {
+        this.id = id;
         this.email = email;
         this.role = role;
         this.lastLoginTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(lastLoginTime);
@@ -27,6 +29,7 @@ public class LoginResponse {
 
     public static LoginResponse of(Member member) {
         return LoginResponse.builder()
+                .id(member.getMemberId())
                 .email(member.getEmail())
                 .role(member.getMemberRole().getValue())
                 .lastLoginTime(member.getLastLoginTime())
