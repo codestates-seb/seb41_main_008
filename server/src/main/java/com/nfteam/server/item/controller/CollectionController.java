@@ -1,5 +1,6 @@
 package com.nfteam.server.item.controller;
 
+import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
@@ -46,6 +47,11 @@ public class CollectionController {
     @GetMapping("/{collectionId}")
     public ResponseEntity<CollectionResponse> getCollection(@PathVariable("collectionId") Long collectionId) {
         return new ResponseEntity<>(collectionService.getCollection(collectionId), HttpStatus.OK);
+    }
+
+    @GetMapping("/only/{collectionId}")
+    public ResponseEntity<CollectionOnlyResponse> getCollectionInfoOnly(@PathVariable("collectionId") Long collectionId) {
+        return new ResponseEntity<>(collectionService.getCollectionInfoOnly(collectionId), HttpStatus.OK);
     }
 
     @GetMapping("/members/{memberId}")

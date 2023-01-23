@@ -20,6 +20,9 @@ import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,4 +132,8 @@ public class ItemService {
         return memberItems;
     }
 
+    public Page<ItemResponse> getCollectionItemList(Long collectionId, int page, int size) {
+        return qItemRepository.findItemByCollection(collectionId,
+                PageRequest.of(page, size, Sort.by("itemId").ascending()));
+    }
 }
