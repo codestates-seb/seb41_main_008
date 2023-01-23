@@ -4,7 +4,7 @@ spring:
       initialize-schema: always
   config:
     import:
-      - config/application-dev.yml
+      - config/application-prod.yml
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -13,6 +13,8 @@ spring:
       hibernate:
         default_batch_fetch_size: 1000
         format_sql: true
+    hibernate:
+      ddl-auto: update
 logging:
   level:
     org:
