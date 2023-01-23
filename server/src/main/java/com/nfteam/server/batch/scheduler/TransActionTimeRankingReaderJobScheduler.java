@@ -3,6 +3,7 @@ package com.nfteam.server.batch.scheduler;
 import com.nfteam.server.batch.job.TransAction1DReaderJobConfiguration;
 import com.nfteam.server.batch.job.TransAction1MReaderJobConfiguration;
 import com.nfteam.server.batch.job.TransAction1WReaderJobConfiguration;
+import com.nfteam.server.batch.job.TransActionSOLReaderJobConfiguration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class TransActionReaderJobScheduler {
+public class TransActionTimeRankingReaderJobScheduler {
 
     private final JobLauncher jobLauncher;
     private final TransAction1DReaderJobConfiguration transAction1DReaderJobConfiguration;
@@ -29,7 +30,7 @@ public class TransActionReaderJobScheduler {
     private final TransAction1MReaderJobConfiguration transAction1MReaderJobConfiguration;
 
     // 일간 랭킹 배치 : 매일 오전 1시
-    @Scheduled(cron = "0 0 1 1/1 * ?") // 초 분 시 일 월 요일 연도(op)
+    @Scheduled(cron = "0 0 1 1/1 * ?") // 초 분 시 일 월 요일
     public void run1DRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -46,7 +47,7 @@ public class TransActionReaderJobScheduler {
     }
 
     // 주간 랭킹 배치 : 매 주 일요일 오전 2시
-    @Scheduled(cron = "0 0 2 ? * SUN") // 초 분 시 일 월 요일 연도(op)
+    @Scheduled(cron = "0 0 2 ? * SUN") // 초 분 시 일 월 요일
     public void run1WRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -63,7 +64,7 @@ public class TransActionReaderJobScheduler {
     }
 
     // 월간 랭킹 배치 : 매 월 1일 오전 3시
-    @Scheduled(cron = "0 0 3 1 1/1 ?") // 초 분 시 일 월 요일 연도(op)
+    @Scheduled(cron = "0 0 3 1 1/1 ?") // 초 분 시 일 월 요일
     public void run1MRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));

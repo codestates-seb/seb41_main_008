@@ -1,8 +1,8 @@
 package com.nfteam.server.batch.job;
 
-import com.nfteam.server.batch.entity.Ranking1M;
+import com.nfteam.server.batch.entity.TimeRankingEntity;
 import com.nfteam.server.batch.repository.RankingReaderRepository;
-import com.nfteam.server.batch.writer.Ranking1MWriter;
+import com.nfteam.server.batch.writer.TimeRankingWriter;
 import com.nfteam.server.transaction.entity.TransAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -27,7 +27,7 @@ public class TransAction1MReaderJobConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final RankingReaderRepository rankingReaderRepository;
-    private final Ranking1MWriter ranking1MWriter;
+    private final TimeRankingWriter timeRankingWriter;
 
     @Bean
     public Job ranking1MReaderJob() throws Exception {
@@ -42,10 +42,10 @@ public class TransAction1MReaderJobConfiguration {
     public Step ranking1MReaderStep() throws Exception {
         return stepBuilderFactory
                 .get("ranking1MReaderStep")
-                .<TransAction, Ranking1M>chunk(chunkSize)
+                .<TransAction, TimeRankingEntity>chunk(chunkSize)
                 .reader(ranking1MReader()) // 해당 시간대 범위의 모든 거래 기록을 읽어온다.
                 .processor(ranking1MProcessor()) // 거래량 랭킹을 String 값으로 전환한다.
-                .writer(ranking1MWriter) // 랭킹 테이블에 랭킹 리스트를 저장한다.
+                .writer(timeRankingWriter) // 랭킹 테이블에 랭킹 리스트를 저장한다.
                 .build();
     }
 
@@ -64,11 +64,12 @@ public class TransAction1MReaderJobConfiguration {
 
     @Bean
     @StepScope
-    public ItemProcessor<TransAction, Ranking1M> ranking1MProcessor() {
-        Ranking1M ranking1M = new Ranking1M();
+    public ItemProcessor<TransAction, TimeRankingEntity> ranking1MProcessor() {
+        TimeRankingEntity timeRankingEntity = new TimeRankingEntity();
+        timeRankingEntity.updateCriteria(720);
         return transActions -> {
-            ranking1M.addString(transActions.getCollection().getCollectionId());
-            return ranking1M;
+            timeRankingEntity.addString(transActions.getCollection().getCollectionId());
+            return timeRankingEntity;
         };
     }
 

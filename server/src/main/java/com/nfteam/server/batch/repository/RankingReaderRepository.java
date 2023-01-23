@@ -12,8 +12,8 @@ public interface RankingReaderRepository extends JpaRepository<TransAction, Long
 
     @Query("select t from TransAction t where t.createdDate >:localDateTime group by t.collection order by count(t.item) desc")
     Page<TransAction> getRankingByTime(LocalDateTime localDateTime, Pageable pageable);
-//
-//    @Query("select t from TransAction t where t.createdDate >:localDateTime and t.coin.coinId =: coinId group by t.collection order by count(t.item) desc")
-//    Page<TransAction> getRankingByCoinInOneDay(LocalDateTime localDateTime, Long coinId, Pageable pageable);
+
+    @Query("select t from TransAction t where t.createdDate >:localDateTime and t.coin.coinId =:coinId group by t.collection order by count(t.item) desc")
+    Page<TransAction> getRankingByCoin(LocalDateTime localDateTime, Long coinId, Pageable pageable);
 
 }

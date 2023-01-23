@@ -1,8 +1,9 @@
 package com.nfteam.server.batch.job;
 
-import com.nfteam.server.batch.entity.TimeRankingEntity;
+import com.nfteam.server.batch.entity.CoinRankingEntity;
 import com.nfteam.server.batch.repository.RankingReaderRepository;
-import com.nfteam.server.batch.writer.TimeRankingWriter;
+import com.nfteam.server.batch.writer.CoinRankingWriter;
+import com.nfteam.server.coin.entity.CoinType;
 import com.nfteam.server.transaction.entity.TransAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -21,55 +22,55 @@ import java.util.Collections;
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
-public class TransAction1DReaderJobConfiguration {
+public class TransActionETCReaderJobConfiguration {
 
     private static final int chunkSize = 50;
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final RankingReaderRepository rankingReaderRepository;
-    private final TimeRankingWriter timeRankingWriter;
+    private final CoinRankingWriter coinRankingWriter;
 
     @Bean
-    public Job ranking1DReaderJob() throws Exception {
+    public Job rankingETCReaderJob() throws Exception {
         return jobBuilderFactory
-                .get("ranking1DReaderJob")
-                .start(ranking1DReaderStep())
+                .get("rankingETCReaderJob")
+                .start(rankingETCReaderStep())
                 .build();
     }
 
     @Bean
     @JobScope
-    public Step ranking1DReaderStep() throws Exception {
+    public Step rankingETCReaderStep() throws Exception {
         return stepBuilderFactory
-                .get("ranking1DReaderStep")
-                .<TransAction, TimeRankingEntity>chunk(chunkSize)
-                .reader(ranking1DReader()) // 해당 시간대 범위의 모든 거래 기록을 읽어온다.
-                .processor(ranking1DProcessor()) // 거래량 랭킹을 String 값으로 전환한다.
-                .writer(timeRankingWriter) // 랭킹 테이블에 랭킹 리스트를 저장한다.
+                .get("rankingETCReaderStep")
+                .<TransAction, CoinRankingEntity>chunk(chunkSize)
+                .reader(rankingETCReader()) // 해당 코인의 24시간 내 모든 거래 기록을 읽어온다.
+                .processor(rankingETCProcessor()) // 거래량 랭킹을 String 값으로 전환한다.
+                .writer(coinRankingWriter) // 랭킹 테이블에 랭킹 리스트를 저장한다.
                 .build();
     }
 
     @Bean
     @StepScope
-    public RepositoryItemReader<TransAction> ranking1DReader() {
+    public RepositoryItemReader<TransAction> rankingETCReader() {
         return new RepositoryItemReaderBuilder<TransAction>()
-                .name("ranking1DReader")
+                .name("rankingETCReader")
                 .repository(rankingReaderRepository)
-                .methodName("getRankingByTime")
+                .methodName("getRankingByCoin")
                 .pageSize(chunkSize)
-                .arguments(LocalDateTime.now().minusDays(1))
+                .arguments(LocalDateTime.now().minusHours(24), CoinType.ETC.getValue())
                 .sorts(Collections.singletonMap("transId", Sort.Direction.ASC))
                 .build();
     }
 
     @Bean
     @StepScope
-    public ItemProcessor<TransAction, TimeRankingEntity> ranking1DProcessor() {
-        TimeRankingEntity timeRankingEntity = new TimeRankingEntity();
-        timeRankingEntity.updateCriteria(24);
+    public ItemProcessor<TransAction, CoinRankingEntity> rankingETCProcessor() {
+        CoinRankingEntity coinRankingEntity = new CoinRankingEntity();
+        coinRankingEntity.updateCriteria(CoinType.ETC.getValue());
         return transActions -> {
-            timeRankingEntity.addString(transActions.getCollection().getCollectionId());
-            return timeRankingEntity;
+            coinRankingEntity.addString(transActions.getCollection().getCollectionId());
+            return coinRankingEntity;
         };
     }
 
