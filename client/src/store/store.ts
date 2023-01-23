@@ -10,7 +10,7 @@ import toastReducer from './toastSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['signup'],
+  blacklist: ['signup', 'logo', 'banner'],
 };
 const reducer = combineReducers({
   modal: modalSlice,
