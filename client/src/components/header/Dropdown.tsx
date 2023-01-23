@@ -6,7 +6,7 @@ import { logout, getMyProFile } from 'utils/api/api';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal } from '../../store/modalSlice';
-
+import { useState, useEffect } from 'react';
 const DropdownList = styled.li`
   position: relative;
   padding-top: 8px;
@@ -28,16 +28,24 @@ const DropdownList = styled.li`
 const Dropdown = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const [memberImg, setMemberImg] = useState('');
   const profileImage = useAppSelector((state) => state.login.profileImage);
   const { cartItems } = useAppSelector((state) => state.cart);
-
   const { isLogin } = useAppSelector((state) => state.login);
   const goToMypage = () => {
     getMyProFile().then((res: any) => {
       navigate(`/account/${res.data.member.memberId}`);
     });
   };
+  const getImage = () => {
+    getMyProFile().then((res) => {
+      setMemberImg(res.data.member.profileImageName);
+    });
+  };
+  useEffect(() => {
+    getImage();
+  }, []);
+
   return (
     <nav className="ml-2 ">
       <ul className="flex items-center justify-center gap-5 mr-8 ml-2 ">
@@ -46,7 +54,7 @@ const Dropdown = () => {
             <button onClick={goToMypage} className="w-8 h-8">
               <img
                 className="object-cover w-full h-full rounded-full"
-                src="https://post-phinf.pstatic.net/MjAyMDA1MjBfMTI3/MDAxNTg5OTYwNzc2Mzkx.URP--ZPdGAfu4fZf_gBqhM-cyrgAbmA6o0zJ7i7zQiEg.ndMf4bCvA2PtVlt7D6a5CglG-rgLRUwBaS7_ZzpKiI0g.JPEG/KakaoTalk_20200519_173101893_08.jpg?type=w1200"
+                src={profileImage || memberImg}
                 alt=""
               />
             </button>
