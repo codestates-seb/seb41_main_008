@@ -1,8 +1,8 @@
 package com.nfteam.server.batch.scheduler;
 
-import com.nfteam.server.batch.job.TransAction12HReaderJobConfiguration;
-import com.nfteam.server.batch.job.TransAction24HReaderJobConfiguration;
-import com.nfteam.server.batch.job.TransAction6HReaderJobConfiguration;
+import com.nfteam.server.batch.job.TransAction1DReaderJobConfiguration;
+import com.nfteam.server.batch.job.TransAction1MReaderJobConfiguration;
+import com.nfteam.server.batch.job.TransAction1WReaderJobConfiguration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
@@ -24,18 +24,19 @@ import java.util.Map;
 public class TransActionReaderJobScheduler {
 
     private final JobLauncher jobLauncher;
-    private final TransAction6HReaderJobConfiguration transAction6HReaderJobConfiguration;
-    private final TransAction12HReaderJobConfiguration transAction12HReaderJobConfiguration;
-    private final TransAction24HReaderJobConfiguration transAction24HReaderJobConfiguration;
+    private final TransAction1DReaderJobConfiguration transAction1DReaderJobConfiguration;
+    private final TransAction1WReaderJobConfiguration transAction1WReaderJobConfiguration;
+    private final TransAction1MReaderJobConfiguration transAction1MReaderJobConfiguration;
 
-    @Scheduled(cron = "10 * * * * *") //초 분 시 일 월 요일
-    public void run6HJob() {
+    // 일간 랭킹 배치 : 매일 오전 1시
+    @Scheduled(cron = "0 0 1 1/1 * ?") // 초 분 시 일 월 요일 연도(op)
+    public void run1DRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(map);
 
         try {
-            jobLauncher.run(transAction6HReaderJobConfiguration.ranking6HReaderJob(), jobParameters);
+            jobLauncher.run(transAction1DReaderJobConfiguration.ranking1DReaderJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -44,13 +45,15 @@ public class TransActionReaderJobScheduler {
         }
     }
 
-    @Scheduled(cron = "15 * * * * *") //초 분 시 일 월 요일
-    public void run12HJob() {
+    // 주간 랭킹 배치 : 매 주 일요일 오전 2시
+    @Scheduled(cron = "0 0 2 ? * SUN") // 초 분 시 일 월 요일 연도(op)
+    public void run1WRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(map);
+
         try {
-            jobLauncher.run(transAction12HReaderJobConfiguration.ranking12HReaderJob(), jobParameters);
+            jobLauncher.run(transAction1WReaderJobConfiguration.ranking1WReaderJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -59,13 +62,15 @@ public class TransActionReaderJobScheduler {
         }
     }
 
-    @Scheduled(cron = "20 * * * * *") //초 분 시 일 월 요일
-    public void run24HJob() {
+    // 월간 랭킹 배치 : 매 월 1일 오전 3시
+    @Scheduled(cron = "0 0 3 1 1/1 ?") // 초 분 시 일 월 요일 연도(op)
+    public void run1MRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(map);
+
         try {
-            jobLauncher.run(transAction24HReaderJobConfiguration.ranking24HReaderJob(), jobParameters);
+            jobLauncher.run(transAction1MReaderJobConfiguration.ranking1MReaderJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());

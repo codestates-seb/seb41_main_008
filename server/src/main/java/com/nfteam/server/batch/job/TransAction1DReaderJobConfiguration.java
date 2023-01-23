@@ -1,8 +1,8 @@
 package com.nfteam.server.batch.job;
 
-import com.nfteam.server.batch.entity.Ranking6H;
+import com.nfteam.server.batch.entity.Ranking1D;
 import com.nfteam.server.batch.repository.RankingReaderRepository;
-import com.nfteam.server.batch.writer.Ranking6HWriter;
+import com.nfteam.server.batch.writer.Ranking1DWriter;
 import com.nfteam.server.transaction.entity.TransAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -21,57 +21,54 @@ import java.util.Collections;
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
-public class TransAction6HReaderJobConfiguration {
+public class TransAction1DReaderJobConfiguration {
 
-    public static final String JOB_NAME = "ranking6HReaderJob";
-    private static final String STEP_NAME = "ranking6HReaderStep";
-    private static final int chunkSize = 10;
-
+    private static final int chunkSize = 50;
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final RankingReaderRepository rankingReaderRepository;
-    private final Ranking6HWriter ranking6HWriter;
+    private final Ranking1DWriter ranking1DWriter;
 
     @Bean
-    public Job ranking6HReaderJob() throws Exception {
+    public Job ranking1DReaderJob() throws Exception {
         return jobBuilderFactory
-                .get(JOB_NAME)
-                .start(ranking6HReaderStep())
+                .get("ranking1DReaderJob")
+                .start(ranking1DReaderStep())
                 .build();
     }
 
     @Bean
     @JobScope
-    public Step ranking6HReaderStep() throws Exception {
+    public Step ranking1DReaderStep() throws Exception {
         return stepBuilderFactory
-                .get(STEP_NAME)
-                .<TransAction, Ranking6H>chunk(chunkSize)
-                .reader(ranking6HReader()) // 해당 시간대 범위의 모든 거래 기록을 읽어온다.
-                .processor(ranking6HProcessor()) // 거래량 랭킹을 String 값으로 전환한다.
-                .writer(ranking6HWriter) // 랭킹 테이블에 15개 랭킹을 저장한다.
+                .get("ranking1DReaderStep")
+                .<TransAction, Ranking1D>chunk(chunkSize)
+                .reader(ranking1DReader()) // 해당 시간대 범위의 모든 거래 기록을 읽어온다.
+                .processor(ranking1DProcessor()) // 거래량 랭킹을 String 값으로 전환한다.
+                .writer(ranking1DWriter) // 랭킹 테이블에 랭킹 리스트를 저장한다.
                 .build();
     }
 
     @Bean
     @StepScope
-    public RepositoryItemReader<TransAction> ranking6HReader() {
+    public RepositoryItemReader<TransAction> ranking1DReader() {
         return new RepositoryItemReaderBuilder<TransAction>()
-                .name("ranking6HReader")
+                .name("ranking1DReader")
                 .repository(rankingReaderRepository)
                 .methodName("getRankingByTime")
                 .pageSize(chunkSize)
-                .arguments(LocalDateTime.now().minusHours(600))
+                .arguments(LocalDateTime.now().minusDays(1))
                 .sorts(Collections.singletonMap("transId", Sort.Direction.ASC))
                 .build();
     }
 
     @Bean
     @StepScope
-    public ItemProcessor<TransAction, Ranking6H> ranking6HProcessor() {
-        Ranking6H ranking6H = new Ranking6H();
+    public ItemProcessor<TransAction, Ranking1D> ranking1DProcessor() {
+        Ranking1D ranking1D = new Ranking1D();
         return transActions -> {
-            ranking6H.addString(transActions.getCollection().getCollectionId());
-            return ranking6H;
+            ranking1D.addString(transActions.getCollection().getCollectionId());
+            return ranking1D;
         };
     }
 

@@ -7,23 +7,27 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "ranking_24h")
-public class Ranking24H extends BaseEntity {
+@Table(name = "ranking_1d")
+public class Ranking1D extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rank_24h_id")
+    @Column(name = "rank_1d_id")
     private Long rankId;
 
-    @Column(name = "rank_string")
+    @Column(name = "rank_1d_string", length = 500)
     private String rankString = "";
 
-    public Ranking24H() {
+    public Ranking1D() {
     }
 
-    public void addString(Long num){
+    public void addString(Long num) {
         this.rankString += num;
         this.rankString += ",";
+    }
+
+    public void changeString(String rank) {
+        this.rankString = rank;
     }
 
 }
