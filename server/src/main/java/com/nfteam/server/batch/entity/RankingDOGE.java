@@ -15,7 +15,7 @@ public class RankingDOGE extends BaseEntity {
     @Column(name = "rank_doge_id")
     private Long rankId;
 
-    @Column(name = "rank_string")
+    @Column(name = "rank_doge_string", length = 500)
     private String rankString = "";
 
     public RankingDOGE() {
@@ -24,6 +24,10 @@ public class RankingDOGE extends BaseEntity {
     public void addString(Long num) {
         this.rankString += num;
         this.rankString += ",";
+    }
+
+    public void changeString(String rank) {
+        this.rankString = rank;
     }
 
 }

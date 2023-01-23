@@ -15,7 +15,7 @@ public class RankingSOL extends BaseEntity {
     @Column(name = "rank_sol_id")
     private Long rankId;
 
-    @Column(name = "rank_string")
+    @Column(name = "rank_sol_string", length = 500)
     private String rankString = "";
 
     public RankingSOL() {
@@ -24,6 +24,10 @@ public class RankingSOL extends BaseEntity {
     public void addString(Long num) {
         this.rankString += num;
         this.rankString += ",";
+    }
+
+    public void changeString(String rank) {
+        this.rankString = rank;
     }
 
 }

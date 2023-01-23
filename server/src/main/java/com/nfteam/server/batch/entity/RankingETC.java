@@ -15,7 +15,7 @@ public class RankingETC extends BaseEntity {
     @Column(name = "rank_etc_id")
     private Long rankId;
 
-    @Column(name = "rank_string")
+    @Column(name = "rank_etc_string", length = 500)
     private String rankString = "";
 
     public RankingETC() {

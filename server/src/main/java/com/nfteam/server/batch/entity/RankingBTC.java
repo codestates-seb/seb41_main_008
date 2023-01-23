@@ -15,7 +15,7 @@ public class RankingBTC extends BaseEntity {
     @Column(name = "rank_btc_id")
     private Long rankId;
 
-    @Column(name = "rank_string")
+    @Column(name = "rank_btc_string", length = 500)
     private String rankString = "";
 
     public RankingBTC() {
@@ -24,6 +24,10 @@ public class RankingBTC extends BaseEntity {
     public void addString(Long num) {
         this.rankString += num;
         this.rankString += ",";
+    }
+
+    public void changeString(String rank) {
+        this.rankString = rank;
     }
 
 }
