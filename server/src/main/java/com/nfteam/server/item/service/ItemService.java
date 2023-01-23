@@ -125,6 +125,7 @@ public class ItemService {
     public List<ItemResponse> getMemberItemList(Long memberId) {
         List<ItemResponse> memberItems = qItemRepository.findItemByMember(memberId);
         if (memberItems.size() == 0) memberItems = new ArrayList<>();
+        memberItems.sort(ItemResponse::compareTo);
         return memberItems;
     }
 
