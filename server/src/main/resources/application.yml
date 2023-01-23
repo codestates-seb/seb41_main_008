@@ -2,6 +2,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      enabled: false
   config:
     import:
       - config/application-prod.yml
