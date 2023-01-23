@@ -1,5 +1,6 @@
 package com.nfteam.server.common.config;
 
+import com.nfteam.server.cart.service.CartService;
 import com.nfteam.server.common.utils.JwtTokenizer;
 import com.nfteam.server.redis.repository.RedisRepository;
 import com.nfteam.server.security.filter.JwtAuthenticationFilter;
@@ -38,6 +39,7 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final RedisRepository redisRepository;
+    private final CartService cartService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -92,7 +94,7 @@ public class SecurityConfiguration {
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisRepository);
             jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(cartService));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer);

@@ -11,7 +11,7 @@ import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
-import com.nfteam.server.item.repository.CollectionRepository;
+import com.nfteam.server.item.repository.ItemCollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class CollectionService {
 
-    private final CollectionRepository collectionRepository;
+    private final ItemCollectionRepository itemCollectionRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
 
@@ -38,7 +38,7 @@ public class CollectionService {
         Member member = findMemberByEmail(memberDetails.getEmail());
         itemCollection.assignMember(member);
         itemCollection.assignCoin(new Coin(Long.parseLong(request.getCoinId())));
-        return collectionRepository.save(itemCollection).getCollectionId();
+        return itemCollectionRepository.save(itemCollection).getCollectionId();
     }
 
     private Member findMemberByEmail(String email) {
@@ -56,7 +56,7 @@ public class CollectionService {
     }
 
     private ItemCollection getCollectionById(Long collectionId) {
-        return collectionRepository.findById(collectionId)
+        return itemCollectionRepository.findById(collectionId)
                 .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
     }
 
@@ -70,7 +70,7 @@ public class CollectionService {
     public void delete(Long collectionId, MemberDetails memberDetails) {
         ItemCollection itemCollection = getCollectionById(collectionId);
         checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
-        collectionRepository.deleteById(collectionId);
+        itemCollectionRepository.deleteById(collectionId);
     }
 
     public CollectionResponse getCollection(Long collectionId) {
@@ -97,7 +97,7 @@ public class CollectionService {
     }
 
     private ItemCollection getCollectionWithMemberAndCoin(Long collectionId) {
-        return collectionRepository.findCollectionWithMemberAndCoin(collectionId)
+        return itemCollectionRepository.findCollectionWithMemberAndCoin(collectionId)
                 .orElseThrow(() -> new ItemCollectionNotFoundException(collectionId));
     }
 
@@ -112,7 +112,7 @@ public class CollectionService {
     }
 
     public List<MemberCollectionResponse> getMemberCollectionList(Long memberId) {
-        return collectionRepository.findCollectionWithCoinByMemberId(memberId)
+        return itemCollectionRepository.findCollectionWithCoinByMemberId(memberId)
                 .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
     }

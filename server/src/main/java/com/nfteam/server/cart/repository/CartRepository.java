@@ -1,10 +1,13 @@
 package com.nfteam.server.cart.repository;
 
 import com.nfteam.server.cart.entity.Cart;
-import java.util.Optional;
+import com.nfteam.server.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CartRepository extends JpaRepository<Cart,Long> {
+import java.util.List;
 
-    Optional<Cart> findCartByMemberAndPaymentYn(Long memberId, boolean paymentYn);
+public interface CartRepository extends JpaRepository<Cart, Long> {
+
+    List<Cart> findCartByMemberAndPaymentYn(Member member, boolean paymentYn);
+
 }

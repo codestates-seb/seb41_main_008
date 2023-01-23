@@ -1,7 +1,10 @@
 spring:
+  batch:
+    jdbc:
+      initialize-schema: always
   config:
     import:
-      - config/application-prod.yml
+      - config/application-dev.yml
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -14,6 +17,7 @@ logging:
   level:
     org:
       springframework:
+        batch: DEBUG
         orm:
           jpa: DEBUG
 server:

@@ -27,6 +27,16 @@ public class QItemRepository {
                 .fetchOne();
     }
 
+    public List<ItemResponse> findItemList(List<Long> itemIdList) {
+        return jpaQueryFactory
+                .select(getItemResponseConstructor())
+                .from(item)
+                .leftJoin(item.collection)
+                .leftJoin(item.member)
+                .where(item.itemId.in(itemIdList))
+                .fetch();
+    }
+
     public List<ItemResponse> findItemByMember(Long memberId) {
         return jpaQueryFactory
                 .select(getItemResponseConstructor())

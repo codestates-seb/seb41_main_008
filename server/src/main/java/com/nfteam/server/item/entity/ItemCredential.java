@@ -15,10 +15,6 @@ public class ItemCredential {
     @Column(name = "credential_id")
     private Long credentialId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
-    private Item item;
-
     // 상품 고유 코드
     @Column(name = "item_code", nullable = false, length = 500)
     private String itemCode;
@@ -26,6 +22,9 @@ public class ItemCredential {
     // 상품 거래 내역 암호화 문자열
     @Column(name = "trans_encryption", nullable = false, length = 2000)
     private String transEncryption = "";
+
+    @OneToOne(mappedBy = "itemCredential")
+    private Item item;
 
     protected ItemCredential() {
     }

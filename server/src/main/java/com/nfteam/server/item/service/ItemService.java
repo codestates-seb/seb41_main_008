@@ -13,7 +13,7 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import com.nfteam.server.item.entity.ItemCredential;
-import com.nfteam.server.item.repository.CollectionRepository;
+import com.nfteam.server.item.repository.ItemCollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
@@ -32,7 +32,7 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class ItemService {
 
-    private final CollectionRepository collectionRepository;
+    private final ItemCollectionRepository collectionRepository;
     private final ItemRepository itemRepository;
     private final QItemRepository qItemRepository;
     private final MemberRepository memberRepository;

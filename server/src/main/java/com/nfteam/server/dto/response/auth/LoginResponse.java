@@ -1,5 +1,6 @@
 package com.nfteam.server.dto.response.auth;
 
+import com.nfteam.server.dto.response.cart.CartResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,7 @@ public class LoginResponse {
     private String role;
     private String lastLoginTime;
     private String profileImageName;
+    private CartResponse cart;
 
     @Builder
     public LoginResponse(Long id, String email, String role, LocalDateTime lastLoginTime, String profileImageName) {
@@ -33,6 +35,10 @@ public class LoginResponse {
                 .lastLoginTime(member.getLastLoginTime())
                 .profileImageName(member.getProfileImageName())
                 .build();
+    }
+
+    public void addCart(CartResponse cart) {
+        this.cart = cart;
     }
 
 }

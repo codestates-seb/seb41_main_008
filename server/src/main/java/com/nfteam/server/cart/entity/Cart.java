@@ -31,14 +31,21 @@ public class Cart extends BaseEntity {
     @OneToMany(mappedBy = "cart")
     private List<CartItemRel> itemList = new ArrayList<>();
 
-    // 카트 주인 설정
-    public void assignOwner(Member member) {
+    protected Cart() {
+    }
+
+    public Cart(Member member) {
         this.member = member;
         member.getCartList().add(this);
+        this.paymentYn = false;
     }
 
     public void changePaymentYn(Boolean paymentYn){
         this.paymentYn = paymentYn;
+    }
+
+    public void insertItem(CartItemRel cartItemRel){
+        this.itemList.add(cartItemRel);
     }
 
 }
