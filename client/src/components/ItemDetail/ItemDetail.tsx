@@ -10,10 +10,10 @@ import SearchIcon from '../../assets/icons/PurchaseIcons/Search';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
 import CountdownTimer from './CountDownTime/CountDown';
 import { getItemsData } from 'utils/api/api';
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppSelector } from 'hooks/hooks';
+import SellModal from 'components/CartingModal/SellModal';
 const asset = BORED_APE[0];
 const ETH_TO_USD = 1549.95;
 interface ItemProps {

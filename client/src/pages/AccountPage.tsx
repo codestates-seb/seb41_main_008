@@ -10,10 +10,19 @@ interface UserType {
     profileImageName: string;
     description: string;
   };
-  items: [];
+  items: ItemsType[];
   collections: [];
 }
-
+interface ItemsType {
+  itemDescription: string;
+  itemId: number;
+  itemImageName: string;
+  itemName: string;
+  itemPrice: number;
+  onSale: boolean;
+  ownerId: number;
+  ownerName: string;
+}
 const AccountPage = () => {
   const { memberId }: any = useParams();
   const [data, setData] = useState<UserType>();
@@ -21,7 +30,7 @@ const AccountPage = () => {
   const [, setCollections] = useState<any>([]);
   console.log(data);
   useEffect(() => {
-    getUserProFile(memberId).then((res) => {
+    getUserProFile(memberId).then(async (res) => {
       setCollections(res.data?.collections);
       setData(res.data);
     });
@@ -37,9 +46,7 @@ const AccountPage = () => {
         <span className="absolute top-0 left-0 bottom-0 right-0 ">
           <img
             className="absolute top-0 left-0 bottom-0 right-0 object-cover max-w-full max-h-full min-w-full min-h-full"
-            src={
-              `${process.env.REACT_APP_IMAGE}` + data?.member.bannerImageName
-            }
+            src={data?.member.bannerImageName}
             alt=""
           />
         </span>
@@ -79,12 +86,26 @@ const AccountPage = () => {
             </button>
           </ul>
         </div>
-
         <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
           {filter === 'Collected' ? (
             data?.items.length !== 0 ? (
-              data?.items.map((el: any, index) => {
-                return <Card key={index} {...el} filter={filter} />;
+              data?.items.map((el: any) => {
+                return (
+                  <Card
+                    ownerId={el.ownerId}
+                    key={el.itemId}
+                    data={data.items}
+                    onSale={el.onSale}
+                    filter={filter}
+                    itemId={el.itemId}
+                    collectionName={el.collectionName}
+                    logoImgName={el.logoImgName}
+                    itemImageName={el.itemImageName}
+                    itemPrice={el.itemPrice}
+                    itemDescription={el.itemDescription}
+                    coinName={el.coinName}
+                  />
+                );
               })
             ) : (
               <NoCard />
