@@ -66,7 +66,7 @@ public class TransAction1WReaderJobConfiguration {
     @StepScope
     public ItemProcessor<TransAction, TimeRankingEntity> ranking1WProcessor() {
         TimeRankingEntity timeRankingEntity = new TimeRankingEntity();
-        timeRankingEntity.updateCriteria(168);
+        timeRankingEntity.updateCriteria("week");
         return transActions -> {
             timeRankingEntity.addString(transActions.getCollection().getCollectionId());
             return timeRankingEntity;

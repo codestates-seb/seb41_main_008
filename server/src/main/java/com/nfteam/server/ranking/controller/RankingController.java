@@ -18,7 +18,12 @@ public class RankingController {
 
     @GetMapping("/time/{time}")
     public ResponseEntity getTimeRanking(@PathVariable("time") String time) {
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(rankingService.getTimeRanking(time), HttpStatus.OK);
+    }
+
+    @GetMapping("/coin/{coinId}")
+    public ResponseEntity getCoinRanking(@PathVariable("coinId") Long coinId) {
+        return new ResponseEntity<>(rankingService.getCoinRanking(coinId), HttpStatus.OK);
     }
 
 }

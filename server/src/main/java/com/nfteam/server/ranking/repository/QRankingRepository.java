@@ -1,16 +1,15 @@
 package com.nfteam.server.ranking.repository;
 
-import com.nfteam.server.dto.response.item.ItemResponse;
+import com.nfteam.server.dto.response.ranking.RankingResponse;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+import static com.nfteam.server.batch.entity.QCoinRankingEntity.coinRankingEntity;
 import static com.nfteam.server.batch.entity.QTimeRankingEntity.timeRankingEntity;
-import static com.nfteam.server.item.entity.QItem.item;
+import static com.nfteam.server.item.entity.QItemCollection.itemCollection;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,50 +17,40 @@ public class QRankingRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public String getRankString(Integer timeCriteria) {
+    public String getTimeRankString(String timeCriteria) {
         return jpaQueryFactory
                 .select(timeRankingEntity.rankString)
                 .from(timeRankingEntity)
                 .where(timeRankingEntity.rankCriteria.eq(timeCriteria))
-                .orderBy(timeRankingEntity.createdDate.asc())
+                .orderBy(timeRankingEntity.createdDate.desc())
                 .fetchFirst();
     }
 
-    public List<ItemResponse> findItemList(List<Long> itemIdList) {
+    public String getCoinRankString(Long coinId) {
         return jpaQueryFactory
-                .select(getItemResponseConstructor())
-                .from(item)
-                .leftJoin(item.collection)
-                .leftJoin(item.member)
-                .where(item.itemId.in(itemIdList))
-                .fetch();
+                .select(coinRankingEntity.rankString)
+                .from(coinRankingEntity)
+                .where(coinRankingEntity.coinId.eq(coinId))
+                .orderBy(coinRankingEntity.createdDate.desc())
+                .fetchFirst();
     }
 
-    public List<ItemResponse> findItemByMember(Long memberId) {
+    public RankingResponse findRankingCollectionInfo(Long collectionId) {
         return jpaQueryFactory
-                .select(getItemResponseConstructor())
-                .from(item)
-                .leftJoin(item.collection)
-                .leftJoin(item.member)
-                .where(item.member.memberId.eq(memberId))
-                .fetch();
+                .select(getRankingResponseConstructor())
+                .from(itemCollection)
+                .leftJoin(itemCollection.coin)
+                .where(itemCollection.collectionId.eq(collectionId))
+                .fetchOne();
     }
 
-    private ConstructorExpression<ItemResponse> getItemResponseConstructor() {
-        return Projections.constructor(ItemResponse.class,
-                item.collection.collectionId,
-                item.collection.collectionName,
-                item.member.memberId,
-                item.member.nickname,
-                item.collection.coin.coinId,
-                item.collection.coin.coinName,
-                item.collection.coin.withdrawFee,
-                item.itemId,
-                item.itemName,
-                item.itemImageName,
-                item.itemDescription,
-                item.onSale,
-                item.itemPrice);
+    private ConstructorExpression<RankingResponse> getRankingResponseConstructor() {
+        return Projections.constructor(RankingResponse.class,
+                itemCollection.collectionId,
+                itemCollection.collectionName,
+                itemCollection.logoImgName,
+                itemCollection.coin.coinId,
+                itemCollection.coin.coinName);
     }
 
 }

@@ -66,7 +66,7 @@ public class TransAction1MReaderJobConfiguration {
     @StepScope
     public ItemProcessor<TransAction, TimeRankingEntity> ranking1MProcessor() {
         TimeRankingEntity timeRankingEntity = new TimeRankingEntity();
-        timeRankingEntity.updateCriteria(720);
+        timeRankingEntity.updateCriteria("month");
         return transActions -> {
             timeRankingEntity.addString(transActions.getCollection().getCollectionId());
             return timeRankingEntity;
