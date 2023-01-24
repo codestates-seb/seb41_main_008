@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: redis
   batch:
     jdbc:
       initialize-schema: always
@@ -10,20 +12,18 @@ spring:
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+#    show-sql: true
     properties:
       hibernate:
         default_batch_fetch_size: 1000
         format_sql: true
-    hibernate:
-      ddl-auto: update
 logging:
   level:
     org:
       springframework:
-        batch: DEBUG
+#        batch: DEBUG
         orm:
-          jpa: DEBUG
+#          jpa: DEBUG
 server:
   servlet:
     encoding:

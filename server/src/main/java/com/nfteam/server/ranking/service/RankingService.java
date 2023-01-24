@@ -8,6 +8,8 @@ import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.ranking.repository.QRankingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,16 +24,27 @@ public class RankingService {
     private final QRankingRepository qRankingRepository;
     private final ItemRepository itemRepository;
 
+    @Cacheable("timeRanking")
     public List<RankingResponse> getTimeRanking(String time) {
         checkTimeValidate(time);
         String[] ranking = qRankingRepository.getTimeRankString(time).split("/");
         return getRankingResponses(ranking);
     }
 
+    @Cacheable("coinRanking")
     public List<RankingResponse> getCoinRanking(Long coinId) {
         checkCoinIdValidate(coinId);
         String[] ranking = qRankingRepository.getCoinRankString(coinId).split("/");
         return getRankingResponses(ranking);
+    }
+
+    // 캐시 삭제 전용 메서드
+    @CacheEvict("timeRanking")
+    public void deleteTimeRankingCache(String time) {
+    }
+
+    @CacheEvict("coinRanking")
+    public void deleteCoinRankingCache(Long coinId) {
     }
 
     private void checkTimeValidate(String time) {

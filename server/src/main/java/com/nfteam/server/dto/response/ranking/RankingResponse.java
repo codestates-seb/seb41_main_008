@@ -23,6 +23,21 @@ public class RankingResponse {
     private Double totalVolume; // 총 코인 갯수(가격) 합
     private Double highestPrice; // 최고가
 
+    // 레디스 캐싱 전용 생성자
+    public RankingResponse() {
+    }
+
+    public RankingResponse(Integer rank, Long collectionId, String collectionName, String logoImgName, Long coinId, String coinName, Double totalVolume, Double highestPrice) {
+        this.rank = rank;
+        this.collectionId = collectionId;
+        this.collectionName = collectionName;
+        this.logoImgName = logoImgName;
+        this.coinId = coinId;
+        this.coinName = coinName;
+        this.totalVolume = totalVolume;
+        this.highestPrice = highestPrice;
+    }
+
     @Builder
     @QueryProjection
     public RankingResponse(Long collectionId,
