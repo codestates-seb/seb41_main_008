@@ -16,7 +16,7 @@ public class TimeRankingEntity extends BaseEntity {
     private Long rankId;
 
     @Column(name = "rank_time_criteria")
-    private Integer rankCriteria;
+    private String rankCriteria;
 
     @Column(name = "rank_string", length = 500)
     private String rankString = "";
@@ -29,7 +29,7 @@ public class TimeRankingEntity extends BaseEntity {
         this.rankString += ",";
     }
 
-    public void updateCriteria(Integer rankCriteria) {
+    public void updateCriteria(String rankCriteria) {
         this.rankCriteria = rankCriteria;
     }
 

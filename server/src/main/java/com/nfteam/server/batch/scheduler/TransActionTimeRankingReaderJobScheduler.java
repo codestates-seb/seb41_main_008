@@ -3,7 +3,7 @@ package com.nfteam.server.batch.scheduler;
 import com.nfteam.server.batch.job.TransAction1DReaderJobConfiguration;
 import com.nfteam.server.batch.job.TransAction1MReaderJobConfiguration;
 import com.nfteam.server.batch.job.TransAction1WReaderJobConfiguration;
-import com.nfteam.server.batch.job.TransActionSOLReaderJobConfiguration;
+import com.nfteam.server.ranking.service.RankingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
@@ -28,6 +28,7 @@ public class TransActionTimeRankingReaderJobScheduler {
     private final TransAction1DReaderJobConfiguration transAction1DReaderJobConfiguration;
     private final TransAction1WReaderJobConfiguration transAction1WReaderJobConfiguration;
     private final TransAction1MReaderJobConfiguration transAction1MReaderJobConfiguration;
+    private final RankingService rankingService;
 
     // 일간 랭킹 배치 : 매일 오전 1시
     @Scheduled(cron = "0 0 1 1/1 * ?") // 초 분 시 일 월 요일
@@ -38,6 +39,8 @@ public class TransActionTimeRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transAction1DReaderJobConfiguration.ranking1DReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteTimeRankingCache("day");
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -55,6 +58,8 @@ public class TransActionTimeRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transAction1WReaderJobConfiguration.ranking1WReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteTimeRankingCache("week");
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -72,6 +77,8 @@ public class TransActionTimeRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transAction1MReaderJobConfiguration.ranking1MReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteTimeRankingCache("month");
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());

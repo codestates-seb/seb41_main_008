@@ -22,4 +22,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "where i.itemId =:itemId")
     Optional<Item> findItemWithOwnerAndCredentialAndCollection(Long itemId);
 
+    @Query("select i from Item i where i.collection.collectionId =:collectionId")
+    List<Item> findItemsByCollectionId(Long collectionId);
+
 }
