@@ -92,8 +92,8 @@ public class CollectionService {
                 .map(CollectionItemResponse::of)
                 .sorted(CollectionItemResponse::compareTo)
                 .collect(Collectors.toList());
-
         response.addItemResponseList(itemResponses);
+
         return response;
     }
 
@@ -138,7 +138,7 @@ public class CollectionService {
     }
 
     public List<MemberCollectionResponse> getMemberCollectionList(Long memberId) {
-        return itemCollectionRepository.findCollectionWithCoinByMemberId(memberId)
+        return itemCollectionRepository.findCollectionListWithCoinByMemberId(memberId)
                 .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
     }

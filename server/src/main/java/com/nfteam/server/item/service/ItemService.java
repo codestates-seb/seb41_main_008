@@ -141,7 +141,7 @@ public class ItemService {
                 priceHistory.add(new ItemPriceHistoryResponse(h.getTransPrice(), h.getTransDate()));
             });
             itemResponse.addPriceHistory(priceHistory);
-        }else{
+        } else {
             itemResponse.addTradeHistory(new ArrayList<>());
             itemResponse.addPriceHistory(new ArrayList<>());
         }
