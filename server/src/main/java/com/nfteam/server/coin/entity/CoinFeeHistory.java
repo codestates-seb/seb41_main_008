@@ -30,10 +30,6 @@ public class CoinFeeHistory {
     protected CoinFeeHistory() {
     }
 
-    public CoinFeeHistory(Long coinHistoryId) {
-        this.coinHistoryId = coinHistoryId;
-    }
-
     @Builder
     public CoinFeeHistory(String coinName, Double withdrawFee) {
         this.coinName = coinName;

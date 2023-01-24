@@ -1,6 +1,6 @@
 package com.nfteam.server.coin.controller;
 
-import com.nfteam.server.coin.service.CoinService;
+import com.nfteam.server.coin.service.CoinFeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,19 +12,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/coins")
+@RequestMapping("/api/coin-fee")
 @Slf4j
-public class CoinController {
+public class CoinFeeController {
 
     private static final List<String> COIN = List.of("SOL", "BTC", "DOGE", "ETH", "ETC");
-    private final CoinService coinService;
+    private final CoinFeeService coinFeeService;
 
-    @Scheduled(cron = "0 0 4 25 * *")
-    @GetMapping("/withdraw-fee")
+    // 매 주 일요일 오전 7시 수수료 기록 갱신
+    @Scheduled(cron = "0 0 7 ? * SUN")
+    @GetMapping
     public void getWithdrawFee() throws Exception {
-        //insert,update
-        coinService.saveFeeHistory(COIN);
-        coinService.updateFee(COIN);
+        // 수수료 변화 기록 insert + 신규 코인 수수료 갱신
+        coinFeeService.saveCoinFeeHistoryAndUpdateFee(COIN);
         log.info("withdraw-fee updated successfully!");
     }
 

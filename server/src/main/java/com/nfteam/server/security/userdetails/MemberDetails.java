@@ -3,7 +3,7 @@ package com.nfteam.server.security.userdetails;
 import com.nfteam.server.member.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -12,6 +12,10 @@ import java.util.List;
 
 @Getter
 public class MemberDetails extends Member implements UserDetails {
+
+    private final List<GrantedAuthority> GUEST_ROLES = AuthorityUtils.createAuthorityList("ROLE_GUEST");
+    private final List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList("ROLE_USER");
+    private final List<GrantedAuthority> ADMIN_ROLES = AuthorityUtils.createAuthorityList("ROLE_ADMIN");
 
     private Long memberId;
     private String email;
@@ -40,7 +44,13 @@ public class MemberDetails extends Member implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role));
+        return createAuthorities(this.role);
+    }
+
+    private Collection<? extends GrantedAuthority> createAuthorities(String role) {
+        if (role.equals("USER")) return USER_ROLES;
+        else if (role.equals("ADMIN")) return ADMIN_ROLES;
+        else return GUEST_ROLES;
     }
 
     @Override

@@ -18,7 +18,7 @@ public class TransActionRequestItemInfo {
     private Long coinId;
 
     @NotNull(message = "거래가격 정보가 없습니다.")
-    @Range(min = 0, max = 9999, message = "비정상적인 거래 가격입니다.")
+    @Range(min = 0, max = 9999, message = "거래 가격은 0 ~ 9999 범위를 벗어날 수 없습니다.")
     private Double transPrice;
 
     private TransActionRequestItemInfo() {

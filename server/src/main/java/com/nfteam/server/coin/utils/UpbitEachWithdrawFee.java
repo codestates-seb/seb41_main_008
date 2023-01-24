@@ -1,9 +1,7 @@
-package com.nfteam.server.openfeign.model;
+package com.nfteam.server.coin.utils;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
 @Getter
 public class UpbitEachWithdrawFee {
 

@@ -34,6 +34,7 @@ public class Cart extends BaseEntity {
     protected Cart() {
     }
 
+    // 신규 카트 배정
     public Cart(Member member) {
         this.member = member;
         member.getCartList().add(this);
@@ -42,10 +43,6 @@ public class Cart extends BaseEntity {
 
     public void changePaymentYn(Boolean paymentYn){
         this.paymentYn = paymentYn;
-    }
-
-    public void insertItem(CartItemRel cartItemRel){
-        this.itemList.add(cartItemRel);
     }
 
 }
