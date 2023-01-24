@@ -26,7 +26,7 @@ const DropdownItems = () => {
           </button>
         </li>
         <li className="py-4 shadow hover:border-y-2">
-          <button onClick={() => onRoute('/item')}>Create NFT</button>
+          <button onClick={() => onRoute('/asset/create')}>Create NFT</button>
         </li>
         <li className="rounded-b-xl py-4 shadow hover:border-y-2">
           Night Mode

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -8,8 +7,9 @@ import { HiOutlineStar, HiShare } from 'react-icons/hi';
 import * as Toast from '@radix-ui/react-toast';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setOpen } from 'store/toastSlice';
-import Card from 'components/Card';
-import MissingPage from 'components/MissingPage/MissingPage';
+import { format } from 'date-fns';
+import Cards from 'components/MyCollection/Cards';
+import MissingPage from 'pages/MissingPage';
 
 interface Item {
   itemDescription: string;
@@ -43,151 +43,133 @@ interface Collection {
 
 export default function CollectionDetails() {
   const { id } = useParams();
+  const [collection, setCollection] = useState<Collection>();
+  const [isError, setIsError] = useState<boolean>(false);
   const open = useAppSelector((state) => state.toast.open);
   const dispatch = useAppDispatch();
-  const [collection, setCollection] = useState<Collection>();
 
   useEffect(() => {
-    setTimeout(() => dispatch(setOpen(false)), 3000);
+    setTimeout(() => dispatch(setOpen(false)), 5000);
   }, [dispatch]);
 
   useEffect(() => {
     const getCollection = async () => {
       try {
-        const res = await customAxios.get(`/api/collections/${id}`);
+        const res = await customAxios.get(`/api/collections/only/${id}`);
 
         setCollection(res.data);
-        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err);
+        setIsError(true);
       }
     };
 
     getCollection();
   }, [id]);
-  console.log(collection?.itemList);
+
+  if (isError) return <MissingPage />;
+  if (!collection) return <p>Loading skeleton...</p>;
   return (
     <>
-      {collection?.totalVolume ? (
-        <div className="space-y-16">
-          <section className="flex flex-col w-full">
-            <div className="h-64 relative">
-              <span className="absolute top-0 left-0 bottom-0 right-0">
-                <img
-                  className="absolute top-0 left-0 bottom-0 right-0 object-cover max-w-full max-h-full min-w-full min-h-full"
-                  src={`${process.env.REACT_APP_IMAGE}${collection?.bannerImgName}`}
-                  alt="Collection banner"
-                />
-              </span>
-            </div>
-            <div className="absolute mt-32 ml-6 w-[160px] h-[160px]">
+      <div className="space-y-16">
+        <section className="flex flex-col w-full">
+          <div className="h-64 relative">
+            <span className="absolute top-0 left-0 bottom-0 right-0">
               <img
-                className="w-full h-full object-cover rounded-full border-8 border-[#ffffff]"
-                alt="Collection logo"
-                src={`${process.env.REACT_APP_IMAGE}${collection?.logoImgName}`}
+                className="absolute top-0 left-0 bottom-0 right-0 object-cover max-w-full max-h-full min-w-full min-h-full"
+                src={`${process.env.REACT_APP_IMAGE}${collection.bannerImgName}`}
+                alt="Collection banner"
               />
-            </div>
-          </section>
+            </span>
+          </div>
+          <div className="absolute mt-32 ml-6 w-[160px] h-[160px]">
+            <img
+              className="w-full h-full object-cover rounded-full border-8 border-[#ffffff]"
+              alt="Collection logo"
+              src={`${process.env.REACT_APP_IMAGE}${collection.logoImgName}`}
+            />
+          </div>
+        </section>
 
-          <section className="px-8 space-y-3 text-[#04111D]">
-            <div className="flex justify-between items-center">
-              <h1 className="text-4xl font-bold">
-                {collection?.collectionName}
-              </h1>
-              <div className="space-x-3 flex">
-                <button className="shadowBtn">
-                  <HiOutlineStar className="h-6 w-6" />
-                </button>
-                <button className="shadowBtn">
-                  <HiShare className="h-6 w-6" />
-                </button>
-              </div>
+        <section className="px-8 space-y-3 text-[#04111D]">
+          <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold">{collection.collectionName}</h1>
+            <div className="space-x-3 flex">
+              <button className="shadowBtn">
+                <HiOutlineStar className="h-6 w-6" />
+              </button>
+              <button className="shadowBtn">
+                <HiShare className="h-6 w-6" />
+              </button>
             </div>
+          </div>
 
-            <h3 className="text-lg">
-              By <span className="font-semibold">{collection?.ownerName}</span>
-            </h3>
-            <div>
-              <span className="text-lg">
-                Items{' '}
-                <span className="font-semibold">{collection?.itemCount}</span>
+          <h3 className="text-lg">
+            By <span className="font-semibold">{collection.ownerName}</span>
+          </h3>
+          <div>
+            <span className="text-lg">
+              Items{' '}
+              <span className="font-semibold">{collection.itemCount}</span>
+            </span>
+            <span className="font-bold">{' · '}</span>
+            <span className="text-lg">
+              Created{' '}
+              <span className="font-semibold">
+                {format(new Date(collection.createdDate), 'MMM yyyy')}
               </span>
-              <span className="font-bold">{' · '}</span>
-              <span className="text-lg">
-                Created{' '}
-                <span className="font-semibold">{collection?.createdDate}</span>
-              </span>
-              <span className="font-bold">{' · '}</span>
-              <span className="text-lg">
-                Chain{' '}
-                <span className="font-semibold">{collection?.coinName}</span>{' '}
-              </span>
+            </span>
+            <span className="font-bold">{' · '}</span>
+            <span className="text-lg">
+              Chain <span className="font-semibold">{collection.coinName}</span>{' '}
+            </span>
+          </div>
+          <p className="text-lg">{collection.description}</p>
+
+          <div className="flex space-x-5">
+            <div className="text-center">
+              <div className="font-semibold text-2xl">
+                {collection.totalVolume} ETH
+              </div>
+              <div className="text">total volume</div>
             </div>
-            <p className="text-lg">{collection?.description}</p>
-
-            <div className="flex space-x-5">
-              <div className="text-center">
-                <div className="font-semibold text-2xl">
-                  {collection?.totalVolume} ETH
-                </div>
-                <div className="text">total volume</div>
+            <div className="text-center">
+              <div className="font-semibold text-2xl">
+                {collection.lowestPrice} ETH
               </div>
-              <div className="text-center">
-                <div className="font-semibold text-2xl">
-                  {collection?.lowestPrice} ETH
-                </div>
-                <div className="text">floor price</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold text-2xl">
-                  {collection?.ownerCount}
-                </div>
-                <div className="text">owners</div>
-              </div>
+              <div className="text">floor price</div>
             </div>
+            <div className="text-center">
+              <div className="font-semibold text-2xl">
+                {collection.ownerCount}
+              </div>
+              <div className="text">owners</div>
+            </div>
+          </div>
+        </section>
+        {collection.itemCount ? (
+          <Cards id={id!} />
+        ) : (
+          <section className="border text-[#04111D] flex justify-center items-center border-gray-300 mx-8 h-64 rounded-lg">
+            <h2 className="text-3xl">No items to display</h2>
           </section>
+        )}
+        <Toast.Provider>
+          <Toast.Root open={open} onOpenChange={setOpen} className="ToastRoot">
+            <Toast.Description className="ToastDescription">
+              <p className="flex items-center gap-1 text-emerald-700">
+                <span>
+                  <BsCheckCircleFill className="h-7 w-7" />
+                </span>{' '}
+                Created!
+              </p>
+            </Toast.Description>
+          </Toast.Root>
 
-          <section className="px-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {collection?.itemList.map((item) => (
-              <Card
-                ownerId={item.ownerId}
-                onSale={item.onSale}
-                key={item.itemId}
-                itemId={item.itemId}
-                data={collection.itemList}
-                collectionName={collection.collectionName}
-                logoImgName={collection.logoImgName}
-                itemImageName={item.itemImageName}
-                itemPrice={item.itemPrice}
-                itemDescription={item.itemDescription}
-                coinName={collection.coinName}
-                filter="collected"
-              />
-            ))}
-          </section>
-          <Toast.Provider>
-            <Toast.Root
-              open={open}
-              onOpenChange={setOpen}
-              className="ToastRoot"
-            >
-              <Toast.Description className="ToastDescription">
-                <p className="flex items-center gap-1 text-emerald-700">
-                  <span>
-                    <BsCheckCircleFill className="h-7 w-7" />
-                  </span>{' '}
-                  Created!
-                </p>
-              </Toast.Description>
-            </Toast.Root>
-
-            <Toast.Viewport className="ToastViewport" />
-          </Toast.Provider>
-        </div>
-      ) : (
-        <MissingPage />
-      )}
+          <Toast.Viewport className="ToastViewport" />
+        </Toast.Provider>
+      </div>
     </>
   );
 }
