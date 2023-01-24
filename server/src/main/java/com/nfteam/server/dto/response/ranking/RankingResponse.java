@@ -27,7 +27,14 @@ public class RankingResponse {
     public RankingResponse() {
     }
 
-    public RankingResponse(Integer rank, Long collectionId, String collectionName, String logoImgName, Long coinId, String coinName, Double totalVolume, Double highestPrice) {
+    public RankingResponse(Integer rank,
+                           Long collectionId,
+                           String collectionName,
+                           String logoImgName,
+                           Long coinId,
+                           String coinName,
+                           Double totalVolume,
+                           Double highestPrice) {
         this.rank = rank;
         this.collectionId = collectionId;
         this.collectionName = collectionName;
@@ -52,11 +59,11 @@ public class RankingResponse {
         this.coinName = coinName;
     }
 
-    public void addRanking(Integer rank){
+    public void addRanking(Integer rank) {
         this.rank = rank;
     }
 
-    public void addMetaInfo(Double totalVolume, Double highestPrice){
+    public void addMetaInfo(Double totalVolume, Double highestPrice) {
         this.totalVolume = totalVolume;
         this.highestPrice = highestPrice;
     }

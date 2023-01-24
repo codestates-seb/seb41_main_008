@@ -71,6 +71,8 @@ public class CollectionItemResponse implements Comparable<CollectionItemResponse
                 .build();
     }
 
+    // 판매상품 -> 미판매 상품 순
+    // 낮은 가격 -> 높은 가격 순
     @Override
     public int compareTo(CollectionItemResponse o) {
         if (o.onSale == this.onSale) {
@@ -79,4 +81,5 @@ public class CollectionItemResponse implements Comparable<CollectionItemResponse
             return Boolean.compare(o.onSale, this.onSale);
         }
     }
+
 }

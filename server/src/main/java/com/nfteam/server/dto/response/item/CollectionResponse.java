@@ -71,7 +71,7 @@ public class CollectionResponse {
         this.ownerCount = ownerCount;
     }
 
-    public void addItemResponseDtos(List<CollectionItemResponse> items) {
+    public void addItemResponseList(List<CollectionItemResponse> items) {
         this.itemList = items;
     }
 

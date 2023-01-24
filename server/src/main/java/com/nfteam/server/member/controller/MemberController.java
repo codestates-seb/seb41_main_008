@@ -4,7 +4,7 @@ import com.nfteam.server.dto.request.member.MemberCreateRequest;
 import com.nfteam.server.dto.request.member.MemberPatchRequest;
 import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.dto.response.item.ItemResponse;
-import com.nfteam.server.dto.response.item.MemberCollectionResponse;
+import com.nfteam.server.dto.response.member.MemberCollectionResponse;
 import com.nfteam.server.dto.response.member.MemberMyPageResponseDto;
 import com.nfteam.server.dto.response.member.MemberResponseDto;
 import com.nfteam.server.item.service.CollectionService;

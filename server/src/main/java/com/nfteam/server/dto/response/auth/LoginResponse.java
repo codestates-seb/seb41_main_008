@@ -19,7 +19,11 @@ public class LoginResponse {
     private CartResponse cart;
 
     @Builder
-    public LoginResponse(Long id, String email, String role, LocalDateTime lastLoginTime, String profileImageName) {
+    public LoginResponse(Long id,
+                         String email,
+                         String role,
+                         LocalDateTime lastLoginTime,
+                         String profileImageName) {
         this.id = id;
         this.email = email;
         this.role = role;
