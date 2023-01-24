@@ -30,7 +30,6 @@ export default function CreateCollectionPage() {
           setLogoFile={setLogoFile}
           logoString={logoString}
           setLogoString={setLogoString}
-          logoName={logoName}
           setLogoName={setLogoName}
         />
         <BannerImage
@@ -38,7 +37,6 @@ export default function CreateCollectionPage() {
           setBannerFile={setBannerFile}
           bannerString={bannerString}
           setBannerString={setBannerString}
-          bannerName={bannerName}
           setBannerName={setBannerName}
         />
         <CreateCollection

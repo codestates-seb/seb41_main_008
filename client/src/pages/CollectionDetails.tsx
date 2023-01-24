@@ -8,8 +8,8 @@ import * as Toast from '@radix-ui/react-toast';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setOpen } from 'store/toastSlice';
 import { format } from 'date-fns';
-import Cards from 'components/Cards';
-import MissingPage from 'components/MissingPage/MissingPage';
+import Cards from 'components/MyCollection/Cards';
+import MissingPage from 'pages/MissingPage';
 
 interface Item {
   itemDescription: string;

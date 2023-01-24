@@ -1,46 +1,57 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import RadioButtons from 'components/RadioGroup/RadioButtons';
 import { useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
+import CollectionOptions from './CollectionOptions';
 
-interface Blockchain {
-  name: string;
-  id: number;
+interface Collection {
+  collectionName: string;
+  collectionId: number;
+  logoImgName: string;
 }
 
 interface Props {
-  selectedCoin: Blockchain | null;
-  setSelectedCoin: React.Dispatch<React.SetStateAction<Blockchain | null>>;
+  collections: Collection[];
+  selectedCol: Collection | undefined;
+  setSelectedCol: React.Dispatch<React.SetStateAction<Collection | undefined>>;
 }
 
-export default function Modal({ selectedCoin, setSelectedCoin }: Props) {
-  const [coin, setCoin] = useState<Blockchain | null>(null);
+export default function ItemModal({
+  collections,
+  selectedCol,
+  setSelectedCol,
+}: Props) {
+  const [collection, setCollection] = useState<Collection>();
 
   return (
     <div>
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <button className="btn">
-            {selectedCoin?.name ? selectedCoin?.name : 'Select a blockdchain'}
+            {selectedCol?.collectionName
+              ? selectedCol?.collectionName
+              : 'Select your Collection'}
           </button>
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay className="DialogOverlay" />
           <Dialog.Content className="DialogContent">
             <Dialog.Title className="DialogTitle text-lg font-bold">
-              Blockchain
+              Collection
             </Dialog.Title>
             <Dialog.Description className="DialogDescription">
-              Select the blockchain where you{"'"}d like new items from this
-              collection to be added by default.
+              This is the collection where your item will appear.
             </Dialog.Description>
 
-            <RadioButtons selectedCoin={selectedCoin} setCoin={setCoin} />
+            <CollectionOptions
+              collections={collections}
+              selectedCol={selectedCol}
+              setCollection={setCollection}
+            />
 
             <div className="flex mt-2 justify-end">
               <Dialog.Close asChild>
                 <button
-                  onClick={() => coin && setSelectedCoin(coin)}
+                  onClick={() => collection && setSelectedCol(collection)}
                   className="text-lg font-semibold px-3 py-1.5 green"
                 >
                   Save changes

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import customAxios from 'utils/api/axios';
 import { setOpen } from 'store/toastSlice';
-import Modal from 'components/Dialog/Modal';
+import Modal from './CollectionModal';
 
 interface Inputs {
   name: string;

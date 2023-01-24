@@ -7,7 +7,7 @@ interface Banner {
   setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
   bannerString: string;
   setBannerString: React.Dispatch<React.SetStateAction<string>>;
-  bannerName: string;
+
   setBannerName: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -16,7 +16,6 @@ export default function BannerImage({
   setBannerFile,
   bannerString,
   setBannerString,
-  bannerName,
   setBannerName,
 }: Banner) {
   const fileInputRef = useRef<HTMLInputElement>(null);

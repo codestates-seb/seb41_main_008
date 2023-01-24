@@ -7,7 +7,6 @@ interface Logo {
   setLogoFile: React.Dispatch<React.SetStateAction<File | null>>;
   logoString: string;
   setLogoString: React.Dispatch<React.SetStateAction<string>>;
-  logoName: string;
   setLogoName: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -16,7 +15,7 @@ export default function LogoImage({
   setLogoFile,
   logoString,
   setLogoString,
-  logoName,
+
   setLogoName,
 }: Logo) {
   const fileInputRef = useRef<HTMLInputElement>(null);
