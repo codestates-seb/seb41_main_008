@@ -1,7 +1,11 @@
 package com.nfteam.server.dto.response.item;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class ItemTradeHistoryResponse {
@@ -17,27 +21,28 @@ public class ItemTradeHistoryResponse {
     // 거래 가격 == 코인 갯수
     private Double transPrice;
 
-    // 거래 당시 코인 수수료
-    private Double coinWithdrawFee;
+    // 거래 코인명
+    private String coinName;
 
     // 거래일자
     private String transDate;
 
     @Builder
+    @QueryProjection
     public ItemTradeHistoryResponse(Long sellerId,
                                     String sellerName,
                                     Long buyerId,
                                     String buyerName,
                                     Double transPrice,
-                                    Double coinWithdrawFee,
-                                    String transDate) {
+                                    String coinName,
+                                    LocalDateTime transDate) {
         this.sellerId = sellerId;
         this.sellerName = sellerName;
         this.buyerId = buyerId;
         this.buyerName = buyerName;
         this.transPrice = transPrice;
-        this.coinWithdrawFee = coinWithdrawFee;
-        this.transDate = transDate;
+        this.coinName = coinName;
+        this.transDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(transDate);
     }
 
 }
