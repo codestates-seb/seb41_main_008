@@ -1,11 +1,11 @@
-import axios, { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Collection from './Collection';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper';
+import { useQuery } from '@tanstack/react-query';
 
 interface urls {
   raw: string;
@@ -51,23 +51,19 @@ export default function Carousel({
   title: string;
   page: string;
 }) {
-  const [collection, setCollection] = useState<Collections[]>();
+  const { isLoading, error, data } = useQuery<Collections[], Error>({
+    queryKey: ['collections'],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&page=${page}&per_page=10`
+      );
+      return res.data;
+    },
+  });
 
-  useEffect(() => {
-    const getCollection = async () => {
-      try {
-        const res = await axios.get(
-          `https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&page=${page}&per_page=10`
-        );
-        setCollection(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err.response?.data);
-      }
-    };
+  if (isLoading) return <p>Loading...</p>;
 
-    getCollection();
-  }, [page]);
+  if (error) return <p>An error has occurred: + {error.message}</p>;
 
   return (
     <Container>
@@ -102,13 +98,13 @@ export default function Carousel({
         }}
         className="rounded-md"
       >
-        {collection?.map((piece) => (
-          <SwiperSlide key={piece.id} className="py-2">
+        {data.map((collection) => (
+          <SwiperSlide key={collection.id} className="py-2">
             <Collection
-              url={piece.urls?.raw + '&w=500&auto=format'}
-              price={piece.likes}
-              name={piece.color}
-              volume={piece.width}
+              url={collection.urls?.raw + '&w=500&auto=format'}
+              price={collection.likes}
+              name={collection.color}
+              volume={collection.width}
             />
           </SwiperSlide>
         ))}

@@ -48,7 +48,6 @@ export default function CreateItem({
   const dispatch = useAppDispatch();
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-
   const [item, setItem] = useState<Item>();
   const navigate = useNavigate();
 
@@ -60,11 +59,11 @@ export default function CreateItem({
     resolver: yupResolver(schema),
   });
 
-  const { data } = useQuery({
-    queryKey: ['collectionData'],
+  const { isLoading, error, data } = useQuery<Collection[], Error>({
+    queryKey: ['myCollections'],
     queryFn: async () => {
       const res = await customAxios.get('/api/members/mypage');
-      return res.data;
+      return res.data.collections;
     },
   });
 
@@ -161,7 +160,9 @@ export default function CreateItem({
         )}
       </div>
       <ItemModal
-        collections={data?.collections}
+        isLoading={isLoading}
+        error={error}
+        collections={data}
         selectedCol={selectedCol}
         setSelectedCol={setSelectedCol}
       />

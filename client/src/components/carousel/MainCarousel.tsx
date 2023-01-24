@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import styled from 'styled-components';
 import MainCollection from './MainCollection';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, Autoplay } from 'swiper';
+import { useQuery } from '@tanstack/react-query';
 
 interface urls {
   raw: string;
@@ -45,23 +45,19 @@ const Container = styled.div`
 `;
 
 export default function MainCarousel() {
-  const [collection, setCollection] = useState<Collections[]>();
+  const { isLoading, error, data } = useQuery<Collections[], Error>({
+    queryKey: ['maincollectionS'],
+    queryFn: async () => {
+      const res = await axios.get(
+        'https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&per_page=12'
+      );
+      return res.data;
+    },
+  });
 
-  useEffect(() => {
-    const getCollection = async () => {
-      try {
-        const res = await axios.get(
-          'https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&per_page=12'
-        );
-        setCollection(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err.response?.data);
-      }
-    };
+  if (isLoading) return <p>Loading...</p>;
 
-    getCollection();
-  }, []);
+  if (error) return <p>An error has occurred: + {error.message}</p>;
 
   return (
     <Container>
@@ -99,12 +95,12 @@ export default function MainCarousel() {
         }}
         className="rounded-2xl"
       >
-        {collection?.map((piece) => (
-          <SwiperSlide key={piece.id}>
+        {data.map((collection) => (
+          <SwiperSlide key={collection.id}>
             <MainCollection
-              url={piece.urls?.raw + '&w=500&auto=format'}
-              price={piece.likes}
-              name={piece.color}
+              url={collection.urls?.raw + '&w=500&auto=format'}
+              price={collection.likes}
+              name={collection.color}
             />
           </SwiperSlide>
         ))}

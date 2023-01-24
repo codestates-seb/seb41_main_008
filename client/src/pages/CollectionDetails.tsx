@@ -1,5 +1,4 @@
-import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
 import { BsCheckCircleFill } from 'react-icons/bs';
@@ -10,6 +9,7 @@ import { setOpen } from 'store/toastSlice';
 import { format } from 'date-fns';
 import Cards from 'components/MyCollection/Cards';
 import MissingPage from 'pages/MissingPage';
+import { useQuery } from '@tanstack/react-query';
 
 interface Item {
   itemDescription: string;
@@ -43,8 +43,7 @@ interface Collection {
 
 export default function CollectionDetails() {
   const { id } = useParams();
-  const [collection, setCollection] = useState<Collection>();
-  const [isError, setIsError] = useState<boolean>(false);
+
   const open = useAppSelector((state) => state.toast.open);
   const dispatch = useAppDispatch();
 
@@ -52,24 +51,18 @@ export default function CollectionDetails() {
     setTimeout(() => dispatch(setOpen(false)), 5000);
   }, [dispatch]);
 
-  useEffect(() => {
-    const getCollection = async () => {
-      try {
-        const res = await customAxios.get(`/api/collections/only/${id}`);
+  const { isLoading, error, data } = useQuery<Collection, Error>({
+    queryKey: ['collectionDetails'],
+    queryFn: async () => {
+      const res = await customAxios.get(`/api/collections/only/${id}`);
+      return res.data;
+    },
+  });
 
-        setCollection(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-        setIsError(true);
-      }
-    };
+  if (isLoading) return <p>Loading...</p>;
 
-    getCollection();
-  }, [id]);
+  if (error) return <MissingPage />;
 
-  if (isError) return <MissingPage />;
-  if (!collection) return <p>Loading skeleton...</p>;
   return (
     <>
       <div className="space-y-16">
@@ -78,7 +71,7 @@ export default function CollectionDetails() {
             <span className="absolute top-0 left-0 bottom-0 right-0">
               <img
                 className="absolute top-0 left-0 bottom-0 right-0 object-cover max-w-full max-h-full min-w-full min-h-full"
-                src={`${process.env.REACT_APP_IMAGE}${collection.bannerImgName}`}
+                src={`${process.env.REACT_APP_IMAGE}${data.bannerImgName}`}
                 alt="Collection banner"
               />
             </span>
@@ -87,14 +80,14 @@ export default function CollectionDetails() {
             <img
               className="w-full h-full object-cover rounded-full border-8 border-[#ffffff]"
               alt="Collection logo"
-              src={`${process.env.REACT_APP_IMAGE}${collection.logoImgName}`}
+              src={`${process.env.REACT_APP_IMAGE}${data.logoImgName}`}
             />
           </div>
         </section>
 
         <section className="px-8 space-y-3 text-[#04111D]">
           <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-bold">{collection.collectionName}</h1>
+            <h1 className="text-4xl font-bold">{data.collectionName}</h1>
             <div className="space-x-3 flex">
               <button className="shadowBtn">
                 <HiOutlineStar className="h-6 w-6" />
@@ -106,49 +99,46 @@ export default function CollectionDetails() {
           </div>
 
           <h3 className="text-lg">
-            By <span className="font-semibold">{collection.ownerName}</span>
+            By <span className="font-semibold">{data.ownerName}</span>
           </h3>
           <div>
             <span className="text-lg">
-              Items{' '}
-              <span className="font-semibold">{collection.itemCount}</span>
+              Items <span className="font-semibold">{data.itemCount}</span>
             </span>
             <span className="font-bold">{' · '}</span>
             <span className="text-lg">
               Created{' '}
               <span className="font-semibold">
-                {format(new Date(collection.createdDate), 'MMM yyyy')}
+                {format(new Date(data.createdDate), 'MMM yyyy')}
               </span>
             </span>
             <span className="font-bold">{' · '}</span>
             <span className="text-lg">
-              Chain <span className="font-semibold">{collection.coinName}</span>{' '}
+              Chain <span className="font-semibold">{data.coinName}</span>{' '}
             </span>
           </div>
-          <p className="text-lg">{collection.description}</p>
+          <p className="text-lg">{data.description}</p>
 
           <div className="flex space-x-5">
             <div className="text-center">
               <div className="font-semibold text-2xl">
-                {collection.totalVolume} ETH
+                {data.totalVolume} ETH
               </div>
               <div className="text">total volume</div>
             </div>
             <div className="text-center">
               <div className="font-semibold text-2xl">
-                {collection.lowestPrice} ETH
+                {data.lowestPrice} ETH
               </div>
               <div className="text">floor price</div>
             </div>
             <div className="text-center">
-              <div className="font-semibold text-2xl">
-                {collection.ownerCount}
-              </div>
+              <div className="font-semibold text-2xl">{data.ownerCount}</div>
               <div className="text">owners</div>
             </div>
           </div>
         </section>
-        {collection.itemCount ? (
+        {data.itemCount ? (
           <Cards id={id!} />
         ) : (
           <section className="border text-[#04111D] flex justify-center items-center border-gray-300 mx-8 h-64 rounded-lg">

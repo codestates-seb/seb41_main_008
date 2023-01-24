@@ -10,12 +10,16 @@ interface Collection {
 }
 
 interface Props {
-  collections: Collection[];
+  isLoading: boolean;
+  error: Error | null;
+  collections: Collection[] | undefined;
   selectedCol: Collection | undefined;
   setSelectedCol: React.Dispatch<React.SetStateAction<Collection | undefined>>;
 }
 
 export default function ItemModal({
+  isLoading,
+  error,
   collections,
   selectedCol,
   setSelectedCol,
@@ -43,6 +47,8 @@ export default function ItemModal({
             </Dialog.Description>
 
             <CollectionOptions
+              isLoading={isLoading}
+              error={error}
               collections={collections}
               selectedCol={selectedCol}
               setCollection={setCollection}
