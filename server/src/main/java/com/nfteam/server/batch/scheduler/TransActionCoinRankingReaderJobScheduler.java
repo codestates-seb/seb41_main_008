@@ -1,6 +1,7 @@
 package com.nfteam.server.batch.scheduler;
 
 import com.nfteam.server.batch.job.*;
+import com.nfteam.server.ranking.service.RankingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
@@ -27,7 +28,7 @@ public class TransActionCoinRankingReaderJobScheduler {
     private final TransActionDOGEReaderJobConfiguration transActionDOGEReaderJobConfiguration;
     private final TransActionETHReaderJobConfiguration transActionETHReaderJobConfiguration;
     private final TransActionETCReaderJobConfiguration transActionETCReaderJobConfiguration;
-
+    private final RankingService rankingService;
 
     // SOL 코인 배치 : 매일 오전 4시
     @Scheduled(cron = "0 0 4 1/1 * ?") // 초 분 시 일 월 요일
@@ -38,6 +39,8 @@ public class TransActionCoinRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transActionSOLReaderJobConfiguration.rankingSOLReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteCoinRankingCache(1L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -55,6 +58,8 @@ public class TransActionCoinRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transActionBTCReaderJobConfiguration.rankingBTCReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteCoinRankingCache(2L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -72,6 +77,8 @@ public class TransActionCoinRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transActionDOGEReaderJobConfiguration.rankingDOGEReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteCoinRankingCache(3L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -89,6 +96,8 @@ public class TransActionCoinRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transActionETHReaderJobConfiguration.rankingETHReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteCoinRankingCache(4L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());
@@ -106,6 +115,8 @@ public class TransActionCoinRankingReaderJobScheduler {
 
         try {
             jobLauncher.run(transActionETCReaderJobConfiguration.rankingETCReaderJob(), jobParameters);
+            // 이전 캐시 정보 삭제
+            rankingService.deleteCoinRankingCache(5L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
             log.error(e.getMessage());

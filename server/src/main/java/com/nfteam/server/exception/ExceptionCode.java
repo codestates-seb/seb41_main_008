@@ -38,6 +38,9 @@ public enum ExceptionCode {
     // COIN
     COIN_NOT_FOUND("COIN_NOT_FOUND"),
 
+    // RANK
+    RANK_NOT_FOUND("RANK_NOT_FOUND"),
+
     //TRANSACTION
     TRANSACTION_FAILED("TRANSACTION_FAILED");
 
