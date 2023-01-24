@@ -6,8 +6,10 @@ import com.nfteam.server.cart.repository.CartItemRelRepository;
 import com.nfteam.server.cart.repository.CartRepository;
 import com.nfteam.server.dto.request.cart.CartPurchaseRequest;
 import com.nfteam.server.dto.response.cart.CartResponse;
+import com.nfteam.server.exception.cart.CartExistException;
 import com.nfteam.server.exception.cart.CartNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
+import com.nfteam.server.exception.item.ItemNotOnSaleException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.transaction.TransRecordNotValidException;
 import com.nfteam.server.item.entity.Item;
@@ -58,7 +60,7 @@ public class CartService {
     }
 
     private void validateCartSize(int size) {
-        if (size > 1) throw new TransRecordNotValidException("결제되지 않은 카트 기록이 다수 존재 (기록 이상)");
+        if (size > 1) throw new CartExistException();
     }
 
     private Cart getCart(Member member, List<Cart> findCartList) {
@@ -121,7 +123,7 @@ public class CartService {
 
     private void checkItemSaleStatus(List<Item> items) {
         items.stream().forEach(i -> {
-            if (!i.getOnSale()) throw new TransRecordNotValidException("판매되지 않은 상품이 섞여 있습니다.");
+            if (!i.getOnSale()) throw new ItemNotOnSaleException(i.getItemId());
         });
     }
 

@@ -11,8 +11,4 @@ public class CoinNotFoundException extends NFTCustomException {
         super(ExceptionCode.COIN_NOT_FOUND, String.format("%s - 코인 아이디 : %d", message, coinId));
     }
 
-    public CoinNotFoundException(String coinName) {
-        super(ExceptionCode.COIN_NOT_FOUND, String.format("%s - 코인 이름 : %s", message, coinName));
-    }
-
 }
