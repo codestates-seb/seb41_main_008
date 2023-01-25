@@ -26,7 +26,7 @@ interface CardType {
   itemImageName: string;
   itemPrice: number;
   itemDescription: string;
-  filter: string;
+  filter?: string;
   coinName: string;
   onSale: boolean;
 }
@@ -55,7 +55,7 @@ const Card = ({
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
   return (
-    <div className="shadow hover:shadow-2xl rounded-b-xl">
+    <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold">
       <article
         onMouseEnter={() => {
           setHide(true);
@@ -64,7 +64,7 @@ const Card = ({
           setHide(false);
         }}
       >
-        <Link to={'/'} className="flex flex-col hover:shadow">
+        <Link to={`/items/${itemId}`} className="flex flex-col ">
           <div className="overflow-hidden rounded-t-xl w-full aspect-square">
             <img
               className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"

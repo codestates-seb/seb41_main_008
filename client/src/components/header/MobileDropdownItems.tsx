@@ -12,7 +12,7 @@ import { logout } from 'utils/api/api';
 
 const MobileDropdownItems = () => {
   const { isLogin } = useAppSelector((state) => state.login);
-  const memberId = localStorage.getItem('memberId');
+  const memberId = localStorage.getItem('MEMBER_ID');
   return (
     <>
       <Link

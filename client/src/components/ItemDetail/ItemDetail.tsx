@@ -16,7 +16,8 @@ import { useAppSelector } from 'hooks/hooks';
 import SellModal from 'components/CartingModal/SellModal';
 const asset = BORED_APE[0];
 const ETH_TO_USD = 1549.95;
-interface ItemProps {
+
+export interface ItemProps {
   coinId: number;
   coinName: string;
   collectionId: string;

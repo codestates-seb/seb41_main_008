@@ -11,20 +11,18 @@ const ButtonWrapper = styled.div`
 `;
 const BuyAndCartButton = ({ data }: any) => {
   const { cartItems } = useAppSelector((state) => state.cart);
-  const memberId = Number(localStorage.getItem('memberId'));
+  const memberId = Number(localStorage.getItem('MEMBER_ID'));
   const dispatch = useAppDispatch();
-
-  const buynowHandler = () => {
-    /**buynow 관련로직 작성 */
-    alert('buynow');
-  };
+  console.log(data);
+  console.log(cartItems);
 
   const cartHandler = () => {
-    if (!cartItems.map((el: any) => el.itemId).includes(data.itemId)) {
-      dispatch(addTocart(data));
-      alert('carted');
-    } else {
+    if (cartItems.map((el: any) => el.itemId).includes(data.itemId)) {
       alert('이미 담긴 물건입니다');
+    } else if (cartItems[0] && cartItems[0].coinName !== data.coinName) {
+      alert('같은 코인의 NFT만 담을수있습니다.');
+    } else {
+      dispatch(addTocart(data));
     }
     /**장바구니담는 로직작성 */
   };
@@ -47,16 +45,7 @@ const BuyAndCartButton = ({ data }: any) => {
           </button>
         </div>
       ) : null}
-      {data?.onSale && data?.ownerId !== memberId ? (
-        <div className="grow-0 bg-emerald-700 hover:bg-emerald-600 ">
-          <button
-            className="border-l-2 h-full w-full p-2 text-lg font-semibold"
-            onClick={buynowHandler}
-          >
-            Buynow
-          </button>
-        </div>
-      ) : null}
+
       {data?.onSale === false && data?.ownerId === memberId ? (
         <div className="grow bg-emerald-700 hover:bg-emerald-600 ">
           <button

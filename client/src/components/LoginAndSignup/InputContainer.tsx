@@ -1,5 +1,5 @@
 import Button from './Button';
-import GoogleLoginButton from 'components/Oauth2.0/GoogleLoginButton';
+import GoogleLoginButton from 'components/LoginAndSignup/GoogleLoginButton';
 import { useState } from 'react';
 import { ErrorMessage } from '@hookform/error-message';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -46,9 +46,9 @@ const InputContainer = ({ isSignup }: Props) => {
         }
         if (res.meta.requestStatus === 'fulfilled') {
           getMyProFile().then((res) => {
-            localStorage.setItem('memberId', res.data.member.memberId);
+            console.log(res);
           });
-          //   navigate('/', { replace: true });
+          navigate('/', { replace: true });
         }
       });
     }
@@ -83,11 +83,13 @@ const InputContainer = ({ isSignup }: Props) => {
             Let`s go on a trip to the world of NFT
           </p>
         )}
+
         <GoogleOAuthProvider
           clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
         >
           <GoogleLoginButton isSignup={isSignup} />
         </GoogleOAuthProvider>
+
         {isSignup && (
           <label
             htmlFor="nickname"
