@@ -60,10 +60,10 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.GET, "/api/members/mypage").hasRole("USER")
-                        .antMatchers(HttpMethod.POST, "/api/collections", "/api/items", "/api/carts/**", "/api/trans", "/images").hasRole("USER")
-                        .antMatchers(HttpMethod.PATCH, "/api/members/**", "/api/items/**", "/api/collections/**").hasRole("USER")
-                        .antMatchers(HttpMethod.DELETE, "/api/members/**", "/api/collections/**", "/api/items/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.GET, "/api/members/mypage").hasRole("USER")
+//                        .antMatchers(HttpMethod.POST, "/api/collections", "/api/items", "/api/carts/**", "/api/trans", "/images").hasRole("USER")
+//                        .antMatchers(HttpMethod.PATCH, "/api/members/**", "/api/items/**", "/api/collections/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.DELETE, "/api/members/**", "/api/collections/**", "/api/items/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )
                 .build();
