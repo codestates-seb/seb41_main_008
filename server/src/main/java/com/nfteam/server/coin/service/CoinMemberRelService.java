@@ -11,9 +11,12 @@ import java.util.List;
 
 @Service
 public class CoinMemberRelService {
+    private static final List<String> COIN = List.of("SOL", "BTC", "DOGE", "ETH", "ETC");
     private CoinMemberRelRepository coinMemberRelRepository;
-    public List<CoinMemberRelResponse> getMembersCoinsCountList(Long memberId){
-        List<CoinMemberRelResponse> memberCoins=coinMemberRelRepository.
+    //회원이 가지고 있는 코인 갯수
+    public List<Double> getMembersCoinsCountList(Long memberId){
+        List<Double> memberCoins=coinMemberRelRepository.findCoinCountByMember(memberId);
+        return memberCoins;
 
     };
 

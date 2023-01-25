@@ -11,14 +11,10 @@ import java.util.stream.Collectors;
 public class MemberCoinCountResponseDto {
     private CoinMemberRelResponse coinMemberRelResponse;
 
-    private List<MemberResponseDto> member;
+    private List<Double> memberCoins;
 
-    private List<CoinMemberRelResponse> memberCoins;
-
-    public MemberCoinCountResponseDto(MemberResponseDto memberResponseDto, List<MemberResponseDto> member, List<CoinMemberRelResponse> memberCoins){
-        this.member=member;
-        this.memberCoins=memberCoins.stream()
-                .map(i->CoinMemberRelResponse.of(i))
-                .collect(Collectors.toList());
+    public MemberCoinCountResponseDto(CoinMemberRelResponse memberResponseDto,  List<Double> memberCoins){
+        this.coinMemberRelResponse=memberResponseDto;
+        this.memberCoins=memberCoins;
     }
 }
