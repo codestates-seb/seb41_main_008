@@ -66,7 +66,7 @@ export default function CollectionDetails() {
 
     getCollection();
   }, [id]);
-  console.log(collection?.itemList);
+  console.log('collection', collection);
   return (
     <>
       {collection?.totalVolume ? (
@@ -162,7 +162,6 @@ export default function CollectionDetails() {
                 itemPrice={item.itemPrice}
                 itemDescription={item.itemDescription}
                 coinName={collection.coinName}
-                filter="collected"
               />
             ))}
           </section>

@@ -15,6 +15,8 @@ export const login = createAsyncThunk(
       if (res.headers) {
         localStorage.setItem('ACCESS_TOKEN', res.headers.authorization);
         localStorage.setItem('REFRESH_TOKEN', res.headers.refreshtoken);
+        localStorage.setItem('MEMBER_ID', res.data.id);
+        localStorage.setItem('CART_ID', res.data.cart.cartId);
       }
       console.log(res);
       return res.data;
@@ -35,6 +37,8 @@ export const googleLogin = createAsyncThunk(
     if (res.headers) {
       localStorage.setItem('ACCESS_TOKEN', res.headers.authorization);
       localStorage.setItem('REFRESH_TOKEN', res.headers.refreshtoken);
+      localStorage.setItem('MEMBER_ID', res.data.id);
+      localStorage.setItem('CART_ID', res.data.cart.cartId);
     }
     return res.data;
   }

@@ -8,6 +8,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import CartingModal from 'components/CartingModal/CartingModal';
 import SellModal from 'components/CartingModal/SellModal';
+import TransActionModal from './components/CartingModal/TransActionModal';
+import WalletModal from './components/CartingModal/WalletModal';
 const persistor = persistStore(store);
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,6 +20,8 @@ root.render(
       <PersistGate persistor={persistor}>
         <CartingModal />
         <SellModal />
+        <TransActionModal />
+        <WalletModal />
         <App />
       </PersistGate>
     </Provider>

@@ -2,10 +2,18 @@ import { AxiosError } from 'axios';
 import DropMenu from 'components/DropdownMenu/DropMenu';
 import HoverCardOpen from 'components/HoverCard/HoverCard';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-
+import { useAppSelector } from 'hooks/hooks';
 export default function MyCollectionPage() {
+  const { isLogin } = useAppSelector((state) => state.login);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다');
+      navigate('/login');
+    }
+  }, []);
   useEffect(() => {
     const getMyCollections = async () => {
       try {
