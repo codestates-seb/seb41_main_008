@@ -3,7 +3,7 @@ package com.nfteam.server.item.service;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
-import com.nfteam.server.dto.request.item.ItemPatchRequest;
+import com.nfteam.server.dto.request.item.ItemSellRequest;
 import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
@@ -41,9 +41,12 @@ public class ItemService {
     @Transactional
     public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) throws Exception {
         Item item = itemCreateRequest.toItem();
+
+        // 소유자 지정
         Member member = getMemberByEmail(memberDetails.getEmail());
         item.assignMember(member);
 
+        // 컬렉션 지정
         ItemCollection itemCollection = getItemCollectionById(itemCreateRequest.getItemCollectionId());
         item.assignCollection(itemCollection);
 
@@ -51,10 +54,8 @@ public class ItemService {
         validateCollectionAndItem(itemCollection.getMember(), item.getMember());
 
         // 아이템 크레덴셜 신규 기록
-        String newItemCord = UUID.randomUUID().toString();
-        String newTransRecord = "," + makeNewCredentialRecord(item, itemCollection.getCoin());
-
-        ItemCredential itemCredential = new ItemCredential(newItemCord, newTransRecord);
+        ItemCredential itemCredential = new ItemCredential(UUID.randomUUID().toString(),
+                "," + makeNewCredentialRecord(item, itemCollection.getCoin()));
         item.assignItemCredential(itemCredential);
 
         return itemRepository.save(item).getItemId();
@@ -72,7 +73,7 @@ public class ItemService {
 
     private void validateCollectionAndItem(Member colOwner, Member owner) {
         if (colOwner.getMemberId() != owner.getMemberId()) {
-            throw new ItemCreateRequestNotValidException("자기 소유의 컬렉션 소속 아이템만 발행할 수 있습니다.");
+            throw new ItemCreateRequestNotValidException("자기 소유의 컬렉션 아이템만 발행할 수 있습니다.");
         }
     }
 
@@ -86,10 +87,14 @@ public class ItemService {
     }
 
     @Transactional
-    public Long update(Long itemId, ItemPatchRequest itemPatchRequest, MemberDetails memberDetails) {
+    public Long sell(Long itemId, ItemSellRequest itemSellRequest, MemberDetails memberDetails) {
+        // 본인 아이템 여부 검증
         Item item = getItemWithOwner(itemId);
         checkValidAuth(item.getMember().getEmail(), memberDetails.getEmail());
-        item.update(itemPatchRequest.toItem());
+
+        // 판매상태 업데이트
+        item.updatePrice(Double.parseDouble(itemSellRequest.getItemPrice()));
+        item.updateSaleStatus(true);
         return item.getItemId();
     }
 

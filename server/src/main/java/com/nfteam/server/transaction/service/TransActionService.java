@@ -1,15 +1,18 @@
 package com.nfteam.server.transaction.service;
 
+import com.nfteam.server.cart.entity.Cart;
+import com.nfteam.server.cart.repository.CartRepository;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.transaction.TransActionCreateRequest;
+import com.nfteam.server.exception.cart.CartNotFoundException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.transaction.TransRecordNotValidException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
-import com.nfteam.server.item.repository.CollectionRepository;
+import com.nfteam.server.item.repository.ItemCollectionRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
@@ -20,24 +23,61 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TransActionService {
 
     private final ItemRepository itemRepository;
-    private final CollectionRepository collectionRepository;
+    private final ItemCollectionRepository itemCollectionRepository;
     private final MemberRepository memberRepository;
     private final TransActionRepository transActionRepository;
+    private final CartRepository cartRepository;
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     @Transactional
-    public Long savePurchaseRecord(TransActionCreateRequest transActionCreateRequest, MemberDetails memberDetails) throws Exception {
+    public void saveOnePurchaseRecord(TransActionCreateRequest transActionCreateRequest, MemberDetails memberDetails) throws Exception {
+        Member buyer = getMemberByEmail(memberDetails.getEmail());
+        TransAction transAction = makeTransAction(transActionCreateRequest, buyer);
+
+        // 거래 기록 저장.
+        transActionRepository.save(transAction);
+
+        // 카트 거래 완료 체크.
+        Cart cart = findCart(buyer);
+        cart.changePaymentYn(true);
+    }
+
+    @Transactional
+    public void saveBulkPurchaseRecord(List<TransActionCreateRequest> requests, MemberDetails memberDetails) {
+        List<TransAction> transActions = new ArrayList<>();
+        Member buyer = getMemberByEmail(memberDetails.getEmail());
+
+        requests.stream().forEach(
+                request -> {
+                    try {
+                        transActions.add(makeTransAction(request, buyer));
+                    } catch (Exception e) {
+                        throw new TransRecordNotValidException("대량 거래 기록 변환에 실패하였습니다. 다시 시도해 주세요.");
+                    }
+                });
+
+        // 거래 기록 저장
+        transActionRepository.saveAll(transActions);
+
+        // 카트 거래 완료 체크.
+        Cart cart = findCart(buyer);
+        cart.changePaymentYn(true);
+    }
+
+    public TransAction makeTransAction(TransActionCreateRequest transActionCreateRequest, Member buyer) throws Exception {
         Item item = getItemByIdWithOwnerAndCredential(transActionCreateRequest.getItemId());
         ItemCollection collection = getCollectionByIdWithCoin(transActionCreateRequest.getCollectionId());
 
         Member seller = item.getMember();
-        Member buyer = getMemberByEmail(memberDetails.getEmail());
         Coin coin = collection.getCoin();
 
         // 판매 가능 상품 체크
@@ -50,21 +90,18 @@ public class TransActionService {
         validatePayment(transActionCreateRequest, item, coin);
         // 거래 기록 (Credential) 검증
         validateTransRecord(item);
-
-        TransAction transAction = TransAction.builder()
-                .seller(seller)
-                .item(item)
-                .buyer(buyer)
-                .coin(coin)
-                .transPrice(Double.parseDouble(transActionCreateRequest.getTransPrice()))
-                .build();
-
         // itemCredential 거래내역 기록
         recordNewTransHistory(transActionCreateRequest, buyer, item);
         // item 소유자 변경
         item.assignMember(buyer);
 
-        return transActionRepository.save(transAction).getTransId();
+        return TransAction.builder()
+                .seller(seller)
+                .buyer(buyer)
+                .item(item)
+                .coin(coin)
+                .transPrice(Double.parseDouble(transActionCreateRequest.getTransPrice()))
+                .build();
     }
 
     private Item getItemByIdWithOwnerAndCredential(String itemId) {
@@ -73,7 +110,7 @@ public class TransActionService {
     }
 
     private ItemCollection getCollectionByIdWithCoin(String collectionId) {
-        return collectionRepository.findCollectionWithCoin(Long.parseLong(collectionId))
+        return itemCollectionRepository.findCollectionWithCoin(Long.parseLong(collectionId))
                 .orElseThrow(() -> new ItemCollectionNotFoundException(Long.parseLong(collectionId)));
     }
 
@@ -100,8 +137,6 @@ public class TransActionService {
 
     private void validatePayment(TransActionCreateRequest transActionCreateRequest, Item item, Coin coin) {
         if (coin.getCoinId() != Long.parseLong(transActionCreateRequest.getCoinId())) {
-            // 거래 불가 처리
-            item.updateSaleStatus(false);
             throw new TransRecordNotValidException("거래 수단 코인이 올바르지 않습니다.");
         }
     }
@@ -122,7 +157,7 @@ public class TransActionService {
         if (lastOwnerId != item.getMember().getMemberId()) {
             // 거래 불가 처리
             item.updateSaleStatus(false);
-            throw new TransRecordNotValidException("아이템 Credential 정보와 아이템 저장 정보 불일치 (이상 기록)");
+            throw new TransRecordNotValidException("아이템 Credential 정보와 아이템 저장 정보 불일치 (이상 기록 확인 필요)");
         }
     }
 
@@ -132,8 +167,14 @@ public class TransActionService {
                 .append(buyer.getMemberId()).append("-")
                 .append(transActionCreateRequest.getCoinId()).append("-")
                 .append(transActionCreateRequest.getTransPrice());
+
         item.getItemCredential()
                 .addNewTransEncryptionRecord(credentialEncryptUtils.encryptRecordByAES256(record.toString()));
+    }
+
+    private Cart findCart(Member buyer) {
+        return cartRepository.findCartByMemberAndPaymentYn(buyer, false)
+                .orElseThrow(() -> new CartNotFoundException());
     }
 
 }
