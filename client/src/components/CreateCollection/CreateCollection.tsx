@@ -10,17 +10,17 @@ import { setOpen } from 'store/toastSlice';
 import Modal from './CollectionModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-interface Inputs {
+export interface Inputs {
   name: string;
   description: string;
 }
 
-interface Blockchain {
+export interface Blockchain {
   name: string;
   id: number;
 }
 
-interface Collection {
+export interface SuccessResponse {
   status: string;
   id: number;
 }
@@ -41,10 +41,6 @@ interface ColInfo {
   logoImgName: string;
   bannerImgName: string;
 }
-const schema = yup.object({
-  name: yup.string().required('This field is required.'),
-  description: yup.string().required('This field is required.'),
-});
 
 export default function CreateCollection({
   selectedCoin,
@@ -55,12 +51,15 @@ export default function CreateCollection({
   bannerName,
 }: Props) {
   const dispatch = useAppDispatch();
-  console.log(logoName);
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [collection, setCollection] = useState<Collection>();
-
+  const [collection, setCollection] = useState<SuccessResponse>();
   const navigate = useNavigate();
+
+  const schema = yup.object({
+    name: yup.string().required('This field is required.'),
+    description: yup.string().required('This field is required.'),
+  });
 
   const {
     register,

@@ -3,11 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import RadioButtons from './RadioButtons';
-
-interface Blockchain {
-  name: string;
-  id: number;
-}
+import { Blockchain } from './CreateCollection';
 
 interface Props {
   selectedCoin: Blockchain | null;

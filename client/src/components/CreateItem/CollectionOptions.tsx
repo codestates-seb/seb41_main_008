@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-
-interface Collection {
-  collectionName: string;
-  collectionId: number;
-  logoImgName: string;
-}
+import { Collection } from './CreateItem';
 
 interface Props {
   isLoading: boolean;

@@ -9,16 +9,15 @@ import customAxios from 'utils/api/axios';
 import { setOpen } from 'store/toastSlice';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
+import {
+  Inputs,
+  SuccessResponse,
+} from 'components/CreateCollection/CreateCollection';
 
-interface Collection {
+export interface Collection {
   collectionName: string;
   collectionId: number;
   logoImgName: string;
-}
-
-interface Inputs {
-  name: string;
-  description: string;
 }
 
 interface Image {
@@ -28,10 +27,6 @@ interface Image {
   setSelectedCol: React.Dispatch<React.SetStateAction<Collection | undefined>>;
 }
 
-interface Item {
-  status: string;
-  id: number;
-}
 interface ItemInfo {
   itemCollectionId: number | undefined;
   itemName: string;
@@ -53,7 +48,7 @@ export default function CreateItem({
   const dispatch = useAppDispatch();
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [item, setItem] = useState<Item>();
+  const [item, setItem] = useState<SuccessResponse>();
   const navigate = useNavigate();
 
   const {

@@ -8,7 +8,6 @@ interface Banner {
   setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
   bannerString: string;
   setBannerString: React.Dispatch<React.SetStateAction<string>>;
-
   setBannerName: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -117,7 +116,7 @@ export default function BannerImage({
           }}
           className="group relative border-2 border-gray-400 border-dashed mt-3 w-full h-60 rounded-xl"
         >
-          <BsImage className="h-20 w-20 text-gray-400  absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" />
+          <BsImage className="h-20 w-20 text-gray-400 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" />
           <div className="rounded-xl bg-black/60 w-[calc(100%-0.5rem)] h-[calc(100%-0.5rem)] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 hidden group-hover:block" />
         </button>
       )}

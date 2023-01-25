@@ -10,6 +10,7 @@ import AccountPage from 'pages/AccountPage';
 import CreateItemPage from 'pages/CreateItemPage';
 import MyCollection from 'pages/MyCollection';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
+import ProfilePage from 'pages/ProfilePage';
 
 function App() {
   return (
@@ -27,6 +28,11 @@ function App() {
             <Route path="asset/create" element={<CreateItemPage />} />
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
             <Route path="/account/:memberId" element={<AccountPage />} />
+            <Route
+              path="/account/:memberId/profile"
+              element={<ProfilePage />}
+            />
+
             <Route path="*" element={<MissingPage />} />
           </Route>
 
