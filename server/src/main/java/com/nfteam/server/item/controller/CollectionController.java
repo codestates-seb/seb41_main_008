@@ -1,11 +1,12 @@
 package com.nfteam.server.item.controller;
 
-import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.common.SingleIdResponse;
+import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.item.service.CollectionService;
+import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,11 @@ public class CollectionController {
     @GetMapping("/{collectionId}")
     public ResponseEntity<CollectionResponse> getCollection(@PathVariable("collectionId") Long collectionId) {
         return new ResponseEntity<>(collectionService.getCollection(collectionId), HttpStatus.OK);
+    }
+
+    @GetMapping("/only/{collectionId}")
+    public ResponseEntity<CollectionOnlyResponse> getCollectionInfoOnly(@PathVariable("collectionId") Long collectionId) {
+        return new ResponseEntity<>(collectionService.getCollectionInfoOnly(collectionId), HttpStatus.OK);
     }
 
     @GetMapping("/members/{memberId}")

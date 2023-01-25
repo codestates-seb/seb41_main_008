@@ -4,7 +4,9 @@ import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemSellRequest;
+import com.nfteam.server.dto.response.item.ItemPriceHistoryResponse;
 import com.nfteam.server.dto.response.item.ItemResponse;
+import com.nfteam.server.dto.response.item.ItemTradeHistoryResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.item.ItemCreateRequestNotValidException;
@@ -13,13 +15,18 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import com.nfteam.server.item.entity.ItemCredential;
-import com.nfteam.server.item.repository.CollectionRepository;
+import com.nfteam.server.item.repository.ItemCollectionRepository;
+import com.nfteam.server.item.repository.ItemCredentialRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
+import com.nfteam.server.transaction.repository.QTransActionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,11 +39,15 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class ItemService {
 
-    private final CollectionRepository collectionRepository;
+    private final ItemCollectionRepository collectionRepository;
     private final ItemRepository itemRepository;
-    private final QItemRepository qItemRepository;
     private final MemberRepository memberRepository;
+
+    private final QItemRepository qItemRepository;
+    private final QTransActionRepository qTransActionRepository;
+
     private final CredentialEncryptUtils credentialEncryptUtils;
+    private final ItemCredentialRepository itemCredentialRepository;
 
     @Transactional
     public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) throws Exception {
@@ -56,6 +67,7 @@ public class ItemService {
         // 아이템 크레덴셜 신규 기록
         ItemCredential itemCredential = new ItemCredential(UUID.randomUUID().toString(),
                 "," + makeNewCredentialRecord(item, itemCollection.getCoin()));
+        itemCredentialRepository.save(itemCredential);
         item.assignItemCredential(itemCredential);
 
         return itemRepository.save(item).getItemId();
@@ -119,13 +131,37 @@ public class ItemService {
     public ItemResponse getItem(Long itemId) {
         ItemResponse itemResponse = qItemRepository.findItem(itemId);
         if (itemResponse == null) throw new ItemNotFoundException(itemId);
+
+        List<ItemTradeHistoryResponse> tradeHistory = qTransActionRepository.findHistory(itemId);
+        List<ItemPriceHistoryResponse> priceHistory = new ArrayList<>();
+
+        if (!tradeHistory.isEmpty()) {
+            // itemTradeHistory
+            itemResponse.addTradeHistory(tradeHistory);
+
+            // itemPriceHistory
+            tradeHistory.forEach(h -> {
+                priceHistory.add(new ItemPriceHistoryResponse(h.getTransPrice(), h.getTransDate()));
+            });
+            itemResponse.addPriceHistory(priceHistory);
+        } else {
+            itemResponse.addTradeHistory(new ArrayList<>());
+            itemResponse.addPriceHistory(new ArrayList<>());
+        }
+
         return itemResponse;
     }
 
     public List<ItemResponse> getMemberItemList(Long memberId) {
         List<ItemResponse> memberItems = qItemRepository.findItemByMember(memberId);
         if (memberItems.size() == 0) memberItems = new ArrayList<>();
+        memberItems.sort(ItemResponse::compareTo);
         return memberItems;
+    }
+
+    public Page<ItemResponse> getCollectionItemList(Long collectionId, int page, int size) {
+        return qItemRepository.findItemByCollection(collectionId,
+                PageRequest.of(page, size, Sort.by("itemId").ascending()));
     }
 
 }

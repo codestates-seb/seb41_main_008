@@ -1,0 +1,143 @@
+.top-collections {
+   margin-top: 30px;
+}
+
+.top-collections a {
+    padding: 0;
+    margin: 0;
+}
+
+.tCbox {
+    column-count: 3;
+    gap: 50px;
+}
+
+.inTCbox {
+    display: flex;
+    border-bottom: 1px solid rgb(229, 232, 235);
+    padding: 16px;
+    width: 100%;
+}
+
+.inTCbox:hover {
+    transition: all 0.2s ease 0s;
+    box-shadow: rgb(4 17 29 / 25%) 0px 0px 8px 0px;
+    background-color: rgb(251, 253, 255);
+    border-radius: 10px;
+}
+
+.inTCbox div {
+    width: 100%;
+}
+
+.inTCbox .left {
+    max-width: 20px;
+    font-weight: 600;
+    font-size: 16px;
+    color: rgb(4, 17, 29);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+}
+
+.inTCbox .span {
+    font-weight: 600;
+    font-size: 16px;
+    color: rgb(4, 17, 29);
+}
+
+.inTCbox .middle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    /* margin-right: 10px; */
+}
+
+.inTCbox .middle .topImgAvatar {
+    width: 65px;
+    min-height: 50px;
+    border: 1px solid rgba(128, 128, 128, 0.39);
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.inTCbox .middle .topImgAvatar img {
+    width: 100%;
+    border-radius: 100%;
+}
+
+.verify-icon {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    font-size: 20px !important;
+    color: rgb(32, 129, 226);
+}
+
+
+.mText {
+    width: 100%;
+}
+
+.topCollName {
+    font-weight: 600;
+    font-size: 14px;
+    color: rgb(4, 17, 29);
+    max-width: 170px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+
+.fPtC {
+    font-weight: 500;
+    font-size: 12px;
+    color: rgb(112, 122, 131);
+    max-width: 100px;
+}
+
+.priceTopColl {
+    display: flex;
+    max-width: 140px;
+}
+
+.pTopColl {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    color: rgb(138, 147, 155);
+
+}
+
+.pTopColl img {
+    width: 14px;
+    height: 14px;
+}
+
+.inTCbox .right {
+    max-width: 70px;
+}
+
+.inTCbox .right span {
+    font-weight: 400;
+    font-size: 14px;
+    color: rgb(52, 199, 123);
+}
+
+@media screen and (max-width: 1199px) {
+    .tCbox {
+        column-count: 1;
+        max-width: 440px;
+        width: 100%;
+        margin: auto;
+    }
+}
+

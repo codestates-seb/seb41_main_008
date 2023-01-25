@@ -1,7 +1,6 @@
 package com.nfteam.server.dto.response.member;
 
 import com.nfteam.server.dto.response.item.ItemResponse;
-import com.nfteam.server.dto.response.item.MemberCollectionResponse;
 import lombok.Getter;
 
 import java.util.List;
