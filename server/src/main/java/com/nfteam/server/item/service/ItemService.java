@@ -16,6 +16,7 @@ import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import com.nfteam.server.item.entity.ItemCredential;
 import com.nfteam.server.item.repository.ItemCollectionRepository;
+import com.nfteam.server.item.repository.ItemCredentialRepository;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
@@ -46,6 +47,7 @@ public class ItemService {
     private final QTransActionRepository qTransActionRepository;
 
     private final CredentialEncryptUtils credentialEncryptUtils;
+    private final ItemCredentialRepository itemCredentialRepository;
 
     @Transactional
     public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) throws Exception {
@@ -65,6 +67,7 @@ public class ItemService {
         // 아이템 크레덴셜 신규 기록
         ItemCredential itemCredential = new ItemCredential(UUID.randomUUID().toString(),
                 "," + makeNewCredentialRecord(item, itemCollection.getCoin()));
+        itemCredentialRepository.save(itemCredential);
         item.assignItemCredential(itemCredential);
 
         return itemRepository.save(item).getItemId();
