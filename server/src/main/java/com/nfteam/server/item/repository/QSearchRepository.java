@@ -43,7 +43,8 @@ public class QSearchRepository {
                 .from(item)
                 .leftJoin(item.collection)
                 .leftJoin(item.collection.coin)
-                .where(containsExpression(item.itemName, keyword))
+                .where(containsExpression(item.itemName, keyword)
+                        .or(containsExpression(item.collection.collectionName, keyword)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
