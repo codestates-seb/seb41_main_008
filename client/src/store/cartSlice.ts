@@ -1,7 +1,7 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 
 interface CartItemsType {
-  cartItems: Array<{ itemId: number }>;
+  cartItems: Array<{ itemId: number; coinName: string }>;
 }
 
 const initialState: CartItemsType = {

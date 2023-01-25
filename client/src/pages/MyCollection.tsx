@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import DropMenu from 'components/MyCollection/DropMenu';
 import HoverCardOpen from 'components/MyCollection/HoverCard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
+import { useAppSelector } from 'hooks/hooks';
+import { useEffect } from 'react';
 
 interface Collection {
   collectionId: number;
@@ -10,8 +12,15 @@ interface Collection {
   logoImgName: string;
   bannerImgName: string;
 }
-
-export default function MyCollection() {
+export default function MyCollectionPage() {
+  const { isLogin } = useAppSelector((state) => state.login);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다');
+      navigate('/login');
+    }
+  }, []);
   const { isLoading, error, data } = useQuery<Collection[]>({
     queryKey: ['myCollections'],
     queryFn: async () => {

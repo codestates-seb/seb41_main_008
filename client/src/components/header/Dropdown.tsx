@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import DropdownItems from './DropdownItems';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { logout, getMyProFile } from 'utils/api/api';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { getMyProFile } from 'utils/api/api';
+import { faCartShopping, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { openModal } from '../../store/modalSlice';
+import { openModal, openWallet } from '../../store/modalSlice';
 import { useState, useEffect } from 'react';
 const DropdownList = styled.li`
   position: relative;
@@ -16,6 +16,7 @@ const DropdownList = styled.li`
     visibility: hidden;
     transition: 0.3s all;
     opacity: 0;
+    right: -50px;
   }
   &:hover {
     div {
@@ -47,8 +48,8 @@ const Dropdown = () => {
   }, []);
 
   return (
-    <nav className="ml-2 ">
-      <ul className="flex items-center justify-center gap-5 mr-8 ml-2 ">
+    <nav className="">
+      <ul className="flex items-center justify-center mr-8 ml-2 gap-5">
         <DropdownList className="max-[640px]:hidden">
           {isLogin ? (
             <button onClick={goToMypage} className="w-8 h-8">
@@ -65,14 +66,19 @@ const Dropdown = () => {
           )}
           <DropdownItems />
         </DropdownList>
-        <li className="max-[640px]:hidden">
-          {isLogin ? (
-            <button onClick={logout}>Logout</button>
-          ) : (
-            <Link to={'/login'} className="p-2 ">
-              <span>Login</span>
-            </Link>
-          )}
+        {!isLogin && (
+          <li className="max-[640px]:hidden">
+            {!isLogin && (
+              <Link to={'/login'} className="p-2 ">
+                <span>Login</span>
+              </Link>
+            )}
+          </li>
+        )}
+        <li>
+          <button onClick={() => dispatch(openWallet())}>
+            <FontAwesomeIcon icon={faWallet} />
+          </button>
         </li>
         <li className="flex flex-col relative justify-center w-full leading-6">
           <button className="p-2" onClick={() => dispatch(openModal())}>
