@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
-import DropMenu from 'components/DropdownMenu/DropMenu';
-import HoverCardOpen from 'components/HoverCard/HoverCard';
+import DropMenu from 'components/MyCollection/DropMenu';
+import HoverCardOpen from 'components/MyCollection/HoverCard';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';

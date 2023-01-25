@@ -7,17 +7,17 @@ type cartBtnType = {
 };
 
 interface Item {
-  itemDescription: string;
+  // itemDescription: string;
+  //   itemImageName: string;
+  //   itemName: string;
+  //   itemPrice: number;
+  //   ownerName: string;
   itemId: number;
-  itemImageName: string;
-  itemName: string;
-  itemPrice: number;
   onSale: boolean;
   ownerId: number;
-  ownerName: string;
 }
 
-type CardType = {
+interface CardType {
   ownerId: number;
   itemId: number;
   data: Item[];
@@ -29,7 +29,7 @@ type CardType = {
   filter?: string;
   coinName: string;
   onSale: boolean;
-};
+}
 
 const HideWrapper = styled.div<cartBtnType>`
   div {
@@ -51,6 +51,7 @@ const Card = ({
   itemDescription,
   filter,
   coinName,
+  onSale,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
   return (
