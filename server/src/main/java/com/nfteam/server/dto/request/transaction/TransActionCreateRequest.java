@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class TransActionCreateRequest {
 
+    @NotNull(message = "해당 아이템의 장바구니 정보가 없습니다.")
+    private String cartId;
+
     @NotNull(message = "해당 아이템의 컬렉션 정보가 없습니다.")
     private String collectionId;
 
@@ -21,7 +24,7 @@ public class TransActionCreateRequest {
     private String coinId;
 
     @NotNull(message = "해당 거래의 거래가격 정보가 없습니다.")
-    @Range(min = 0, max = 9999, message = "거래 가격 범위가 올바르지 않습니다.")
+    @Range(min = 0, max = 9999, message = "비정상적인 거래 가격입니다.")
     private String transPrice;
 
     private TransActionCreateRequest() {

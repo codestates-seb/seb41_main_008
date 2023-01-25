@@ -10,10 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.Positive;
 
 @Validated
 @RequiredArgsConstructor
@@ -30,9 +29,18 @@ public class CartController {
     }
 
     @PatchMapping
-    public ResponseEntity checkOutCart(@AuthenticationPrincipal MemberDetails memberDetails){
+    public ResponseEntity checkOutCart(@AuthenticationPrincipal MemberDetails memberDetails) {
         Cart updatedCart = cartService.updateCart(memberDetails.getMemberId());
         return new ResponseEntity<>(CartResponseDto.of(updatedCart), HttpStatus.OK);
     }
+
+    @PostMapping("/added-cart")
+    public ResponseEntity additemToCart(@AuthenticationPrincipal MemberDetails memberDetails,
+                                        @Positive @RequestParam(name = "item") Long itemId) {
+        cartService.insertCartItem(memberDetails.getMemberId(), itemId);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 }
