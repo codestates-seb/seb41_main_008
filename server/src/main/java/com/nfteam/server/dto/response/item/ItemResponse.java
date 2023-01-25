@@ -74,6 +74,7 @@ public class ItemResponse implements Comparable<ItemResponse> {
         this.priceHistory = priceHistory;
     }
 
+    // 미판매 -> 판매 순 정렬
     @Override
     public int compareTo(ItemResponse o) {
         return Boolean.compare(this.onSale, o.onSale);

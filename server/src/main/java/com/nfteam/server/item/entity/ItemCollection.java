@@ -3,7 +3,7 @@ package com.nfteam.server.item.entity;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.MemberCollectionResponse;
+import com.nfteam.server.dto.response.member.MemberCollectionResponse;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -69,6 +69,7 @@ public class ItemCollection extends BaseEntity {
         initImageInfo(logoImgName, bannerImgName);
     }
 
+    // todo : 컬렉션 기본 이미지 세팅하기
     private void initImageInfo(String logoImgName, String bannerImgName) {
         if (StringUtils.isEmpty(logoImgName)) {
             this.logoImgName = "col_default_logo";

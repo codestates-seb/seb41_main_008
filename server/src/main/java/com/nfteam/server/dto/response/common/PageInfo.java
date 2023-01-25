@@ -24,4 +24,5 @@ public class PageInfo {
         this.totalElements = totalElements;
         this.totalPages = totalPages;
     }
+
 }

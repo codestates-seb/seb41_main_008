@@ -1,6 +1,5 @@
-package com.nfteam.server.openfeign.feign;
+package com.nfteam.server.coin.utils;
 
-import com.nfteam.server.openfeign.model.UpbitWithdrawFee;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

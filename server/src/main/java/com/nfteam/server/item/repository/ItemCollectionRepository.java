@@ -16,6 +16,6 @@ public interface ItemCollectionRepository extends JpaRepository<ItemCollection, 
     Optional<ItemCollection> findCollectionWithMemberAndCoin(Long id);
 
     @Query("select c from ItemCollection c left join fetch c.coin co where c.member.memberId =:id")
-    List<ItemCollection> findCollectionWithCoinByMemberId(Long id);
+    List<ItemCollection> findCollectionListWithCoinByMemberId(Long id);
 
 }

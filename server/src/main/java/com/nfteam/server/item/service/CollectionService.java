@@ -6,7 +6,7 @@ import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionItemResponse;
 import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.MemberCollectionResponse;
+import com.nfteam.server.dto.response.member.MemberCollectionResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -92,8 +92,8 @@ public class CollectionService {
                 .map(CollectionItemResponse::of)
                 .sorted(CollectionItemResponse::compareTo)
                 .collect(Collectors.toList());
+        response.addItemResponseList(itemResponses);
 
-        response.addItemResponseDtos(itemResponses);
         return response;
     }
 
@@ -138,7 +138,7 @@ public class CollectionService {
     }
 
     public List<MemberCollectionResponse> getMemberCollectionList(Long memberId) {
-        return itemCollectionRepository.findCollectionWithCoinByMemberId(memberId)
+        return itemCollectionRepository.findCollectionListWithCoinByMemberId(memberId)
                 .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
     }

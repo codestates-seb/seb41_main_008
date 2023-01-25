@@ -4,7 +4,9 @@ import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemSellRequest;
+import com.nfteam.server.dto.response.item.ItemPriceHistoryResponse;
 import com.nfteam.server.dto.response.item.ItemResponse;
+import com.nfteam.server.dto.response.item.ItemTradeHistoryResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.item.ItemCreateRequestNotValidException;
@@ -19,6 +21,7 @@ import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
+import com.nfteam.server.transaction.repository.QTransActionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,8 +40,11 @@ public class ItemService {
 
     private final ItemCollectionRepository collectionRepository;
     private final ItemRepository itemRepository;
-    private final QItemRepository qItemRepository;
     private final MemberRepository memberRepository;
+
+    private final QItemRepository qItemRepository;
+    private final QTransActionRepository qTransActionRepository;
+
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     @Transactional
@@ -122,6 +128,24 @@ public class ItemService {
     public ItemResponse getItem(Long itemId) {
         ItemResponse itemResponse = qItemRepository.findItem(itemId);
         if (itemResponse == null) throw new ItemNotFoundException(itemId);
+
+        List<ItemTradeHistoryResponse> tradeHistory = qTransActionRepository.findHistory(itemId);
+        List<ItemPriceHistoryResponse> priceHistory = new ArrayList<>();
+
+        if (!tradeHistory.isEmpty()) {
+            // itemTradeHistory
+            itemResponse.addTradeHistory(tradeHistory);
+
+            // itemPriceHistory
+            tradeHistory.forEach(h -> {
+                priceHistory.add(new ItemPriceHistoryResponse(h.getTransPrice(), h.getTransDate()));
+            });
+            itemResponse.addPriceHistory(priceHistory);
+        } else {
+            itemResponse.addTradeHistory(new ArrayList<>());
+            itemResponse.addPriceHistory(new ArrayList<>());
+        }
+
         return itemResponse;
     }
 
@@ -136,4 +160,5 @@ public class ItemService {
         return qItemRepository.findItemByCollection(collectionId,
                 PageRequest.of(page, size, Sort.by("itemId").ascending()));
     }
+
 }

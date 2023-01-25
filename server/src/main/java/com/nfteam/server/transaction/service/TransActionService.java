@@ -125,6 +125,7 @@ public class TransActionService {
         item.assignMember(buyer);
         // item 판매 불가 변경
         item.updateSaleStatus(false);
+        // todo : 구매자 -> 판매자 코인 이동
 
         return TransAction.builder()
                 .seller(seller)

@@ -1,14 +1,12 @@
-package com.nfteam.server.openfeign.model;
+package com.nfteam.server.coin.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
 
-@Setter
 @Getter
 public class UpbitWithdrawFee {
 

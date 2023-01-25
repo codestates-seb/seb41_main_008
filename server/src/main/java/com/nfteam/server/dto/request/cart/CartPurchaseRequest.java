@@ -1,15 +1,18 @@
 package com.nfteam.server.dto.request.cart;
 
-import java.util.List;
-
 import lombok.Getter;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 public class CartPurchaseRequest {
 
-    // 서로 다른 코인의 경우 한 장바구니에 같이 담기지 못한다.
+    @NotNull(message = "카트 번호는 필수 값 입니다.")
     private Long cartId;
+
     private List<Long> itemIdList;
+
     private Double totalPrice;
 
 }
