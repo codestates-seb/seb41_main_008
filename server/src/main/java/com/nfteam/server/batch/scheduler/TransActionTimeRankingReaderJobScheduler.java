@@ -16,6 +16,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,14 +44,14 @@ public class TransActionTimeRankingReaderJobScheduler {
             rankingService.deleteTimeRankingCache("day");
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("일간 랭킹 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("일간 랭킹 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 
-    // 주간 랭킹 배치 : 매 주 일요일 오전 2시
-    @Scheduled(cron = "0 0 2 ? * SUN") // 초 분 시 일 월 요일
+    // 주간 랭킹 배치 : 매일 오전 2시
+    @Scheduled(cron = "0 0 2 1/1 * ?") // 초 분 시 일 월 요일
     public void run1WRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -62,14 +63,14 @@ public class TransActionTimeRankingReaderJobScheduler {
             rankingService.deleteTimeRankingCache("week");
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("주간 랭킹 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("주간 랭킹 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 
-    // 월간 랭킹 배치 : 매 월 1일 오전 3시
-    @Scheduled(cron = "0 0 3 1 1/1 ?") // 초 분 시 일 월 요일
+    // 월간 랭킹 배치 : 매일 오전 3시
+    @Scheduled(cron = "0 0 3 1/1 * ?") // 초 분 시 일 월 요일
     public void run1MRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -81,9 +82,9 @@ public class TransActionTimeRankingReaderJobScheduler {
             rankingService.deleteTimeRankingCache("month");
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("월간 랭킹 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("월간 랭킹 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 

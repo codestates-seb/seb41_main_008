@@ -1,4 +1,4 @@
-package com.nfteam.server.exception.coinRel;
+package com.nfteam.server.exception.coin;
 
 import com.nfteam.server.exception.ExceptionCode;
 import com.nfteam.server.exception.NFTCustomException;
