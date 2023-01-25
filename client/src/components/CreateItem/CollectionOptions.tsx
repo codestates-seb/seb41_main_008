@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
-
-interface Collection {
-  collectionName: string;
-  collectionId: number;
-  logoImgName: string;
-}
+import { Collection } from './CreateItem';
 
 interface Props {
-  collections: Collection[];
+  isLoading: boolean;
+  error: Error | null;
+  collections: Collection[] | undefined;
   selectedCol: Collection | undefined;
-
   setCollection: React.Dispatch<React.SetStateAction<Collection | undefined>>;
 }
 
 export default function CollectionOptions({
+  isLoading,
+  error,
   collections,
   selectedCol,
-
   setCollection,
 }: Props) {
   const [selected, setSelected] = useState<Collection>();
@@ -24,9 +21,13 @@ export default function CollectionOptions({
     Collection | undefined
   >(selectedCol);
 
+  if (isLoading) return <p>Loading...</p>;
+
+  if (error) return <p>An error has occurred: + {error.message}</p>;
+
   return (
     <div className="space-y-3">
-      {collections.map((col) => (
+      {collections?.map((col) => (
         <button
           key={col.collectionId}
           onClick={() => {

@@ -1,10 +1,17 @@
-import { AxiosError } from 'axios';
+import { useQuery } from '@tanstack/react-query';
 import DropMenu from 'components/MyCollection/DropMenu';
 import HoverCardOpen from 'components/MyCollection/HoverCard';
-import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
 import { useAppSelector } from 'hooks/hooks';
+import { useEffect } from 'react';
+
+interface Collection {
+  collectionId: number;
+  collectionName: string;
+  logoImgName: string;
+  bannerImgName: string;
+}
 export default function MyCollectionPage() {
   const { isLogin } = useAppSelector((state) => state.login);
   const navigate = useNavigate();
@@ -14,20 +21,18 @@ export default function MyCollectionPage() {
       navigate('/login');
     }
   }, []);
-  useEffect(() => {
-    const getMyCollections = async () => {
-      try {
-        const res = await customAxios.get('/api/members/mypage');
+  const { isLoading, error, data } = useQuery<Collection[]>({
+    queryKey: ['myCollections'],
+    queryFn: async () => {
+      const res = await customAxios.get('/api/members/mypage');
+      return res.data.collections;
+    },
+  });
 
-        console.log(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
-    };
+  if (isLoading) return <p>Loading...</p>;
 
-    getMyCollections();
-  }, []);
+  if (error instanceof Error)
+    return <p>An error has occurred: + {error.message}</p>;
 
   return (
     <div className="max-w-7xl p-6 mx-auto">

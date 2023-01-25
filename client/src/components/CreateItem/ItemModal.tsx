@@ -10,12 +10,16 @@ interface Collection {
 }
 
 interface Props {
-  collections: Collection[];
+  isLoading: boolean;
+  error: Error | null;
+  collections: Collection[] | undefined;
   selectedCol: Collection | undefined;
   setSelectedCol: React.Dispatch<React.SetStateAction<Collection | undefined>>;
 }
 
 export default function ItemModal({
+  isLoading,
+  error,
   collections,
   selectedCol,
   setSelectedCol,
@@ -27,9 +31,18 @@ export default function ItemModal({
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <button className="btn">
-            {selectedCol?.collectionName
-              ? selectedCol?.collectionName
-              : 'Select your Collection'}
+            {selectedCol?.collectionName ? (
+              <div className="flex items-center space-x-3">
+                <img
+                  src={`${process.env.REACT_APP_IMAGE}${selectedCol.logoImgName}`}
+                  alt="Collection logo"
+                  className="h-8 w-8 object-cover rounded-full"
+                />{' '}
+                <span> {selectedCol?.collectionName}</span>
+              </div>
+            ) : (
+              'Select your Collection'
+            )}
           </button>
         </Dialog.Trigger>
         <Dialog.Portal>
@@ -43,6 +56,8 @@ export default function ItemModal({
             </Dialog.Description>
 
             <CollectionOptions
+              isLoading={isLoading}
+              error={error}
               collections={collections}
               selectedCol={selectedCol}
               setCollection={setCollection}

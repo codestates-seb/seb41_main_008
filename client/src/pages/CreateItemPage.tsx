@@ -13,6 +13,7 @@ export default function CreateItemPage() {
   const [itemString, setItemString] = useState<string>('');
   const [itemName, setItemName] = useState<string>('');
   const [selectedCol, setSelectedCol] = useState<Collection>();
+
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="flex flex-col items-center space-y-10">

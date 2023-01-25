@@ -5,21 +5,19 @@ import { RxCross2 } from 'react-icons/rx';
 import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import customAxios from 'utils/api/axios';
 import { setOpen } from 'store/toastSlice';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
+import {
+  Inputs,
+  SuccessResponse,
+} from 'components/CreateCollection/CreateCollection';
 
-interface Collection {
+export interface Collection {
   collectionName: string;
   collectionId: number;
   logoImgName: string;
-}
-
-interface Inputs {
-  name: string;
-  description: string;
 }
 
 interface Image {
@@ -29,9 +27,11 @@ interface Image {
   setSelectedCol: React.Dispatch<React.SetStateAction<Collection | undefined>>;
 }
 
-interface Item {
-  status: string;
-  id: number;
+interface ItemInfo {
+  itemCollectionId: number | undefined;
+  itemName: string;
+  itemDescription: string;
+  itemImgName: string;
 }
 
 const schema = yup.object({
@@ -48,8 +48,7 @@ export default function CreateItem({
   const dispatch = useAppDispatch();
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-
-  const [item, setItem] = useState<Item>();
+  const [item, setItem] = useState<SuccessResponse>();
   const navigate = useNavigate();
 
   const {
@@ -60,11 +59,27 @@ export default function CreateItem({
     resolver: yupResolver(schema),
   });
 
-  const { data } = useQuery({
-    queryKey: ['collectionData'],
+  const {
+    isLoading: loading,
+    error: err,
+    data,
+  } = useQuery<Collection[]>({
+    queryKey: ['myCollections'],
     queryFn: async () => {
       const res = await customAxios.get('/api/members/mypage');
+      return res.data.collections;
+    },
+  });
+
+  const queryClient = useQueryClient();
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: async (item: ItemInfo) => {
+      const res = await customAxios.post('/api/items', item);
       return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['items']);
+      setItem(data);
     },
   });
 
@@ -72,19 +87,12 @@ export default function CreateItem({
     dispatch(setOpen(true));
 
     if (itemFile) {
-      try {
-        const res = await customAxios.post('/api/items', {
-          itemCollectionId: selectedCol?.collectionId,
-          itemName: data.name,
-          itemDescription: data.description,
-          itemImgName: itemName,
-        });
-
-        setItem(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
+      mutate({
+        itemCollectionId: selectedCol?.collectionId,
+        itemName: data.name,
+        itemDescription: data.description,
+        itemImgName: itemName,
+      });
     }
   };
 
@@ -160,17 +168,33 @@ export default function CreateItem({
           </p>
         )}
       </div>
+
       <ItemModal
-        collections={data?.collections}
+        isLoading={loading}
+        error={err instanceof Error ? err : null}
+        collections={data}
         selectedCol={selectedCol}
         setSelectedCol={setSelectedCol}
       />
+
       <input
         type="submit"
         className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
         value="Create"
         disabled={!itemFile || !selectedCol}
       />
+      {isLoading ? (
+        <h5
+          className="
+        font-bold text-gray-500"
+        >
+          Creating an item...
+        </h5>
+      ) : error instanceof Error ? (
+        <p className="text-red-500 font-semibold mt-3">
+          An error occurred: {error.message}
+        </p>
+      ) : null}
     </form>
   );
 }

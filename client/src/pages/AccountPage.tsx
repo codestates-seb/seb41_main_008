@@ -1,8 +1,10 @@
 import Card from '../components/Card';
 import NoCard from '../components/Account/NoCard';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
 import { useState, useEffect } from 'react';
+import { IoSettingsSharp } from 'react-icons/io5';
+
 interface UserType {
   member: {
     nickname: string;
@@ -28,7 +30,7 @@ const AccountPage = () => {
   const [data, setData] = useState<UserType>();
   const [filter, setFilter] = useState<string>('Collected');
   const [, setCollections] = useState<any>([]);
-  console.log(data);
+
   useEffect(() => {
     getUserProFile(memberId).then(async (res) => {
       setCollections(res.data?.collections);
@@ -58,13 +60,17 @@ const AccountPage = () => {
           src={data?.member.profileImageName}
         />
       </div>
-      <div className="h-10 w-full "></div>
+      <div className="h-10 w-full"></div>
       <div className="p-10">
         <div className="w-full">
-          <div className="font-bold text-3xl">{data?.member.nickname}</div>
-          <div className="flex justify-between">
-            <span>{data?.member.description}</span>
-            <button className="border-2 p-2">Profile Edit</button>
+          <div className=" flex justify-between items-center">
+            <div className="space-y-2">
+              <h1 className="font-bold text-3xl">{data?.member.nickname}</h1>
+              <p>{data?.member.description}</p>
+            </div>
+            <Link to={`/account/${memberId}/profile`}>
+              <IoSettingsSharp className="h-6 w-6" />
+            </Link>
           </div>
         </div>
 
