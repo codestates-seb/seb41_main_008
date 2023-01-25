@@ -6,7 +6,12 @@ import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
+import com.nfteam.server.member.entity.MemberStatus;
 import com.nfteam.server.member.repository.MemberRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -76,5 +81,18 @@ public class MemberService {
         Member findMember = findVerifiedMember(memberId, email);
         findMember.updateMemberStatusQuit();
     }
+    @Transactional
+    public void updateMemberStatus() {
+        try{
+            LocalDateTime localDateTimeBefore = LocalDateTime.now().minusMonths(6);
+            List<Member> members = memberRepository.findAllByLastLoginTimeBefore(localDateTimeBefore);
+            for(Member member : members){
+                member.updateMemberStatusSleep();
+            }
+        } catch (NullPointerException e) {
+            throw new RuntimeException(e);
+        }
 
+//        members.stream().forEach(m -> m.updateMemberStatusSleep());
+    }
 }

@@ -13,15 +13,17 @@ import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.service.MemberService;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
