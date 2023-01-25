@@ -19,6 +19,7 @@ public class CoinController {
     private static final List<String> COIN = List.of("SOL", "BTC", "DOGE", "ETH", "ETC");
     private final CoinService coinService;
 
+
     @Scheduled(cron = "0 0 4 25 * *")
     @GetMapping("/withdraw-fee")
     public void getWithdrawFee() throws Exception {
