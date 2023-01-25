@@ -1,6 +1,7 @@
-import axios, { AxiosError } from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
+import customAxios from 'utils/api/axios';
 
 interface Logo {
   logoFile: File | null;
@@ -51,25 +52,30 @@ export default function LogoImage({
     }
   };
 
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: async (file: FormData) => {
+      const res = await customAxios.post(
+        `${process.env.REACT_APP_API_URL}/images`,
+        file
+      );
+      return res.data;
+    },
+    onSuccess: (data) =>
+      // Invalidates cache and refetch
+      {
+        queryClient.invalidateQueries(['images']);
+        setLogoName(data.imageName);
+      },
+  });
+
   useEffect(() => {
     if (logoFile) {
-      const uploadLogo = async () => {
-        const formData = new FormData();
-        formData.append('file', logoFile);
+      const formData = new FormData();
+      formData.append('file', logoFile);
 
-        try {
-          const res = await axios.post(
-            `${process.env.REACT_APP_API_URL}/images`,
-            formData
-          );
-          setLogoName(res.data.imageName);
-        } catch (error) {
-          const err = error as AxiosError;
-          console.log(err);
-        }
-      };
-
-      uploadLogo();
+      mutate(formData);
 
       const reader = new FileReader();
       reader.readAsDataURL(logoFile);
@@ -79,7 +85,7 @@ export default function LogoImage({
     } else {
       setLogoString('');
     }
-  }, [logoFile, setLogoString, setLogoName]);
+  }, [logoFile, setLogoString, mutate]);
 
   return (
     <form className="flex flex-col items-center">
@@ -117,6 +123,18 @@ export default function LogoImage({
           <div className="rounded-full bg-black/60 w-[calc(100%-0.5rem)] h-[calc(100%-0.5rem)] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 hidden group-hover:block" />
         </button>
       )}
+      {isLoading ? (
+        <h5
+          className="mt-3
+        font-bold text-gray-500"
+        >
+          Uploading a logo image...
+        </h5>
+      ) : error instanceof Error ? (
+        <p className="text-red-500 font-semibold mt-3">
+          An error occurred: {error.message}
+        </p>
+      ) : null}
       {logoTypeError && (
         <div className="mt-3 text-center">
           <h5 className="font-bold text-gray-500">Unsupported file type</h5>

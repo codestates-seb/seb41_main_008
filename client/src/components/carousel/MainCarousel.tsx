@@ -45,7 +45,7 @@ const Container = styled.div`
 `;
 
 export default function MainCarousel() {
-  const { isLoading, error, data } = useQuery<Collections[], Error>({
+  const { isLoading, error, data } = useQuery<Collections[]>({
     queryKey: ['maincollectionS'],
     queryFn: async () => {
       const res = await axios.get(
@@ -57,7 +57,8 @@ export default function MainCarousel() {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>An error has occurred: + {error.message}</p>;
+  if (error instanceof Error)
+    return <p>An error has occurred: + {error.message}</p>;
 
   return (
     <Container>
@@ -95,7 +96,7 @@ export default function MainCarousel() {
         }}
         className="rounded-2xl"
       >
-        {data.map((collection) => (
+        {data?.map((collection) => (
           <SwiperSlide key={collection.id}>
             <MainCollection
               url={collection.urls?.raw + '&w=500&auto=format'}

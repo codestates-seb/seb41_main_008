@@ -1,6 +1,7 @@
-import axios, { AxiosError } from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
+import customAxios from 'utils/api/axios';
 
 interface Banner {
   bannerFile: File | null;
@@ -50,26 +51,28 @@ export default function BannerImage({
     }
   };
 
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: async (file: FormData) => {
+      const res = await customAxios.post(
+        `${process.env.REACT_APP_API_URL}/images`,
+        file
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['images']);
+      setBannerName(data.imageName);
+    },
+  });
+
   useEffect(() => {
     if (bannerFile) {
-      const uploadBanner = async () => {
-        const formData = new FormData();
-        formData.append('file', bannerFile);
+      const formData = new FormData();
+      formData.append('file', bannerFile);
 
-        try {
-          const res = await axios.post(
-            `${process.env.REACT_APP_API_URL}/images`,
-            formData
-          );
-          setBannerName(res.data.imageName);
-        } catch (error) {
-          const err = error as AxiosError;
-          console.log(err);
-        }
-      };
-
-      uploadBanner();
-
+      mutate(formData);
       const reader = new FileReader();
       reader.readAsDataURL(bannerFile);
       reader.onloadend = () => {
@@ -78,7 +81,7 @@ export default function BannerImage({
     } else {
       setBannerString('');
     }
-  }, [bannerFile, setBannerString, setBannerName]);
+  }, [bannerFile, setBannerString, mutate]);
 
   return (
     <form className="flex flex-col items-center w-full">
@@ -118,6 +121,18 @@ export default function BannerImage({
           <div className="rounded-xl bg-black/60 w-[calc(100%-0.5rem)] h-[calc(100%-0.5rem)] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 hidden group-hover:block" />
         </button>
       )}
+      {isLoading ? (
+        <h5
+          className="mt-3
+        font-bold text-gray-500"
+        >
+          Uploading a banner image...
+        </h5>
+      ) : error instanceof Error ? (
+        <p className="text-red-500 font-semibold mt-3">
+          An error occurred: {error.message}
+        </p>
+      ) : null}
       {bannerTypeError && (
         <div className="mt-3 text-center">
           <h5 className="font-bold text-gray-500">Unsupported file type</h5>

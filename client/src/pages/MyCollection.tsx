@@ -12,7 +12,7 @@ interface Collection {
 }
 
 export default function MyCollection() {
-  const { isLoading, error, data } = useQuery<Collection[], Error>({
+  const { isLoading, error, data } = useQuery<Collection[]>({
     queryKey: ['myCollections'],
     queryFn: async () => {
       const res = await customAxios.get('/api/members/mypage');
@@ -22,7 +22,8 @@ export default function MyCollection() {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>An error has occurred: + {error.message}</p>;
+  if (error instanceof Error)
+    return <p>An error has occurred: + {error.message}</p>;
 
   return (
     <div className="max-w-7xl p-6 mx-auto">

@@ -51,7 +51,7 @@ export default function Carousel({
   title: string;
   page: string;
 }) {
-  const { isLoading, error, data } = useQuery<Collections[], Error>({
+  const { isLoading, error, data } = useQuery<Collections[]>({
     queryKey: ['collections'],
     queryFn: async () => {
       const res = await axios.get(
@@ -63,7 +63,8 @@ export default function Carousel({
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>An error has occurred: + {error.message}</p>;
+  if (error instanceof Error)
+    return <p>An error has occurred: + {error.message}</p>;
 
   return (
     <Container>
@@ -98,7 +99,7 @@ export default function Carousel({
         }}
         className="rounded-md"
       >
-        {data.map((collection) => (
+        {data?.map((collection) => (
           <SwiperSlide key={collection.id} className="py-2">
             <Collection
               url={collection.urls?.raw + '&w=500&auto=format'}
