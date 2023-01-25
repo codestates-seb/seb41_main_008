@@ -1,11 +1,18 @@
 spring:
+  cache:
+    type: redis
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
   config:
     import:
       - config/application-dev.yml
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+#    show-sql: true
     properties:
       hibernate:
         default_batch_fetch_size: 1000
@@ -14,14 +21,10 @@ logging:
   level:
     org:
       springframework:
+#        batch: DEBUG
         orm:
-          jpa: DEBUG
+#          jpa: DEBUG
 server:
   servlet:
     encoding:
       force-response: true
-
-jwt:
-  secret-key: j3904hj3bni3nb390bj9380q5jg309qjbi3ej4nb9053qjb90j35q0bjq90jASGASGASGSASGHRWEEWGDS         # 민감한 정보는 시스템 환경 변수에서 로드한다.
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 10080

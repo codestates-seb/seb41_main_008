@@ -78,6 +78,7 @@ public class Member extends BaseEntity {
         this.memberId = memberId;
     }
 
+    // TODO: 신규 회원 기본 이미지 세팅하기
     // 신규 회원용 생성자
     public Member(String email, String password, String nickname) {
         this.email = email;

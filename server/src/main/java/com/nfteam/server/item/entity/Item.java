@@ -28,7 +28,8 @@ public class Item extends BaseEntity {
     private Member member;
 
     // 상품 고유 정보
-    @OneToOne(mappedBy = "item", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credential_id")
     private ItemCredential itemCredential;
 
     @Column(name = "item_name", nullable = false)
@@ -49,6 +50,10 @@ public class Item extends BaseEntity {
     private Double itemPrice;
 
     protected Item() {
+    }
+
+    public Item(Long itemId) {
+        this.itemId = itemId;
     }
 
     @Builder

@@ -3,6 +3,7 @@ package com.nfteam.server.transaction.entity;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.item.entity.Item;
+import com.nfteam.server.item.entity.ItemCollection;
 import com.nfteam.server.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +29,10 @@ public class TransAction extends BaseEntity {
     private Member buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id", nullable = false)
+    private ItemCollection collection;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
@@ -42,9 +47,15 @@ public class TransAction extends BaseEntity {
     }
 
     @Builder
-    public TransAction(Member seller, Member buyer, Item item, Coin coin, Double transPrice) {
+    public TransAction(Member seller,
+                       Member buyer,
+                       ItemCollection collection,
+                       Item item,
+                       Coin coin,
+                       Double transPrice) {
         this.seller = seller;
         this.buyer = buyer;
+        this.collection = collection;
         this.item = item;
         this.coin = coin;
         this.transPrice = transPrice;

@@ -7,6 +7,10 @@ import lombok.Getter;
 @Getter
 public class MemberItemResponse {
 
+    // 아이템 소유자 정보
+    private Long ownerId;
+    private String ownerName;
+
     // 아이템 소속 컬렉션 정보
     private Long collectionId;
     private String collectionName;
@@ -25,7 +29,9 @@ public class MemberItemResponse {
     private Double itemPrice; // 코인 갯수(가격)
 
     @Builder
-    public MemberItemResponse(Long collectionId,
+    public MemberItemResponse(Long ownerId,
+                              String ownerName,
+                              Long collectionId,
                               String collectionName,
                               Long coinId,
                               String coinName,
@@ -36,6 +42,8 @@ public class MemberItemResponse {
                               String itemDescription,
                               Boolean onSale,
                               Double itemPrice) {
+        this.ownerId = ownerId;
+        this.ownerName = ownerName;
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.coinId = coinId;
@@ -51,6 +59,8 @@ public class MemberItemResponse {
 
     public static MemberItemResponse of(ItemResponse itemResponse) {
         return MemberItemResponse.builder()
+                .ownerId(itemResponse.getOwnerId())
+                .ownerName(itemResponse.getOwnerName())
                 .collectionId(itemResponse.getCollectionId())
                 .collectionName(itemResponse.getCollectionName())
                 .coinId(itemResponse.getCoinId())

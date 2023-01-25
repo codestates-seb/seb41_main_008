@@ -1,5 +1,6 @@
 package com.nfteam.server.common.config;
 
+import com.nfteam.server.cart.service.CartService;
 import com.nfteam.server.common.utils.JwtTokenizer;
 import com.nfteam.server.redis.repository.RedisRepository;
 import com.nfteam.server.security.filter.JwtAuthenticationFilter;
@@ -9,11 +10,11 @@ import com.nfteam.server.security.handler.MemberAccessDeniedHandler;
 import com.nfteam.server.security.handler.MemberAuthenticationEntryPoint;
 import com.nfteam.server.security.handler.MemberAuthenticationFailureHandler;
 import com.nfteam.server.security.handler.MemberAuthenticationSuccessHandler;
-import com.nfteam.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,8 +34,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private static final String HTTPS_SERVER_DOMAIN = "https://www.nfteam008.com";
+    private static final String LOCALHOST = "http://localhost:3000";
+
     private final JwtTokenizer jwtTokenizer;
     private final RedisRepository redisRepository;
+    private final CartService cartService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -55,12 +60,10 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        // TODO: 편의상 권한 적용은 개발 마지막 단계에 적용
-                        // .antMatchers(HttpMethod.POST, "/api/members").permitAll()
-                        // .antMatchers(HttpMethod.GET, "/api/members/**", "/api/items/**").hasRole("USER")
-                        // .antMatchers(HttpMethod.POST, "/api/items").hasRole("USER")
-                        // .antMatchers(HttpMethod.PATCH, "/api/members/**", "/api/items/**").hasRole("USER")
-                        // .antMatchers(HttpMethod.DELETE, "/api/members/**", "/api/items/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/api/members/mypage").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/api/collections", "/api/items", "/api/carts/**", "/api/trans", "/images").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/api/members/**", "/api/items/**", "/api/collections/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/api/members/**", "/api/collections/**", "/api/items/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )
                 .build();
@@ -69,7 +72,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080"));
+        configuration.setAllowedOrigins(List.of(HTTPS_SERVER_DOMAIN, LOCALHOST));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
         configuration.setExposedHeaders(List.of("RefreshToken", HttpHeaders.AUTHORIZATION, HttpHeaders.LOCATION));
         configuration.setAllowedHeaders(List.of("*"));
@@ -89,7 +92,7 @@ public class SecurityConfiguration {
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisRepository);
             jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(cartService));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer);

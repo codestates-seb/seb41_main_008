@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class ItemResponse {
+public class ItemResponse implements Comparable<ItemResponse> {
 
     // 아이템 소속 컬렉션 정보
     private Long collectionId;
@@ -72,6 +72,12 @@ public class ItemResponse {
 
     public void addPriceHistory(List<ItemPriceHistoryResponse> priceHistory) {
         this.priceHistory = priceHistory;
+    }
+
+    // 미판매 -> 판매 순 정렬
+    @Override
+    public int compareTo(ItemResponse o) {
+        return Boolean.compare(this.onSale, o.onSale);
     }
 
 }

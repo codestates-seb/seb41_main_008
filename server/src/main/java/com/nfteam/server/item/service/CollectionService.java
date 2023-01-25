@@ -4,8 +4,9 @@ import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionItemResponse;
+import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.dto.response.item.MemberCollectionResponse;
+import com.nfteam.server.dto.response.member.MemberCollectionResponse;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
@@ -91,8 +92,8 @@ public class CollectionService {
                 .map(CollectionItemResponse::of)
                 .sorted(CollectionItemResponse::compareTo)
                 .collect(Collectors.toList());
+        response.addItemResponseList(itemResponses);
 
-        response.addItemResponseDtos(itemResponses);
         return response;
     }
 
@@ -111,8 +112,33 @@ public class CollectionService {
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }
 
+    public CollectionOnlyResponse getCollectionInfoOnly(Long collectionId) {
+        ItemCollection itemCollection = getCollectionWithMemberAndCoin(collectionId);
+        CollectionOnlyResponse response = CollectionOnlyResponse.of(itemCollection);
+
+        List<Item> items = itemRepository.findItemsWithOwnerByCollectionId(collectionId);
+        // 아이템 메타정보 계산
+        if (items.size() != 0) {
+            calcCollectionOnlyItemMetaInfo(items, response);
+        } else {
+            response.addMetaInfo(0, 0.0, 0.0, 0.0, 0);
+        }
+
+        return response;
+    }
+
+    private void calcCollectionOnlyItemMetaInfo(List<Item> items, CollectionOnlyResponse response) {
+        Integer itemCount = items.size();
+        Double totalVolume = items.stream().mapToDouble(i -> i.getItemPrice()).sum();
+        Double highestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
+        Double lowestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+        Long ownerCount = items.stream().map(i -> i.getMember()).distinct().count();
+
+        response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
+    }
+
     public List<MemberCollectionResponse> getMemberCollectionList(Long memberId) {
-        return itemCollectionRepository.findCollectionWithCoinByMemberId(memberId)
+        return itemCollectionRepository.findCollectionListWithCoinByMemberId(memberId)
                 .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
     }
