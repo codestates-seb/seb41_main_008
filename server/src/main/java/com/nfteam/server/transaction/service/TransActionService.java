@@ -10,7 +10,7 @@ import com.nfteam.server.dto.request.transaction.TransActionRequestItemInfo;
 import com.nfteam.server.dto.response.cart.CartResponse;
 import com.nfteam.server.exception.ExceptionCode;
 import com.nfteam.server.exception.NFTCustomException;
-import com.nfteam.server.exception.coin.CoinNotFoundException;
+import com.nfteam.server.exception.coinRel.CoinNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.transaction.TransRecordNotValidException;

@@ -6,7 +6,7 @@ import com.nfteam.server.coin.repository.CoinHistoryRepository;
 import com.nfteam.server.coin.repository.CoinRepository;
 import com.nfteam.server.coin.utils.UpbitEachWithdrawFee;
 import com.nfteam.server.coin.utils.UpbitFeeFeignClient;
-import com.nfteam.server.exception.coin.CoinNotFoundException;
+import com.nfteam.server.exception.coinRel.CoinNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
