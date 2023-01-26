@@ -1,3 +1,5 @@
+import { removeCart } from '../../store/cartSlice';
+import { useAppDispatch } from '../../hooks/hooks';
 interface CartItemsProps {
   itemId: number;
   coinName: string;
@@ -14,6 +16,7 @@ const CartItems = ({
   itemImageName,
   itemPrice,
 }: CartItemsProps) => {
+  const dispatch = useAppDispatch();
   return (
     <li className="flex p-2 items-center hover:bg-[#eef1f1] rounded-lg hover:shadow-md">
       <div className="flex w-[100px] h-[80px] mr-4">
@@ -23,16 +26,22 @@ const CartItems = ({
           alt=""
         />
       </div>
-      <div className="flex flex-col w-full ">
-        <div className="font-bold">{itemName}</div>
+      <div className="flex flex-col w-full font-bold">
         <div>{collectionName}</div>
+        <div>{itemName}</div>
       </div>
       <div>
         <div className="flex ">
           <div>{itemPrice}</div>
           <div>{coinName}</div>
         </div>
-        <button>삭제</button>
+        <button
+          onClick={() => {
+            dispatch(removeCart(itemId));
+          }}
+        >
+          삭제
+        </button>
       </div>
     </li>
   );

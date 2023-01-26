@@ -8,18 +8,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
-import { getMyProFile, logout } from 'utils/api/api';
-import { useState, useEffect } from 'react';
+import { logout } from 'utils/api/api';
 
 const MobileDropdownItems = () => {
   const { isLogin } = useAppSelector((state) => state.login);
-  const [userId, setUserId] = useState();
-  useEffect(() => {
-    getMyProFile().then((res: any) => {
-      console.log(res);
-      setUserId(res.data.member.memberId);
-    });
-  }, [userId]);
+  const memberId = localStorage.getItem('MEMBER_ID');
   return (
     <>
       <Link
@@ -57,7 +50,7 @@ const MobileDropdownItems = () => {
       )}
 
       <Link
-        to={`/account/${userId}`}
+        to={`/account/${memberId}`}
         className="flex justify-between hover:text-blue-600"
       >
         <div className="flex items-center p-6">

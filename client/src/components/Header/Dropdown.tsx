@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import DropdownItems from './DropdownItems';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { logout, getMyProFile } from 'utils/api/api';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { getMyProFile } from 'utils/api/api';
+import { faCartShopping, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { openModal } from '../../store/modalSlice';
-
+import { openModal, openWallet } from '../../store/modalSlice';
+import { useState, useEffect } from 'react';
 const DropdownList = styled.li`
   position: relative;
   padding-top: 8px;
@@ -16,6 +16,7 @@ const DropdownList = styled.li`
     visibility: hidden;
     transition: 0.3s all;
     opacity: 0;
+    right: -50px;
   }
   &:hover {
     div {
@@ -28,25 +29,33 @@ const DropdownList = styled.li`
 const Dropdown = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const [memberImg, setMemberImg] = useState('');
   const profileImage = useAppSelector((state) => state.login.profileImage);
   const { cartItems } = useAppSelector((state) => state.cart);
-
   const { isLogin } = useAppSelector((state) => state.login);
   const goToMypage = () => {
     getMyProFile().then((res: any) => {
       navigate(`/account/${res.data.member.memberId}`);
     });
   };
+  const getImage = () => {
+    getMyProFile().then((res) => {
+      setMemberImg(res.data.member.profileImageName);
+    });
+  };
+  useEffect(() => {
+    getImage();
+  }, []);
+
   return (
-    <nav className="ml-2 ">
-      <ul className="flex items-center justify-center gap-5 mr-8 ml-2 ">
+    <nav className="">
+      <ul className="flex items-center justify-center mr-8 ml-2 gap-5">
         <DropdownList className="max-[640px]:hidden">
           {isLogin ? (
             <button onClick={goToMypage} className="w-8 h-8">
               <img
                 className="object-cover w-full h-full rounded-full"
-                src="https://post-phinf.pstatic.net/MjAyMDA1MjBfMTI3/MDAxNTg5OTYwNzc2Mzkx.URP--ZPdGAfu4fZf_gBqhM-cyrgAbmA6o0zJ7i7zQiEg.ndMf4bCvA2PtVlt7D6a5CglG-rgLRUwBaS7_ZzpKiI0g.JPEG/KakaoTalk_20200519_173101893_08.jpg?type=w1200"
+                src={profileImage || memberImg}
                 alt=""
               />
             </button>
@@ -57,14 +66,19 @@ const Dropdown = () => {
           )}
           <DropdownItems />
         </DropdownList>
-        <li className="max-[640px]:hidden">
-          {isLogin ? (
-            <button onClick={logout}>Logout</button>
-          ) : (
-            <Link to={'/login'} className="p-2 ">
-              <span>Login</span>
-            </Link>
-          )}
+        {!isLogin && (
+          <li className="max-[640px]:hidden">
+            {!isLogin && (
+              <Link to={'/login'} className="p-2 ">
+                <span>Login</span>
+              </Link>
+            )}
+          </li>
+        )}
+        <li>
+          <button onClick={() => dispatch(openWallet())}>
+            <FontAwesomeIcon icon={faWallet} />
+          </button>
         </li>
         <li className="flex flex-col relative justify-center w-full leading-6">
           <button className="p-2" onClick={() => dispatch(openModal())}>

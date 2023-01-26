@@ -1,8 +1,10 @@
 import Card from '../components/Card';
 import NoCard from '../components/Account/NoCard';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
 import { useState, useEffect } from 'react';
+import { IoSettingsSharp } from 'react-icons/io5';
+
 interface UserType {
   member: {
     nickname: string;
@@ -10,18 +12,27 @@ interface UserType {
     profileImageName: string;
     description: string;
   };
-  items: [];
+  items: ItemsType[];
   collections: [];
 }
-
+interface ItemsType {
+  itemDescription: string;
+  itemId: number;
+  itemImageName: string;
+  itemName: string;
+  itemPrice: number;
+  onSale: boolean;
+  ownerId: number;
+  ownerName: string;
+}
 const AccountPage = () => {
   const { memberId }: any = useParams();
   const [data, setData] = useState<UserType>();
   const [filter, setFilter] = useState<string>('Collected');
   const [, setCollections] = useState<any>([]);
-  console.log(data);
+
   useEffect(() => {
-    getUserProFile(memberId).then((res) => {
+    getUserProFile(memberId).then(async (res) => {
       setCollections(res.data?.collections);
       setData(res.data);
     });
@@ -37,9 +48,7 @@ const AccountPage = () => {
         <span className="absolute top-0 left-0 bottom-0 right-0 ">
           <img
             className="absolute top-0 left-0 bottom-0 right-0 object-cover max-w-full max-h-full min-w-full min-h-full"
-            src={
-              `${process.env.REACT_APP_IMAGE}` + data?.member.bannerImageName
-            }
+            src={data?.member.bannerImageName}
             alt=""
           />
         </span>
@@ -51,13 +60,17 @@ const AccountPage = () => {
           src={data?.member.profileImageName}
         />
       </div>
-      <div className="h-10 w-full "></div>
+      <div className="h-10 w-full"></div>
       <div className="p-10">
         <div className="w-full">
-          <div className="font-bold text-3xl">{data?.member.nickname}</div>
-          <div className="flex justify-between">
-            <span>{data?.member.description}</span>
-            <button className="border-2 p-2">Profile Edit</button>
+          <div className=" flex justify-between items-center">
+            <div className="space-y-2">
+              <h1 className="font-bold text-3xl">{data?.member.nickname}</h1>
+              <p>{data?.member.description}</p>
+            </div>
+            <Link to={`/account/${memberId}/profile`}>
+              <IoSettingsSharp className="h-6 w-6" />
+            </Link>
           </div>
         </div>
 
@@ -79,12 +92,26 @@ const AccountPage = () => {
             </button>
           </ul>
         </div>
-
         <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
           {filter === 'Collected' ? (
             data?.items.length !== 0 ? (
-              data?.items.map((el: any, index) => {
-                return <Card key={index} {...el} filter={filter} />;
+              data?.items.map((el: any) => {
+                return (
+                  <Card
+                    ownerId={el.ownerId}
+                    key={el.itemId}
+                    data={data.items}
+                    onSale={el.onSale}
+                    filter={filter}
+                    itemId={el.itemId}
+                    collectionName={el.collectionName}
+                    logoImgName={el.logoImgName}
+                    itemImageName={el.itemImageName}
+                    itemPrice={el.itemPrice}
+                    itemDescription={el.itemDescription}
+                    coinName={el.coinName}
+                  />
+                );
               })
             ) : (
               <NoCard />

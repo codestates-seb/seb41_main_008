@@ -25,7 +25,7 @@ const Header = () => {
   };
   console.log(cartItems);
   return (
-    <header className="flex justify-center  items-center font-bold z-50 p-4 sticky top-0 border-b-2 bg-white text-lg">
+    <header className="flex justify-center  items-center font-bold z-20 p-4 sticky top-0 border-b-2 bg-white text-lg">
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
         <Link to={'/'}>NFTeam</Link>
