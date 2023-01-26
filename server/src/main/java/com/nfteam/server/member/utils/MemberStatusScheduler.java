@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class MemberStatusScheduler {
-
     private final MemberService memberService;
 
     @Scheduled(cron = "0 0 4 ? * *")
