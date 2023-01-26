@@ -18,14 +18,12 @@ import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class CartService {
@@ -33,8 +31,20 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRelRepository cartItemRelRepository;
-    private final QItemRepository qitemRepository;
     private final ItemRepository itemRepository;
+    private final QItemRepository qitemRepository;
+
+    public CartService(MemberRepository memberRepository,
+                       CartRepository cartRepository,
+                       CartItemRelRepository cartItemRelRepository,
+                       ItemRepository itemRepository,
+                       QItemRepository qitemRepository) {
+        this.memberRepository = memberRepository;
+        this.cartRepository = cartRepository;
+        this.cartItemRelRepository = cartItemRelRepository;
+        this.itemRepository = itemRepository;
+        this.qitemRepository = qitemRepository;
+    }
 
     @Transactional
     public CartResponse loadOwnCart(String email) {
