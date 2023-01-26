@@ -114,7 +114,9 @@ public class Member extends BaseEntity {
     public void updateMemberStatusQuit() {
         this.memberStatus = MemberStatus.MEMBER_QUIT;
     }
-
+    public void updateMemberStatusSleep(){
+        this.memberStatus = MemberStatus.MEMBER_SLEEP;
+    }
     public void updateNickname(String name) {
         this.nickname = name;
     }
