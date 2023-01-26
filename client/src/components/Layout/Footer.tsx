@@ -51,7 +51,6 @@ const Footer = () => {
             <button className={styles.socialBtn}>
               <TiktokIcon />
             </button>
-            <a href="/" className={styles.socialLink}></a>
           </div>
         </div>
       </div>

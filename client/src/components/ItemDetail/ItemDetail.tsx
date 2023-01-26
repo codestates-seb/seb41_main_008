@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { Link } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import customAxios from 'utils/api/axios';
 import ETHIcon from '../../assets/icons/PurchaseIcons/ETH';
@@ -99,7 +100,6 @@ const Asset = () => {
 
               <div className="card__body">
                 <div className="asset__properties"></div>
-                {/* <div>{data?.priceHistory}</div> */}
               </div>
             </div>
           </div>
@@ -108,7 +108,10 @@ const Asset = () => {
             <div className="text-4xl font-bold">{data?.collectionName}</div>
             <div className="asset__meta">
               <div className="asset__meta__item">
-                Owned by <a>{data?.ownerName}</a>
+                Owned by{' '}
+                <Link to={`/collection/${itemId}`}>
+                  <a>{data?.ownerName}</a>
+                </Link>
               </div>
               <div className="asset__meta__item">
                 <EyeIcon /> 0 views
@@ -152,18 +155,18 @@ const Asset = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data?.tradeHistory.map((el: any) => (
-                      <tr key={el}>
+                    {data?.tradeHistory.map((item) => (
+                      <tr>
                         <td>
                           <div className="price">
                             <ETHIcon />
-                            {el.sellerId}
+                            {item.sellerId}
                           </div>
                         </td>
-                        <td>${}</td>
-                        <td>{el.coinName}</td>
-                        <td>{el.sellerId}</td>
-                        <td>누구</td>
+                        <td></td>
+                        <td>{item.coinName}</td>
+                        <td>{item.sellerId}</td>
+                        <td>{}</td>
                       </tr>
                     ))}
                   </tbody>
