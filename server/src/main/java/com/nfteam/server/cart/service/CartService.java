@@ -53,6 +53,8 @@ public class CartService {
         // 카트 기록 이상 검사 (결제되지 않은 카트 중복 여부)
         List<Cart> findCartList = cartRepository.findCartByMemberAndPaymentYn(member, false);
         validateCartSize(findCartList.size());
+
+        // 신규 카트 or 기존 카트 가져오기
         Cart cart = getCart(member, findCartList);
 
         // 장바구니 아이템 리스트 조회
