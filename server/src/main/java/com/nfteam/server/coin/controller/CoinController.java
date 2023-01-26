@@ -10,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/coins")
@@ -40,7 +39,7 @@ public class CoinController {
 
     @GetMapping(value = "/approve")
     public ResponseEntity approve(@RequestParam("pg_token") String pgToken,
-                                  @RequestParam("tid") String tid) throws IOException {
+                                  @RequestParam("tid") String tid) {
         return new ResponseEntity<>(coinService.approvePayment(pgToken, tid), HttpStatus.OK);
     }
 

@@ -72,7 +72,7 @@ public class CoinFeeService {
                 );
     }
 
-    public void updateCoinFee(Map<String, Double> result, List<String> coinList) throws Exception {
+    public void updateCoinFee(Map<String, Double> result, List<String> coinList) {
         for (String coinName : coinList) {
             Coin coin = findCoinByName(coinName);
             coin.changeWithdrawFee(result.get(coinName));
