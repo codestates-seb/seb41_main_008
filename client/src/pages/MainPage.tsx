@@ -9,8 +9,6 @@ const MainPage = () => {
       <MainCarousel />
       <Top />
       <Carousel title="Notable collections" page="3" />
-      <Carousel title="Top collector buys today" page="5" />
-      <Carousel title="Photography NFT spotlight" page="7" />
       <Footer />
     </div>
   );

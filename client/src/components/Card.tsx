@@ -2,23 +2,23 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
-
 type cartBtnType = {
   hide: boolean;
 };
 
 interface Item {
-  itemDescription: string;
+  // itemDescription: string;
+  //   itemImageName: string;
+  //   itemName: string;
+  //   itemPrice: number;
+  //   ownerName: string;
   itemId: number;
-  itemImageName: string;
-  itemName: string;
-  itemPrice: number;
   onSale: boolean;
   ownerId: number;
-  ownerName: string;
 }
 
-type CardType = {
+interface CardType {
+  ownerId: number;
   itemId: number;
   data: Item[];
   collectionName: string;
@@ -26,10 +26,10 @@ type CardType = {
   itemImageName: string;
   itemPrice: number;
   itemDescription: string;
-  filter: string;
+  filter?: string;
   coinName: string;
   onSale: boolean;
-};
+}
 
 const HideWrapper = styled.div<cartBtnType>`
   div {
@@ -41,7 +41,7 @@ const HideWrapper = styled.div<cartBtnType>`
   }
 `;
 const Card = ({
-  onSale,
+  ownerId,
   data,
   itemId,
   collectionName,
@@ -51,11 +51,11 @@ const Card = ({
   itemDescription,
   filter,
   coinName,
+  onSale,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
-  console.log(onSale);
   return (
-    <div className="shadow hover:shadow-2xl rounded-b-xl">
+    <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold">
       <article
         onMouseEnter={() => {
           setHide(true);
@@ -64,7 +64,7 @@ const Card = ({
           setHide(false);
         }}
       >
-        <Link to={'/'} className="flex flex-col hover:shadow">
+        <Link to={`/items/${itemId}`} className="flex flex-col ">
           <div className="overflow-hidden rounded-t-xl w-full aspect-square">
             <img
               className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"
@@ -87,16 +87,14 @@ const Card = ({
         </Link>
         {filter !== 'Created' && (
           <HideWrapper hide={hide}>
-            {onSale === true && (
-              <BuyAndCartButton
-                onSale={onSale}
-                data={
-                  data?.filter((el) => {
-                    return el.itemId === itemId;
-                  })[0]
-                }
-              />
-            )}
+            <BuyAndCartButton
+              ownerId={ownerId}
+              data={
+                data?.filter((el) => {
+                  return el.itemId === itemId;
+                })[0]
+              }
+            />
           </HideWrapper>
         )}
       </article>

@@ -1,9 +1,5 @@
 import * as RadioGroup from '@radix-ui/react-radio-group';
-
-interface Blockchain {
-  name: string;
-  id: number;
-}
+import { Blockchain } from './CreateCollection';
 
 interface Coin {
   selectedCoin: Blockchain | null;
