@@ -41,10 +41,6 @@ public class Coin extends BaseEntity {
         this.withdrawFee = withdrawFee;
     }
 
-    public void changeCoinName(String coinName) {
-        this.coinName = coinName;
-    }
-
     public void changeWithdrawFee(Double withdrawFee) {
         this.withdrawFee = withdrawFee;
     }

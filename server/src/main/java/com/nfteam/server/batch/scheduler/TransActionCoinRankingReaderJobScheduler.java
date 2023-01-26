@@ -14,6 +14,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,9 +44,9 @@ public class TransActionCoinRankingReaderJobScheduler {
             rankingService.deleteCoinRankingCache(1L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("SOL 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("SOL 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 
@@ -62,9 +63,9 @@ public class TransActionCoinRankingReaderJobScheduler {
             rankingService.deleteCoinRankingCache(2L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("BTC 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("BTC 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 
@@ -81,9 +82,10 @@ public class TransActionCoinRankingReaderJobScheduler {
             rankingService.deleteCoinRankingCache(3L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("DOGE 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
+            ;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("DOGE 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 
@@ -100,9 +102,9 @@ public class TransActionCoinRankingReaderJobScheduler {
             rankingService.deleteCoinRankingCache(4L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("ETH 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("ETH 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 
@@ -119,9 +121,9 @@ public class TransActionCoinRankingReaderJobScheduler {
             rankingService.deleteCoinRankingCache(5L);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("ETC 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("ETC 코인 일간 배치 에러 : {} / 날짜 : {}", e.getMessage(), LocalDateTime.now());
         }
     }
 

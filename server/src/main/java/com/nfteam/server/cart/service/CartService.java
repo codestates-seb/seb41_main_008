@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Service
 @Transactional(readOnly = true)
+@Service
 public class CartService {
 
     private final MemberRepository memberRepository;
@@ -73,8 +73,7 @@ public class CartService {
     }
 
     /**
-     * Cart: paymentYn - 결제완료 처리는 TransAction 완료 후 성립
-     * - 결제 완료 후 해당 멤버에게 새로운 카트 배정
+     * Cart: paymentYn - 결제완료 처리는 TransAction 완료 후 성립 & 결제 완료 후 해당 멤버에게 새로운 카트 배정
      * Item: onSale - 판매완료 처리는 TransAction 완료 후 성립
      */
     @Transactional

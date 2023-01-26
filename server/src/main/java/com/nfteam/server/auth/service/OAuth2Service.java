@@ -1,6 +1,7 @@
 package com.nfteam.server.auth.service;
 
 import com.nfteam.server.dto.response.auth.SocialLoginResponse;
+import com.nfteam.server.exception.auth.NotSupportedPlatformException;
 import com.nfteam.server.member.entity.MemberPlatform;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class OAuth2Service {
             case GOOGLE:
                 return googleOAuth2.proceedLogin(token);
             default:
-                throw new RuntimeException("지원되지 않는 소셜 플랫폼입니다.");
+                throw new NotSupportedPlatformException();
         }
     }
 
