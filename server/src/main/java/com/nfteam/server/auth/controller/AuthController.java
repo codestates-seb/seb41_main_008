@@ -32,17 +32,24 @@ public class AuthController {
         SocialLoginResponse socialLoginResponse
                 = oAuth2Service.login(token, MemberPlatform.valueOf(socialType.toUpperCase()));
 
-        // 레디스 서버 로그인 정보 저장
-        String email = socialLoginResponse.getLoginResponse().getEmail();
+        // Jwt 추출
         String accessToken = socialLoginResponse.getAccessToken();
         String refreshToken = socialLoginResponse.getRefreshToken();
+
+        return new ResponseEntity<>(
+                getLoginResponse(socialLoginResponse.getLoginResponse(), refreshToken),
+                getHeaders(accessToken, refreshToken), HttpStatus.OK);
+    }
+
+    private LoginResponse getLoginResponse(LoginResponse loginResponse, String refreshToken) {
+        // 레디스 서버 로그인 정보 저장
+        String email = loginResponse.getEmail();
         authService.login(refreshToken, email);
 
         // 회원 활성 장바구니 정보 로그인 Response 추가
-        LoginResponse loginResponse = socialLoginResponse.getLoginResponse();
         loginResponse.addCart(cartService.loadOwnCart(email));
 
-        return new ResponseEntity<>(loginResponse, getHeaders(accessToken, refreshToken), HttpStatus.OK);
+        return loginResponse;
     }
 
     private static HttpHeaders getHeaders(String accessToken, String refreshToken) {
