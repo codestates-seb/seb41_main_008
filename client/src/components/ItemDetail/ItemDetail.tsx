@@ -17,7 +17,6 @@ import { useState, useEffect } from 'react';
 import { useAppSelector } from 'hooks/hooks';
 import SellModal from 'components/CartingModal/SellModal';
 
-
 export interface ItemProps {
   coinId: number;
   coinName: string;
