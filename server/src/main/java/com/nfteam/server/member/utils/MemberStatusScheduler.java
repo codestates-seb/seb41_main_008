@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class MemberStatusScheduler {
-
     private final MemberService memberService;
 
     // 매일 새벽 1시 10분 : 마지막 로그인 시간이 6개월을 넘은 회원은 휴면 회원 처리
