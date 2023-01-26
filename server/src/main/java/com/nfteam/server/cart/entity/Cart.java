@@ -41,7 +41,7 @@ public class Cart extends BaseEntity {
         this.paymentYn = false;
     }
 
-    public void changePaymentYn(Boolean paymentYn){
+    public void changePaymentYn(Boolean paymentYn) {
         this.paymentYn = paymentYn;
     }
 

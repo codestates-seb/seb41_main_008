@@ -10,3 +10,4 @@ public interface CoinRepository extends JpaRepository<Coin, Long> {
     Optional<Coin> findByCoinName(String coinName);
 
 }
+

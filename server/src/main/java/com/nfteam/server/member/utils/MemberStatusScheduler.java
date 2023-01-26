@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 public class MemberStatusScheduler {
     private final MemberService memberService;
 
-    @Scheduled(cron = "0 0 4 ? * *")
-    public void updateMemberStatus(){
+    // 매일 새벽 1시 10분 : 마지막 로그인 시간이 6개월을 넘은 회원은 휴면 회원 처리
+    @Scheduled(cron = "0 10 1 * * ?")
+    public void updateMemberStatus() {
         memberService.updateMemberStatus();
         log.info("member-status updated successfully!");
     }
