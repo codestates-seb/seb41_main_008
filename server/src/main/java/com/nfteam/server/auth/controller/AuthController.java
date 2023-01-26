@@ -6,14 +6,12 @@ import com.nfteam.server.cart.service.CartService;
 import com.nfteam.server.dto.response.auth.LoginResponse;
 import com.nfteam.server.dto.response.auth.SocialLoginResponse;
 import com.nfteam.server.member.entity.MemberPlatform;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -21,25 +19,37 @@ public class AuthController {
     private final AuthService authService;
     private final CartService cartService;
 
+    public AuthController(OAuth2Service oAuth2Service, AuthService authService, CartService cartService) {
+        this.oAuth2Service = oAuth2Service;
+        this.authService = authService;
+        this.cartService = cartService;
+    }
+
     @GetMapping("/login/{socialType}")
     public ResponseEntity<LoginResponse> oauthLogin(@PathVariable(name = "socialType") String socialType,
                                                     @RequestHeader(value = "googleToken") String token) {
-        MemberPlatform memberPlatform = MemberPlatform.valueOf(socialType.toUpperCase());
-        SocialLoginResponse socialLoginResponse = oAuth2Service.login(token, memberPlatform);
+        // OAuth 로그인 진행
+        SocialLoginResponse socialLoginResponse
+                = oAuth2Service.login(token, MemberPlatform.valueOf(socialType.toUpperCase()));
 
+        // 레디스 서버 로그인 정보 저장
         String email = socialLoginResponse.getLoginResponse().getEmail();
         String accessToken = socialLoginResponse.getAccessToken();
         String refreshToken = socialLoginResponse.getRefreshToken();
         authService.login(refreshToken, email);
 
+        // 회원 활성 장바구니 정보 로그인 Response 추가
         LoginResponse loginResponse = socialLoginResponse.getLoginResponse();
         loginResponse.addCart(cartService.loadOwnCart(email));
 
+        return new ResponseEntity<>(loginResponse, getHeaders(accessToken, refreshToken), HttpStatus.OK);
+    }
+
+    private static HttpHeaders getHeaders(String accessToken, String refreshToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, accessToken);
         headers.add("RefreshToken", refreshToken);
-
-        return new ResponseEntity<>(loginResponse, headers, HttpStatus.OK);
+        return headers;
     }
 
     @GetMapping("/logout")
@@ -50,9 +60,8 @@ public class AuthController {
 
     @GetMapping("/reissue")
     public ResponseEntity<Void> reissue(@RequestHeader(value = "RefreshToken") String refreshToken) {
-        String reissuedAccessToken = authService.reissue(refreshToken);
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + reissuedAccessToken)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + authService.reissue(refreshToken))
                 .build();
     }
 

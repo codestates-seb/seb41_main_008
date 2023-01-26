@@ -60,7 +60,7 @@ public class GoogleOAuth2 implements OAuth2 {
     }
 
     private GoogleUser getUserInfo(ResponseEntity<String> userInfoResponse) {
-        GoogleUser googleUser = null;
+        GoogleUser googleUser;
         try {
             googleUser = objectMapper.readValue(userInfoResponse.getBody(), GoogleUser.class);
         } catch (JsonProcessingException exception) {
