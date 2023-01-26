@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface CoinMemberRelRepository extends JpaRepository<CoinMemberRel,Long> {
+public interface CoinMemberRelRepository extends JpaRepository<CoinMemberRel, Long> {
 
     Optional<CoinMemberRel> findByMemberAndCoin(Member member, Coin coin);
 

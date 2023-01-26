@@ -16,7 +16,6 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -34,7 +33,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class CoinService {
 
     private static final String cid = "TC0ONETIME";
@@ -55,7 +53,18 @@ public class CoinService {
     private final CoinOrderRepository coinOrderRepository;
     private final CoinRepository coinRepository;
     private final RestTemplate restTemplate;
-    private CoinPurchaseReadyResponse coinPurchaseReadyResponse;
+
+    public CoinService(MemberRepository memberRepository,
+                       CoinMemberRelRepository coinMemberRelRepository,
+                       CoinOrderRepository coinOrderRepository,
+                       CoinRepository coinRepository,
+                       RestTemplate restTemplate) {
+        this.memberRepository = memberRepository;
+        this.coinMemberRelRepository = coinMemberRelRepository;
+        this.coinOrderRepository = coinOrderRepository;
+        this.coinRepository = coinRepository;
+        this.restTemplate = restTemplate;
+    }
 
     public List<MemberCoinResponse> getMemberCoinList(Long memberId) {
         List<CoinMemberRel> memberCoinList = coinMemberRelRepository.findByMemberId(memberId);
@@ -69,6 +78,7 @@ public class CoinService {
                 .map(r -> MemberCoinResponse.of(r))
                 .collect(Collectors.toList());
 
+        // 코인 번호 순 정렬
         responses.sort(MemberCoinResponse::compareTo);
         return responses;
     }
@@ -120,7 +130,7 @@ public class CoinService {
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parameters, headers);
 
         // 카카오 결제 준비 요청 응답
-        coinPurchaseReadyResponse = restTemplate.postForObject(readyUrl, httpEntity, CoinPurchaseReadyResponse.class);
+        CoinPurchaseReadyResponse coinPurchaseReadyResponse = restTemplate.postForObject(readyUrl, httpEntity, CoinPurchaseReadyResponse.class);
 
         if (coinPurchaseReadyResponse != null) {
             // 코인 주문 tid 세팅
@@ -148,7 +158,7 @@ public class CoinService {
                 .orElseThrow(() -> new CoinPaymentFailedException());
 
         Member buyer = coinOrder.getBuyer();
-        int intValue = coinOrder.getTotalPrice().intValue();
+        int totalPriceIntValue = coinOrder.getTotalPrice().intValue();
 
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
@@ -156,7 +166,7 @@ public class CoinService {
         parameters.add("partner_order_id", String.valueOf(coinOrder.getOrderId()));
         parameters.add("partner_user_id", String.valueOf(coinOrder.getBuyer().getMemberId()));
         parameters.add("pg_token", pgToken);
-        parameters.add("total_amount", intValue);
+        parameters.add("total_amount", totalPriceIntValue);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", authorization);
