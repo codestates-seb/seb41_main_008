@@ -37,8 +37,9 @@ public class CoinController {
     }
 
     @GetMapping(value = "/approve")
-    public ResponseEntity approve(@RequestParam("pg_token") String pgToken) throws IOException {
-        return new ResponseEntity<>(coinService.approvePayment(pgToken), HttpStatus.OK);
+    public ResponseEntity approve(@RequestParam("pg_token") String pgToken,
+                                  @RequestParam("tid") String tid) throws IOException {
+        return new ResponseEntity<>(coinService.approvePayment(pgToken, tid), HttpStatus.OK);
     }
 
     @GetMapping("/cancel")

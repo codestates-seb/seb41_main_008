@@ -143,8 +143,7 @@ public class CoinService {
     }
 
     @Transactional
-    public CoinPurchaseApproveResponse approvePayment(String pgToken) {
-        String tid = coinPurchaseReadyResponse.getTid();
+    public CoinPurchaseApproveResponse approvePayment(String pgToken, String tid) {
         CoinOrder coinOrder = coinOrderRepository.findByTidWithBuyer(tid)
                 .orElseThrow(() -> new CoinPaymentFailedException());
 
