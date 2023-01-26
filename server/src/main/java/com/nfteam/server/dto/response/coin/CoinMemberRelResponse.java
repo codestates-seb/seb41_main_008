@@ -1,6 +1,5 @@
 package com.nfteam.server.dto.response.coin;
 
-import com.amazonaws.services.ec2.model.CpuOptionsRequest;
 import com.nfteam.server.coin.entity.Coin;
 import com.nfteam.server.coin.entity.CoinMemberRel;
 import com.nfteam.server.member.entity.Member;

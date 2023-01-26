@@ -28,11 +28,3 @@ server:
   servlet:
     encoding:
       force-response: true
-
-#      카카오 페이
-common:
-  data:
-    kakao: KakaoAK 79fd132c770be75df16bbafdcfe48463 //for test
-    success: https://www.nfteam008.com/order/success
-    cancel: https://www.nfteam008.com/order/cancel
-    fail: https://www.nfteam008.com/order/fail

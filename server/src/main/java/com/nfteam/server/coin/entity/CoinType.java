@@ -3,6 +3,7 @@ package com.nfteam.server.coin.entity;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum CoinType {
+
     SOL(1L),
     BTC(2L),
     DOGE(3L),
