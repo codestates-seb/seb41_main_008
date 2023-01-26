@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,15 +32,13 @@ public class CoinController {
 
     @PostMapping("/purchase")
     public ResponseEntity<CoinPurchaseReadyResponse> purchase(@RequestBody @Valid CoinPurchaseRequest request,
-                                                              @AuthenticationPrincipal MemberDetails memberDetails,
-                                                              Model model) {
-        CoinPurchaseReadyResponse response = coinService.startPayment(request, memberDetails);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+                                                              @AuthenticationPrincipal MemberDetails memberDetails) {
+        return new ResponseEntity<>(coinService.startPayment(request, memberDetails), HttpStatus.OK);
     }
 
     @GetMapping(value = "/approve")
     public ResponseEntity approve(@RequestParam("pg_token") String pgToken) throws IOException {
-        return new ResponseEntity<>(coinService.approvePayment(pgToken, ""), HttpStatus.OK);
+        return new ResponseEntity<>(coinService.approvePayment(pgToken), HttpStatus.OK);
     }
 
     @GetMapping("/cancel")

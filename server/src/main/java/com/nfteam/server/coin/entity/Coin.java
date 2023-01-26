@@ -1,6 +1,7 @@
 package com.nfteam.server.coin.entity;
 
 import com.nfteam.server.common.audit.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -33,15 +34,11 @@ public class Coin extends BaseEntity {
         this.withdrawFee = withdrawFee;
     }
 
-    //@Builder
+    @Builder
     public Coin(Long coinId, String coinName, Double withdrawFee) {
         this.coinId = coinId;
         this.coinName = coinName;
         this.withdrawFee = withdrawFee;
-    }
-
-    public void changeCoinName(String coinName) {
-        this.coinName = coinName;
     }
 
     public void changeWithdrawFee(Double withdrawFee) {

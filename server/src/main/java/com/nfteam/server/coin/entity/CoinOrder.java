@@ -18,12 +18,8 @@ public class CoinOrder extends BaseEntity {
     private Long orderId;
 
     // 카카오 페이 결제 번호
-    @Column(name = "pay_pid")
+    @Column(name = "pay_tid")
     private String tid;
-
-    // 카카오 페이 결제 요청 번호
-    @Column(name = "pay_aid")
-    private String aid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id")
@@ -35,7 +31,6 @@ public class CoinOrder extends BaseEntity {
 
     @Column(name = "coin_count")
     private Double coinCount;
-
 
     @Column(name = "total_price")
     private Double totalPrice;
