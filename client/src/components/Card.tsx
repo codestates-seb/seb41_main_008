@@ -2,23 +2,23 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
-
 type cartBtnType = {
   hide: boolean;
 };
 
 interface Item {
-  itemDescription: string;
+  // itemDescription: string;
+  //   itemImageName: string;
+  //   itemName: string;
+  //   itemPrice: number;
+  //   ownerName: string;
   itemId: number;
-  itemImageName: string;
-  itemName: string;
-  itemPrice: number;
   onSale: boolean;
   ownerId: number;
-  ownerName: string;
 }
 
-type CardType = {
+interface CardType {
+  ownerId: number;
   itemId: number;
   data: Item[];
   collectionName: string;
@@ -29,7 +29,7 @@ type CardType = {
   filter: string;
   coinName: string;
   onSale: boolean;
-};
+}
 
 const HideWrapper = styled.div<cartBtnType>`
   div {
@@ -41,7 +41,7 @@ const HideWrapper = styled.div<cartBtnType>`
   }
 `;
 const Card = ({
-  onSale,
+  ownerId,
   data,
   itemId,
   collectionName,
@@ -51,9 +51,9 @@ const Card = ({
   itemDescription,
   filter,
   coinName,
+  onSale,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
-  console.log(onSale);
   return (
     <div className="shadow hover:shadow-2xl rounded-b-xl">
       <article
@@ -87,16 +87,14 @@ const Card = ({
         </Link>
         {filter !== 'Created' && (
           <HideWrapper hide={hide}>
-            {onSale === true && (
-              <BuyAndCartButton
-                onSale={onSale}
-                data={
-                  data?.filter((el) => {
-                    return el.itemId === itemId;
-                  })[0]
-                }
-              />
-            )}
+            <BuyAndCartButton
+              ownerId={ownerId}
+              data={
+                data?.filter((el) => {
+                  return el.itemId === itemId;
+                })[0]
+              }
+            />
           </HideWrapper>
         )}
       </article>

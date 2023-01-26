@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
 
 interface Item {
@@ -6,6 +7,7 @@ interface Item {
   setItemFile: React.Dispatch<React.SetStateAction<File | null>>;
   itemString: string;
   setItemString: React.Dispatch<React.SetStateAction<string>>;
+  setItemName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ItemImage({
@@ -13,6 +15,7 @@ export default function ItemImage({
   setItemFile,
   itemString,
   setItemString,
+  setItemName,
 }: Item) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -48,6 +51,24 @@ export default function ItemImage({
 
   useEffect(() => {
     if (itemFile) {
+      const uploadImage = async () => {
+        const formData = new FormData();
+        formData.append('file', itemFile);
+
+        try {
+          const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/images`,
+            formData
+          );
+          setItemName(res.data.imageName);
+        } catch (error) {
+          const err = error as AxiosError;
+          console.log(err);
+        }
+      };
+
+      uploadImage();
+
       const reader = new FileReader();
       reader.readAsDataURL(itemFile);
       reader.onloadend = () => {
@@ -56,7 +77,7 @@ export default function ItemImage({
     } else {
       setItemString('');
     }
-  }, [itemFile, setItemString]);
+  }, [itemFile, setItemString, setItemName]);
 
   return (
     <form className="flex flex-col items-center w-1/2">

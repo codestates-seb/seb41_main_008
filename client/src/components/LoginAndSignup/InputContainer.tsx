@@ -9,6 +9,7 @@ import { login } from '../../store/loginSlice';
 import { signup } from '../../store/signupSlice';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { getMyProFile } from 'utils/api/api';
 type Props = {
   isSignup: boolean;
 };
@@ -44,7 +45,10 @@ const InputContainer = ({ isSignup }: Props) => {
           unAuthHandler();
         }
         if (res.meta.requestStatus === 'fulfilled') {
-          navigate('/');
+          getMyProFile().then((res) => {
+            localStorage.setItem('memberId', res.data.member.memberId);
+          });
+          //   navigate('/', { replace: true });
         }
       });
     }
