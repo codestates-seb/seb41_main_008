@@ -52,11 +52,9 @@ export default function CollectionDetails() {
   }, [dispatch]);
 
   const { isLoading, error, data } = useQuery<Collection>({
-    queryKey: ['collectionDetails'],
-    queryFn: async () => {
-      const res = await customAxios.get(`/api/collections/only/${id}`);
-      return res.data;
-    },
+    queryKey: ['collections', 'only', id],
+    queryFn: () =>
+      customAxios.get(`/api/collections/only/${id}`).then((res) => res.data),
   });
 
   if (isLoading) return <p>Loading...</p>;

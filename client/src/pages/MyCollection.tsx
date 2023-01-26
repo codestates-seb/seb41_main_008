@@ -20,13 +20,14 @@ export default function MyCollectionPage() {
       alert('로그인이 필요합니다');
       navigate('/login');
     }
-  }, []);
+  }, [isLogin, navigate]);
+
   const { isLoading, error, data } = useQuery<Collection[]>({
-    queryKey: ['myCollections'],
-    queryFn: async () => {
-      const res = await customAxios.get('/api/members/mypage');
-      return res.data.collections;
-    },
+    queryKey: ['members', 'mypage'],
+    queryFn: () =>
+      customAxios
+        .get('/api/members/mypage')
+        .then((res) => res.data.collections),
   });
 
   if (isLoading) return <p>Loading...</p>;

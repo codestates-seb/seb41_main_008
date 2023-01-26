@@ -14,28 +14,30 @@ interface Bio {
   bio: string;
 }
 
-interface Props {
+interface Props extends Bio {
   id: number | undefined;
   profileImageName: string;
   bannerImageName: string;
 }
 
-type ProfileInfo = Omit<Props, 'id'> & Bio;
-
-const schema = yup.object({
-  nickname: yup.string().required('This field is required.'),
-  bio: yup.string().required('This field is required.'),
-});
+type ProfileInfo = Omit<Props, 'id'>;
 
 export default function ProfileBio({
   profileImageName,
   bannerImageName,
   id,
+  nickname,
+  bio,
 }: Props) {
   const dispatch = useAppDispatch();
   const [nicknameFocus, setNicknameFocus] = useState(false);
   const [bioFocus, setBioFocus] = useState(false);
   const navigate = useNavigate();
+
+  const schema = yup.object({
+    nickname: yup.string().required('This field is required.'),
+    bio: yup.string().required('This field is required.'),
+  });
 
   const {
     register,
@@ -47,13 +49,14 @@ export default function ProfileBio({
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (newProfile: ProfileInfo) => {
-      const res = await customAxios.patch(`/api/members/${id}`, newProfile);
-      return res.data;
-    },
+    mutationFn: (newProfile: ProfileInfo) =>
+      customAxios
+        .patch(`/api/members/${id}`, newProfile)
+        .then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['profile']);
-      navigate(`/account/${id}`);
+      queryClient.setQueryData(['members', 'mypage'], data);
+      queryClient.invalidateQueries(['members', 'mypage']);
+      navigate('/account');
     },
   });
 
@@ -95,6 +98,7 @@ export default function ProfileBio({
             className="w-full rounded-lg p-3 text-lg group outline-none h-full"
             onFocus={() => setNicknameFocus(true)}
             onBlur={() => setNicknameFocus(false)}
+            defaultValue={nickname}
           />
         </div>
         {errors.nickname && (
@@ -125,6 +129,7 @@ export default function ProfileBio({
             onFocus={() => setBioFocus(true)}
             onBlur={() => setBioFocus(false)}
             placeholder="Tell the world your story!"
+            defaultValue={bio}
           />
         </div>
         {errors.bio && (

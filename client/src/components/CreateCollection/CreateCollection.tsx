@@ -71,12 +71,10 @@ export default function CreateCollection({
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (col: ColInfo) => {
-      const res = await customAxios.post('/api/collections', col);
-      return res.data;
-    },
+    mutationFn: (col: ColInfo) =>
+      customAxios.post('/api/collections', col).then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['collections']);
+      queryClient.invalidateQueries(['collections'], { exact: true });
       setCollection(data);
     },
   });

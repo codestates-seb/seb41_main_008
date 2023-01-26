@@ -11,6 +11,7 @@ import CreateItemPage from 'pages/CreateItemPage';
 import MyCollection from 'pages/MyCollection';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
 import ProfilePage from 'pages/ProfilePage';
+import MyAccount from 'pages/MyAccount';
 
 function App() {
   return (
@@ -27,12 +28,10 @@ function App() {
             <Route path="collection/:id" element={<CollectionDetails />} />
             <Route path="asset/create" element={<CreateItemPage />} />
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
-            <Route path="/account/:memberId" element={<AccountPage />} />
-            <Route
-              path="/account/:memberId/profile"
-              element={<ProfilePage />}
-            />
-
+            <Route path="/account" element={<MyAccount />} />
+            <Route path="/:name/created" element={<AccountPage />} />
+            {/* protected route */}
+            <Route path="/account/profile" element={<ProfilePage />} />
             <Route path="*" element={<MissingPage />} />
           </Route>
 
