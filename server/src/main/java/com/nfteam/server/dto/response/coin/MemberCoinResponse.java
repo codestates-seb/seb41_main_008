@@ -14,6 +14,7 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
     private Long coinId;
     private String coinName;
     private Double coinCount;
+    private String coinImage;
 
     @Builder
     public MemberCoinResponse(Long memberId,
@@ -25,6 +26,7 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
         this.coinId = coinId;
         this.coinName = findCoinName(coinId);
         this.coinCount = coinCount;
+        this.coinImage = findCoinImage(coinId);
     }
 
     public static MemberCoinResponse of(CoinMemberRel rel) {
@@ -36,6 +38,9 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
                 .build();
     }
 
+    /**
+     * TODO: 현재 다루는 코인이 5개 밖에 없어서 하드코딩, 추 후 확장 시 엔티티 설계 변경 후 디비 관리 필요.
+     */
     private String findCoinName(Long coinId) {
         switch (String.valueOf(coinId)) {
             case "1":
@@ -48,6 +53,23 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
                 return CoinType.ETH.name();
             case "5":
                 return CoinType.ETC.name();
+            default:
+                throw new CoinNotFoundException(coinId);
+        }
+    }
+
+    private String findCoinImage(Long coinId) {
+        switch (String.valueOf(coinId)) {
+            case "1":
+                return "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/solana.svg";
+            case "2":
+                return "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/btc.svg";
+            case "3":
+                return "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/doge.svg";
+            case "4":
+                return "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/eth.svg";
+            case "5":
+                return "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/etc.svg";
             default:
                 throw new CoinNotFoundException(coinId);
         }
