@@ -16,7 +16,7 @@ export default function ProfilePage() {
   const [profileLogo, setProfileLogo] = useState<string>('');
   const [profileBanner, setProfileBanner] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
-  const [bio, setBio] = useState<string>('');
+  const [desc, setDesc] = useState<string>('');
   const [logoName, setLogoName] = useState<string>('');
   const [bannerName, setBannerName] = useState<string>('');
 
@@ -25,11 +25,10 @@ export default function ProfilePage() {
       setProfileLogo(data.profileImageName);
       setProfileBanner(data.bannerImageName);
       setNickname(data.nickname);
-      setBio(data.description);
+      setDesc(data.description);
     }
   }, [data]);
   console.log(data);
-  console.log(error);
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="flex flex-col items-center space-y-10">
@@ -67,7 +66,7 @@ export default function ProfilePage() {
           bannerImageName={bannerName}
           id={data?.memberId}
           nickname={nickname}
-          bio={bio}
+          description={desc}
         />
       </div>
     </div>

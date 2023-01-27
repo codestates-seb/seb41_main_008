@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Bio {
   nickname: string;
-  bio: string;
+  description: string;
 }
 
 interface Props extends Bio {
@@ -27,16 +27,16 @@ export default function ProfileBio({
   bannerImageName,
   id,
   nickname,
-  bio,
+  description,
 }: Props) {
   const dispatch = useAppDispatch();
   const [nicknameFocus, setNicknameFocus] = useState(false);
-  const [bioFocus, setBioFocus] = useState(false);
+  const [descFocus, setDescFocus] = useState(false);
   const navigate = useNavigate();
 
   const schema = yup.object({
     nickname: yup.string().required('This field is required.'),
-    bio: yup.string().required('This field is required.'),
+    description: yup.string().required('This field is required.'),
   });
 
   const {
@@ -64,7 +64,7 @@ export default function ProfileBio({
 
     mutate({
       nickname: data.nickname,
-      bio: data.bio,
+      description: data.description,
       profileImageName,
       bannerImageName,
     });
@@ -76,7 +76,7 @@ export default function ProfileBio({
       className="text-center w-full space-y-10"
     >
       <div className="space-y-3">
-        <label htmlFor="name" className="mx-auto font-bold text-lg">
+        <label htmlFor="nickname" className="mx-auto font-bold text-lg">
           Name{' '}
           <span className="text-red-500 text-xl font-bold align-top">*</span>
         </label>
@@ -109,32 +109,32 @@ export default function ProfileBio({
       </div>
 
       <div className="space-y-3">
-        <label htmlFor="bio" className="mx-auto font-bold text-lg">
+        <label htmlFor="description" className="mx-auto font-bold text-lg">
           Bio{' '}
           <span className="text-red-500 text-xl font-bold align-top">*</span>
         </label>
         <div
           className={`border-2 rounded-lg duration-300 ${
-            errors.bio
+            errors.description
               ? 'border-red-600'
-              : bioFocus
+              : descFocus
               ? 'border-focused'
               : 'border-gray-300'
           }`}
         >
           <textarea
-            {...register('bio')}
+            {...register('description')}
             className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg"
-            onFocus={() => setBioFocus(true)}
-            onBlur={() => setBioFocus(false)}
+            onFocus={() => setDescFocus(true)}
+            onBlur={() => setDescFocus(false)}
             placeholder="Tell the world your story!"
-            defaultValue={bio}
+            defaultValue={description}
           />
         </div>
-        {errors.bio && (
+        {errors.description && (
           <p className="text-red-600 flex items-center space-x-0.5">
             <RxCross2 className="h-6 w-6" />
-            <span>{errors.bio.message}</span>
+            <span>{errors.description.message}</span>
           </p>
         )}
       </div>

@@ -22,7 +22,7 @@ export default function MyAccount() {
 
   if (error instanceof Error)
     return <p>An error has occurred: + {error.message}</p>;
-
+  console.log(data);
   return (
     <div className="flex flex-col w-full">
       <div className="h-64 relative ">

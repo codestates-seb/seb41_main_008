@@ -76,7 +76,6 @@ export default function CreateItem({
     mutationFn: (item: ItemInfo) =>
       customAxios.post('/api/items', item).then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.setQueryData(['items', data.id], data);
       queryClient.invalidateQueries(['items'], { exact: true });
       setItem(data);
     },
