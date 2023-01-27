@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
@@ -19,26 +18,6 @@ export default function MyAccount() {
       customAxios.get('/api/members/mypage').then((res) => res.data.member),
   });
 
-  const [banner, setBanner] = useState<string>('');
-  const [logo, setLogo] = useState<string>('');
-
-  //   useEffect(() => {
-  //     if (myProfile) {
-  //       setBanner(
-  //         myProfile.member?.bannerImageName?.slice(0, 8) === 'https://'
-  //           ? myProfile.member?.bannerImageName
-  //           : process.env.REACT_APP_IMAGE + myProfile.member?.bannerImageName
-  //       );
-
-  //       setLogo(
-  //         myProfile.member?.profileImageName?.slice(0, 8) === 'https://'
-  //           ? myProfile.member?.profileImageName
-  //           : process.env.REACT_APP_IMAGE + myProfile.member?.profileImageName
-  //       );
-  //     }
-  //   }, [myProfile]);
-  console.log(data);
-  console.log(banner, logo);
   if (isLoading) return <p>Loading...</p>;
 
   if (error instanceof Error)

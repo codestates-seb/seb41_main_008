@@ -53,14 +53,13 @@ export default function ProfileBio({
       customAxios
         .patch(`/api/members/${id}`, newProfile)
         .then((res) => res.data),
-    onSuccess: (data) => {
-      queryClient.setQueryData(['members', 'mypage'], data);
+    onSuccess: () => {
       queryClient.invalidateQueries(['members', 'mypage']);
       navigate('/account');
     },
   });
 
-  const onSubmit = async (data: Bio) => {
+  const onSubmit = (data: Bio) => {
     dispatch(setOpen(true));
 
     mutate({
