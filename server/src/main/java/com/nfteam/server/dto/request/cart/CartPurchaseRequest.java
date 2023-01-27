@@ -13,6 +13,4 @@ public class CartPurchaseRequest {
 
     private List<Long> itemIdList;
 
-    private Double totalPrice;
-
 }
