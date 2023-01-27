@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ErrorResponder {
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void sendErrorResponse(HttpServletResponse response, HttpStatus status) throws IOException {

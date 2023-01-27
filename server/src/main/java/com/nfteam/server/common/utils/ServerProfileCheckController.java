@@ -11,9 +11,15 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ServerProfileCheckController {
+
     private static final List<String> PROFILES = Arrays.asList("deploy1", "deploy2");
     private static final String DEFAULT = "default";
     private final Environment env;
+
+    @GetMapping
+    public String healthCheck() {
+        return "Server - health check";
+    }
 
     @GetMapping("/profile")
     public String getProfile() {
@@ -24,11 +30,6 @@ public class ServerProfileCheckController {
                 .filter(PROFILES::contains)
                 .findAny()
                 .orElse(defaultProfile);
-    }
-
-    @GetMapping
-    public String homeTest() {
-        return "서버 정상 동작 확인 테스트33 3333- 개발 서버 정상 배포 확인 테스트";
     }
 
 }
