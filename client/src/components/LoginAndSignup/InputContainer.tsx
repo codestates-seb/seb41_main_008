@@ -48,7 +48,7 @@ const InputContainer = ({ isSignup }: Props) => {
           getMyProFile().then((res) => {
             console.log(res);
           });
-          navigate('/', { replace: true });
+          // navigate('/', { replace: true });
         }
       });
     }

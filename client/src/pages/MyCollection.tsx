@@ -20,8 +20,9 @@ export default function MyCollectionPage() {
       alert('로그인이 필요합니다');
       navigate('/login');
     }
-  }, []);
-  const { isLoading, error, data } = useQuery<Collection[]>({
+    return;
+  }, [isLogin, navigate]);
+  const { isLoading, error } = useQuery<Collection[]>({
     queryKey: ['myCollections'],
     queryFn: async () => {
       const res = await customAxios.get('/api/members/mypage');
