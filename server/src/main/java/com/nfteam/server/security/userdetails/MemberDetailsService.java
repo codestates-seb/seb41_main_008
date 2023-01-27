@@ -32,7 +32,8 @@ public class MemberDetailsService implements UserDetailsService {
     }
 
     private void checkMemberStatus(MemberStatus memberStatus) {
-        if (memberStatus.getStatus().equals(MemberStatus.MEMBER_QUIT)) {
+
+        if (memberStatus.equals(MemberStatus.MEMBER_QUIT)) {
             throw new MemberStatusNotActiveException();
         }
     }
