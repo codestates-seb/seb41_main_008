@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import DropdownItems from './DropdownItems';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { getMyProFile } from 'utils/api/api';
 import { faCartShopping, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, openWallet } from '../../store/modalSlice';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import customAxios from 'utils/api/axios';
+import { Profile } from 'pages/MyAccount';
 const DropdownList = styled.li`
   position: relative;
   padding-top: 8px;
@@ -26,46 +27,55 @@ const DropdownList = styled.li`
     }
   }
 `;
-const Dropdown = () => {
+const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [memberImg, setMemberImg] = useState('');
   const profileImage = useAppSelector((state) => state.login.profileImage);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { isLogin } = useAppSelector((state) => state.login);
 
-  const getImage = () => {
-    getMyProFile().then((res) => {
-      setMemberImg(res.data.member.profileImageName);
-    });
-  };
-  useEffect(() => {
-    getImage();
-  }, []);
-
+  const { data } = useQuery<Profile>({
+    queryKey: ['members', 'mypage'],
+    queryFn: () =>
+      customAxios.get('api/members/mypage').then((res) => res.data.member),
+  });
+  console.log(data);
+  console.log(profileImage);
   return (
-    <nav className="">
+    <nav>
       <ul className="flex items-center justify-center mr-8 ml-2 gap-5">
         <DropdownList className="max-[640px]:hidden">
           {isLogin ? (
-            <button onClick={() => navigate('/account')} className="w-8 h-8">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src={profileImage || memberImg}
-                alt="Profile pic"
-              />
-            </button>
+            <>
+              <button onClick={() => navigate('/account')} className="w-8 h-8">
+                <img
+                  className="object-cover w-full h-full rounded-full"
+                  src={
+                    data?.profileImageName.slice(0, 8) !== 'https://'
+                      ? process.env.REACT_APP_IMAGE! + data?.profileImageName
+                      : data?.profileImageName
+                  }
+                  alt="Profile pic"
+                />
+              </button>
+              <DropdownItems />
+            </>
           ) : (
-            <Link to={'/signup'} className="p-2 ">
+            <Link
+              to={'/signup'}
+              className={`p-2 ${!isScrolled && 'text-white'}`}
+            >
               Signup
             </Link>
           )}
-          <DropdownItems />
         </DropdownList>
         {!isLogin && (
           <li className="max-[640px]:hidden">
             {!isLogin && (
-              <Link to={'/login'} className="p-2 ">
+              <Link
+                to={'/login'}
+                className={`p-2 ${!isScrolled && 'text-white'}`}
+              >
                 <span>Login</span>
               </Link>
             )}
@@ -73,12 +83,18 @@ const Dropdown = () => {
         )}
         <li>
           <button onClick={() => dispatch(openWallet())}>
-            <FontAwesomeIcon icon={faWallet} />
+            <FontAwesomeIcon
+              className={`${!isScrolled && 'text-white'}`}
+              icon={faWallet}
+            />
           </button>
         </li>
         <li className="flex flex-col relative justify-center w-full leading-6">
           <button className="p-2" onClick={() => dispatch(openModal())}>
-            <FontAwesomeIcon icon={faCartShopping} className="flex" />
+            <FontAwesomeIcon
+              icon={faCartShopping}
+              className={`${!isScrolled && 'text-white'} flex`}
+            />
           </button>
           <div className="flex justify-center items-center w-5 h-5 rounded-full absolute right-0 -top-2 text-white bg-blue-500 font-bold text-sm">
             {cartItems.length}

@@ -19,7 +19,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout />}>
-            <Route path="/" element={<MainPage />} />
             <Route path="/collections" element={<MyCollection />} />
             <Route
               path="/collection/create"
@@ -30,11 +29,12 @@ function App() {
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
             <Route path="/account" element={<MyAccount />} />
             <Route path="/:name/created" element={<AccountPage />} />
+            <Route path="*" element={<MissingPage />} />
             {/* protected route */}
             <Route path="/account/profile" element={<ProfilePage />} />
-            <Route path="*" element={<MissingPage />} />
           </Route>
 
+          <Route path="/" element={<MainPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
         </Routes>
