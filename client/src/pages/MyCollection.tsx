@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import DropMenu from 'components/MyCollection/DropMenu';
+import MintDropdown from 'components/MyCollection/MintDropdown';
 import HoverCardOpen from 'components/MyCollection/HoverCard';
 import { Link, useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
@@ -53,7 +53,7 @@ export default function MyCollectionPage() {
           >
             Create a collection
           </Link>
-          <DropMenu />
+          <MintDropdown />
         </div>
       </div>
       <section></section>

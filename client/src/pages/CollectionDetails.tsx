@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { HiOutlineStar, HiShare } from 'react-icons/hi';
-import { useAppDispatch } from 'hooks/hooks';
-import { setOpen } from 'store/toastSlice';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { setCreateColOpen } from 'store/toastSlice';
 import { format } from 'date-fns';
 import Cards from 'components/MyCollection/Cards';
 import MissingPage from 'pages/MissingPage';
@@ -45,9 +45,10 @@ export default function CollectionDetails() {
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
+  const createColOpen = useAppSelector((state) => state.toast.createColOpen);
 
   useEffect(() => {
-    setTimeout(() => dispatch(setOpen(false)), 5000);
+    setTimeout(() => dispatch(setCreateColOpen(false)), 5000);
   }, [dispatch]);
 
   const { isLoading, error, data } = useQuery<Collection>({
@@ -142,7 +143,7 @@ export default function CollectionDetails() {
             <h2 className="text-3xl">No items to display</h2>
           </section>
         )}
-        <Notification>
+        <Notification open={createColOpen} setOpen={setCreateColOpen}>
           <p className="flex items-center gap-1 text-emerald-700">
             <span>
               <BsCheckCircleFill className="h-7 w-7" />

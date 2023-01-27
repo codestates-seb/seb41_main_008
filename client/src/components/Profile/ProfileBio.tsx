@@ -6,7 +6,7 @@ import { useAppDispatch } from 'hooks/hooks';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-import { setOpen } from 'store/toastSlice';
+import { setUpdateUserOpen } from 'store/toastSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Bio {
@@ -60,7 +60,7 @@ export default function ProfileBio({
   });
 
   const onSubmit = (data: Bio) => {
-    dispatch(setOpen(true));
+    dispatch(setUpdateUserOpen(true));
 
     mutate({
       nickname: data.nickname,

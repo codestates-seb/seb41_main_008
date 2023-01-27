@@ -6,7 +6,7 @@ import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-import { setOpen } from 'store/toastSlice';
+import { setCreateItemOpen } from 'store/toastSlice';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
 import {
@@ -82,7 +82,7 @@ export default function CreateItem({
   });
 
   const onSubmit = async (data: Inputs) => {
-    dispatch(setOpen(true));
+    dispatch(setCreateItemOpen(true));
 
     if (itemFile) {
       mutate({

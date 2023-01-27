@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { IoSettingsSharp } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import Notification from 'components/Notification';
+import ProfileDropdown from 'components/Profile/ProfileDropdown';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useEffect } from 'react';
+import { BsCheckCircleFill } from 'react-icons/bs';
+import { setUpdateUserOpen } from 'store/toastSlice';
 import customAxios from 'utils/api/axios';
 
 export interface Profile {
@@ -12,6 +16,13 @@ export interface Profile {
 }
 
 export default function MyAccount() {
+  const updateUserOpen = useAppSelector((state) => state.toast.updateUserOpen);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    setTimeout(() => dispatch(setUpdateUserOpen(false)), 5000);
+  }, [dispatch]);
+
   const { isLoading, error, data } = useQuery<Profile>({
     queryKey: ['members', 'mypage'],
     queryFn: () =>
@@ -22,7 +33,7 @@ export default function MyAccount() {
 
   if (error instanceof Error)
     return <p>An error has occurred: + {error.message}</p>;
-  console.log(data);
+
   return (
     <div className="flex flex-col w-full">
       <div className="h-64 relative ">
@@ -57,9 +68,7 @@ export default function MyAccount() {
               <h1 className="font-bold text-3xl">{data?.nickname}</h1>
               <p>{data?.description}</p>
             </div>
-            <Link to={'/account/profile'}>
-              <IoSettingsSharp className="h-6 w-6" />
-            </Link>
+            <ProfileDropdown id={data?.memberId} />
           </div>
         </div>
 
@@ -82,6 +91,14 @@ export default function MyAccount() {
           </ul>
         </div> */}
       </div>
+      <Notification open={updateUserOpen} setOpen={setUpdateUserOpen}>
+        <p className="flex items-center gap-1 text-emerald-700">
+          <span>
+            <BsCheckCircleFill className="h-7 w-7" />
+          </span>{' '}
+          Updated!
+        </p>
+      </Notification>
     </div>
   );
 }

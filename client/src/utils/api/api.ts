@@ -8,7 +8,10 @@ export const logout = () => {
       },
     })
     .then(() => window.localStorage.clear())
-    .then(() => window.location.reload());
+    .then(() => {
+      window.location.replace('/');
+      window.location.reload();
+    });
 };
 
 export const getMyProFile = async () => {

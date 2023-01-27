@@ -1,14 +1,12 @@
 import * as Toast from '@radix-ui/react-toast';
-import { useAppSelector } from 'hooks/hooks';
-import { setOpen } from 'store/toastSlice';
 
-export default function Notification({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
-  const open = useAppSelector((state) => state.toast.open);
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
 
+export default function Notification({ children, open, setOpen }: Props) {
   return (
     <Toast.Provider>
       <Toast.Root open={open} onOpenChange={setOpen} className="ToastRoot">

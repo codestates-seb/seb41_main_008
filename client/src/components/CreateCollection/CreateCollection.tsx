@@ -6,7 +6,7 @@ import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-import { setOpen } from 'store/toastSlice';
+import { setCreateColOpen } from 'store/toastSlice';
 import Modal from './CollectionModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -80,7 +80,7 @@ export default function CreateCollection({
   });
 
   const onSubmit = async (data: Inputs) => {
-    dispatch(setOpen(true));
+    dispatch(setCreateColOpen(true));
 
     if (logoFile && bannerFile) {
       mutate({
