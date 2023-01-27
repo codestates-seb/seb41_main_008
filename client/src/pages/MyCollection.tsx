@@ -20,8 +20,8 @@ export default function MyCollectionPage() {
       alert('로그인이 필요합니다');
       navigate('/login');
     }
+    return;
   }, [isLogin, navigate]);
-
   const { isLoading, error, data } = useQuery<Collection[]>({
     queryKey: ['members', 'mypage'],
     queryFn: () =>

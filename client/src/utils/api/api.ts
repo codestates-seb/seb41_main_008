@@ -53,6 +53,22 @@ export const transAction = async (data: any) => {
   return await customAxios.post('/api/trans', data);
 };
 
+/**지갑 잔고 확인 api */
+export const getMyCoin = async () => {
+  return await customAxios.get('/api/coins/my');
+};
+/**코인 구매호출 api */
+export const buyCoin = async (data: any) => {
+  return await customAxios.post('/api/coins/purchase', data);
+};
+
+/**카카오페이 api */
+export const kakaoPay = async (pgToken: string, tid: string | null) => {
+  return await customAxios.get(
+    `/api/coins/approve?pg_token=${pgToken}&tid=${tid}`
+  );
+};
+
 /**업비트 Open API */
 export const getCoinPrice = async (coin: string | undefined) => {
   const options = { method: 'GET', headers: { accept: 'application/json' } };

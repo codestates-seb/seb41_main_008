@@ -13,8 +13,6 @@ const BuyAndCartButton = ({ data }: any) => {
   const { cartItems } = useAppSelector((state) => state.cart);
   const memberId = Number(localStorage.getItem('MEMBER_ID'));
   const dispatch = useAppDispatch();
-  console.log(data);
-  console.log(cartItems);
 
   const cartHandler = () => {
     if (cartItems.map((el: any) => el.itemId).includes(data.itemId)) {
