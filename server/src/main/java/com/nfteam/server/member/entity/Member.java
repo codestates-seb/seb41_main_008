@@ -1,7 +1,7 @@
 package com.nfteam.server.member.entity;
 
-import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.cart.entity.Cart;
+import com.nfteam.server.common.audit.BaseEntity;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.entity.ItemCollection;
 import lombok.Getter;
@@ -78,7 +78,6 @@ public class Member extends BaseEntity {
         this.memberId = memberId;
     }
 
-    // TODO: 신규 회원 기본 이미지 세팅하기
     // 신규 회원용 생성자
     public Member(String email, String password, String nickname) {
         this.email = email;
@@ -114,9 +113,7 @@ public class Member extends BaseEntity {
     public void updateMemberStatusQuit() {
         this.memberStatus = MemberStatus.MEMBER_QUIT;
     }
-    public void updateMemberStatusSleep(){
-        this.memberStatus = MemberStatus.MEMBER_SLEEP;
-    }
+
     public void updateNickname(String name) {
         this.nickname = name;
     }
