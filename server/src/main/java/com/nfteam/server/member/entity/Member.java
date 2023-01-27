@@ -87,8 +87,8 @@ public class Member extends BaseEntity {
         this.memberPlatform = MemberPlatform.HOME;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImageName = "default-user-profile-image";
-        this.bannerImageName = "default-user-profile-banner";
+        this.profileImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/813f3b58-e8c1-4945-a433-e1ba7438d137.octet-stream";
+        this.bannerImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/5970bd4a-b60e-4d08-a8c4-0dc6bc61e1f5.jpeg";
         this.lastLoginTime = LocalDateTime.now();
     }
 
@@ -101,8 +101,8 @@ public class Member extends BaseEntity {
         this.memberPlatform = memberPlatform;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImageName = "default-user-profile-image";
-        this.bannerImageName = "default-user-profile-banner";
+        this.profileImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/813f3b58-e8c1-4945-a433-e1ba7438d137.octet-stream";
+        this.bannerImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/5970bd4a-b60e-4d08-a8c4-0dc6bc61e1f5.jpeg";
         this.lastLoginTime = LocalDateTime.now();
     }
 
