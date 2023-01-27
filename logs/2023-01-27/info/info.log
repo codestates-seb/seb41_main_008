@@ -1,0 +1,372 @@
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:16][0;39m [32m[background-preinit][0;39m [35m[Version:21][0;39m - HV000001: Hibernate Validator 6.2.5.Final
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:16][0;39m [32m[main][0;39m [35m[ServerApplication:55][0;39m - Starting ServerApplication using Java 11.0.17 on sojeong with PID 10996 (C:\Users\newst\Desktop\메인프로젝트\seb41_main_008\server\build\classes\java\main started by newst in C:\Users\newst\Desktop\메인프로젝트\seb41_main_008)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:16][0;39m [32m[main][0;39m [35m[ServerApplication:631][0;39m - No active profile set, falling back to 1 default profile: "default"
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:17][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:262][0;39m - Multiple Spring Data modules found, entering strict repository configuration mode
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:17][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:132][0;39m - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:17][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:201][0;39m - Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:17][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:262][0;39m - Multiple Spring Data modules found, entering strict repository configuration mode
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:17][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:132][0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:201][0;39m - Finished Spring Data repository scanning in 128 ms. Found 14 JPA repository interfaces.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:262][0;39m - Multiple Spring Data modules found, entering strict repository configuration mode
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:132][0;39m - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.batch.repository.CoinRankingRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.batch.repository.RankingReaderRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.batch.repository.TimeRankingRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.cart.repository.CartItemRelRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.cart.repository.CartRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinHistoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinMemberRelRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinOrderRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.item.repository.ItemCollectionRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.item.repository.ItemCredentialRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.item.repository.ItemRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.transaction.repository.TransActionRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:201][0;39m - Finished Spring Data repository scanning in 28 ms. Found 0 Redis repository interfaces.
+[31m[WARN ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[InstanceMetadataServiceResourceFetcher:105][0;39m - Fail to retrieve token 
+com.amazonaws.SdkClientException: Failed to connect to service endpoint: 
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:100)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.getToken(InstanceMetadataServiceResourceFetcher.java:91)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.readResource(InstanceMetadataServiceResourceFetcher.java:69)
+	at com.amazonaws.internal.EC2ResourceFetcher.readResource(EC2ResourceFetcher.java:66)
+	at com.amazonaws.util.EC2MetadataUtils.getItems(EC2MetadataUtils.java:402)
+	at com.amazonaws.util.EC2MetadataUtils.getData(EC2MetadataUtils.java:371)
+	at org.springframework.cloud.aws.context.support.env.AwsCloudEnvironmentCheckUtils.isRunningOnCloudEnvironment(AwsCloudEnvironmentCheckUtils.java:38)
+	at org.springframework.cloud.aws.context.annotation.OnAwsCloudEnvironmentCondition.matches(OnAwsCloudEnvironmentCondition.java:38)
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader$TrackedConditionEvaluator.shouldSkip(ConfigurationClassBeanDefinitionReader.java:489)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass(ConfigurationClassBeanDefinitionReader.java:140)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitions(ConfigurationClassBeanDefinitionReader.java:129)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:343)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.nfteam.server.ServerApplication.main(ServerApplication.java:18)
+Caused by: java.net.SocketException: Network is unreachable: connect
+	at java.base/java.net.PlainSocketImpl.waitForConnect(Native Method)
+	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:107)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:412)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:255)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:237)
+	at java.base/java.net.Socket.connect(Socket.java:615)
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:177)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:507)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:602)
+	at java.base/sun.net.www.http.HttpClient.<init>(HttpClient.java:275)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:374)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:395)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1258)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1237)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1086)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1020)
+	at com.amazonaws.internal.ConnectionUtils.connectToEndpoint(ConnectionUtils.java:52)
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:80)
+	... 24 common frames omitted
+[31m[WARN ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[EC2MetadataUtils:409][0;39m - Unable to retrieve the requested metadata (/latest/meta-data/instance-id). Failed to connect to service endpoint: 
+com.amazonaws.SdkClientException: Failed to connect to service endpoint: 
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:100)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.getToken(InstanceMetadataServiceResourceFetcher.java:91)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.readResource(InstanceMetadataServiceResourceFetcher.java:69)
+	at com.amazonaws.internal.EC2ResourceFetcher.readResource(EC2ResourceFetcher.java:66)
+	at com.amazonaws.util.EC2MetadataUtils.getItems(EC2MetadataUtils.java:402)
+	at com.amazonaws.util.EC2MetadataUtils.getData(EC2MetadataUtils.java:371)
+	at org.springframework.cloud.aws.context.support.env.AwsCloudEnvironmentCheckUtils.isRunningOnCloudEnvironment(AwsCloudEnvironmentCheckUtils.java:38)
+	at org.springframework.cloud.aws.context.annotation.OnAwsCloudEnvironmentCondition.matches(OnAwsCloudEnvironmentCondition.java:38)
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader$TrackedConditionEvaluator.shouldSkip(ConfigurationClassBeanDefinitionReader.java:489)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass(ConfigurationClassBeanDefinitionReader.java:140)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitions(ConfigurationClassBeanDefinitionReader.java:129)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:343)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.nfteam.server.ServerApplication.main(ServerApplication.java:18)
+Caused by: java.net.SocketException: Network is unreachable: connect
+	at java.base/java.net.PlainSocketImpl.waitForConnect(Native Method)
+	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:107)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:412)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:255)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:237)
+	at java.base/java.net.Socket.connect(Socket.java:615)
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:177)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:507)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:602)
+	at java.base/sun.net.www.http.HttpClient.<init>(HttpClient.java:275)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:374)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:395)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1258)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1237)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1086)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1020)
+	at com.amazonaws.internal.ConnectionUtils.connectToEndpoint(ConnectionUtils.java:52)
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:80)
+	... 24 common frames omitted
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[GenericScope:283][0;39m - BeanFactory id=290c3dc4-f0dd-3e5d-92fb-ab5d4532d287
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean '(inner bean)#549ac12c' of type [com.amazonaws.auth.BasicAWSCredentials] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean '(inner bean)#49c099b' of type [com.amazonaws.auth.AWSStaticCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean '(inner bean)#16e99306' of type [com.amazonaws.auth.profile.ProfileCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean 'credentialsProvider' of type [org.springframework.cloud.aws.core.credentials.CredentialsProviderFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:18][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean 'credentialsProvider' of type [com.amazonaws.auth.AWSCredentialsProviderChain] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[TomcatWebServer:108][0;39m - Tomcat initialized with port(s): 8080 (http)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[Http11NioProtocol:173][0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[StandardService:173][0;39m - Starting service [Tomcat]
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[StandardEngine:173][0;39m - Starting Servlet engine: [Apache Tomcat/9.0.70]
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[[/]:173][0;39m - Initializing Spring embedded WebApplicationContext
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[ServletWebServerApplicationContext:292][0;39m - Root WebApplicationContext: initialization completed in 2540 ms
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[HikariDataSource:110][0;39m - HikariPool-1 - Starting...
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:19][0;39m [32m[main][0;39m [35m[HikariDataSource:123][0;39m - HikariPool-1 - Start completed.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:20][0;39m [32m[main][0;39m [35m[LogHelper:31][0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:20][0;39m [32m[main][0;39m [35m[Version:44][0;39m - HHH000412: Hibernate ORM core version 5.6.14.Final
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:20][0;39m [32m[main][0;39m [35m[Version:56][0;39m - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:20][0;39m [32m[main][0;39m [35m[Dialect:175][0;39m - HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+[39m[DEBUG][0;39m [31m[2023-01-27 14:07:21][0;39m [32m[main][0;39m [35m[SQL:144][0;39m - 
+    
+    create table coin_order (
+       order_id bigint not null auto_increment,
+        created_date datetime,
+        modified_date datetime not null,
+        coin_count double precision,
+        pay_status bit,
+        pay_tid varchar(255),
+        total_price double precision,
+        buyer_id bigint,
+        coin_id bigint,
+        primary key (order_id)
+    ) engine=InnoDB
+[39m[DEBUG][0;39m [31m[2023-01-27 14:07:21][0;39m [32m[main][0;39m [35m[SQL:144][0;39m - 
+    
+    alter table coin_order 
+       add constraint FKf6q8yw7dq8cg6ll5c1amk4brh 
+       foreign key (buyer_id) 
+       references member (member_id)
+[39m[DEBUG][0;39m [31m[2023-01-27 14:07:21][0;39m [32m[main][0;39m [35m[SQL:144][0;39m - 
+    
+    alter table coin_order 
+       add constraint FK87dckedf869vftt83v0bxjjp7 
+       foreign key (coin_id) 
+       references coin (coin_id)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:22][0;39m [32m[main][0;39m [35m[JtaPlatformInitiator:52][0;39m - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:22][0;39m [32m[main][0;39m [35m[LocalContainerEntityManagerFactoryBean:437][0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[31m[WARN ][0;39m [31m[2023-01-27 14:07:23][0;39m [32m[main][0;39m [35m[JpaBaseConfiguration$JpaWebConfiguration:219][0;39m - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:24][0;39m [32m[main][0;39m [35m[DefaultSecurityFilterChain:55][0;39m - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@60a54ad2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5fe1b8d2, org.springframework.security.web.context.SecurityContextPersistenceFilter@1b9075c9, org.springframework.security.web.header.HeaderWriterFilter@216a3aba, org.springframework.web.filter.CorsFilter@597ef918, org.springframework.security.web.authentication.logout.LogoutFilter@4b95fdf2, com.nfteam.server.security.filter.JwtAuthenticationFilter@1af6cd73, com.nfteam.server.security.filter.JwtExceptionFilter@50cfe725, com.nfteam.server.security.filter.JwtVerificationFilter@2baf2c6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@ce24a98, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@523cc8b4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2c226db0, org.springframework.security.web.session.SessionManagementFilter@13cfa1ec, org.springframework.security.web.access.ExceptionTranslationFilter@10014459, org.springframework.security.web.access.intercept.AuthorizationFilter@4baf3987]
+[31m[WARN ][0;39m [31m[2023-01-27 14:07:24][0;39m [32m[main][0;39m [35m[JpaBatchConfigurer:63][0;39m - JPA does not support custom isolation levels, so locks may not be taken when launching Jobs. To silence this warning, set 'spring.batch.jdbc.isolation-level-for-create' to 'default'.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:24][0;39m [32m[main][0;39m [35m[JobRepositoryFactoryBean:185][0;39m - No database type set, using meta data indicating: MYSQL
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:24][0;39m [32m[main][0;39m [35m[SimpleJobLauncher:215][0;39m - No TaskExecutor has been set, defaulting to synchronous executor.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[StdSchedulerFactory:1220][0;39m - Using default implementation for ThreadExecutor
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[SchedulerSignalerImpl:61][0;39m - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[QuartzScheduler:229][0;39m - Quartz Scheduler v.2.3.2 created.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[RAMJobStore:155][0;39m - RAMJobStore initialized.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[QuartzScheduler:294][0;39m - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[StdSchedulerFactory:1374][0;39m - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[StdSchedulerFactory:1378][0;39m - Quartz scheduler version: 2.3.2
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[QuartzScheduler:2293][0;39m - JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@77f43f3e
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[Http11NioProtocol:173][0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[TomcatWebServer:220][0;39m - Tomcat started on port(s): 8080 (http) with context path ''
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[SchedulerFactoryBean:729][0;39m - Starting Quartz Scheduler now
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[QuartzScheduler:547][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED started.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:25][0;39m [32m[main][0;39m [35m[ServerApplication:61][0;39m - Started ServerApplication in 9.749 seconds (JVM running for 10.919)
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:585][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[SchedulerFactoryBean:847][0;39m - Shutting down Quartz Scheduler
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:666][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:585][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:740][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[LocalContainerEntityManagerFactoryBean:651][0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[HikariDataSource:350][0;39m - HikariPool-1 - Shutdown initiated...
+[34m[INFO ][0;39m [31m[2023-01-27 14:07:46][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[HikariDataSource:352][0;39m - HikariPool-1 - Shutdown completed.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:40][0;39m [32m[background-preinit][0;39m [35m[Version:21][0;39m - HV000001: Hibernate Validator 6.2.5.Final
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:40][0;39m [32m[main][0;39m [35m[ServerApplication:55][0;39m - Starting ServerApplication using Java 11.0.17 on sojeong with PID 10348 (C:\Users\newst\Desktop\메인프로젝트\seb41_main_008\server\build\classes\java\main started by newst in C:\Users\newst\Desktop\메인프로젝트\seb41_main_008)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:40][0;39m [32m[main][0;39m [35m[ServerApplication:631][0;39m - No active profile set, falling back to 1 default profile: "default"
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:262][0;39m - Multiple Spring Data modules found, entering strict repository configuration mode
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:132][0;39m - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:201][0;39m - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:262][0;39m - Multiple Spring Data modules found, entering strict repository configuration mode
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:132][0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:201][0;39m - Finished Spring Data repository scanning in 133 ms. Found 14 JPA repository interfaces.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:262][0;39m - Multiple Spring Data modules found, entering strict repository configuration mode
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:132][0;39m - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.batch.repository.CoinRankingRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.batch.repository.RankingReaderRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.batch.repository.TimeRankingRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.cart.repository.CartItemRelRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.cart.repository.CartRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinHistoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinMemberRelRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinOrderRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.coin.repository.CoinRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.item.repository.ItemCollectionRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.item.repository.ItemCredentialRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.item.repository.ItemRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.member.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationExtensionSupport:349][0;39m - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.nfteam.server.transaction.repository.TransActionRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:41][0;39m [32m[main][0;39m [35m[RepositoryConfigurationDelegate:201][0;39m - Finished Spring Data repository scanning in 41 ms. Found 0 Redis repository interfaces.
+[31m[WARN ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[InstanceMetadataServiceResourceFetcher:105][0;39m - Fail to retrieve token 
+com.amazonaws.SdkClientException: Failed to connect to service endpoint: 
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:100)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.getToken(InstanceMetadataServiceResourceFetcher.java:91)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.readResource(InstanceMetadataServiceResourceFetcher.java:69)
+	at com.amazonaws.internal.EC2ResourceFetcher.readResource(EC2ResourceFetcher.java:66)
+	at com.amazonaws.util.EC2MetadataUtils.getItems(EC2MetadataUtils.java:402)
+	at com.amazonaws.util.EC2MetadataUtils.getData(EC2MetadataUtils.java:371)
+	at org.springframework.cloud.aws.context.support.env.AwsCloudEnvironmentCheckUtils.isRunningOnCloudEnvironment(AwsCloudEnvironmentCheckUtils.java:38)
+	at org.springframework.cloud.aws.context.annotation.OnAwsCloudEnvironmentCondition.matches(OnAwsCloudEnvironmentCondition.java:38)
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader$TrackedConditionEvaluator.shouldSkip(ConfigurationClassBeanDefinitionReader.java:489)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass(ConfigurationClassBeanDefinitionReader.java:140)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitions(ConfigurationClassBeanDefinitionReader.java:129)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:343)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.nfteam.server.ServerApplication.main(ServerApplication.java:18)
+Caused by: java.net.SocketException: Network is unreachable: connect
+	at java.base/java.net.PlainSocketImpl.waitForConnect(Native Method)
+	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:107)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:412)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:255)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:237)
+	at java.base/java.net.Socket.connect(Socket.java:615)
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:177)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:507)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:602)
+	at java.base/sun.net.www.http.HttpClient.<init>(HttpClient.java:275)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:374)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:395)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1258)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1237)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1086)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1020)
+	at com.amazonaws.internal.ConnectionUtils.connectToEndpoint(ConnectionUtils.java:52)
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:80)
+	... 24 common frames omitted
+[31m[WARN ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[EC2MetadataUtils:409][0;39m - Unable to retrieve the requested metadata (/latest/meta-data/instance-id). Failed to connect to service endpoint: 
+com.amazonaws.SdkClientException: Failed to connect to service endpoint: 
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:100)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.getToken(InstanceMetadataServiceResourceFetcher.java:91)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.readResource(InstanceMetadataServiceResourceFetcher.java:69)
+	at com.amazonaws.internal.EC2ResourceFetcher.readResource(EC2ResourceFetcher.java:66)
+	at com.amazonaws.util.EC2MetadataUtils.getItems(EC2MetadataUtils.java:402)
+	at com.amazonaws.util.EC2MetadataUtils.getData(EC2MetadataUtils.java:371)
+	at org.springframework.cloud.aws.context.support.env.AwsCloudEnvironmentCheckUtils.isRunningOnCloudEnvironment(AwsCloudEnvironmentCheckUtils.java:38)
+	at org.springframework.cloud.aws.context.annotation.OnAwsCloudEnvironmentCondition.matches(OnAwsCloudEnvironmentCondition.java:38)
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader$TrackedConditionEvaluator.shouldSkip(ConfigurationClassBeanDefinitionReader.java:489)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass(ConfigurationClassBeanDefinitionReader.java:140)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitions(ConfigurationClassBeanDefinitionReader.java:129)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:343)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.nfteam.server.ServerApplication.main(ServerApplication.java:18)
+Caused by: java.net.SocketException: Network is unreachable: connect
+	at java.base/java.net.PlainSocketImpl.waitForConnect(Native Method)
+	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:107)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:412)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:255)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:237)
+	at java.base/java.net.Socket.connect(Socket.java:615)
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:177)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:507)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:602)
+	at java.base/sun.net.www.http.HttpClient.<init>(HttpClient.java:275)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:374)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:395)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1258)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1237)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1086)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1020)
+	at com.amazonaws.internal.ConnectionUtils.connectToEndpoint(ConnectionUtils.java:52)
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:80)
+	... 24 common frames omitted
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[GenericScope:283][0;39m - BeanFactory id=290c3dc4-f0dd-3e5d-92fb-ab5d4532d287
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean '(inner bean)#2de6f1bc' of type [com.amazonaws.auth.BasicAWSCredentials] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean '(inner bean)#2ba42204' of type [com.amazonaws.auth.AWSStaticCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean '(inner bean)#4fba8eec' of type [com.amazonaws.auth.profile.ProfileCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean 'credentialsProvider' of type [org.springframework.cloud.aws.core.credentials.CredentialsProviderFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376][0;39m - Bean 'credentialsProvider' of type [com.amazonaws.auth.AWSCredentialsProviderChain] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[TomcatWebServer:108][0;39m - Tomcat initialized with port(s): 8080 (http)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[Http11NioProtocol:173][0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[StandardService:173][0;39m - Starting service [Tomcat]
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[StandardEngine:173][0;39m - Starting Servlet engine: [Apache Tomcat/9.0.70]
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[[/]:173][0;39m - Initializing Spring embedded WebApplicationContext
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:42][0;39m [32m[main][0;39m [35m[ServletWebServerApplicationContext:292][0;39m - Root WebApplicationContext: initialization completed in 2834 ms
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:43][0;39m [32m[main][0;39m [35m[HikariDataSource:110][0;39m - HikariPool-1 - Starting...
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:43][0;39m [32m[main][0;39m [35m[HikariDataSource:123][0;39m - HikariPool-1 - Start completed.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:43][0;39m [32m[main][0;39m [35m[LogHelper:31][0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:43][0;39m [32m[main][0;39m [35m[Version:44][0;39m - HHH000412: Hibernate ORM core version 5.6.14.Final
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:44][0;39m [32m[main][0;39m [35m[Version:56][0;39m - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:44][0;39m [32m[main][0;39m [35m[Dialect:175][0;39m - HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:44][0;39m [32m[main][0;39m [35m[JtaPlatformInitiator:52][0;39m - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:44][0;39m [32m[main][0;39m [35m[LocalContainerEntityManagerFactoryBean:437][0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[31m[WARN ][0;39m [31m[2023-01-27 14:21:46][0;39m [32m[main][0;39m [35m[JpaBaseConfiguration$JpaWebConfiguration:219][0;39m - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[DefaultSecurityFilterChain:55][0;39m - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@491afa9b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@147a8d7c, org.springframework.security.web.context.SecurityContextPersistenceFilter@230ea983, org.springframework.security.web.header.HeaderWriterFilter@5b6a9ef6, org.springframework.web.filter.CorsFilter@60bd11f7, org.springframework.security.web.authentication.logout.LogoutFilter@814b60b, com.nfteam.server.security.filter.JwtAuthenticationFilter@693f9ab5, com.nfteam.server.security.filter.JwtExceptionFilter@77ef7b2b, com.nfteam.server.security.filter.JwtVerificationFilter@373e09c7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3c72c488, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7441eed3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3f04847e, org.springframework.security.web.session.SessionManagementFilter@4cae7d5, org.springframework.security.web.access.ExceptionTranslationFilter@57f8a3cf, org.springframework.security.web.access.intercept.AuthorizationFilter@3ef97efc]
+[31m[WARN ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[JpaBatchConfigurer:63][0;39m - JPA does not support custom isolation levels, so locks may not be taken when launching Jobs. To silence this warning, set 'spring.batch.jdbc.isolation-level-for-create' to 'default'.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[JobRepositoryFactoryBean:185][0;39m - No database type set, using meta data indicating: MYSQL
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[SimpleJobLauncher:215][0;39m - No TaskExecutor has been set, defaulting to synchronous executor.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[StdSchedulerFactory:1220][0;39m - Using default implementation for ThreadExecutor
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[SchedulerSignalerImpl:61][0;39m - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[QuartzScheduler:229][0;39m - Quartz Scheduler v.2.3.2 created.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[RAMJobStore:155][0;39m - RAMJobStore initialized.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[QuartzScheduler:294][0;39m - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[StdSchedulerFactory:1374][0;39m - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[StdSchedulerFactory:1378][0;39m - Quartz scheduler version: 2.3.2
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[QuartzScheduler:2293][0;39m - JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@476d5f2e
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[Http11NioProtocol:173][0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:47][0;39m [32m[main][0;39m [35m[TomcatWebServer:220][0;39m - Tomcat started on port(s): 8080 (http) with context path ''
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:48][0;39m [32m[main][0;39m [35m[SchedulerFactoryBean:729][0;39m - Starting Quartz Scheduler now
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:48][0;39m [32m[main][0;39m [35m[QuartzScheduler:547][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED started.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:48][0;39m [32m[main][0;39m [35m[ServerApplication:61][0;39m - Started ServerApplication in 8.948 seconds (JVM running for 10.185)
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:585][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[SchedulerFactoryBean:847][0;39m - Shutting down Quartz Scheduler
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:666][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:585][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[QuartzScheduler:740][0;39m - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[LocalContainerEntityManagerFactoryBean:651][0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[HikariDataSource:350][0;39m - HikariPool-1 - Shutdown initiated...
+[34m[INFO ][0;39m [31m[2023-01-27 14:21:52][0;39m [32m[SpringApplicationShutdownHook][0;39m [35m[HikariDataSource:352][0;39m - HikariPool-1 - Shutdown completed.
