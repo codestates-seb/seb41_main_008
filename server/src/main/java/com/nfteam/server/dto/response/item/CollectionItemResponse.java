@@ -71,7 +71,7 @@ public class CollectionItemResponse implements Comparable<CollectionItemResponse
                 .build();
     }
 
-    // 판매상품 -> 미판매 상품 순
+    // 판매 상품 -> 미판매 상품 순
     // 낮은 가격 -> 높은 가격 순
     @Override
     public int compareTo(CollectionItemResponse o) {

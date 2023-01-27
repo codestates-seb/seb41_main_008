@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class MemberCoinResponse implements Comparable<MemberCoinResponse>{
+public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
 
     private Long memberId;
     private String nickname;
@@ -27,7 +27,7 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse>{
         this.coinCount = coinCount;
     }
 
-    public static MemberCoinResponse of(CoinMemberRel rel){
+    public static MemberCoinResponse of(CoinMemberRel rel) {
         return MemberCoinResponse.builder()
                 .memberId(rel.getMember().getMemberId())
                 .nickname(rel.getMember().getNickname())
