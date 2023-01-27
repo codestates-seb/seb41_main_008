@@ -6,7 +6,7 @@ import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-import { setOpen } from 'store/toastSlice';
+import { setCreateItemOpen } from 'store/toastSlice';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
 import {
@@ -64,27 +64,25 @@ export default function CreateItem({
     error: err,
     data,
   } = useQuery<Collection[]>({
-    queryKey: ['myCollections'],
-    queryFn: async () => {
-      const res = await customAxios.get('/api/members/mypage');
-      return res.data.collections;
-    },
+    queryKey: ['members', 'mypage'],
+    queryFn: () =>
+      customAxios
+        .get('/api/members/mypage')
+        .then((res) => res.data.collections),
   });
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (item: ItemInfo) => {
-      const res = await customAxios.post('/api/items', item);
-      return res.data;
-    },
+    mutationFn: (item: ItemInfo) =>
+      customAxios.post('/api/items', item).then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['items']);
+      queryClient.invalidateQueries(['items'], { exact: true });
       setItem(data);
     },
   });
 
   const onSubmit = async (data: Inputs) => {
-    dispatch(setOpen(true));
+    dispatch(setCreateItemOpen(true));
 
     if (itemFile) {
       mutate({

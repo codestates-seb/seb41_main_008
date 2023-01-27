@@ -45,15 +45,12 @@ export default function ProfileBanner({
   const queryClient = useQueryClient();
 
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (file: FormData) => {
-      const res = await customAxios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        file
-      );
-      return res.data;
-    },
+    mutationFn: (file: FormData) =>
+      customAxios
+        .post(`${process.env.REACT_APP_API_URL}/images`, file)
+        .then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['images']);
+      queryClient.invalidateQueries(['images'], { exact: true });
       setBannerName(data.imageName);
     },
   });
@@ -90,7 +87,12 @@ export default function ProfileBanner({
 
       <div className="group relative mt-3 w-full h-60 rounded-xl cursor-pointer">
         <img
-          src={profileBanner}
+          src={
+            profileBanner?.slice(0, 8) === 'https://' ||
+            profileBanner?.slice(0, 4) === 'data'
+              ? profileBanner
+              : process.env.REACT_APP_IMAGE + profileBanner
+          }
           alt="Profile banner"
           role="presentation"
           className="h-full w-full rounded-xl object-cover cursor-pointer absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
