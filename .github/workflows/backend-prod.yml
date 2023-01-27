@@ -5,11 +5,12 @@
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: 백엔드 운영서버 배포 자동화
+name: 백엔드 운영 서버 배포 자동화
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "prod" ]
+    paths: 'server/**'
 
 defaults:
   run:
@@ -19,8 +20,8 @@ env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: nfteam-008
   PROJECT_NAME: server
-  CODE_DEPLOY_APPLICATION_NAME: nfteam-prod
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: nfteam-prod-group
+  CODE_DEPLOY_APPLICATION_NAME: nfteam008
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: nfteam008-group
 
 jobs:
   build:

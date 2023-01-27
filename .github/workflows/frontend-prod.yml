@@ -1,0 +1,57 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: 프론트엔드 운영서버 배포 자동화
+
+on:
+  push:
+    branches: [ "prod" ]
+    paths: 'client/**'
+
+defaults:
+  run:
+    working-directory: client
+
+env:
+  AWS_REGION: ap-northeast-2
+  S3_BUCKET_NAME: www.nfteam008.com
+  PROJECT_NAME: client
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+    steps:
+      - name: Checkout source code.   # 레포지토리 체크아웃
+        uses: actions/checkout@master
+
+      - name: Cache node modules      # node modules 캐싱
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ env.working-directory }}
+
+      - name: build
+        run: npm run build
+        working-directory: ${{ env.working-directory }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./ s3://$S3_BUCKET_NAME/$PROJECT_NAME/
