@@ -3,6 +3,8 @@ package com.nfteam.server.transaction.service;
 import com.nfteam.server.cart.entity.Cart;
 import com.nfteam.server.cart.repository.CartRepository;
 import com.nfteam.server.coin.entity.Coin;
+import com.nfteam.server.coin.entity.CoinMemberRel;
+import com.nfteam.server.coin.repository.CoinMemberRelRepository;
 import com.nfteam.server.coin.repository.CoinRepository;
 import com.nfteam.server.common.utils.CredentialEncryptUtils;
 import com.nfteam.server.dto.request.transaction.TransActionCreateRequest;
@@ -37,6 +39,7 @@ public class TransActionService {
     private final CartRepository cartRepository;
     private final CoinRepository coinRepository;
     private final TransActionRepository transActionRepository;
+    private final CoinMemberRelRepository coinMemberRelRepository;
 
     private final CredentialEncryptUtils credentialEncryptUtils;
 
@@ -45,12 +48,14 @@ public class TransActionService {
                               CartRepository cartRepository,
                               CoinRepository coinRepository,
                               TransActionRepository transActionRepository,
+                              CoinMemberRelRepository coinMemberRelRepository,
                               CredentialEncryptUtils credentialEncryptUtils) {
         this.itemRepository = itemRepository;
         this.memberRepository = memberRepository;
         this.cartRepository = cartRepository;
         this.coinRepository = coinRepository;
         this.transActionRepository = transActionRepository;
+        this.coinMemberRelRepository = coinMemberRelRepository;
         this.credentialEncryptUtils = credentialEncryptUtils;
     }
 
@@ -134,11 +139,12 @@ public class TransActionService {
 
         // itemCredential 거래내역 기록
         recordNewTransHistory(seller, buyer, item, coin, transPrice);
+        // 코인 이동
+        transferCoin(buyer, seller, item.getItemPrice(), coin);
         // item 소유자 변경
         item.assignMember(buyer);
         // item 판매 불가 변경
         item.updateSaleStatus(false);
-        // todo : 구매자 -> 판매자 코인 이동
 
         return TransAction.builder()
                 .seller(seller)
@@ -193,6 +199,21 @@ public class TransActionService {
 
         item.getItemCredential().addNewTransEncryptionRecord(
                 credentialEncryptUtils.encryptRecordByAES256(record.toString()));
+    }
+
+    private void transferCoin(Member buyer, Member seller, Double itemPrice, Coin coin) {
+        // 구매자에게서 코인 감소
+        CoinMemberRel buyerCoinMemberRel = coinMemberRelRepository.findByMemberAndCoin(buyer, coin)
+                .orElseThrow(() -> new TransRecordNotValidException("구매 코인이 부족합니다."));
+        if (buyerCoinMemberRel.getCoinCount() - itemPrice < 0) throw new TransRecordNotValidException("구매 코인이 부족합니다.");
+        buyerCoinMemberRel.minusCoinCount(itemPrice);
+
+        // 판매자에게 10퍼센트 수수료를 제외한 코인 송금
+        CoinMemberRel sellerCoinMemberRel = coinMemberRelRepository.findByMemberAndCoin(seller, coin).orElse(new CoinMemberRel(coin, seller));
+        sellerCoinMemberRel.addCoinCount(itemPrice * 0.9);
+
+        // 판매자의 경우 해당 코인이 없을 경우 신규 Entity 가 되므로 저장
+        coinMemberRelRepository.save(sellerCoinMemberRel);
     }
 
 }
