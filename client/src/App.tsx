@@ -3,13 +3,14 @@ import LoginPage from '../src/pages/LoginPage';
 import SignupPage from '../src/pages/SignupPage';
 import MainPage from '../src/pages/MainPage';
 import MainLayout from '../src/components/Layout/MainLayout';
-import MyCollectionPage from 'pages/MyCollectionPage';
-import CreateCollectionPage from 'pages/CreateCollectionPage';
-import MissingPage from 'components/MissingPage/MissingPage';
+import MissingPage from 'pages/MissingPage';
 import CollectionDetails from 'pages/CollectionDetails';
 import ItemDetailPage from 'pages/ItemDetailPage';
 import AccountPage from 'pages/AccountPage';
 import CreateItemPage from 'pages/CreateItemPage';
+import MyCollection from 'pages/MyCollection';
+import CreateCollectionPage from 'pages/CreateCollectionPage';
+import ProfilePage from 'pages/ProfilePage';
 
 function App() {
   return (
@@ -18,16 +19,21 @@ function App() {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<MainPage />} />
-            <Route path="/collections" element={<MyCollectionPage />} />
+            <Route path="/collections" element={<MyCollection />} />
             <Route
               path="/collection/create"
               element={<CreateCollectionPage />}
             />
             <Route path="collection/:id" element={<CollectionDetails />} />
             <Route path="asset/create" element={<CreateItemPage />} />
-            <Route path="*" element={<MissingPage />} />
-            <Route path="/account/:memberId" element={<AccountPage />} />
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
+            <Route path="/account/:memberId" element={<AccountPage />} />
+            <Route
+              path="/account/:memberId/profile"
+              element={<ProfilePage />}
+            />
+
+            <Route path="*" element={<MissingPage />} />
           </Route>
 
           <Route path="login" element={<LoginPage />} />

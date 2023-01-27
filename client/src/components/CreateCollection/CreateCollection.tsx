@@ -5,22 +5,22 @@ import { RxCross2 } from 'react-icons/rx';
 import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
 import customAxios from 'utils/api/axios';
 import { setOpen } from 'store/toastSlice';
-import Modal from 'components/Dialog/Modal';
+import Modal from './CollectionModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-interface Inputs {
+export interface Inputs {
   name: string;
   description: string;
 }
 
-interface Blockchain {
+export interface Blockchain {
   name: string;
   id: number;
 }
 
-interface Collection {
+export interface SuccessResponse {
   status: string;
   id: number;
 }
@@ -30,28 +30,36 @@ interface Props {
   setSelectedCoin: React.Dispatch<React.SetStateAction<Blockchain | null>>;
   logoFile: File | null;
   bannerFile: File | null;
+  logoName: string;
+  bannerName: string;
 }
 
-const schema = yup.object({
-  name: yup.string().required('This field is required.'),
-  description: yup.string().required('This field is required.'),
-});
+interface ColInfo {
+  coinId: number | undefined;
+  name: string;
+  description: string;
+  logoImgName: string;
+  bannerImgName: string;
+}
 
 export default function CreateCollection({
   selectedCoin,
   setSelectedCoin,
   logoFile,
   bannerFile,
+  logoName,
+  bannerName,
 }: Props) {
   const dispatch = useAppDispatch();
-
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [logoName, setLogoName] = useState('');
-  const [bannerName, setBannerName] = useState('');
-  const [collection, setCollection] = useState<Collection>();
-
+  const [collection, setCollection] = useState<SuccessResponse>();
   const navigate = useNavigate();
+
+  const schema = yup.object({
+    name: yup.string().required('This field is required.'),
+    description: yup.string().required('This field is required.'),
+  });
 
   const {
     register,
@@ -61,59 +69,29 @@ export default function CreateCollection({
     resolver: yupResolver(schema),
   });
 
-  const uploadLogo = async () => {
-    const formData = new FormData();
-    formData.append('file', logoFile!);
-
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        formData
-      );
-      setLogoName(res.data.imageName);
-    } catch (error) {
-      const err = error as AxiosError;
-      console.log(err);
-    }
-  };
-
-  const uploadBanner = async () => {
-    const formData = new FormData();
-    formData.append('file', bannerFile!);
-
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        formData
-      );
-      setBannerName(res.data.imageName);
-    } catch (error) {
-      const err = error as AxiosError;
-      console.log(err);
-    }
-  };
+  const queryClient = useQueryClient();
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: async (col: ColInfo) => {
+      const res = await customAxios.post('/api/collections', col);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['collections']);
+      setCollection(data);
+    },
+  });
 
   const onSubmit = async (data: Inputs) => {
     dispatch(setOpen(true));
 
     if (logoFile && bannerFile) {
-      uploadLogo();
-      uploadBanner();
-
-      try {
-        const res = await customAxios.post('/api/collections', {
-          coinId: selectedCoin?.id,
-          name: data.name,
-          description: data.description,
-          logoImgName: logoName,
-          bannerImgName: bannerName,
-        });
-
-        setCollection(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
+      mutate({
+        coinId: selectedCoin?.id,
+        name: data.name,
+        description: data.description,
+        logoImgName: logoName,
+        bannerImgName: bannerName,
+      });
     }
   };
 
@@ -126,7 +104,7 @@ export default function CreateCollection({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="text-center w-full space-y-3"
+      className="text-center w-full space-y-10"
     >
       <div className="space-y-3">
         <label htmlFor="name" className="mx-auto font-bold text-lg">
@@ -189,7 +167,7 @@ export default function CreateCollection({
         )}
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-10">
         <Modal selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} />
         <input
           type="submit"
@@ -197,6 +175,18 @@ export default function CreateCollection({
           value="Create"
           disabled={!logoFile || !bannerFile || !selectedCoin}
         />
+        {isLoading ? (
+          <h5
+            className="
+        font-bold text-gray-500"
+          >
+            Creating a collection...
+          </h5>
+        ) : error instanceof Error ? (
+          <p className="text-red-500 font-semibold mt-3">
+            An error occurred: {error.message}
+          </p>
+        ) : null}
       </div>
     </form>
   );

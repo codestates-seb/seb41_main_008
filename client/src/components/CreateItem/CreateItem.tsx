@@ -5,22 +5,33 @@ import { RxCross2 } from 'react-icons/rx';
 import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
 import customAxios from 'utils/api/axios';
 import { setOpen } from 'store/toastSlice';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import ItemModal from './ItemModal';
+import {
+  Inputs,
+  SuccessResponse,
+} from 'components/CreateCollection/CreateCollection';
 
-interface Inputs {
-  name: string;
-  description: string;
+export interface Collection {
+  collectionName: string;
+  collectionId: number;
+  logoImgName: string;
 }
 
 interface Image {
   itemFile: File | null;
+  itemName: string;
+  selectedCol: Collection | undefined;
+  setSelectedCol: React.Dispatch<React.SetStateAction<Collection | undefined>>;
 }
 
-interface Item {
-  status: string;
-  id: number;
+interface ItemInfo {
+  itemCollectionId: number | undefined;
+  itemName: string;
+  itemDescription: string;
+  itemImgName: string;
 }
 
 const schema = yup.object({
@@ -28,14 +39,16 @@ const schema = yup.object({
   description: yup.string().required('This field is required.'),
 });
 
-export default function CreateCollection({ itemFile }: Image) {
+export default function CreateItem({
+  itemFile,
+  itemName,
+  selectedCol,
+  setSelectedCol,
+}: Image) {
   const dispatch = useAppDispatch();
-
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [itemName, setItemName] = useState('');
-  const [item, setItem] = useState<Item>();
-
+  const [item, setItem] = useState<SuccessResponse>();
   const navigate = useNavigate();
 
   const {
@@ -46,56 +59,53 @@ export default function CreateCollection({ itemFile }: Image) {
     resolver: yupResolver(schema),
   });
 
-  const uploadItemImage = async () => {
-    const formData = new FormData();
-    formData.append('file', itemFile!);
+  const {
+    isLoading: loading,
+    error: err,
+    data,
+  } = useQuery<Collection[]>({
+    queryKey: ['myCollections'],
+    queryFn: async () => {
+      const res = await customAxios.get('/api/members/mypage');
+      return res.data.collections;
+    },
+  });
 
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        formData
-      );
-      setItemName(res.data.imageName);
-    } catch (error) {
-      const err = error as AxiosError;
-      console.log(err);
-    }
-  };
+  const queryClient = useQueryClient();
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: async (item: ItemInfo) => {
+      const res = await customAxios.post('/api/items', item);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['items']);
+      setItem(data);
+    },
+  });
 
   const onSubmit = async (data: Inputs) => {
     dispatch(setOpen(true));
 
     if (itemFile) {
-      uploadItemImage();
-
-      try {
-        const res = await customAxios.post('/api/items', {
-          // itemCollectionId: number;
-          itemName: data.name,
-          itemDescription: data.description,
-          itemImgName: itemName,
-          onSale: true,
-          // itemPrice: number
-        });
-
-        setItem(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
+      mutate({
+        itemCollectionId: selectedCol?.collectionId,
+        itemName: data.name,
+        itemDescription: data.description,
+        itemImgName: itemName,
+      });
     }
   };
 
   useEffect(() => {
     if (item) {
-      navigate(`/assets/${item.id}`);
+      navigate(`/items/${item.id}`);
     }
   }, [item, navigate]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="text-center w-full space-y-3"
+      className="text-center w-full space-y-10"
     >
       <div className="space-y-3">
         <label htmlFor="name" className="mx-auto font-bold text-lg">
@@ -159,12 +169,32 @@ export default function CreateCollection({ itemFile }: Image) {
         )}
       </div>
 
+      <ItemModal
+        isLoading={loading}
+        error={err instanceof Error ? err : null}
+        collections={data}
+        selectedCol={selectedCol}
+        setSelectedCol={setSelectedCol}
+      />
+
       <input
         type="submit"
         className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
         value="Create"
-        disabled={!itemFile}
+        disabled={!itemFile || !selectedCol}
       />
+      {isLoading ? (
+        <h5
+          className="
+        font-bold text-gray-500"
+        >
+          Creating an item...
+        </h5>
+      ) : error instanceof Error ? (
+        <p className="text-red-500 font-semibold mt-3">
+          An error occurred: {error.message}
+        </p>
+      ) : null}
     </form>
   );
 }

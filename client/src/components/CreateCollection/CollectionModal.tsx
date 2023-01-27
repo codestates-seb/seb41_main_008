@@ -1,19 +1,19 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import RadioButtons from 'components/RadioGroup/RadioButtons';
+
 import { useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
-
-interface Blockchain {
-  name: string;
-  id: number;
-}
+import RadioButtons from './RadioButtons';
+import { Blockchain } from './CreateCollection';
 
 interface Props {
   selectedCoin: Blockchain | null;
   setSelectedCoin: React.Dispatch<React.SetStateAction<Blockchain | null>>;
 }
 
-export default function Modal({ selectedCoin, setSelectedCoin }: Props) {
+export default function CollectionModal({
+  selectedCoin,
+  setSelectedCoin,
+}: Props) {
   const [coin, setCoin] = useState<Blockchain | null>(null);
 
   return (
@@ -21,7 +21,7 @@ export default function Modal({ selectedCoin, setSelectedCoin }: Props) {
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <button className="btn">
-            {selectedCoin?.name ? selectedCoin?.name : 'Select a blockdchain'}
+            {selectedCoin?.name ? selectedCoin?.name : 'Select a blockchain'}
           </button>
         </Dialog.Trigger>
         <Dialog.Portal>
