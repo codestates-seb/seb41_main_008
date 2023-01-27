@@ -7,7 +7,6 @@ import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.item.service.ItemService;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/items")
 public class ItemController {
 
     private final ItemService itemService;
+
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @PostMapping
     public ResponseEntity<SingleIdResponse> create(@RequestBody @Valid ItemCreateRequest itemCreateRequest,

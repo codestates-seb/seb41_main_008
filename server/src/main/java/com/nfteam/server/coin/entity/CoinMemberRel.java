@@ -32,10 +32,10 @@ public class CoinMemberRel extends BaseEntity {
     }
 
     @Builder
-    public CoinMemberRel(Coin coin, Member member, Double coinCount) {
+    public CoinMemberRel(Coin coin, Member member) {
         this.coin = coin;
         this.member = member;
-        this.coinCount = coinCount;
+        this.coinCount = 0.0;
     }
 
     public void addCoinCount(Double cnt) {

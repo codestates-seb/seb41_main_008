@@ -3,6 +3,7 @@ package com.nfteam.server.member.entity;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum MemberPlatform {
+
     HOME("HOME"),
     KAKAO("KAKAO"),
     NAVER("NAVER"),

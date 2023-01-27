@@ -5,7 +5,6 @@ import com.nfteam.server.batch.repository.RankingReaderRepository;
 import com.nfteam.server.batch.writer.CoinRankingWriter;
 import com.nfteam.server.coin.entity.CoinType;
 import com.nfteam.server.transaction.entity.TransAction;
-import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.*;
@@ -21,14 +20,24 @@ import java.util.Collections;
 
 @Configuration
 @EnableBatchProcessing
-@RequiredArgsConstructor
 public class TransActionSOLReaderJobConfiguration {
 
     private static final int chunkSize = 50;
+
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final RankingReaderRepository rankingReaderRepository;
     private final CoinRankingWriter coinRankingWriter;
+
+    public TransActionSOLReaderJobConfiguration(JobBuilderFactory jobBuilderFactory,
+                                                StepBuilderFactory stepBuilderFactory,
+                                                RankingReaderRepository rankingReaderRepository,
+                                                CoinRankingWriter coinRankingWriter) {
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.rankingReaderRepository = rankingReaderRepository;
+        this.coinRankingWriter = coinRankingWriter;
+    }
 
     @Bean
     public Job rankingSOLReaderJob() throws Exception {

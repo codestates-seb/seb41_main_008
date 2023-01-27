@@ -22,7 +22,6 @@ import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.transaction.entity.TransAction;
 import com.nfteam.server.transaction.repository.TransActionRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TransActionService {
 
@@ -39,7 +37,22 @@ public class TransActionService {
     private final CartRepository cartRepository;
     private final CoinRepository coinRepository;
     private final TransActionRepository transActionRepository;
+
     private final CredentialEncryptUtils credentialEncryptUtils;
+
+    public TransActionService(ItemRepository itemRepository,
+                              MemberRepository memberRepository,
+                              CartRepository cartRepository,
+                              CoinRepository coinRepository,
+                              TransActionRepository transActionRepository,
+                              CredentialEncryptUtils credentialEncryptUtils) {
+        this.itemRepository = itemRepository;
+        this.memberRepository = memberRepository;
+        this.cartRepository = cartRepository;
+        this.coinRepository = coinRepository;
+        this.transActionRepository = transActionRepository;
+        this.credentialEncryptUtils = credentialEncryptUtils;
+    }
 
     @Transactional
     public CartResponse savePurchaseRecord(TransActionCreateRequest request, MemberDetails memberDetails) {

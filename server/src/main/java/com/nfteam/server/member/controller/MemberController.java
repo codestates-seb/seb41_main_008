@@ -12,7 +12,7 @@ import com.nfteam.server.item.service.ItemService;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.service.MemberService;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,14 +22,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/members")
-@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
     private final ItemService itemService;
     private final CollectionService collectionService;
+
+    public MemberController(MemberService memberService, ItemService itemService, CollectionService collectionService) {
+        this.memberService = memberService;
+        this.itemService = itemService;
+        this.collectionService = collectionService;
+    }
 
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberCreateRequest memberCreateRequest) {

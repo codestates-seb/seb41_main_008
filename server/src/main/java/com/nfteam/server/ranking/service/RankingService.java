@@ -7,7 +7,6 @@ import com.nfteam.server.exception.ranking.RankTimeCriteriaNotValidException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.ranking.repository.QRankingRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RankingService {
 
     private final QRankingRepository qRankingRepository;
     private final ItemRepository itemRepository;
+
+    public RankingService(QRankingRepository qRankingRepository, ItemRepository itemRepository) {
+        this.qRankingRepository = qRankingRepository;
+        this.itemRepository = itemRepository;
+    }
 
     @Cacheable("timeRanking")
     public List<RankingResponse> getTimeRanking(String time) {

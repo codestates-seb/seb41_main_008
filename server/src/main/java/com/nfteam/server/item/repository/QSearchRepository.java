@@ -8,7 +8,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +20,13 @@ import static com.nfteam.server.item.entity.QItem.item;
 import static com.nfteam.server.item.entity.QItemCollection.itemCollection;
 
 @Repository
-@RequiredArgsConstructor
 public class QSearchRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    public QSearchRepository(JPAQueryFactory jpaQueryFactory) {
+        this.jpaQueryFactory = jpaQueryFactory;
+    }
 
     public List<SearchCollectionResponse> searchCollectionWithKeyword(String keyword) {
         return jpaQueryFactory

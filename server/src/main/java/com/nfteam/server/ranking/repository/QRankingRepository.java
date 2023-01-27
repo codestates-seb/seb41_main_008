@@ -4,7 +4,6 @@ import com.nfteam.server.dto.response.ranking.RankingResponse;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import static com.nfteam.server.batch.entity.QCoinRankingEntity.coinRankingEntity;
@@ -12,10 +11,13 @@ import static com.nfteam.server.batch.entity.QTimeRankingEntity.timeRankingEntit
 import static com.nfteam.server.item.entity.QItemCollection.itemCollection;
 
 @Repository
-@RequiredArgsConstructor
 public class QRankingRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    public QRankingRepository(JPAQueryFactory jpaQueryFactory) {
+        this.jpaQueryFactory = jpaQueryFactory;
+    }
 
     public String getTimeRankString(String timeCriteria) {
         return jpaQueryFactory

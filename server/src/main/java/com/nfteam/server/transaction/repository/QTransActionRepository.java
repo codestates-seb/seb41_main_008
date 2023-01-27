@@ -4,7 +4,6 @@ import com.nfteam.server.dto.response.item.ItemTradeHistoryResponse;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,10 +11,13 @@ import java.util.List;
 import static com.nfteam.server.transaction.entity.QTransAction.transAction;
 
 @Repository
-@RequiredArgsConstructor
 public class QTransActionRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    public QTransActionRepository(JPAQueryFactory jpaQueryFactory) {
+        this.jpaQueryFactory = jpaQueryFactory;
+    }
 
     public List<ItemTradeHistoryResponse> findHistory(Long itemId) {
         return jpaQueryFactory

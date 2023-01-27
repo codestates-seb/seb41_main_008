@@ -6,21 +6,26 @@ import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
+import com.nfteam.server.member.entity.MemberStatus;
 import com.nfteam.server.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     public Long createMember(MemberCreateRequest memberCreateRequest) {
@@ -75,6 +80,12 @@ public class MemberService {
     public void deleteMember(Long memberId, String email) {
         Member findMember = findVerifiedMember(memberId, email);
         findMember.updateMemberStatusQuit();
+    }
+
+    @Transactional
+    public void updateMemberStatus() {
+        LocalDateTime localDateTimeBefore = LocalDateTime.now().minusMonths(6);
+        memberRepository.updateSleepStatus(localDateTimeBefore, MemberStatus.MEMBER_SLEEP);
     }
 
 }
