@@ -16,7 +16,7 @@ public class LoginResponse {
     private String role;
     private String lastLoginTime;
     private String profileImageName;
-    private CartResponse cart;
+    private Long cartId;
 
     @Builder
     public LoginResponse(Long id,
@@ -41,8 +41,12 @@ public class LoginResponse {
                 .build();
     }
 
+    /**
+     * 기존 방향 : 카트 아이디 + 아이템 리스트를 로그인 Response 추가 => 추 후 다시 이 방향으로 확장 예정
+     * 현재 임시 변경된 방향 : 카트 아이디만 리턴
+     */
     public void addCart(CartResponse cart) {
-        this.cart = cart;
+        this.cartId = cart.getCartId();
     }
 
 }
