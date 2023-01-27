@@ -23,7 +23,6 @@ import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.transaction.repository.QTransActionRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -35,19 +34,34 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ItemService {
 
-    private final ItemCollectionRepository collectionRepository;
     private final ItemRepository itemRepository;
+    private final ItemCredentialRepository itemCredentialRepository;
+    private final ItemCollectionRepository collectionRepository;
     private final MemberRepository memberRepository;
 
     private final QItemRepository qItemRepository;
     private final QTransActionRepository qTransActionRepository;
 
     private final CredentialEncryptUtils credentialEncryptUtils;
-    private final ItemCredentialRepository itemCredentialRepository;
+
+    public ItemService(ItemRepository itemRepository,
+                       ItemCredentialRepository itemCredentialRepository,
+                       ItemCollectionRepository collectionRepository,
+                       MemberRepository memberRepository,
+                       QItemRepository qItemRepository,
+                       QTransActionRepository qTransActionRepository,
+                       CredentialEncryptUtils credentialEncryptUtils) {
+        this.itemRepository = itemRepository;
+        this.itemCredentialRepository = itemCredentialRepository;
+        this.collectionRepository = collectionRepository;
+        this.memberRepository = memberRepository;
+        this.qItemRepository = qItemRepository;
+        this.qTransActionRepository = qTransActionRepository;
+        this.credentialEncryptUtils = credentialEncryptUtils;
+    }
 
     @Transactional
     public Long save(ItemCreateRequest itemCreateRequest, MemberDetails memberDetails) throws Exception {
@@ -64,7 +78,7 @@ public class ItemService {
         // 컬렉션 주인과 아이템 신규 생성자 정보 일치 조회
         validateCollectionAndItem(itemCollection.getMember(), item.getMember());
 
-        // 아이템 크레덴셜 신규 기록
+        // 아이템 크레덴셜 신규 기록 및 지정
         ItemCredential itemCredential = new ItemCredential(UUID.randomUUID().toString(),
                 "," + makeNewCredentialRecord(item, itemCollection.getCoin()));
         itemCredentialRepository.save(itemCredential);

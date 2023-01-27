@@ -69,7 +69,6 @@ public class ItemCollection extends BaseEntity {
         initImageInfo(logoImgName, bannerImgName);
     }
 
-    // todo : 컬렉션 기본 이미지 세팅하기
     private void initImageInfo(String logoImgName, String bannerImgName) {
         if (StringUtils.isEmpty(logoImgName)) {
             this.logoImgName = "col_default_logo";
