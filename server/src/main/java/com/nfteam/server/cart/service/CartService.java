@@ -7,9 +7,9 @@ import com.nfteam.server.cart.repository.CartRepository;
 import com.nfteam.server.dto.request.cart.CartPurchaseRequest;
 import com.nfteam.server.dto.response.cart.CartResponse;
 import com.nfteam.server.exception.cart.CartExistException;
+import com.nfteam.server.exception.cart.CartItemNotSaleException;
 import com.nfteam.server.exception.cart.CartNotFoundException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
-import com.nfteam.server.exception.item.ItemNotOnSaleException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.transaction.TransRecordNotValidException;
 import com.nfteam.server.item.entity.Item;
@@ -21,6 +21,7 @@ import com.nfteam.server.security.userdetails.MemberDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -133,9 +134,21 @@ public class CartService {
     }
 
     private void checkItemSaleStatus(List<Item> items) {
+        List<Long> notSaleList = new ArrayList<>();
+
         items.stream().forEach(i -> {
-            if (!i.getOnSale()) throw new ItemNotOnSaleException(i.getItemId());
+            if (!i.getOnSale()) notSaleList.add(i.getItemId());
         });
+
+        // 판매 불가능한 상품이 섞여있을 경우 해당 아이디 리스트를 에러메시지로 반환
+        if (!notSaleList.isEmpty()) {
+            StringBuilder message = new StringBuilder();
+            notSaleList.stream().forEach(id -> {
+                message.append(id).append(",");
+            });
+            message.deleteCharAt(message.lastIndexOf(","));
+            throw new CartItemNotSaleException(message.toString());
+        }
     }
 
     private Cart findCart(Long cartId) {
