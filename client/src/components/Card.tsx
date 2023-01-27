@@ -80,7 +80,7 @@ const Card = ({
             <div>{itemDescription}</div>
             <div>{collectionName}</div>
             <div className="flex">
-              <span className="mr-2">{itemPrice}</span>
+              {onSale && <span className="mr-2">{itemPrice}</span>}
               <span>{filter === 'Collected' && coinName}</span>
             </div>
           </div>
