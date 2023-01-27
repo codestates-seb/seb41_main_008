@@ -7,12 +7,14 @@ interface ModalState {
   sellOpen: boolean;
   paymentOpen: boolean;
   walletOpen: boolean;
+  buyCoinOpen: boolean;
 }
 const initialState = {
   isOpen: false,
   sellOpen: false,
   paymentOpen: false,
   walletOpen: false,
+  buyCoinOpen: false,
   itemId: 0,
 } as ModalState;
 
@@ -45,6 +47,12 @@ const modalSlice = createSlice({
     closeWallet: (state) => {
       state.walletOpen = false;
     },
+    openBuyCoin: (state) => {
+      state.buyCoinOpen = true;
+    },
+    closeBuyCoin: (state) => {
+      state.buyCoinOpen = false;
+    },
   },
 });
 export const {
@@ -56,6 +64,8 @@ export const {
   closePayment,
   openWallet,
   closeWallet,
+  openBuyCoin,
+  closeBuyCoin,
 } = modalSlice.actions;
 export const viewModal = (state: RootState) => state.modal;
 export default modalSlice.reducer;

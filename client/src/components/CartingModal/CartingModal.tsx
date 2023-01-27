@@ -26,7 +26,7 @@ export const ModalBack = styled.div<ModalBackProps>`
   width: 100%;
   height: 100%;
   margin: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: ${(props) => (props.zIndex ? props.zIndex : '10')}
     /**숫자로 props를 받아보자 */;
 `;
