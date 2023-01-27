@@ -7,7 +7,6 @@ import com.nfteam.server.coin.repository.CoinRepository;
 import com.nfteam.server.coin.utils.UpbitEachWithdrawFee;
 import com.nfteam.server.coin.utils.UpbitFeeFeignClient;
 import com.nfteam.server.exception.coin.CoinNotFoundException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,21 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class CoinFeeService {
 
     private static final List<String> COIN = List.of("SOL", "BTC", "DOGE", "ETH", "ETC");
+
     private final UpbitFeeFeignClient upbitFeeFeignClient;
     private final CoinRepository coinRepository;
     private final CoinHistoryRepository coinHistoryRepository;
+
+    public CoinFeeService(UpbitFeeFeignClient upbitFeeFeignClient,
+                          CoinRepository coinRepository,
+                          CoinHistoryRepository coinHistoryRepository) {
+        this.upbitFeeFeignClient = upbitFeeFeignClient;
+        this.coinRepository = coinRepository;
+        this.coinHistoryRepository = coinHistoryRepository;
+    }
 
     // 매 주 일요일 오전 7시 수수료 기록 갱신
     @Scheduled(cron = "0 0 7 ? * SUN")
@@ -65,7 +72,7 @@ public class CoinFeeService {
                 );
     }
 
-    public void updateCoinFee(Map<String, Double> result, List<String> coinList) throws Exception {
+    public void updateCoinFee(Map<String, Double> result, List<String> coinList) {
         for (String coinName : coinList) {
             Coin coin = findCoinByName(coinName);
             coin.changeWithdrawFee(result.get(coinName));

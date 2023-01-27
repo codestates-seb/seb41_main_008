@@ -25,7 +25,7 @@ public class Cart extends BaseEntity {
     // true 이전에 거래 완료된 카트 (결제 완료)
     // false 현재 활성화 카트 (아직 결제 전)
     @Column(name = "payment_yn", nullable = false)
-    private Boolean paymentYn = false;
+    private Boolean paymentYn;
 
     // 장바구니 아이템 리스트
     @OneToMany(mappedBy = "cart")

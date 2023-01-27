@@ -17,7 +17,6 @@ import com.nfteam.server.item.repository.ItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +24,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CollectionService {
 
     private final ItemCollectionRepository itemCollectionRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+
+    public CollectionService(ItemCollectionRepository itemCollectionRepository,
+                             ItemRepository itemRepository,
+                             MemberRepository memberRepository) {
+        this.itemCollectionRepository = itemCollectionRepository;
+        this.itemRepository = itemRepository;
+        this.memberRepository = memberRepository;
+    }
 
     @Transactional
     public Long save(CollectionCreateRequest request, MemberDetails memberDetails) {
@@ -52,7 +58,6 @@ public class CollectionService {
         ItemCollection itemCollection = getCollectionById(collectionId);
         checkValidAuth(itemCollection.getMember().getEmail(), memberDetails.getEmail());
         itemCollection.update(request.toCollection());
-
         return itemCollection.getCollectionId();
     }
 

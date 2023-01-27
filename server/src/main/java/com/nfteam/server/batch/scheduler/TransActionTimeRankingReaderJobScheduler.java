@@ -4,7 +4,6 @@ import com.nfteam.server.batch.job.TransAction1DReaderJobConfiguration;
 import com.nfteam.server.batch.job.TransAction1MReaderJobConfiguration;
 import com.nfteam.server.batch.job.TransAction1WReaderJobConfiguration;
 import com.nfteam.server.ranking.service.RankingService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -22,17 +21,29 @@ import java.util.Map;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class TransActionTimeRankingReaderJobScheduler {
 
     private final JobLauncher jobLauncher;
+    private final RankingService rankingService;
+
     private final TransAction1DReaderJobConfiguration transAction1DReaderJobConfiguration;
     private final TransAction1WReaderJobConfiguration transAction1WReaderJobConfiguration;
     private final TransAction1MReaderJobConfiguration transAction1MReaderJobConfiguration;
-    private final RankingService rankingService;
+
+    public TransActionTimeRankingReaderJobScheduler(JobLauncher jobLauncher,
+                                                    RankingService rankingService,
+                                                    TransAction1DReaderJobConfiguration transAction1DReaderJobConfiguration,
+                                                    TransAction1WReaderJobConfiguration transAction1WReaderJobConfiguration,
+                                                    TransAction1MReaderJobConfiguration transAction1MReaderJobConfiguration) {
+        this.jobLauncher = jobLauncher;
+        this.rankingService = rankingService;
+        this.transAction1DReaderJobConfiguration = transAction1DReaderJobConfiguration;
+        this.transAction1WReaderJobConfiguration = transAction1WReaderJobConfiguration;
+        this.transAction1MReaderJobConfiguration = transAction1MReaderJobConfiguration;
+    }
 
     // 일간 랭킹 배치 : 매일 오전 1시
-    @Scheduled(cron = "0 0 1 1/1 * ?") // 초 분 시 일 월 요일
+    @Scheduled(cron = "0 0 1 1/1 * ?")
     public void run1DRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -51,7 +62,7 @@ public class TransActionTimeRankingReaderJobScheduler {
     }
 
     // 주간 랭킹 배치 : 매일 오전 2시
-    @Scheduled(cron = "0 0 2 1/1 * ?") // 초 분 시 일 월 요일
+    @Scheduled(cron = "0 0 2 1/1 * ?")
     public void run1WRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -70,7 +81,7 @@ public class TransActionTimeRankingReaderJobScheduler {
     }
 
     // 월간 랭킹 배치 : 매일 오전 3시
-    @Scheduled(cron = "0 0 3 1/1 * ?") // 초 분 시 일 월 요일
+    @Scheduled(cron = "0 0 3 1/1 * ?")
     public void run1MRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));

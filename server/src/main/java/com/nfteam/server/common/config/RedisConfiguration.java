@@ -1,6 +1,5 @@
 package com.nfteam.server.common.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,6 @@ public class RedisConfiguration {
     private final String host;
     private final int port;
     private final String password;
-    private ObjectMapper objectMapper;
 
     public RedisConfiguration(@Value("${spring.redis.host}") String host,
                               @Value("${spring.redis.port}") int port,
@@ -27,7 +25,6 @@ public class RedisConfiguration {
         this.host = host;
         this.port = port;
         this.password = password;
-        objectMapper = new ObjectMapper();
     }
 
     @Bean

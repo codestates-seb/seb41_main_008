@@ -7,7 +7,6 @@ import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.item.service.CollectionService;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,11 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/collections")
 public class CollectionController {
 
     private final CollectionService collectionService;
+
+    public CollectionController(CollectionService collectionService) {
+        this.collectionService = collectionService;
+    }
 
     @PostMapping
     public ResponseEntity create(@RequestBody @Valid CollectionCreateRequest request,

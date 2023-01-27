@@ -52,11 +52,11 @@ public class CoinOrder extends BaseEntity {
         this.payStatus = false;
     }
 
-    public void updateTid(String tid){
+    public void updateTid(String tid) {
         this.tid = tid;
     }
 
-    public void updatePayStatusTrue(){
+    public void updatePayStatusTrue() {
         this.payStatus = true;
     }
 

@@ -1,6 +1,5 @@
 package com.nfteam.server.dto.response.coin;
 
-
 import com.nfteam.server.coin.entity.Coin;
 import lombok.Builder;
 import lombok.Getter;

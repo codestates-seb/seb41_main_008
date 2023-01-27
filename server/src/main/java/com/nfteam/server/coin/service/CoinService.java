@@ -16,7 +16,6 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -34,13 +33,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class CoinService {
 
-    private static final String cid = "TC0ONETIME";
+    private static final String cid = "TC0ONETIME"; // 테스트용 가맹점 코드
     private static final String readyUrl = "https://kapi.kakao.com/v1/payment/ready";
     private static final String approveUrl = "https://kapi.kakao.com/v1/payment/approve";
-
     @Value("${pay.data.key}")
     private String authorization;
     @Value("${pay.data.approve}")
@@ -55,10 +52,21 @@ public class CoinService {
     private final CoinOrderRepository coinOrderRepository;
     private final CoinRepository coinRepository;
     private final RestTemplate restTemplate;
-    private CoinPurchaseReadyResponse coinPurchaseReadyResponse;
+
+    public CoinService(MemberRepository memberRepository,
+                       CoinMemberRelRepository coinMemberRelRepository,
+                       CoinOrderRepository coinOrderRepository,
+                       CoinRepository coinRepository,
+                       RestTemplate restTemplate) {
+        this.memberRepository = memberRepository;
+        this.coinMemberRelRepository = coinMemberRelRepository;
+        this.coinOrderRepository = coinOrderRepository;
+        this.coinRepository = coinRepository;
+        this.restTemplate = restTemplate;
+    }
 
     public List<MemberCoinResponse> getMemberCoinList(Long memberId) {
-        List<CoinMemberRel> memberCoinList = coinMemberRelRepository.findByMemberId(memberId);
+        List<CoinMemberRel> memberCoinList = coinMemberRelRepository.findAllByMemberId(memberId);
 
         // 현재 가지고 있는 코인이 없을 경우 빈 배열 리턴
         if (memberCoinList.isEmpty()) {
@@ -69,6 +77,7 @@ public class CoinService {
                 .map(r -> MemberCoinResponse.of(r))
                 .collect(Collectors.toList());
 
+        // 코인 번호 순 정렬
         responses.sort(MemberCoinResponse::compareTo);
         return responses;
     }
@@ -82,13 +91,10 @@ public class CoinService {
 
     @Transactional
     public CoinPurchaseReadyResponse startPayment(CoinPurchaseRequest request, MemberDetails memberDetails) {
-        // 현재 구매자 정보
+        // 구매자 정보 + 구매 코인 정보 + 구매 코인 갯수 + 총 가격
         Member buyer = findMember(memberDetails.getEmail());
-        // 구매 코인 정보
         Coin coin = findCoin(request.getCoinName());
-        // 구매량
         Double coinCount = request.getCoinCount();
-        // 총 구매 가격
         Double totalPrice = request.getTotalPrice();
 
         // 구매정보 저장 - payStatus : false
@@ -100,27 +106,14 @@ public class CoinService {
         Integer intCoinCount = doubleCoinCount.intValue();
         Integer intTotalTotal = totalPrice.intValue();
 
-        //카카오톡 요청
-        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("cid", cid); // 가맹점 코드
-        parameters.add("partner_order_id", String.valueOf(coinOrder.getOrderId())); // 가맹점 주문번호
-        parameters.add("partner_user_id", String.valueOf(buyer.getMemberId())); // 가맹점 회원번호
-        parameters.add("item_name", coin.getCoinName()); //상품명
-        parameters.add("quantity", intCoinCount); // 상품수량
-        parameters.add("total_amount", intTotalTotal); // 상품 총액
-        parameters.add("tax_free_amount", "0"); // 상품 비과세 금액
-        parameters.add("approval_url", approvalUrl); // 결제 성공 url
-        parameters.add("cancel_url", cancelUrl); // 결제 취소 url
-        parameters.add("fail_url", failUrl); // 결제 실패 url
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authorization);
-        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parameters, headers);
+        // 카카오 페이 결제 준비 요청 HttpEntity 준비
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(
+                getRequestParameters(buyer.getMemberId(), coin.getCoinName(), coinOrder.getOrderId(), intCoinCount, intTotalTotal),
+                getHeaders());
 
         // 카카오 결제 준비 요청 응답
-        coinPurchaseReadyResponse = restTemplate.postForObject(readyUrl, httpEntity, CoinPurchaseReadyResponse.class);
+        CoinPurchaseReadyResponse coinPurchaseReadyResponse
+                = restTemplate.postForObject(readyUrl, httpEntity, CoinPurchaseReadyResponse.class);
 
         if (coinPurchaseReadyResponse != null) {
             // 코인 주문 tid 세팅
@@ -142,29 +135,42 @@ public class CoinService {
                 .orElseThrow(() -> new MemberNotFoundException(email));
     }
 
+    private MultiValueMap<String, Object> getRequestParameters(Long buyerId, String coinName, Long coinOrderId, Integer intCoinCount, Integer intTotalTotal) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("cid", cid); // 가맹점 코드
+        parameters.add("partner_order_id", String.valueOf(coinOrderId)); // 가맹점 주문번호
+        parameters.add("partner_user_id", String.valueOf(buyerId)); // 가맹점 회원번호
+        parameters.add("item_name", coinName); //상품명
+        parameters.add("quantity", intCoinCount); // 상품수량
+        parameters.add("total_amount", intTotalTotal); // 상품 총액
+        parameters.add("tax_free_amount", "0"); // 상품 비과세 금액
+        parameters.add("approval_url", approvalUrl); // 결제 성공 url
+        parameters.add("cancel_url", cancelUrl); // 결제 취소 url
+        parameters.add("fail_url", failUrl); // 결제 실패 url
+        return parameters;
+    }
+
+    private HttpHeaders getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authorization);
+        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        return headers;
+    }
+
     @Transactional
     public CoinPurchaseApproveResponse approvePayment(String pgToken, String tid) {
         CoinOrder coinOrder = coinOrderRepository.findByTidWithBuyer(tid)
                 .orElseThrow(() -> new CoinPaymentFailedException());
 
         Member buyer = coinOrder.getBuyer();
-        int intValue = coinOrder.getTotalPrice().intValue();
+        int totalPriceIntValue = coinOrder.getTotalPrice().intValue();
 
-        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("cid", cid);
-        parameters.add("tid", tid);
-        parameters.add("partner_order_id", String.valueOf(coinOrder.getOrderId()));
-        parameters.add("partner_user_id", String.valueOf(coinOrder.getBuyer().getMemberId()));
-        parameters.add("pg_token", pgToken);
-        parameters.add("total_amount", intValue);
+        // 카카오 페이 결제 승인 요청 HttpEntity 준비
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(
+                getApprovalParameters(pgToken, tid, coinOrder, totalPriceIntValue),
+                getHeaders());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authorization);
-        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        // 카카오 결제 완료 응답
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, headers);
-
+        // 카카오 페이 결제 승인 요청 응답
         CoinPurchaseApproveResponse coinPurchaseApproveResponse
                 = restTemplate.postForObject(approveUrl, requestEntity, CoinPurchaseApproveResponse.class);
 
@@ -181,6 +187,17 @@ public class CoinService {
         } else {
             throw new CoinPaymentFailedException();
         }
+    }
+
+    private static MultiValueMap<String, Object> getApprovalParameters(String pgToken, String tid, CoinOrder coinOrder, int totalPriceIntValue) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("cid", cid);
+        parameters.add("tid", tid);
+        parameters.add("partner_order_id", String.valueOf(coinOrder.getOrderId()));
+        parameters.add("partner_user_id", String.valueOf(coinOrder.getBuyer().getMemberId()));
+        parameters.add("pg_token", pgToken);
+        parameters.add("total_amount", totalPriceIntValue);
+        return parameters;
     }
 
 }

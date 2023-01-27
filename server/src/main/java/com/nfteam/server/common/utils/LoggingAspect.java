@@ -24,10 +24,6 @@ public class LoggingAspect {
     private void controllerPointcut() {
     }
 
-    @Pointcut("execution(* com.nfteam.server.*.service.*Service.*(..))")
-    private void servicePointcut() {
-    }
-
     @Before("controllerPointcut()")
     public void requestLog(JoinPoint joinPoint) throws JsonProcessingException {
         CodeSignature signature = (CodeSignature) joinPoint.getSignature();

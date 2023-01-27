@@ -8,7 +8,6 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.entity.MemberStatus;
 import com.nfteam.server.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +17,15 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     public Long createMember(MemberCreateRequest memberCreateRequest) {
