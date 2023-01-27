@@ -67,9 +67,10 @@ const SellModal = () => {
     getCoinPrice(data?.coinName)
       .then((res) => setCoinPrice(res[0].trade_price))
       .catch((err) => console.log(err));
-  });
+  }, [data?.coinName]);
   // console.log('totalPrice', totalPrice);
   const onClickSubmit: SubmitHandler<FormValue> = (data) => {
+    console.log(errors);
     if (totalPrice > 999999999999999) {
       alert('999999999999999₩ 을 초과할 수 없습니다');
       return;
@@ -85,7 +86,6 @@ const SellModal = () => {
     console.log(err);
   };
   const totalPrice = coinPrice * watch('itemPrice');
-  console.log(errors);
   return (
     <>
       {sellOpen && <ModalBack ref={ref} zIndex={'50'} />}
