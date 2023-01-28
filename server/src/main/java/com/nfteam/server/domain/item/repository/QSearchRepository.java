@@ -82,7 +82,7 @@ public class QSearchRepository {
         if (!StringUtils.hasText(keyword)) {
             return null;
         }
-        return stringPath.contains(keyword);
+        return stringPath.containsIgnoreCase(keyword);
     }
 
 }

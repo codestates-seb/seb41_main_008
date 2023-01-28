@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -49,6 +50,19 @@ public class ItemCredential {
     public void addNewTransEncryptionRecord(String record) {
         this.transEncryption += ",";
         this.transEncryption += record;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemCredential that = (ItemCredential) o;
+        return credentialId.equals(that.credentialId) && itemCode.equals(that.itemCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(credentialId, itemCode);
     }
 
 }

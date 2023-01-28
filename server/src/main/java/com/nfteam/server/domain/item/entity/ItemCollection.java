@@ -7,11 +7,11 @@ import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.dto.response.member.MemberCollectionResponse;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Getter
@@ -66,17 +66,8 @@ public class ItemCollection extends BaseEntity {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.description = description;
-        initImageInfo(logoImgName, bannerImgName);
-    }
-
-    private void initImageInfo(String logoImgName, String bannerImgName) {
-        if (StringUtils.isEmpty(logoImgName)) {
-            this.logoImgName = "col_default_logo";
-        } else this.logoImgName = logoImgName;
-
-        if (StringUtils.isEmpty(bannerImgName)) {
-            this.bannerImgName = "col_default_banner";
-        } else this.bannerImgName = bannerImgName;
+        this.logoImgName = logoImgName;
+        this.bannerImgName = bannerImgName;
     }
 
     public void update(ItemCollection collection) {
@@ -141,6 +132,19 @@ public class ItemCollection extends BaseEntity {
                 .coinId(coin.getCoinId())
                 .coinName(coin.getCoinName())
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemCollection that = (ItemCollection) o;
+        return collectionId.equals(that.collectionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(collectionId);
     }
 
 }
