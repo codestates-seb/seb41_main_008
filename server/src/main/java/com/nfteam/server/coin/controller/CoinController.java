@@ -2,7 +2,6 @@ package com.nfteam.server.coin.controller;
 
 import com.nfteam.server.coin.service.CoinService;
 import com.nfteam.server.dto.request.coin.CoinPurchaseRequest;
-import com.nfteam.server.dto.response.coin.CoinPurchaseApproveResponse;
 import com.nfteam.server.dto.response.coin.CoinPurchaseReadyResponse;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +44,7 @@ public class CoinController {
     @GetMapping(value = "/approve")
     public ResponseEntity approve(@RequestParam(value = "pg_token") String pgToken,
                                   @RequestParam(value = "tid") String tid) {
-        CoinPurchaseApproveResponse response = coinService.approvePayment(pgToken, tid);
+        coinService.approvePayment(pgToken, tid);
         return new ResponseEntity<>(getRedirectHttpHeaders(), HttpStatus.MOVED_PERMANENTLY);
     }
 
