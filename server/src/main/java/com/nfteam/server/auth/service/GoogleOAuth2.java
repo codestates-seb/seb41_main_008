@@ -24,6 +24,8 @@ import org.springframework.web.client.RestTemplate;
 @Transactional(readOnly = true)
 public class GoogleOAuth2 implements OAuth2 {
 
+    private static final String USER_INFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
+
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final MemberRepository memberRepository;
@@ -49,18 +51,17 @@ public class GoogleOAuth2 implements OAuth2 {
         return makeSocialResponse(googleUser);
     }
 
-    private ResponseEntity<String> createGetInfoRequest(String socialToken) {
-        String url = "https://www.googleapis.com/oauth2/v1/userinfo";
-
+    private ResponseEntity<String> createGetInfoRequest(String token) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + socialToken);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(headers);
 
-        return restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        return restTemplate.exchange(USER_INFO_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
     }
 
     private GoogleUser getUserInfo(ResponseEntity<String> userInfoResponse) {
         GoogleUser googleUser;
+
         try {
             googleUser = objectMapper.readValue(userInfoResponse.getBody(), GoogleUser.class);
         } catch (JsonProcessingException exception) {
