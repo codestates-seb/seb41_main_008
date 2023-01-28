@@ -33,11 +33,7 @@ const Dropdown = () => {
   const profileImage = useAppSelector((state) => state.login.profileImage);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { isLogin } = useAppSelector((state) => state.login);
-  const goToMypage = () => {
-    getMyProFile().then((res: any) => {
-      navigate(`/account/${res.data.member.memberId}`);
-    });
-  };
+
   const getImage = () => {
     getMyProFile().then((res) => {
       setMemberImg(res.data.member.profileImageName);
@@ -52,11 +48,11 @@ const Dropdown = () => {
       <ul className="flex items-center justify-center mr-8 ml-2 gap-5">
         <DropdownList className="max-[640px]:hidden">
           {isLogin ? (
-            <button onClick={goToMypage} className="w-8 h-8">
+            <button onClick={() => navigate('/account')} className="w-8 h-8">
               <img
                 className="object-cover w-full h-full rounded-full"
                 src={profileImage || memberImg}
-                alt=""
+                alt="Profile pic"
               />
             </button>
           ) : (

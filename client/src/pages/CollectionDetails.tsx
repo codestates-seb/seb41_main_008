@@ -3,13 +3,13 @@ import { useParams } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { HiOutlineStar, HiShare } from 'react-icons/hi';
-import * as Toast from '@radix-ui/react-toast';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { setOpen } from 'store/toastSlice';
+import { setCreateColOpen } from 'store/toastSlice';
 import { format } from 'date-fns';
 import Cards from 'components/MyCollection/Cards';
 import MissingPage from 'pages/MissingPage';
 import { useQuery } from '@tanstack/react-query';
+import Notification from 'components/Notification';
 
 interface Item {
   itemDescription: string;
@@ -44,19 +44,17 @@ interface Collection {
 export default function CollectionDetails() {
   const { id } = useParams();
 
-  const open = useAppSelector((state) => state.toast.open);
   const dispatch = useAppDispatch();
+  const createColOpen = useAppSelector((state) => state.toast.createColOpen);
 
   useEffect(() => {
-    setTimeout(() => dispatch(setOpen(false)), 5000);
+    setTimeout(() => dispatch(setCreateColOpen(false)), 5000);
   }, [dispatch]);
 
   const { isLoading, error, data } = useQuery<Collection>({
-    queryKey: ['collectionDetails'],
-    queryFn: async () => {
-      const res = await customAxios.get(`/api/collections/only/${id}`);
-      return res.data;
-    },
+    queryKey: ['collections', 'only', id],
+    queryFn: () =>
+      customAxios.get(`/api/collections/only/${id}`).then((res) => res.data),
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -145,20 +143,14 @@ export default function CollectionDetails() {
             <h2 className="text-3xl">No items to display</h2>
           </section>
         )}
-        <Toast.Provider>
-          <Toast.Root open={open} onOpenChange={setOpen} className="ToastRoot">
-            <Toast.Description className="ToastDescription">
-              <p className="flex items-center gap-1 text-emerald-700">
-                <span>
-                  <BsCheckCircleFill className="h-7 w-7" />
-                </span>{' '}
-                Created!
-              </p>
-            </Toast.Description>
-          </Toast.Root>
-
-          <Toast.Viewport className="ToastViewport" />
-        </Toast.Provider>
+        <Notification open={createColOpen} setOpen={setCreateColOpen}>
+          <p className="flex items-center gap-1 text-emerald-700">
+            <span>
+              <BsCheckCircleFill className="h-7 w-7" />
+            </span>{' '}
+            Created!
+          </p>
+        </Notification>
       </div>
     </>
   );

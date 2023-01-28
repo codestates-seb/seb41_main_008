@@ -46,13 +46,13 @@ const Container = styled.div`
 
 export default function MainCarousel() {
   const { isLoading, error, data } = useQuery<Collections[]>({
-    queryKey: ['maincollectionS'],
-    queryFn: async () => {
-      const res = await axios.get(
-        'https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&per_page=12'
-      );
-      return res.data;
-    },
+    queryKey: [{ per_page: 12 }],
+    queryFn: () =>
+      axios
+        .get(
+          'https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&per_page=12'
+        )
+        .then((res) => res.data),
   });
 
   if (isLoading) return <p>Loading...</p>;

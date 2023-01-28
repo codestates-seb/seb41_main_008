@@ -11,6 +11,7 @@ import CreateItemPage from 'pages/CreateItemPage';
 import MyCollection from 'pages/MyCollection';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
 import ProfilePage from 'pages/ProfilePage';
+import MyAccount from 'pages/MyAccount';
 import SuccessPaymentPage from 'pages/SuccessPaymentPage';
 import ScrollToTop from './utils/ScrollToTop';
 function App() {

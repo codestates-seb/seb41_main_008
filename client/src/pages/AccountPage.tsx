@@ -42,6 +42,7 @@ const AccountPage = () => {
   const onFilter = (filterType: string) => {
     setFilter(filterType);
   };
+  console.log(data);
 
   return (
     <div className="flex flex-col w-full">
