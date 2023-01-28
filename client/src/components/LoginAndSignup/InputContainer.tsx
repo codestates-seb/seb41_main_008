@@ -57,7 +57,6 @@ const InputContainer = ({ isSignup }: Props) => {
   const onError = (error: {}) => {
     console.log(error);
   };
-
   return (
     <div className="">
       {unAuth && (

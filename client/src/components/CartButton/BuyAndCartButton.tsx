@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { addTocart } from 'store/cartSlice';
 import { openSell } from 'store/modalSlice';
+import { setOpen } from 'store/toastSlice';
+import { useEffect } from 'react';
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -20,10 +22,14 @@ const BuyAndCartButton = ({ data }: any) => {
     } else if (cartItems[0] && cartItems[0].coinName !== data.coinName) {
       alert('같은 코인의 NFT만 담을수있습니다.');
     } else {
+      dispatch(setOpen(true));
       dispatch(addTocart(data));
     }
     /**장바구니담는 로직작성 */
   };
+  useEffect(() => {
+    setTimeout(() => dispatch(setOpen(false)), 1000);
+  }, [cartItems]);
 
   const forSaleHandler = (itemId: number) => {
     /**판매하기 기능 로직작성 */
@@ -32,29 +38,31 @@ const BuyAndCartButton = ({ data }: any) => {
 
   /**NFTownerId 와 memberId가 같은경우에만 sell버튼 활성화 밑 둘이 같다면 addTocart는 랜더링x + onSale true일경우 addTocart버튼랜더링 및  false일 경우 아예랜더x*/
   return (
-    <ButtonWrapper>
-      {data?.onSale && data?.ownerId !== memberId ? (
-        <div className="grow bg-emerald-700 hover:bg-emerald-600 ">
-          <button
-            className="h-full w-full p-2 text-lg font-semibold"
-            onClick={cartHandler}
-          >
-            Add to Cart
-          </button>
-        </div>
-      ) : null}
+    <>
+      <ButtonWrapper>
+        {data?.onSale && data?.ownerId !== memberId ? (
+          <div className="grow BasicButton">
+            <button
+              className="h-full w-full p-2 text-lg font-semibold"
+              onClick={cartHandler}
+            >
+              Add to Cart
+            </button>
+          </div>
+        ) : null}
 
-      {data?.onSale === false && data?.ownerId === memberId ? (
-        <div className="grow bg-emerald-700 hover:bg-emerald-600 ">
-          <button
-            className="border-l-2 h-full w-full p-2 text-lg font-semibold"
-            onClick={() => forSaleHandler(data.itemId)}
-          >
-            List for sale
-          </button>
-        </div>
-      ) : null}
-    </ButtonWrapper>
+        {data?.onSale === false && data?.ownerId === memberId ? (
+          <div className="grow BasicButton ">
+            <button
+              className="h-full w-full p-2 text-lg font-semibold"
+              onClick={() => forSaleHandler(data.itemId)}
+            >
+              List for sale
+            </button>
+          </div>
+        ) : null}
+      </ButtonWrapper>
+    </>
   );
 };
 export default BuyAndCartButton;

@@ -306,3 +306,7 @@
     color: rgb(87, 70, 175);
   }
 }
+
+.BasicButton {
+  @apply bg-emerald-600 hover:bg-emerald-500 text-white text-center;
+}

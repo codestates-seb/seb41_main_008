@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Link } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import styled from 'styled-components';
 import customAxios from 'utils/api/axios';
 import ETHIcon from '../../assets/icons/PurchaseIcons/ETH';
 import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
@@ -16,7 +17,6 @@ import { getItemsData } from 'utils/api/api';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAppSelector } from 'hooks/hooks';
-import SellModal from 'components/CartingModal/SellModal';
 
 export interface ItemProps {
   coinId: number;
@@ -45,12 +45,15 @@ interface ItemsData {
   transData: number;
 }
 
+const ButtonWrapper = styled.div`
+  div {
+    border-radius: 8px;
+  }
+`;
+
 const Asset = () => {
   const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
-  const { cartItems } = useAppSelector((state) => state.cart);
-  console.log(cartItems);
-  console.log(data);
 
   useEffect(() => {
     getItemsData(itemId).then((res) => setData(res.data));
@@ -135,7 +138,9 @@ const Asset = () => {
                     <span>{data?.itemPrice}</span>
                   </div>
                 </div>
-                <BuyAndCartButton data={data} />
+                <ButtonWrapper>
+                  <BuyAndCartButton data={data} />
+                </ButtonWrapper>
               </div>
             </div>
             <div className="card">

@@ -29,7 +29,6 @@ export const cartSaveHandler = (data: {
   itemIdList: number[];
   totalPrice: number;
 }) => {
-  alert('결제로진행~');
   console.log(data);
   return customAxios
     .post('/api/carts/save', data)
@@ -42,7 +41,8 @@ export const sellItemHandler = async (
 ) => {
   await customAxios
     .post(`/api/items/sell/${itemId}`, data)
-    .then((res) => console.log(res));
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 };
 
 /**TransAction api */
@@ -61,6 +61,7 @@ export const buyCoin = async (data: any) => {
 
 /**카카오페이 api */
 export const kakaoPay = async (pgToken: string, tid: string | null) => {
+  if (!pgToken || !tid) return;
   return await customAxios.get(
     `/api/coins/approve?pg_token=${pgToken}&tid=${tid}`
   );
@@ -68,7 +69,12 @@ export const kakaoPay = async (pgToken: string, tid: string | null) => {
 
 /**업비트 Open API */
 export const getCoinPrice = async (coin: string | undefined) => {
-  const options = { method: 'GET', headers: { accept: 'application/json' } };
+  if (coin === undefined) return;
+
+  const options = {
+    method: 'GET',
+    headers: { accept: 'application/json' },
+  };
   return await fetch(
     `https://api.upbit.com/v1/ticker?markets=krw-${coin}`,
     options

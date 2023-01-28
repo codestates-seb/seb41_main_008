@@ -1,5 +1,7 @@
 import { removeCart } from '../../store/cartSlice';
 import { useAppDispatch } from '../../hooks/hooks';
+import { FiTrash } from 'react-icons/fi';
+import { closeModal, closePayment } from 'store/modalSlice';
 interface CartItemsProps {
   itemId: number;
   coinName: string;
@@ -18,9 +20,15 @@ const CartItems = ({
 }: CartItemsProps) => {
   const dispatch = useAppDispatch();
   return (
-    <li className="flex p-2 items-center hover:bg-[#eef1f1] rounded-lg hover:shadow-md">
-      <a href={`/items/${itemId}`}>
-        <div className="flex w-[100px] h-[80px] mr-4">
+    <li className="flex p-2 items-center hover:bg-[#eef1f1] rounded-lg hover:shadow-md font-bold">
+      <a
+        href={`/items/${itemId}`}
+        onClick={() => {
+          dispatch(closeModal());
+          dispatch(closePayment());
+        }}
+      >
+        <div className="flex mr-4">
           <img
             className="rounded-lg"
             src={process.env.REACT_APP_IMAGE + itemImageName}
@@ -28,13 +36,13 @@ const CartItems = ({
           />
         </div>
       </a>
-      <div className="flex flex-col w-full font-bold">
+      <div className="flex flex-col w-full ">
         <div>{collectionName}</div>
         <div>{itemName}</div>
       </div>
-      <div>
-        <div className="flex ">
-          <div>{itemPrice}</div>
+      <div className="flex flex-col justify-center items-center">
+        <div className="flex">
+          <div>{itemPrice.toLocaleString()}</div>
           <div>{coinName}</div>
         </div>
         <button
@@ -42,7 +50,7 @@ const CartItems = ({
             dispatch(removeCart(itemId));
           }}
         >
-          삭제
+          <FiTrash />
         </button>
       </div>
     </li>

@@ -4,7 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
 import { useState, useEffect } from 'react';
 import { IoSettingsSharp } from 'react-icons/io5';
-
+import { BsCheckCircleFill } from 'react-icons/bs';
+import Notification from 'components/Notification';
 interface UserType {
   member: {
     nickname: string;
@@ -129,6 +130,14 @@ const AccountPage = () => {
           ) : null}
         </div>
       </div>
+      <Notification>
+        <p className="flex items-center gap-1 text-emerald-700">
+          <span>
+            <BsCheckCircleFill className="h-7 w-7" />
+          </span>
+          Add to Cart!
+        </p>
+      </Notification>
     </div>
   );
 };
