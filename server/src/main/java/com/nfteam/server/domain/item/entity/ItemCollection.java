@@ -1,10 +1,10 @@
 package com.nfteam.server.domain.item.entity;
 
-import com.nfteam.server.domain.coin.entity.Coin;
 import com.nfteam.server.domain.audit.BaseEntity;
+import com.nfteam.server.domain.coin.entity.Coin;
+import com.nfteam.server.domain.member.entity.Member;
 import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.dto.response.member.MemberCollectionResponse;
-import com.nfteam.server.domain.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.StringUtils;

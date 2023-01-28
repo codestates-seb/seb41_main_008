@@ -1,5 +1,7 @@
 package com.nfteam.server.domain.member.controller;
 
+import com.nfteam.server.domain.item.service.CollectionService;
+import com.nfteam.server.domain.item.service.ItemService;
 import com.nfteam.server.domain.member.entity.Member;
 import com.nfteam.server.domain.member.service.MemberService;
 import com.nfteam.server.dto.request.member.MemberCreateRequest;
@@ -9,8 +11,6 @@ import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.dto.response.member.MemberCollectionResponse;
 import com.nfteam.server.dto.response.member.MemberMyPageResponseDto;
 import com.nfteam.server.dto.response.member.MemberResponseDto;
-import com.nfteam.server.domain.item.service.CollectionService;
-import com.nfteam.server.domain.item.service.ItemService;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,9 @@
 package com.nfteam.server.domain.ranking.batch.job;
 
+import com.nfteam.server.domain.coin.entity.CoinType;
 import com.nfteam.server.domain.ranking.batch.entity.CoinRankingEntity;
 import com.nfteam.server.domain.ranking.batch.repository.RankingReaderRepository;
 import com.nfteam.server.domain.ranking.batch.writer.CoinRankingWriter;
-import com.nfteam.server.domain.coin.entity.CoinType;
 import com.nfteam.server.domain.transaction.entity.TransAction;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

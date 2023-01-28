@@ -1,6 +1,5 @@
 package com.nfteam.server.domain.ranking.batch.scheduler;
 
-import com.nfteam.server.batch.job.*;
 import com.nfteam.server.domain.ranking.batch.job.*;
 import com.nfteam.server.domain.ranking.service.RankingService;
 import lombok.extern.slf4j.Slf4j;

@@ -1,13 +1,13 @@
 package com.nfteam.server.domain.member.service;
 
+import com.nfteam.server.domain.member.entity.Member;
+import com.nfteam.server.domain.member.entity.MemberStatus;
+import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.dto.request.member.MemberCreateRequest;
 import com.nfteam.server.dto.request.member.MemberPatchRequest;
 import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.member.MemberEmailExistException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
-import com.nfteam.server.domain.member.entity.Member;
-import com.nfteam.server.domain.member.entity.MemberStatus;
-import com.nfteam.server.domain.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

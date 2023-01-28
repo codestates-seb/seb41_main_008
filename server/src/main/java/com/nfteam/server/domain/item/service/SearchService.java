@@ -1,10 +1,10 @@
 package com.nfteam.server.domain.item.service;
 
+import com.nfteam.server.domain.item.repository.QSearchRepository;
 import com.nfteam.server.dto.response.common.PageResponse;
 import com.nfteam.server.dto.response.search.SearchCollectionResponse;
 import com.nfteam.server.dto.response.search.SearchItemResponse;
 import com.nfteam.server.dto.response.search.SearchResponse;
-import com.nfteam.server.domain.item.repository.QSearchRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

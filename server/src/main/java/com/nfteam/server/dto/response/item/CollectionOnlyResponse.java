@@ -56,7 +56,7 @@ public class CollectionOnlyResponse {
         this.coinName = coinName;
     }
 
-    public static CollectionOnlyResponse of(ItemCollection collection){
+    public static CollectionOnlyResponse of(ItemCollection collection) {
         return CollectionOnlyResponse.builder()
                 .collectionId(collection.getCollectionId())
                 .collectionName(collection.getCollectionName())

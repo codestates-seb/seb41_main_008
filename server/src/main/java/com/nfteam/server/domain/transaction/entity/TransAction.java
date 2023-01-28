@@ -1,7 +1,7 @@
 package com.nfteam.server.domain.transaction.entity;
 
-import com.nfteam.server.domain.coin.entity.Coin;
 import com.nfteam.server.domain.audit.BaseEntity;
+import com.nfteam.server.domain.coin.entity.Coin;
 import com.nfteam.server.domain.item.entity.Item;
 import com.nfteam.server.domain.item.entity.ItemCollection;
 import com.nfteam.server.domain.member.entity.Member;

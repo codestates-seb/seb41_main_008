@@ -1,7 +1,7 @@
 package com.nfteam.server.domain.member.entity;
 
-import com.nfteam.server.domain.cart.entity.Cart;
 import com.nfteam.server.domain.audit.BaseEntity;
+import com.nfteam.server.domain.cart.entity.Cart;
 import com.nfteam.server.domain.item.entity.Item;
 import com.nfteam.server.domain.item.entity.ItemCollection;
 import lombok.Getter;

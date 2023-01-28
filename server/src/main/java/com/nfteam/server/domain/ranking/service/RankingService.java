@@ -1,12 +1,12 @@
 package com.nfteam.server.domain.ranking.service;
 
+import com.nfteam.server.domain.item.entity.Item;
+import com.nfteam.server.domain.item.repository.ItemRepository;
 import com.nfteam.server.domain.ranking.repository.QRankingRepository;
 import com.nfteam.server.dto.response.ranking.RankingResponse;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.ranking.RankCoinCriteriaNotValidException;
 import com.nfteam.server.exception.ranking.RankTimeCriteriaNotValidException;
-import com.nfteam.server.domain.item.entity.Item;
-import com.nfteam.server.domain.item.repository.ItemRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

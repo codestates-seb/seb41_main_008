@@ -1,11 +1,11 @@
 package com.nfteam.server.domain.item.controller;
 
+import com.nfteam.server.domain.item.service.CollectionService;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
-import com.nfteam.server.domain.item.service.CollectionService;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
