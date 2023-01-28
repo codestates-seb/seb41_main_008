@@ -4,6 +4,7 @@ import com.nfteam.server.domain.audit.BaseEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -35,6 +36,19 @@ public class TimeRankingEntity extends BaseEntity {
 
     public void updateRank(String rank) {
         this.rankString = rank;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TimeRankingEntity that = (TimeRankingEntity) o;
+        return rankId.equals(that.rankId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rankId);
     }
 
 }

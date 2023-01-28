@@ -143,4 +143,5 @@ public class Member extends BaseEntity {
     public int hashCode() {
         return Objects.hash(memberId, email);
     }
+
 }
