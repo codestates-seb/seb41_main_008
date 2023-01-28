@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { addTocart } from 'store/cartSlice';
 import { openSell } from 'store/modalSlice';
-import { setOpen } from 'store/toastSlice';
-import { useEffect } from 'react';
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -22,14 +20,10 @@ const BuyAndCartButton = ({ data }: any) => {
     } else if (cartItems[0] && cartItems[0].coinName !== data.coinName) {
       alert('같은 코인의 NFT만 담을수있습니다.');
     } else {
-      dispatch(setOpen(true));
       dispatch(addTocart(data));
     }
     /**장바구니담는 로직작성 */
   };
-  useEffect(() => {
-    setTimeout(() => dispatch(setOpen(false)), 1000);
-  }, [cartItems]);
 
   const forSaleHandler = (itemId: number) => {
     /**판매하기 기능 로직작성 */

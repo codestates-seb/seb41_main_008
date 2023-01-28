@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
-import { useEffect, useRef, useState, SetStateAction } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ModalBack } from './CartingModal';
 import { closeWallet, openBuyCoin } from 'store/modalSlice';
-import { getMyCoin, getCoinPrice } from 'utils/api/api';
+import { getMyCoin } from 'utils/api/api';
 const WalletContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -33,7 +33,6 @@ const WalletModal = () => {
   const dispatch = useAppDispatch();
   const { walletOpen } = useAppSelector((state) => state.modal);
   const [data, setData] = useState<WalletInfo[]>([]);
-  const [test, setTest] = useState<SetStateAction<number>>(0);
   const memberId = localStorage.getItem('MEMBER_ID');
   const ref = useRef<HTMLDivElement>(null);
 

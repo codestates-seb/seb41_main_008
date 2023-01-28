@@ -131,14 +131,6 @@ const AccountPage = () => {
           ) : null}
         </div>
       </div>
-      <Notification>
-        <p className="flex items-center gap-1 text-emerald-700">
-          <span>
-            <BsCheckCircleFill className="h-7 w-7" />
-          </span>
-          Add to Cart!
-        </p>
-      </Notification>
     </div>
   );
 };
