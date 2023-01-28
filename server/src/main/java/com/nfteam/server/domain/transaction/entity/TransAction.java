@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -59,6 +60,19 @@ public class TransAction extends BaseEntity {
         this.item = item;
         this.coin = coin;
         this.transPrice = transPrice;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransAction that = (TransAction) o;
+        return transId.equals(that.transId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transId);
     }
 
 }
