@@ -1,6 +1,6 @@
 package com.nfteam.server.dto.response.item;
 
-import com.nfteam.server.item.entity.ItemCollection;
+import com.nfteam.server.domain.item.entity.ItemCollection;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -56,7 +56,7 @@ public class CollectionOnlyResponse {
         this.coinName = coinName;
     }
 
-    public static CollectionOnlyResponse of(ItemCollection collection){
+    public static CollectionOnlyResponse of(ItemCollection collection) {
         return CollectionOnlyResponse.builder()
                 .collectionId(collection.getCollectionId())
                 .collectionName(collection.getCollectionName())

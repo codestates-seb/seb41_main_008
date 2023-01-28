@@ -1,10 +1,10 @@
 package com.nfteam.server.security.userdetails;
 
+import com.nfteam.server.domain.member.entity.Member;
+import com.nfteam.server.domain.member.entity.MemberStatus;
+import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.member.MemberStatusNotActiveException;
-import com.nfteam.server.member.entity.Member;
-import com.nfteam.server.member.entity.MemberStatus;
-import com.nfteam.server.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

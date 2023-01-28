@@ -1,6 +1,6 @@
 package com.nfteam.server.security.handler;
 
-import com.nfteam.server.common.utils.ErrorResponder;
+import com.nfteam.server.security.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

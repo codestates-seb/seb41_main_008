@@ -1,6 +1,6 @@
 package com.nfteam.server.redis.repository;
 
-import com.nfteam.server.common.utils.JwtTokenizer;
+import com.nfteam.server.auth.utils.JwtTokenizer;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
