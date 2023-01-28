@@ -18,14 +18,12 @@ import com.nfteam.server.item.entity.ItemCredential;
 import com.nfteam.server.item.repository.ItemCollectionRepository;
 import com.nfteam.server.item.repository.ItemCredentialRepository;
 import com.nfteam.server.item.repository.ItemRepository;
-import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import com.nfteam.server.transaction.repository.QTransActionRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,23 +40,19 @@ public class ItemService {
     private final ItemCollectionRepository collectionRepository;
     private final MemberRepository memberRepository;
 
-    private final QItemRepository qItemRepository;
     private final QTransActionRepository qTransActionRepository;
-
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     public ItemService(ItemRepository itemRepository,
                        ItemCredentialRepository itemCredentialRepository,
                        ItemCollectionRepository collectionRepository,
                        MemberRepository memberRepository,
-                       QItemRepository qItemRepository,
                        QTransActionRepository qTransActionRepository,
                        CredentialEncryptUtils credentialEncryptUtils) {
         this.itemRepository = itemRepository;
         this.itemCredentialRepository = itemCredentialRepository;
         this.collectionRepository = collectionRepository;
         this.memberRepository = memberRepository;
-        this.qItemRepository = qItemRepository;
         this.qTransActionRepository = qTransActionRepository;
         this.credentialEncryptUtils = credentialEncryptUtils;
     }
@@ -143,7 +137,7 @@ public class ItemService {
     }
 
     public ItemResponse getItem(Long itemId) {
-        ItemResponse itemResponse = qItemRepository.findItem(itemId);
+        ItemResponse itemResponse = itemRepository.findItemResponse(itemId);
         if (itemResponse == null) throw new ItemNotFoundException(itemId);
 
         List<ItemTradeHistoryResponse> tradeHistory = qTransActionRepository.findHistory(itemId);
@@ -167,15 +161,14 @@ public class ItemService {
     }
 
     public List<ItemResponse> getMemberItemList(Long memberId) {
-        List<ItemResponse> memberItems = qItemRepository.findItemByMember(memberId);
+        List<ItemResponse> memberItems = itemRepository.findItemResponseListByMemberId(memberId);
         if (memberItems.size() == 0) memberItems = new ArrayList<>();
         memberItems.sort(ItemResponse::compareTo);
         return memberItems;
     }
 
-    public Page<ItemResponse> getCollectionItemList(Long collectionId, int page, int size) {
-        return qItemRepository.findItemByCollection(collectionId,
-                PageRequest.of(page, size, Sort.by("itemId").ascending()));
+    public Page<ItemResponse> getCollectionItemList(Long collectionId, Pageable pageable) {
+        return itemRepository.findItemResponsePageByCollectionId(collectionId, pageable);
     }
 
 }
