@@ -52,13 +52,13 @@ export default function Carousel({
   page: string;
 }) {
   const { isLoading, error, data } = useQuery<Collections[]>({
-    queryKey: ['collections'],
-    queryFn: async () => {
-      const res = await axios.get(
-        `https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&page=${page}&per_page=10`
-      );
-      return res.data;
-    },
+    queryKey: [{ page, per_page: 10 }],
+    queryFn: () =>
+      axios
+        .get(
+          `https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&page=${page}&per_page=10`
+        )
+        .then((res) => res.data),
   });
 
   if (isLoading) return <p>Loading...</p>;

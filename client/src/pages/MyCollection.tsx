@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import DropMenu from 'components/MyCollection/DropMenu';
+import MintDropdown from 'components/MyCollection/MintDropdown';
 import HoverCardOpen from 'components/MyCollection/HoverCard';
 import { Link, useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
@@ -20,13 +20,14 @@ export default function MyCollectionPage() {
       alert('로그인이 필요합니다');
       navigate('/login');
     }
-  }, []);
-  const { isLoading, error, data } = useQuery<Collection[]>({
-    queryKey: ['myCollections'],
-    queryFn: async () => {
-      const res = await customAxios.get('/api/members/mypage');
-      return res.data.collections;
-    },
+    return;
+  }, [isLogin, navigate]);
+  const { isLoading, error } = useQuery<Collection[]>({
+    queryKey: ['members', 'mypage'],
+    queryFn: () =>
+      customAxios
+        .get('/api/members/mypage')
+        .then((res) => res.data.collections),
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -52,7 +53,7 @@ export default function MyCollectionPage() {
           >
             Create a collection
           </Link>
-          <DropMenu />
+          <MintDropdown />
         </div>
       </div>
       <section></section>

@@ -7,8 +7,10 @@ export const logout = () => {
         RefreshToken: localStorage.getItem('REFRESH_TOKEN'),
       },
     })
-    .then(() => window.localStorage.clear())
-    .then(() => window.location.reload());
+    .then(() => {
+      window.localStorage.clear();
+      window.location.replace('/');
+    });
 };
 
 export const getMyProFile = async () => {
@@ -33,7 +35,6 @@ export const cartSaveHandler = (data: {
   itemIdList: number[];
   totalPrice: number;
 }) => {
-  alert('결제로진행~');
   console.log(data);
   return customAxios
     .post('/api/carts/save', data)
@@ -46,7 +47,8 @@ export const sellItemHandler = async (
 ) => {
   await customAxios
     .post(`/api/items/sell/${itemId}`, data)
-    .then((res) => console.log(res));
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 };
 
 /**TransAction api */
@@ -54,9 +56,31 @@ export const transAction = async (data: any) => {
   return await customAxios.post('/api/trans', data);
 };
 
+/**지갑 잔고 확인 api */
+export const getMyCoin = async () => {
+  return await customAxios.get('/api/coins/my');
+};
+/**코인 구매호출 api */
+export const buyCoin = async (data: any) => {
+  return await customAxios.post('/api/coins/purchase', data);
+};
+
+/**카카오페이 api */
+export const kakaoPay = async (pgToken: string, tid: string | null) => {
+  if (!pgToken || !tid) return;
+  return await customAxios.get(
+    `/api/coins/approve?pg_token=${pgToken}&tid=${tid}`
+  );
+};
+
 /**업비트 Open API */
 export const getCoinPrice = async (coin: string | undefined) => {
-  const options = { method: 'GET', headers: { accept: 'application/json' } };
+  if (coin === undefined) return;
+
+  const options = {
+    method: 'GET',
+    headers: { accept: 'application/json' },
+  };
   return await fetch(
     `https://api.upbit.com/v1/ticker?markets=krw-${coin}`,
     options

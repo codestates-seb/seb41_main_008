@@ -20,7 +20,7 @@ interface Collections {
 }
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: 4rem 2rem;
 
   .swiper-button-prev,
   .swiper-button-next {
@@ -46,13 +46,13 @@ const Container = styled.div`
 
 export default function MainCarousel() {
   const { isLoading, error, data } = useQuery<Collections[]>({
-    queryKey: ['maincollectionS'],
-    queryFn: async () => {
-      const res = await axios.get(
-        'https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&per_page=12'
-      );
-      return res.data;
-    },
+    queryKey: [{ per_page: 12 }],
+    queryFn: () =>
+      axios
+        .get(
+          'https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&per_page=12'
+        )
+        .then((res) => res.data),
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -62,7 +62,7 @@ export default function MainCarousel() {
 
   return (
     <Container>
-      <h1 className="text-center font-black text-4xl my-10">
+      <h1 className="text-indigo-900 text-center font-black text-4xl my-10">
         Explore, collect, and sell NFTs
       </h1>
       <Swiper

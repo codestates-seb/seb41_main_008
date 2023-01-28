@@ -2,36 +2,27 @@ import { useQuery } from '@tanstack/react-query';
 import ProfileBanner from 'components/Profile/ProfileBanner';
 import ProfileBio from 'components/Profile/ProfileBio';
 import ProfileLogo from 'components/Profile/ProfileLogo';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import customAxios from 'utils/api/axios';
-
-interface Profile {
-  memberId: number;
-  nickname: string;
-  description: string;
-  profileImageName: string;
-  bannerImageName: string;
-}
+import { Profile } from './MyAccount';
 
 export default function ProfilePage() {
   const { isLoading, error, data } = useQuery<Profile>({
-    queryKey: ['profile'],
-    queryFn: async () => {
-      const res = await customAxios.get('/api/members/mypage');
-      return res.data.member;
+    queryKey: ['members', 'mypage'],
+    queryFn: () =>
+      customAxios.get('/api/members/mypage').then((res) => res.data.member),
+    onSuccess: (data) => {
+      setProfileLogo(data.profileImageName);
+      setProfileBanner(data.bannerImageName);
+      setNickname(data.nickname);
+      setDesc(data.description);
     },
   });
 
   const [profileLogo, setProfileLogo] = useState<string>('');
   const [profileBanner, setProfileBanner] = useState<string>('');
-
-  useEffect(() => {
-    if (data) {
-      setProfileLogo(data.profileImageName);
-      setProfileBanner(data.bannerImageName);
-    }
-  }, [data]);
-
+  const [nickname, setNickname] = useState<string>('');
+  const [desc, setDesc] = useState<string>('');
   const [logoName, setLogoName] = useState<string>('');
   const [bannerName, setBannerName] = useState<string>('');
 
@@ -68,9 +59,11 @@ export default function ProfilePage() {
           setBannerName={setBannerName}
         />
         <ProfileBio
-          profileImageName={logoName}
-          bannerImageName={bannerName}
+          profileImageName={logoName || profileLogo}
+          bannerImageName={bannerName || profileBanner}
           id={data?.memberId}
+          nickname={nickname}
+          description={desc}
         />
       </div>
     </div>

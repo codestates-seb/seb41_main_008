@@ -48,7 +48,7 @@ const InputContainer = ({ isSignup }: Props) => {
           getMyProFile().then((res) => {
             console.log(res);
           });
-          navigate('/', { replace: true });
+          // navigate('/', { replace: true });
         }
       });
     }
@@ -57,9 +57,8 @@ const InputContainer = ({ isSignup }: Props) => {
   const onError = (error: {}) => {
     console.log(error);
   };
-
   return (
-    <div className="">
+    <div>
       {unAuth && (
         <div className="flex justify-start items-center fixed top-14 text-center  rounded-3xl p-4 bg-black bg-opacity-70 text-white font-semibold left-1/2 -translate-x-1/2 w-96 ">
           <AiOutlineInfoCircle color="red" size="20" />

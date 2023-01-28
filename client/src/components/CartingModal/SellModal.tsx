@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { ModalBack } from './CartingModal';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { closeSell } from 'store/modalSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +16,7 @@ const SellModalContainer = styled.div`
   flex-direction: column;
   background-color: white;
   position: fixed;
-  height: 750px;
+  height: 800px;
   width: 450px;
   border-radius: 15px;
   z-index: 60;
@@ -24,6 +25,7 @@ const SellModalContainer = styled.div`
   margin: 0 auto;
   left: 0;
   right: 0;
+  box-shadow: 4.8px 9.6px 9.6px hsl(0deg 0% 0% / 0.35);
 `;
 
 interface FormValue {
@@ -31,6 +33,7 @@ interface FormValue {
 }
 const SellModal = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<ItemProps>();
   const [isCheckd, setIsChecked] = useState(false);
@@ -45,6 +48,7 @@ const SellModal = () => {
     resetField,
   } = useForm<FormValue>({ mode: 'onChange' });
   useEffect(() => {
+    console.log('s');
     getItemsData(itemId).then((res) => setData(res.data));
   }, [itemId]);
 
@@ -67,31 +71,30 @@ const SellModal = () => {
     getCoinPrice(data?.coinName)
       .then((res) => setCoinPrice(res[0].trade_price))
       .catch((err) => console.log(err));
-  });
-  // console.log('totalPrice', totalPrice);
+  }, [data?.coinName]);
+
   const onClickSubmit: SubmitHandler<FormValue> = (data) => {
+    console.log(errors);
+    console.log(data);
     if (totalPrice > 999999999999999) {
       alert('999999999999999₩ 을 초과할 수 없습니다');
       return;
     }
     if (window.confirm('판매하시겠습니까?')) {
       sellItemHandler(itemId, data).then(() => {
+        setIsChecked(false);
         dispatch(closeSell());
-        window.location.replace(`/items/${itemId}`);
+        navigate(`/items/${itemId}`);
       });
     }
   };
-  const onError = (err: {}) => {
-    console.log(err);
-  };
   const totalPrice = coinPrice * watch('itemPrice');
-  console.log(errors);
   return (
     <>
       {sellOpen && <ModalBack ref={ref} zIndex={'50'} />}
       {sellOpen && (
         <SellModalContainer>
-          <form onSubmit={handleSubmit(onClickSubmit, onError)}>
+          <form onSubmit={handleSubmit(onClickSubmit)} className="h-full">
             <header className="flex justify-between items-center w-full px-4 py-2 border-b-2">
               <h3 className="text-lg font-semibold">List for Sale</h3>
               <FontAwesomeIcon
@@ -111,25 +114,29 @@ const SellModal = () => {
               <div className="px-3 py-2">{data?.itemName}</div>
 
               <div className="px-3">
-                <div className="flex items-center rounded-xl h-full border-2 p-2">
+                <div
+                  className={`${
+                    errors.itemPrice ? 'border-red-500 ' : ''
+                  } ${'flex items-center rounded-xl border-2'}`}
+                >
                   <input
-                    type="number"
-                    className={`${'w-full'} ${
-                      watch('itemPrice') < 0
-                        ? 'bg-red-200 border-red-600 border-2  focus:outline-none'
-                        : null
-                    }`}
+                    type="text"
+                    className={'w-full p-2 outline-none rounded-l-xl'}
                     required
                     {...register('itemPrice', {
-                      min: 0,
-                      valueAsNumber: true,
+                      pattern: /^[0-9.]*$/,
                     })}
                   />
-                  <div className="border-l-2">{data?.coinName}</div>
+                  <div className=" p-2  rounded-r-xl">{data?.coinName}</div>
                 </div>
+                {errors.itemPrice && (
+                  <span className="text-red-500 text-sm">
+                    Please enter vaild amount
+                  </span>
+                )}
                 {totalPrice > 999999999999999 ? (
                   <div className="text-red-700 font-light">
-                    Maximum is 999,999,999,999,999₩
+                    Maximum Listing price is 999,999,999,999,999₩
                   </div>
                 ) : (
                   <div className="truncate flex  flex-col">

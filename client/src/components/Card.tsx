@@ -33,6 +33,7 @@ interface CardType {
 
 const HideWrapper = styled.div<cartBtnType>`
   div {
+    border-radius: 0px 0px 15px 15px;
     transition: 0.2s;
     visibility: ${(props) => (props.hide ? 'visible' : 'hidden')};
     opacity: ${(props) => (props.hide ? '1' : '0')};
@@ -80,7 +81,7 @@ const Card = ({
             <div>{itemDescription}</div>
             <div>{collectionName}</div>
             <div className="flex">
-              <span className="mr-2">{itemPrice}</span>
+              {onSale && <span className="mr-2">{itemPrice}</span>}
               <span>{filter === 'Collected' && coinName}</span>
             </div>
           </div>

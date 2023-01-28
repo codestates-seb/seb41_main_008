@@ -4,7 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
 import { useState, useEffect } from 'react';
 import { IoSettingsSharp } from 'react-icons/io5';
-
+import { BsCheckCircleFill } from 'react-icons/bs';
+import Notification from 'components/Notification';
 interface UserType {
   member: {
     nickname: string;
@@ -41,6 +42,7 @@ const AccountPage = () => {
   const onFilter = (filterType: string) => {
     setFilter(filterType);
   };
+  console.log(data);
 
   return (
     <div className="flex flex-col w-full">

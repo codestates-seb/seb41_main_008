@@ -26,7 +26,7 @@ export const ModalBack = styled.div<ModalBackProps>`
   width: 100%;
   height: 100%;
   margin: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: ${(props) => (props.zIndex ? props.zIndex : '10')}
     /**숫자로 props를 받아보자 */;
 `;
@@ -39,7 +39,7 @@ const ModalContainer = styled.div<ModalContainerProps>`
   height: 750px;
   right: 28px;
   top: 30px;
-
+  font-weight: bold;
   overflow: auto;
   border-radius: 20px;
   background-color: #ffffff;
@@ -73,7 +73,10 @@ const CartingModal = () => {
   const { isLogin } = useAppSelector((state) => state.login);
   /**여러개 트랜잭션 보낼떄 이거보내주면됨*/
   const cartItemsItemId = cartItems.map((el: any) => el.itemId);
-
+  // const test: any = localStorage.getItem('CART_ITEMS');
+  // const parse = JSON.parse(test);
+  // console.log(cartItems);
+  // console.log('parse', parse);
   const totalPrice = cartItems
     .map((el: any) => el.itemPrice)
     .reduce((prev, curr) => prev + curr, 0);
@@ -116,7 +119,7 @@ const CartingModal = () => {
     <>
       {isOpen && <ModalBack ref={ref} zIndex={'50'} />}
       <ModalContainer visible={isOpen}>
-        <header className="flex justify-between items-center font-semibold text-2xl p-4 border-b-2">
+        <header className="flex justify-between items-center text-2xl p-4 border-b-2">
           <span>Your cart</span>
           <FontAwesomeIcon
             className="cursor-pointer"
@@ -144,7 +147,10 @@ const CartingModal = () => {
 
         {cartItems.length !== 0 && (
           <footer className="flex justify-between p-4">
-            <div>Total price</div>
+            <div>
+              <div>Total amount</div>
+              <div>Total price</div>
+            </div>
             <div className="flex flex-col">
               <div>
                 {totalPrice} {cartItems[0].coinName}
@@ -156,7 +162,7 @@ const CartingModal = () => {
         <div className="flex justify-center mt-5 p-4">
           <button
             disabled={cartItems.length === 0 ? true : false}
-            className={`${'bg-emerald-600 text-white px-10 py-3 rounded-lg mb-5 w-full'} ${
+            className={`${'BasicButton px-10 py-3 rounded-lg mb-5 w-full'} ${
               cartItems.length > 0 ? 'bg-opacity-100' : 'bg-opacity-50 '
             }`}
             onClick={purchaseHandler}
