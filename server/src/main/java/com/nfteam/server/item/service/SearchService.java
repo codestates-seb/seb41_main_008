@@ -6,8 +6,7 @@ import com.nfteam.server.dto.response.search.SearchItemResponse;
 import com.nfteam.server.dto.response.search.SearchResponse;
 import com.nfteam.server.item.repository.QSearchRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +23,9 @@ public class SearchService {
     }
 
     @Transactional
-    public SearchResponse search(String keyword, int page, int size) {
-        Page<SearchItemResponse> items = qSearchRepository.searchItemWithKeyword(keyword,
-                PageRequest.of(page, size, Sort.by("createdDate").descending()));
-
+    public SearchResponse search(String keyword, Pageable pageable) {
+        Page<SearchItemResponse> items = qSearchRepository.searchItemWithKeyword(keyword, pageable);
         List<SearchCollectionResponse> collections = qSearchRepository.searchCollectionWithKeyword(keyword);
-
         return new SearchResponse(collections, new PageResponse<>(items.getContent(), items));
     }
 

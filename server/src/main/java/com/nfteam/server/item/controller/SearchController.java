@@ -2,6 +2,7 @@ package com.nfteam.server.item.controller;
 
 import com.nfteam.server.dto.response.search.SearchResponse;
 import com.nfteam.server.item.service.SearchService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +22,8 @@ public class SearchController {
 
     @GetMapping
     public ResponseEntity<SearchResponse> search(@RequestParam("keyword") String keyword,
-                                                 @RequestParam("page") int page,
-                                                 @RequestParam("size") int size) {
-        return new ResponseEntity<>(searchService.search(keyword, page - 1, size), HttpStatus.OK);
+                                                 Pageable pageable) {
+        return new ResponseEntity<>(searchService.search(keyword, pageable), HttpStatus.OK);
     }
 
 }
