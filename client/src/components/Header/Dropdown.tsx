@@ -72,12 +72,25 @@ const Dropdown = () => {
           </li>
         )}
         <li>
-          <button onClick={() => dispatch(openWallet())}>
+          <button
+            onClick={() => {
+              if (!isLogin) {
+                alert('로그인이 필요합니다.');
+              } else {
+                dispatch(openWallet());
+              }
+            }}
+          >
             <FontAwesomeIcon icon={faWallet} />
           </button>
         </li>
         <li className="flex flex-col relative justify-center w-full leading-6">
-          <button className="p-2" onClick={() => dispatch(openModal())}>
+          <button
+            className="p-2"
+            onClick={() => {
+              dispatch(openModal());
+            }}
+          >
             <FontAwesomeIcon icon={faCartShopping} className="flex" />
           </button>
           <div className="flex justify-center items-center w-5 h-5 rounded-full absolute right-0 -top-2 text-white bg-blue-500 font-bold text-sm">

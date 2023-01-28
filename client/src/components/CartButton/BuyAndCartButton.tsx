@@ -32,29 +32,31 @@ const BuyAndCartButton = ({ data }: any) => {
 
   /**NFTownerId 와 memberId가 같은경우에만 sell버튼 활성화 밑 둘이 같다면 addTocart는 랜더링x + onSale true일경우 addTocart버튼랜더링 및  false일 경우 아예랜더x*/
   return (
-    <ButtonWrapper>
-      {data?.onSale && data?.ownerId !== memberId ? (
-        <div className="grow bg-emerald-700 hover:bg-emerald-600 ">
-          <button
-            className="h-full w-full p-2 text-lg font-semibold"
-            onClick={cartHandler}
-          >
-            Add to Cart
-          </button>
-        </div>
-      ) : null}
+    <>
+      <ButtonWrapper>
+        {data?.onSale && data?.ownerId !== memberId ? (
+          <div className="grow BasicButton">
+            <button
+              className="h-full w-full p-2 text-lg font-semibold"
+              onClick={cartHandler}
+            >
+              Add to Cart
+            </button>
+          </div>
+        ) : null}
 
-      {data?.onSale === false && data?.ownerId === memberId ? (
-        <div className="grow bg-emerald-700 hover:bg-emerald-600 ">
-          <button
-            className="border-l-2 h-full w-full p-2 text-lg font-semibold"
-            onClick={() => forSaleHandler(data.itemId)}
-          >
-            List for sale
-          </button>
-        </div>
-      ) : null}
-    </ButtonWrapper>
+        {data?.onSale === false && data?.ownerId === memberId ? (
+          <div className="grow BasicButton ">
+            <button
+              className="h-full w-full p-2 text-lg font-semibold"
+              onClick={() => forSaleHandler(data.itemId)}
+            >
+              List for sale
+            </button>
+          </div>
+        ) : null}
+      </ButtonWrapper>
+    </>
   );
 };
 export default BuyAndCartButton;

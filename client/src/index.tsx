@@ -9,7 +9,6 @@ import { persistStore } from 'redux-persist';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import CartingModal from 'components/CartingModal/CartingModal';
-import SellModal from 'components/CartingModal/SellModal';
 import TransActionModal from './components/CartingModal/TransActionModal';
 import WalletModal from './components/CartingModal/WalletModal';
 const persistor = persistStore(store);
@@ -25,7 +24,6 @@ root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <CartingModal />
-        <SellModal />
         <QueryClientProvider client={queryClient}>
           <TransActionModal />
           <WalletModal />

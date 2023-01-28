@@ -12,11 +12,13 @@ import MyCollection from 'pages/MyCollection';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
 import ProfilePage from 'pages/ProfilePage';
 import MyAccount from 'pages/MyAccount';
-
+import SuccessPaymentPage from 'pages/SuccessPaymentPage';
+import ScrollToTop from './utils/ScrollToTop';
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<MainPage />} />
@@ -28,10 +30,12 @@ function App() {
             <Route path="collection/:id" element={<CollectionDetails />} />
             <Route path="asset/create" element={<CreateItemPage />} />
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
-            <Route path="/account" element={<MyAccount />} />
-            <Route path="/:name/created" element={<AccountPage />} />
-            {/* protected route */}
-            <Route path="/account/profile" element={<ProfilePage />} />
+            <Route path="/account/:memberId" element={<AccountPage />} />
+            <Route
+              path="/account/:memberId/profile"
+              element={<ProfilePage />}
+            />
+            <Route path="/success" element={<SuccessPaymentPage />} />
             <Route path="*" element={<MissingPage />} />
           </Route>
 
