@@ -9,7 +9,6 @@ const Home = () => {
   const [activeTab] = useState('trending');
   const [option, setOption] = useState('DAY');
 
-  const [option, setOption] = useState('DAY');
 
   return (
     <main className={styles.gridContainer}>
