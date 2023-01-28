@@ -52,7 +52,7 @@ const GoogleLoginButton = ({ isSignup }: Props) => {
           fill="#EA4335"
         ></path>
       </svg>
-      <span>{isSignup ? 'Sign in with Google' : 'Login with Google'}</span>
+      <span>{isSignup ? 'Sign up with Google' : 'Login with Google'}</span>
     </GoogleButton>
   );
 };

@@ -22,7 +22,7 @@ export default function MyCollectionPage() {
     }
     return;
   }, [isLogin, navigate]);
-  const { isLoading, error, data } = useQuery<Collection[]>({
+  const { isLoading, error } = useQuery<Collection[]>({
     queryKey: ['members', 'mypage'],
     queryFn: () =>
       customAxios

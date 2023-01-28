@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { RxCross2 } from 'react-icons/rx';
 import { useAppDispatch } from 'hooks/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
 import { setUpdateUserOpen } from 'store/toastSlice';
@@ -34,7 +34,7 @@ export default function ProfileBio({
   const [descFocus, setDescFocus] = useState(false);
   const navigate = useNavigate();
 
-  const schema = yup.object({
+  const schema = yup.object().shape({
     nickname: yup.string().required('This field is required.'),
     description: yup.string().required('This field is required.'),
   });
@@ -43,16 +43,26 @@ export default function ProfileBio({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Bio>({
+    defaultValues: {
+      nickname,
+      description,
+    },
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    reset({
+      nickname,
+      description,
+    });
+  }, [reset, nickname, description]);
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
     mutationFn: (newProfile: ProfileInfo) =>
-      customAxios
-        .patch(`/api/members/${id}`, newProfile)
-        .then((res) => res.data),
+      customAxios.patch(`/api/members/${id}`, newProfile),
     onSuccess: () => {
       queryClient.invalidateQueries(['members', 'mypage']);
       navigate('/account');
@@ -141,7 +151,7 @@ export default function ProfileBio({
 
       <input
         type="submit"
-        className="bg-emerald-700 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
+        className=" cursor-pointer font-bold BasicButton rounded-lg px-5 py-3 text-lg"
         value="Save"
       />
       {isLoading ? (

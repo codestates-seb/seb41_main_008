@@ -13,7 +13,7 @@ const SearchInput = styled.input`
   width: 100%;
   padding: 8px;
   border-radius: 10px;
-  border: none;
+  outline: none;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 `;
 const Header = () => {
@@ -24,22 +24,19 @@ const Header = () => {
   };
   console.log(cartItems);
   return (
-    <header className="flex justify-center  items-center font-bold z-20 p-4 sticky top-0 border-b-2 bg-white text-lg">
+    <header className="flex justify-center items-center font-bold z-20 p-4 sticky top-0 border-b-2 bg-white text-lg">
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
         <Link to={'/'}>NFTeam</Link>
       </div>
 
       <div className="w-full">
-        <SearchInput placeholder="Search items, collections, and accoutns..." />
+        <SearchInput placeholder="Search items, collections, and accounts..." />
       </div>
       <Dropdown />
       <nav>
         <ul className="flex gap-5 items-center">
-          <button
-            className="hidden  max-[1040px]:flex"
-            onClick={visibleHandler}
-          >
+          <button className="hidden max-[1040px]:flex" onClick={visibleHandler}>
             {visible ? (
               <FontAwesomeIcon icon={faXmark} />
             ) : (

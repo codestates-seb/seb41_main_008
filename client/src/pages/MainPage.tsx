@@ -7,18 +7,21 @@ import { setDeleteUserOpen } from 'store/toastSlice';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import Notification from 'components/Notification';
 import { useEffect } from 'react';
+import MainHeader from 'components/Header/MainHeader';
 
 const MainPage = () => {
   const deleteUserOpen = useAppSelector((state) => state.toast.deleteUserOpen);
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     setTimeout(() => dispatch(setDeleteUserOpen(false)), 5000);
   }, [dispatch]);
 
   return (
     <div>
-      <MainCarousel />
+      <div className="bg-gradient-to-b via-yellow-100 from-red-200">
+        <MainHeader />
+        <MainCarousel />
+      </div>
       <Top />
       <Carousel title="Notable collections" page="3" />
       <Footer />
