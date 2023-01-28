@@ -8,6 +8,7 @@ import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.item.service.ItemService;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,9 +56,8 @@ public class ItemController {
 
     @GetMapping("/collections/{collectionId}")
     public ResponseEntity<PageResponse> getItemListByCollection(@PathVariable("collectionId") Long collectionId,
-                                                                @RequestParam("page") int page,
-                                                                @RequestParam("size") int size) {
-        Page<ItemResponse> collectionItemList = itemService.getCollectionItemList(collectionId, page - 1, size);
+                                                                Pageable pageable) {
+        Page<ItemResponse> collectionItemList = itemService.getCollectionItemList(collectionId, pageable);
         List<ItemResponse> contents = collectionItemList.getContent();
         return new ResponseEntity<>(new PageResponse(contents, collectionItemList), HttpStatus.OK);
     }
