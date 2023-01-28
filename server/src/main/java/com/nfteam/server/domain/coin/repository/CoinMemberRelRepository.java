@@ -15,6 +15,7 @@ public interface CoinMemberRelRepository extends JpaRepository<CoinMemberRel, Lo
 
     @Query("select rel from CoinMemberRel rel " +
             "left join fetch rel.member " +
+            "left join fetch rel.coin " +
             "where rel.member.memberId =:memberId")
     List<CoinMemberRel> findAllByMemberId(Long memberId);
 

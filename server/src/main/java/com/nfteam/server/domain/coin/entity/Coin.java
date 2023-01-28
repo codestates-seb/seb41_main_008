@@ -20,6 +20,9 @@ public class Coin extends BaseEntity {
     @Column(name = "coin_name", nullable = false, unique = true, length = 100)
     private String coinName;
 
+    @Column(name = "coin_image")
+    private String coinImage;
+
     @Column(name = "withdraw_fee", nullable = false, length = 400)
     private Double withdrawFee;
 
@@ -36,14 +39,19 @@ public class Coin extends BaseEntity {
     }
 
     @Builder
-    public Coin(Long coinId, String coinName, Double withdrawFee) {
+    public Coin(Long coinId, String coinName, String coinImage, Double withdrawFee) {
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
         this.withdrawFee = withdrawFee;
     }
 
     public void changeWithdrawFee(Double withdrawFee) {
         this.withdrawFee = withdrawFee;
+    }
+
+    public void changeCoinImage(String coinImage) {
+        this.coinImage = coinImage;
     }
 
     @Override
