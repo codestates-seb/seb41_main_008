@@ -91,24 +91,24 @@ public class CoinService {
 
     @Transactional
     public CoinPurchaseReadyResponse startPayment(CoinPurchaseRequest request, MemberDetails memberDetails) {
-        // 구매자 정보 + 구매 코인 정보 + 구매 코인 갯수 + 총 가격
         Member buyer = findMember(memberDetails.getEmail());
         Coin coin = findCoin(request.getCoinName());
-        Double coinCount = request.getCoinCount();
-        Double totalPrice = request.getTotalPrice();
+
+        // 구매 갯수 + 구매 가격 소수점 둘째 자리까지 반올림
+        Double convertCoinCount = Double.parseDouble(String.format("%.2f", request.getCoinCount()));
+        Double convertTotalPrice = Double.parseDouble(String.format("%.2f", request.getTotalPrice()));
 
         // 구매정보 저장 - payStatus : false
-        CoinOrder coinOrder = new CoinOrder(buyer, coin, coinCount, totalPrice);
+        CoinOrder coinOrder = new CoinOrder(buyer, coin, convertCoinCount, convertTotalPrice);
         coinOrderRepository.save(coinOrder);
 
         // Double -> Integer 변환 (카카오 요청용)
-        Double doubleCoinCount = coinCount * 1000;
-        Integer intCoinCount = doubleCoinCount.intValue();
-        Integer intTotalTotal = totalPrice.intValue();
+        Integer intCoinCount = ((Double) (convertCoinCount * 1000)).intValue();
+        Integer intTotalPrice = convertTotalPrice.intValue();
 
         // 카카오 페이 결제 준비 요청 HttpEntity 준비
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(
-                getRequestParameters(buyer.getMemberId(), coin.getCoinName(), coinOrder.getOrderId(), intCoinCount, intTotalTotal),
+                getRequestParameters(buyer.getMemberId(), coin.getCoinName(), coinOrder.getOrderId(), intCoinCount, intTotalPrice),
                 getHeaders());
 
         // 카카오 결제 준비 요청 응답
