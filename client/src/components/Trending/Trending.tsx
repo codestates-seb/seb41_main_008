@@ -1,6 +1,9 @@
 /* eslint-disable */
+import { Link } from 'react-router-dom';
 import EthLogo from '../../assets/icons/eth-logo.png';
 import customAxios from 'utils/api/axios';
+import { getRaingkingData } from 'utils/api/api';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { AxiosError } from 'axios';
 import '../Trending/Trending.css';
@@ -20,6 +23,13 @@ interface RankingData extends Array<Ranking> {}
 
 const TrendingChart = ({ option }: { option: string }) => {
   const [data, setData] = useState<RankingData>();
+  // const { time } = useParams();
+  console.log(option);
+  console.log(option.toLowerCase().trim());
+
+  // useEffect(() => {
+  //   getRaingkingData(time).then((res) => setData(res.data));
+  // }, [time]);
 
   useEffect(() => {
     const getRaingkingData = async () => {
@@ -28,6 +38,7 @@ const TrendingChart = ({ option }: { option: string }) => {
           `/api/ranking/time/${option.toLowerCase()}`
         );
         setData(res.data);
+        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err);
