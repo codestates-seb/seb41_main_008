@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { AxiosError } from 'axios';
 import '../Trending/Trending.css';
-import { time } from 'console';
 
 export interface Ranking {
   rank: number;
@@ -22,20 +21,22 @@ export interface Ranking {
 
 interface RankingData extends Array<Ranking> {}
 
-
-const TrendingChart = () => {
+const TrendingChart = ({ option }: { option: string }) => {
   const [data, setData] = useState<RankingData>();
-  const { time } = useParams();
-  console.log(data);
+  // const { time } = useParams();
+  console.log(option);
+  console.log(option.toLowerCase().trim());
 
-  useEffect(() => {
-    getRaingkingData(time).then((res) => setData(res.data));
-  }, [time]);
+  // useEffect(() => {
+  //   getRaingkingData(time).then((res) => setData(res.data));
+  // }, [time]);
 
   useEffect(() => {
     const getRaingkingData = async () => {
       try {
-        const res = await customAxios.get(`/api/items/${time}`);
+        const res = await customAxios.get(
+          `/api/ranking/time/${option.toLowerCase()}`
+        );
         setData(res.data);
         console.log(res.data);
       } catch (error) {
@@ -45,7 +46,7 @@ const TrendingChart = () => {
     };
 
     getRaingkingData();
-  }, [time]);
+  }, [option]);
 
   return (
     <div>

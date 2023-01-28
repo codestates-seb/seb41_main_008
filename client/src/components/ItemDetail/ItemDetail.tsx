@@ -109,7 +109,7 @@ interface PriceData {
               <div className="card__body">
                 <div className="asset__properties"></div>
                 <div style={{ width: 460, height: 400 }}>
-                  <Rechart />
+                  <Rechart data={data} />
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@ interface PriceData {
                             {item.transPrice}
                           </div>
                         </td>
-                        <td>{item.transPrice}</td>
+                        <td>{data?.withdrawFee}</td>
                         <td>{item.coinName}</td>
                         <td>{item.sellerName}</td>
                         <td>{item.buyerName}</td>

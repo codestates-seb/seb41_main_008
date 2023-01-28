@@ -1,7 +1,8 @@
+/* eslint-disable */
 import Footer from 'components/Layout/Footer';
-import Top from '../components/Trending/Top';
 import MainCarousel from 'components/Carousel/MainCarousel';
 import Carousel from 'components/Carousel/Carousel';
+import Top from '../components/Trending/Top';
 
 const MainPage = () => {
   return (

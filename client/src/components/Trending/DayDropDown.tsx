@@ -5,18 +5,17 @@ import { IoIosArrowUp } from 'react-icons/io';
 import { useState } from 'react';
 import { useRef } from 'react';
 
-
 const DayDropdown: FC<{
-  options: string[];
+  setOption: React.Dispatch<React.SetStateAction<string>>;
   onOptionClick: (option: string) => void;
-}> = ({ options, onOptionClick }) => {
+}> = ({ setOption, onOptionClick }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const showDropDown = isExpanded;
   const showDropUP = !isExpanded;
+  const options = ['DAY', 'WEEK', 'MONTH'];
   return (
     <div className="relative">
       <button
-
         onClick={() => setIsExpanded(!isExpanded)}
         className=" flex items-center rounded text-white px-5 py-1 hover:bg-green-400 bg-green-500"
       >
@@ -29,13 +28,16 @@ const DayDropdown: FC<{
       {isExpanded && (
         <div className="absolute bg-white px-1 py-1 rounded border border-gray-400 mt-2 w-30">
           <ul>
-            {options.map((option) => (
+            {options.map((time) => (
               <li
-                onClick={() => onOptionClick(option)}
+                onClick={() => {
+                  onOptionClick(time);
+                  setOption(time);
+                }}
                 className="hover:bg-green-200 px-2 py-1"
-                key={option}
+                key={time}
               >
-                {option}
+                {time}
               </li>
             ))}
           </ul>
@@ -45,4 +47,4 @@ const DayDropdown: FC<{
   );
 };
 
-export default DayDropdown; 
+export default DayDropdown;
