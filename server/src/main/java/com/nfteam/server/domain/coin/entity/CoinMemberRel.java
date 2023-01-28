@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -44,6 +45,19 @@ public class CoinMemberRel extends BaseEntity {
 
     public void minusCoinCount(Double cnt) {
         this.coinCount -= cnt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CoinMemberRel that = (CoinMemberRel) o;
+        return relId.equals(that.relId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(relId);
     }
 
 }

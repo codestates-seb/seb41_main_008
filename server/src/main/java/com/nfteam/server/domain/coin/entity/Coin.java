@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -43,6 +44,19 @@ public class Coin extends BaseEntity {
 
     public void changeWithdrawFee(Double withdrawFee) {
         this.withdrawFee = withdrawFee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coin coin = (Coin) o;
+        return coinId.equals(coin.coinId) && coinName.equals(coin.coinName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coinId, coinName);
     }
 
 }

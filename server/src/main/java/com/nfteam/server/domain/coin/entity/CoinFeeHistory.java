@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -34,6 +35,19 @@ public class CoinFeeHistory {
     public CoinFeeHistory(String coinName, Double withdrawFee) {
         this.coinName = coinName;
         this.withdrawFee = withdrawFee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CoinFeeHistory that = (CoinFeeHistory) o;
+        return coinHistoryId.equals(that.coinHistoryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coinHistoryId);
     }
 
 }
