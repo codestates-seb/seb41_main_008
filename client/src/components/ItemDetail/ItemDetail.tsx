@@ -17,6 +17,8 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAppSelector } from 'hooks/hooks';
 import SellModal from 'components/CartingModal/SellModal';
+import Rechart from './Rechart';
+import { date } from 'yup';
 
 export interface ItemProps {
   coinId: number;
@@ -30,7 +32,7 @@ export interface ItemProps {
   onSale: boolean;
   trueownerId: number;
   ownerName: string;
-  priceHistory: null;
+  priceHistory: PriceData[];
   tradeHistory: ItemsData[];
   withdrawFee: number;
   logoImgName: string;
@@ -40,12 +42,18 @@ interface ItemsData {
   sellerId: number;
   sellerName: string;
   buyerId: number;
+  buyerName: string;
   transPrice: number;
   coinName: string;
-  transData: number;
+  transDate: number;
 }
 
-const Asset = () => {
+interface PriceData {
+  transPrice: number;
+  transDate: number;
+}
+
+  const Asset = () => {
   const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
   const { cartItems } = useAppSelector((state) => state.cart);
@@ -61,7 +69,7 @@ const Asset = () => {
       try {
         const res = await customAxios.get(`/api/items/${itemId}`);
         setData(res.data);
-        console.log(res);
+        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err);
@@ -70,6 +78,8 @@ const Asset = () => {
 
     getItemsData();
   }, [itemId]);
+
+  
 
   return (
     <div className="asset">
@@ -91,15 +101,16 @@ const Asset = () => {
                 <div>{data?.itemDescription}</div>
               </div>
             </div>
-
             <div className="card">
               <div className="card__header">
                 <SlGraph />
                 Price History
               </div>
-
               <div className="card__body">
                 <div className="asset__properties"></div>
+                <div style={{ width: 460, height: 400 }}>
+                  <Rechart />
+                </div>
               </div>
             </div>
           </div>
@@ -148,10 +159,11 @@ const Asset = () => {
                   <thead>
                     <tr>
                       <th>Price</th>
-                      <th>USD Price</th>
                       <th>Commission</th>
+                      <th>Coin</th>
                       <th>From</th>
                       <th>To</th>
+                      <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -160,13 +172,14 @@ const Asset = () => {
                         <td>
                           <div className="price">
                             <ETHIcon />
-                            {item.sellerId}
+                            {item.transPrice}
                           </div>
                         </td>
-                        <td></td>
+                        <td>{item.transPrice}</td>
                         <td>{item.coinName}</td>
-                        <td>{item.sellerId}</td>
-                        <td>{}</td>
+                        <td>{item.sellerName}</td>
+                        <td>{item.buyerName}</td>
+                        <td>{item.transDate}</td>
                       </tr>
                     ))}
                   </tbody>

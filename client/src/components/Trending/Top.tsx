@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
 import { IoIosArrowDown } from 'react-icons/io';
-
+import DayDropdown from './DayDropDown';
 const Home = () => {
   const [activeTab] = useState('trending');
   return (
@@ -16,22 +16,20 @@ const Home = () => {
             <button
               className={`${styles.tabBtn} ${
                 activeTab === 'trending' && styles.tabBtnActive
-              }`}
+              }`}  
             >
-              Trending
+              TOP
             </button>
           </div>
-          <div className={styles.filterBtnsContainer}>
-            <button className={styles.filterBtn}>
-              <span> 24h </span>
-              <IoIosArrowDown />
-              <span
-                className={`material-symbols-outlined ${styles.btnExpandIcon}`}
-              ></span>
-            </button>
+          <div> 
+            <DayDropdown
+              onOptionClick={(option) => {
+              console.log(option)
+            }}
+             options={['DAY', 'WEEK', 'MONTH']} />
           </div>
         </header>
-        {activeTab === 'trending' && <Trending />}
+        <Trending />
       </section>
     </main>
   );

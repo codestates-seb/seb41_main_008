@@ -23,6 +23,10 @@ export const getItemsData = async (itemId: string | number | undefined) => {
   return await customAxios.get(`/api/items/${itemId}`);
 };
 
+export const getRaingkingData = async (time: string | number | undefined) => {
+  return await customAxios.get(`/api/ranking/time/${time}`);
+};
+
 /**카트정보 저장 api */
 export const cartSaveHandler = (data: {
   cartId: number;
