@@ -12,15 +12,18 @@ export const login = createAsyncThunk(
   async (data: {}, thunkAPI): Promise<any> => {
     try {
       const res: any = await customAxios.post('/auth/login', data);
+      console.log(res);
       if (res.headers) {
         localStorage.setItem('ACCESS_TOKEN', res.headers.authorization);
         localStorage.setItem('REFRESH_TOKEN', res.headers.refreshtoken);
         localStorage.setItem('MEMBER_ID', res.data.id);
-        localStorage.setItem('CART_ID', res.data.cart.cartId);
+        localStorage.setItem('CART_ID', res.data.cartId);
+        // localStorage.setItem('CART_ITEMS', JSON.stringify(res.data.cart.items));
       }
       console.log(res);
       return res.data;
     } catch (error: any) {
+      console.log(error);
       return thunkAPI.rejectWithValue(error.response);
     }
   }

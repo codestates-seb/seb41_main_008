@@ -435,3 +435,17 @@
     @apply w-full text-left pl-4 py-4;
   }
 }
+
+.dropdown-menu-item {
+  @apply shadow hover:text-white hover:bg-emerald-700;
+}
+.dropdown-menu-item:hover {
+  transition: all 0.2s ease 0s;
+}
+.dropdown-munu-btn {
+  @apply w-full text-left pl-4 py-4;
+}
+
+.BasicButton {
+  @apply bg-emerald-600 hover:bg-emerald-500 text-white text-center;
+}

@@ -21,6 +21,7 @@ interface Collections {
 
 const Container = styled.div`
   padding: 4rem 2rem;
+
   .swiper-button-prev,
   .swiper-button-next {
     color: white;
@@ -61,7 +62,7 @@ export default function MainCarousel() {
 
   return (
     <Container>
-      <h1 className="text-center font-black text-indigo-900 text-4xl my-10">
+      <h1 className="text-indigo-900 text-center font-black text-4xl my-10">
         Explore, collect, and sell NFTs
       </h1>
       <Swiper

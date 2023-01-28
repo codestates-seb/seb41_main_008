@@ -6,6 +6,8 @@ import { IoIosArrowDown } from 'react-icons/io';
 
 const Home = () => {
   const [activeTab] = useState('trending');
+  const [option, setOption] = useState('DAY');
+
   return (
     <main className={styles.gridContainer}>
       <section
@@ -18,20 +20,12 @@ const Home = () => {
                 activeTab === 'trending' && styles.tabBtnActive
               }`}
             >
-              Trending
+              TOP
             </button>
           </div>
-          <div className={styles.filterBtnsContainer}>
-            <button className={styles.filterBtn}>
-              <span> 24h </span>
-              <IoIosArrowDown />
-              <span
-                className={`material-symbols-outlined ${styles.btnExpandIcon}`}
-              ></span>
-            </button>
-          </div>
+          <div></div>
         </header>
-        {activeTab === 'trending' && <Trending />}
+        <Trending option={option} />
       </section>
     </main>
   );

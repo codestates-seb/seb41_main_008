@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/hooks';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MobileDropdownList from './MobileDropdownLIst';
 import MobileDropdown from './MobileDropdown';
-import Dropdown from './Dropdown';
+import MainDropdown from './MainDropdown';
+// import { useAppSelector } from '../../hooks/hooks';
 
 const SearchInput = styled.input`
   display: flex;
@@ -18,7 +18,7 @@ const SearchInput = styled.input`
 `;
 const MainHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { cartItems } = useAppSelector((state) => state.cart);
+  // const { cartItems } = useAppSelector((state) => state.cart);
   const [visible, setVisible] = useState(false);
   const visibleHandler = () => {
     setVisible(!visible);
@@ -59,7 +59,7 @@ const MainHeader = () => {
           placeholder="Search items, collections, and accounts..."
         />
       </div>
-      <Dropdown isScrolled={isScrolled} />
+      <MainDropdown isScrolled={isScrolled} />
       <nav>
         <ul className="flex gap-5 items-center">
           <button

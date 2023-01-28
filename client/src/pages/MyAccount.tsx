@@ -28,7 +28,7 @@ export default function MyAccount() {
     queryFn: () =>
       customAxios.get('/api/members/mypage').then((res) => res.data.member),
   });
-
+  console.log(data);
   if (isLoading) return <p>Loading...</p>;
 
   if (error instanceof Error)

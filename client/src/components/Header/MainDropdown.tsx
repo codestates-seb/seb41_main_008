@@ -28,8 +28,7 @@ const DropdownList = styled.li`
     }
   }
 `;
-const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
-const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
+const MainDropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -42,9 +41,8 @@ const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
     queryFn: () =>
       customAxios.get('api/members/mypage').then((res) => res.data.member),
   });
-  // console.log(data);
+
   return (
-    <nav>
     <nav>
       <ul className="flex items-center justify-center mr-8 ml-2 gap-5">
         <DropdownList className="max-[640px]:hidden">
@@ -64,7 +62,10 @@ const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
               <DropdownItems />
             </>
           ) : (
-            <Link to={'/signup'} className="p-2">
+            <Link
+              to={'/signup'}
+              className={`p-2 ${!isScrolled && 'text-white'}`}
+            >
               {' '}
               Signup
             </Link>
@@ -73,7 +74,10 @@ const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
         {!isLogin && (
           <li className="max-[640px]:hidden">
             {!isLogin && (
-              <Link to={'/login'} className="p-2">
+              <Link
+                to={'/login'}
+                className={`p-2 ${!isScrolled && 'text-white'}`}
+              >
                 <span>Login</span>
               </Link>
             )}
@@ -89,7 +93,10 @@ const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
               }
             }}
           >
-            <FontAwesomeIcon icon={faWallet} />
+            <FontAwesomeIcon
+              className={`${!isScrolled && 'text-white'}`}
+              icon={faWallet}
+            />
           </button>
         </li>
         <li className="flex flex-col relative justify-center w-full leading-6">
@@ -99,7 +106,10 @@ const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
               dispatch(openModal());
             }}
           >
-            <FontAwesomeIcon className="flex" icon={faCartShopping} />
+            <FontAwesomeIcon
+              className={`${!isScrolled && 'text-white'} flex`}
+              icon={faCartShopping}
+            />
           </button>
           <div className="flex justify-center items-center w-5 h-5 rounded-full absolute right-0 -top-2 text-white bg-blue-500 font-bold text-sm">
             {cartItems.length}
@@ -109,4 +119,4 @@ const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
     </nav>
   );
 };
-export default Dropdown;
+export default MainDropdown;

@@ -12,7 +12,6 @@ import MainHeader from 'components/Header/MainHeader';
 const MainPage = () => {
   const deleteUserOpen = useAppSelector((state) => state.toast.deleteUserOpen);
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     setTimeout(() => dispatch(setDeleteUserOpen(false)), 5000);
   }, [dispatch]);

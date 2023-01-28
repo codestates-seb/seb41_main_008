@@ -10,7 +10,6 @@ import Dropdown from './Dropdown';
 
 const SearchInput = styled.input`
   display: flex;
-  // border: 1px solid black;
   width: 100%;
   padding: 8px;
   border-radius: 10px;
@@ -37,10 +36,7 @@ const Header = () => {
       <Dropdown />
       <nav>
         <ul className="flex gap-5 items-center">
-          <button
-            className="hidden  max-[1040px]:flex"
-            onClick={visibleHandler}
-          >
+          <button className="hidden max-[1040px]:flex" onClick={visibleHandler}>
             {visible ? (
               <FontAwesomeIcon icon={faXmark} />
             ) : (
