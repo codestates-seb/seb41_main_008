@@ -424,6 +424,16 @@
       transform: translate(-50%, -50%) scale(1);
     }
   }
+
+  .dropdown-menu-item {
+    @apply shadow hover:text-white hover:bg-emerald-700;
+  }
+  .dropdown-menu-item:hover {
+    transition: all 0.2s ease 0s;
+  }
+  .dropdown-munu-btn {
+    @apply w-full text-left pl-4 py-4;
+  }
 }
 
 .dropdown-menu-item {

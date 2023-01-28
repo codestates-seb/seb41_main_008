@@ -15,7 +15,9 @@ const MainPage = () => {
   useEffect(() => {
     setTimeout(() => dispatch(setDeleteUserOpen(false)), 5000);
   }, [dispatch]);
-
+  // bg-gradient-to-r from-rose-100 to-teal-100
+  // via-yellow-100 from-red-200
+  // bg-gradient-to-b from-indigo-200 via-red-200 to-yellow-100
   return (
     <div>
       <div className="bg-gradient-to-b via-yellow-100 from-red-200">
