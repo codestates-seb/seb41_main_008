@@ -6,9 +6,9 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
-import static com.nfteam.server.batch.entity.QCoinRankingEntity.coinRankingEntity;
-import static com.nfteam.server.batch.entity.QTimeRankingEntity.timeRankingEntity;
-import static com.nfteam.server.item.entity.QItemCollection.itemCollection;
+import static com.nfteam.server.domain.item.entity.QItemCollection.itemCollection;
+import static com.nfteam.server.domain.ranking.batch.entity.QCoinRankingEntity.coinRankingEntity;
+import static com.nfteam.server.domain.ranking.batch.entity.QTimeRankingEntity.timeRankingEntity;
 
 @Repository
 public class QRankingRepository {

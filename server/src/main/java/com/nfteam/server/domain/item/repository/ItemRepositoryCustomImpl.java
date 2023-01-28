@@ -12,7 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.nfteam.server.item.entity.QItem.item;
+import static com.nfteam.server.domain.item.entity.QItem.item;
+
 
 @Repository
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {

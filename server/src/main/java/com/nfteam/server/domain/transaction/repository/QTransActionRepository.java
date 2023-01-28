@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.nfteam.server.transaction.entity.QTransAction.transAction;
+import static com.nfteam.server.domain.transaction.entity.QTransAction.transAction;
 
 @Repository
 public class QTransActionRepository {

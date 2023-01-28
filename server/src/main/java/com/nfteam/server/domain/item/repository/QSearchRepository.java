@@ -16,8 +16,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static com.nfteam.server.item.entity.QItem.item;
-import static com.nfteam.server.item.entity.QItemCollection.itemCollection;
+import static com.nfteam.server.domain.item.entity.QItem.item;
+import static com.nfteam.server.domain.item.entity.QItemCollection.itemCollection;
 
 @Repository
 public class QSearchRepository {
