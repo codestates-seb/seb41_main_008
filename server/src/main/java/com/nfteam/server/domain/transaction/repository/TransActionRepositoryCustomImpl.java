@@ -11,15 +11,16 @@ import java.util.List;
 import static com.nfteam.server.domain.transaction.entity.QTransAction.transAction;
 
 @Repository
-public class QTransActionRepository {
+public class TransActionRepositoryCustomImpl implements TransActionRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public QTransActionRepository(JPAQueryFactory jpaQueryFactory) {
+    public TransActionRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<ItemTradeHistoryResponse> findHistory(Long itemId) {
+    @Override
+    public List<ItemTradeHistoryResponse> findTradeHistory(Long itemId) {
         return jpaQueryFactory
                 .select(getItemTradeResponseConstructor())
                 .from(transAction)

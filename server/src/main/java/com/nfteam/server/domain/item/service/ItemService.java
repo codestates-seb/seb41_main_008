@@ -10,7 +10,7 @@ import com.nfteam.server.domain.item.repository.ItemRepository;
 import com.nfteam.server.domain.item.utils.CredentialEncryptUtils;
 import com.nfteam.server.domain.member.entity.Member;
 import com.nfteam.server.domain.member.repository.MemberRepository;
-import com.nfteam.server.domain.transaction.repository.QTransActionRepository;
+import com.nfteam.server.domain.transaction.repository.TransActionRepository;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemSellRequest;
 import com.nfteam.server.dto.response.item.ItemPriceHistoryResponse;
@@ -38,22 +38,21 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemCredentialRepository itemCredentialRepository;
     private final ItemCollectionRepository collectionRepository;
+    private final TransActionRepository transActionRepository;
     private final MemberRepository memberRepository;
-
-    private final QTransActionRepository qTransActionRepository;
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     public ItemService(ItemRepository itemRepository,
                        ItemCredentialRepository itemCredentialRepository,
                        ItemCollectionRepository collectionRepository,
+                       TransActionRepository transActionRepository,
                        MemberRepository memberRepository,
-                       QTransActionRepository qTransActionRepository,
                        CredentialEncryptUtils credentialEncryptUtils) {
         this.itemRepository = itemRepository;
         this.itemCredentialRepository = itemCredentialRepository;
         this.collectionRepository = collectionRepository;
+        this.transActionRepository = transActionRepository;
         this.memberRepository = memberRepository;
-        this.qTransActionRepository = qTransActionRepository;
         this.credentialEncryptUtils = credentialEncryptUtils;
     }
 
@@ -140,7 +139,7 @@ public class ItemService {
         ItemResponse itemResponse = itemRepository.findItemResponse(itemId);
         if (itemResponse == null) throw new ItemNotFoundException(itemId);
 
-        List<ItemTradeHistoryResponse> tradeHistory = qTransActionRepository.findHistory(itemId);
+        List<ItemTradeHistoryResponse> tradeHistory = transActionRepository.findTradeHistory(itemId);
         List<ItemPriceHistoryResponse> priceHistory = new ArrayList<>();
 
         if (!tradeHistory.isEmpty()) {
