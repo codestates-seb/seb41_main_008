@@ -21,7 +21,6 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    // 로그아웃 & purchase complete 시 호출 (프론트 로컬 스토리지 기록이 지워질 때)
     @PostMapping("/save")
     public ResponseEntity<Void> save(@RequestBody CartPurchaseRequest cartPurchaseRequest,
                                      @AuthenticationPrincipal MemberDetails memberDetails) {
