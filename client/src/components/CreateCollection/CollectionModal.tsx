@@ -20,7 +20,7 @@ export default function CollectionModal({
     <div>
       <Dialog.Root>
         <Dialog.Trigger asChild>
-          <button className="BasicButton">
+          <button className="btn">
             {selectedCoin?.name ? selectedCoin?.name : 'Select a blockchain'}
           </button>
         </Dialog.Trigger>

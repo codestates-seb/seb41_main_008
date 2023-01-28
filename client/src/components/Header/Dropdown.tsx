@@ -28,7 +28,7 @@ const DropdownList = styled.li`
     }
   }
 `;
-const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
+
 const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -42,9 +42,8 @@ const Dropdown = ({ isScrolled }: { isScrolled?: boolean }) => {
     queryFn: () =>
       customAxios.get('api/members/mypage').then((res) => res.data.member),
   });
-  // console.log(data);
+
   return (
-    <nav>
     <nav>
       <ul className="flex items-center justify-center mr-8 ml-2 gap-5">
         <DropdownList className="max-[640px]:hidden">
