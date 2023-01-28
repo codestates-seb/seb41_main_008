@@ -1,11 +1,16 @@
 import customAxios from './axios';
 
 export const logout = () => {
-  return customAxios.get('/auth/logout', {
-    headers: {
-      RefreshToken: localStorage.getItem('REFRESH_TOKEN'),
-    },
-  });
+  return customAxios
+    .get('/auth/logout', {
+      headers: {
+        RefreshToken: localStorage.getItem('REFRESH_TOKEN'),
+      },
+    })
+    .then(() => {
+      window.localStorage.clear();
+      window.location.replace('/');
+    });
 };
 
 export const getMyProFile = async () => {
