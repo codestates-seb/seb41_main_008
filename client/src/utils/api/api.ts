@@ -7,10 +7,9 @@ export const logout = () => {
         RefreshToken: localStorage.getItem('REFRESH_TOKEN'),
       },
     })
-    .then(() => window.localStorage.clear())
     .then(() => {
+      window.localStorage.clear();
       window.location.replace('/');
-      window.location.reload();
     });
 };
 

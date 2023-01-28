@@ -10,7 +10,6 @@ import Dropdown from './Dropdown';
 
 const SearchInput = styled.input`
   display: flex;
-  border: 1px solid black;
   width: 100%;
   padding: 8px;
   border-radius: 10px;
