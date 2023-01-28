@@ -1,7 +1,7 @@
 package com.nfteam.server.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nfteam.server.cart.service.CartService;
+import com.nfteam.server.domain.cart.service.CartService;
 import com.nfteam.server.dto.response.auth.LoginResponse;
 import com.nfteam.server.dto.response.cart.CartResponse;
 import com.nfteam.server.security.userdetails.MemberDetails;

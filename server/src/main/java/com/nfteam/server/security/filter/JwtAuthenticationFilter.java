@@ -1,7 +1,7 @@
 package com.nfteam.server.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nfteam.server.common.utils.JwtTokenizer;
+import com.nfteam.server.auth.utils.JwtTokenizer;
 import com.nfteam.server.dto.request.auth.LoginRequest;
 import com.nfteam.server.redis.repository.RedisRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;

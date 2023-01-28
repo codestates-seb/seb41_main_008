@@ -1,7 +1,7 @@
 package com.nfteam.server.dto.response.member;
 
-import com.nfteam.server.member.entity.Member;
-import com.nfteam.server.member.entity.MemberStatus;
+import com.nfteam.server.domain.member.entity.Member;
+import com.nfteam.server.domain.member.entity.MemberStatus;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package com.nfteam.server.dto.response.item;
 
-import com.nfteam.server.item.entity.ItemCollection;
+import com.nfteam.server.domain.item.entity.ItemCollection;
 import lombok.Builder;
 import lombok.Getter;
 

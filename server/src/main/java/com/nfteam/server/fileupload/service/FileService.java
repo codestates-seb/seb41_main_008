@@ -1,6 +1,6 @@
 package com.nfteam.server.fileupload.service;
 
-import com.nfteam.server.common.utils.S3ImageUploader;
+import com.nfteam.server.fileupload.utils.S3ImageUploader;
 import com.nfteam.server.dto.response.file.FileResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

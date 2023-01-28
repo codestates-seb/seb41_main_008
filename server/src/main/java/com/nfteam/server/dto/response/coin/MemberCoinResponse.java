@@ -1,7 +1,7 @@
 package com.nfteam.server.dto.response.coin;
 
-import com.nfteam.server.coin.entity.CoinMemberRel;
-import com.nfteam.server.coin.entity.CoinType;
+import com.nfteam.server.domain.coin.entity.CoinMemberRel;
+import com.nfteam.server.domain.coin.entity.CoinType;
 import com.nfteam.server.exception.coin.CoinNotFoundException;
 import lombok.Builder;
 import lombok.Getter;

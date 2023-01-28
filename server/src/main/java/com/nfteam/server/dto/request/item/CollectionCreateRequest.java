@@ -1,6 +1,6 @@
 package com.nfteam.server.dto.request.item;
 
-import com.nfteam.server.item.entity.ItemCollection;
+import com.nfteam.server.domain.item.entity.ItemCollection;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;

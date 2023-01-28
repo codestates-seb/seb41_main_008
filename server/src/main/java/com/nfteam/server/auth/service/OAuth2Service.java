@@ -2,7 +2,7 @@ package com.nfteam.server.auth.service;
 
 import com.nfteam.server.dto.response.auth.SocialLoginResponse;
 import com.nfteam.server.exception.auth.NotSupportedPlatformException;
-import com.nfteam.server.member.entity.MemberPlatform;
+import com.nfteam.server.domain.member.entity.MemberPlatform;
 import org.springframework.stereotype.Service;
 
 @Service

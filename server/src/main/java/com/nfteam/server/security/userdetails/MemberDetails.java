@@ -1,6 +1,6 @@
 package com.nfteam.server.security.userdetails;
 
-import com.nfteam.server.member.entity.Member;
+import com.nfteam.server.domain.member.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
