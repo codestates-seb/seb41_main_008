@@ -14,7 +14,6 @@ import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.transaction.TransRecordNotValidException;
 import com.nfteam.server.item.entity.Item;
 import com.nfteam.server.item.repository.ItemRepository;
-import com.nfteam.server.item.repository.QItemRepository;
 import com.nfteam.server.member.entity.Member;
 import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
@@ -33,18 +32,15 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRelRepository cartItemRelRepository;
     private final ItemRepository itemRepository;
-    private final QItemRepository qitemRepository;
 
     public CartService(MemberRepository memberRepository,
                        CartRepository cartRepository,
                        CartItemRelRepository cartItemRelRepository,
-                       ItemRepository itemRepository,
-                       QItemRepository qitemRepository) {
+                       ItemRepository itemRepository) {
         this.memberRepository = memberRepository;
         this.cartRepository = cartRepository;
         this.cartItemRelRepository = cartItemRelRepository;
         this.itemRepository = itemRepository;
-        this.qitemRepository = qitemRepository;
     }
 
     @Transactional
@@ -64,7 +60,7 @@ public class CartService {
                 .map(rel -> rel.getItem().getItemId())
                 .collect(Collectors.toList());
 
-        return new CartResponse(cart.getCartId(), qitemRepository.findItemList(itemIdList));
+        return new CartResponse(cart.getCartId(), itemRepository.findItemResponseList(itemIdList));
     }
 
     private Member findMember(String email) {

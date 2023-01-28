@@ -15,15 +15,16 @@ import java.util.List;
 import static com.nfteam.server.item.entity.QItem.item;
 
 @Repository
-public class QItemRepository {
+public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public QItemRepository(JPAQueryFactory jpaQueryFactory) {
+    public ItemRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public ItemResponse findItem(Long itemId) {
+    @Override
+    public ItemResponse findItemResponse(Long itemId) {
         return jpaQueryFactory
                 .select(getItemResponseConstructor())
                 .from(item)
@@ -33,7 +34,8 @@ public class QItemRepository {
                 .fetchOne();
     }
 
-    public List<ItemResponse> findItemList(List<Long> itemIdList) {
+    @Override
+    public List<ItemResponse> findItemResponseList(List<Long> itemIdList) {
         return jpaQueryFactory
                 .select(getItemResponseConstructor())
                 .from(item)
@@ -43,7 +45,8 @@ public class QItemRepository {
                 .fetch();
     }
 
-    public List<ItemResponse> findItemByMember(Long memberId) {
+    @Override
+    public List<ItemResponse> findItemResponseListByMemberId(Long memberId) {
         return jpaQueryFactory
                 .select(getItemResponseConstructor())
                 .from(item)
@@ -53,7 +56,8 @@ public class QItemRepository {
                 .fetch();
     }
 
-    public Page<ItemResponse> findItemByCollection(Long collectionId, Pageable pageable) {
+    @Override
+    public Page<ItemResponse> findItemResponsePageByCollectionId(Long collectionId, Pageable pageable) {
         QueryResults<ItemResponse> itemResponseQueryResults = jpaQueryFactory
                 .select(getItemResponseConstructor())
                 .from(item)
