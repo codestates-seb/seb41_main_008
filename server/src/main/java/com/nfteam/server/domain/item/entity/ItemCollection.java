@@ -131,6 +131,7 @@ public class ItemCollection extends BaseEntity {
                 .createdDate(getCreatedDate())
                 .coinId(coin.getCoinId())
                 .coinName(coin.getCoinName())
+                .coinImage(coin.getCoinImage())
                 .build();
     }
 

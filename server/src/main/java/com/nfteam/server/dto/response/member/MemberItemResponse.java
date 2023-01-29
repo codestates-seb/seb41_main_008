@@ -19,6 +19,7 @@ public class MemberItemResponse {
     private Long coinId;
     private String coinName;
     private Double coinWithdrawFee;
+    private String coinImage;
 
     // 아이템 정보
     private Long itemId;
@@ -36,6 +37,7 @@ public class MemberItemResponse {
                               Long coinId,
                               String coinName,
                               Double coinWithdrawFee,
+                              String coinImage,
                               Long itemId,
                               String itemName,
                               String itemImageName,
@@ -49,6 +51,7 @@ public class MemberItemResponse {
         this.coinId = coinId;
         this.coinName = coinName;
         this.coinWithdrawFee = coinWithdrawFee;
+        this.coinImage = coinImage;
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
@@ -66,6 +69,7 @@ public class MemberItemResponse {
                 .coinId(itemResponse.getCoinId())
                 .coinName(itemResponse.getCoinName())
                 .coinWithdrawFee(itemResponse.getWithdrawFee())
+                .coinImage(itemResponse.getCoinImage())
                 .itemId(itemResponse.getItemId())
                 .itemName(itemResponse.getItemName())
                 .itemImageName(itemResponse.getItemImageName())

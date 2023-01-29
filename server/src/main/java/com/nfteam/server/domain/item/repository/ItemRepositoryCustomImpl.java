@@ -83,6 +83,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 item.collection.coin.coinId,
                 item.collection.coin.coinName,
                 item.collection.coin.withdrawFee,
+                item.collection.coin.coinImage,
                 item.itemId,
                 item.itemName,
                 item.itemImageName,
