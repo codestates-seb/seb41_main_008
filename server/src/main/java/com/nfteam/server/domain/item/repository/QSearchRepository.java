@@ -71,6 +71,7 @@ public class QSearchRepository {
                 item.collection.collectionName,
                 item.collection.coin.coinId,
                 item.collection.coin.coinName,
+                item.collection.coin.coinImage,
                 item.itemId,
                 item.itemName,
                 item.itemImageName,

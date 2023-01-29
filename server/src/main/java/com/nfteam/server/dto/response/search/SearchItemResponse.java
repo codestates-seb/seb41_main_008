@@ -14,6 +14,7 @@ public class SearchItemResponse {
     // 거래 가능 코인 정보
     private Long coinId;
     private String coinName;
+    private String coinImage;
 
     // 아이템 정보
     private Long itemId;
@@ -28,6 +29,7 @@ public class SearchItemResponse {
                               String collectionName,
                               Long coinId,
                               String coinName,
+                              String coinImage,
                               Long itemId,
                               String itemName,
                               String itemImageName,
@@ -37,6 +39,7 @@ public class SearchItemResponse {
         this.collectionName = collectionName;
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
