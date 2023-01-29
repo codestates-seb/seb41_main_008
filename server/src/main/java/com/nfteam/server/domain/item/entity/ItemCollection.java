@@ -118,6 +118,7 @@ public class ItemCollection extends BaseEntity {
                 .ownerName(member.getNickname())
                 .coinId(coin.getCoinId())
                 .coinName(coin.getCoinName())
+                .coinImage(coin.getCoinImage())
                 .build();
     }
 

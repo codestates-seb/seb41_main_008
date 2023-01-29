@@ -26,6 +26,7 @@ public class CollectionItemResponse implements Comparable<CollectionItemResponse
     // 코인정보
     private Long coinId;
     private String coinName;
+    private String coinImage;
 
     @Builder
     public CollectionItemResponse(Long collectionId,
@@ -39,7 +40,8 @@ public class CollectionItemResponse implements Comparable<CollectionItemResponse
                                   Boolean onSale,
                                   Double itemPrice,
                                   Long coinId,
-                                  String coinName) {
+                                  String coinName,
+                                  String coinImage) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.ownerId = ownerId;
@@ -52,6 +54,7 @@ public class CollectionItemResponse implements Comparable<CollectionItemResponse
         this.itemPrice = itemPrice;
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
     }
 
     public static CollectionItemResponse of(Item item) {
@@ -68,6 +71,7 @@ public class CollectionItemResponse implements Comparable<CollectionItemResponse
                 .itemPrice(item.getItemPrice())
                 .coinId(item.getCollection().getCoin().getCoinId())
                 .coinName(item.getCollection().getCoin().getCoinName())
+                .coinImage(item.getCollection().getCoin().getCoinImage())
                 .build();
     }
 
