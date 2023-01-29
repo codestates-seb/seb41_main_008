@@ -52,7 +52,8 @@ public class QRankingRepository {
                 itemCollection.collectionName,
                 itemCollection.logoImgName,
                 itemCollection.coin.coinId,
-                itemCollection.coin.coinName);
+                itemCollection.coin.coinName,
+                itemCollection.coin.coinImage);
     }
 
 }

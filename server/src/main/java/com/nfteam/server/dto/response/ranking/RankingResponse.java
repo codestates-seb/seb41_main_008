@@ -18,6 +18,7 @@ public class RankingResponse {
     // 관련 코인 정보
     private Long coinId;
     private String coinName;
+    private String coinImage;
 
     // 메타 정보
     private Double totalVolume; // 총 코인 갯수(가격) 합
@@ -33,6 +34,7 @@ public class RankingResponse {
                            String logoImgName,
                            Long coinId,
                            String coinName,
+                           String coinImage,
                            Double totalVolume,
                            Double highestPrice) {
         this.rank = rank;
@@ -41,6 +43,7 @@ public class RankingResponse {
         this.logoImgName = logoImgName;
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
         this.totalVolume = totalVolume;
         this.highestPrice = highestPrice;
     }
@@ -51,12 +54,14 @@ public class RankingResponse {
                            String collectionName,
                            String logoImgName,
                            Long coinId,
-                           String coinName) {
+                           String coinName,
+                           String coinImage) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.logoImgName = logoImgName;
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
     }
 
     public void addRanking(Integer rank) {
