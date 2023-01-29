@@ -25,6 +25,7 @@ public class CollectionOnlyResponse {
     // 컬렉션 코인 정보
     private Long coinId;
     private String coinName;
+    private String coinImage;
 
     // 컬렉션 소속 아이템리스트 메타정보
     private Integer itemCount; // 아이템 갯수
@@ -43,7 +44,8 @@ public class CollectionOnlyResponse {
                                   Long ownerId,
                                   String ownerName,
                                   Long coinId,
-                                  String coinName) {
+                                  String coinName,
+                                  String coinImage) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.description = description;
@@ -54,6 +56,7 @@ public class CollectionOnlyResponse {
         this.ownerName = ownerName;
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
     }
 
     public static CollectionOnlyResponse of(ItemCollection collection) {
@@ -68,6 +71,7 @@ public class CollectionOnlyResponse {
                 .ownerName(collection.getMember().getNickname())
                 .coinId(collection.getCoin().getCoinId())
                 .coinName(collection.getCoin().getCoinName())
+                .coinImage(collection.getCoin().getCoinImage())
                 .build();
     }
 
