@@ -20,6 +20,7 @@ public class MemberCollectionResponse {
     // 컬렉션 코인 정보
     private Long coinId;
     private String coinName;
+    private String coinImage;
 
     @Builder
     public MemberCollectionResponse(Long collectionId,
@@ -29,7 +30,8 @@ public class MemberCollectionResponse {
                                     String bannerImgName,
                                     LocalDateTime createdDate,
                                     Long coinId,
-                                    String coinName) {
+                                    String coinName,
+                                    String coinImage) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.description = description;
@@ -38,6 +40,7 @@ public class MemberCollectionResponse {
         this.createdDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(createdDate);
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
     }
 
 }
