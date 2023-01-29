@@ -2,6 +2,8 @@ package com.nfteam.server.advice;
 
 import com.nfteam.server.exception.ErrorResponse;
 import com.nfteam.server.exception.NFTCustomException;
+import com.nfteam.server.exception.cart.CartErrorResponse;
+import com.nfteam.server.exception.cart.CartItemNotSaleException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -53,6 +55,12 @@ public class GlobalExceptionAdvice {
         log.warn(LOG_MESSAGE, METHOD_NOT_ALLOWED.value(), exception.getMessage(), exception.getClass().getSimpleName());
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse(METHOD_NOT_ALLOWED.name(), METHOD_NOT_ALLOWED.getReasonPhrase()));
+    }
+
+    @ExceptionHandler(CartItemNotSaleException.class)
+    public ResponseEntity<CartErrorResponse> handleCartItemNotSaleException(CartItemNotSaleException exception) {
+        log.warn(LOG_MESSAGE, ITEM_NOT_ON_SALE, exception.getMessage(), exception.getClass().getSimpleName());
+        return ResponseEntity.badRequest().body(CartErrorResponse.of(exception));
     }
 
     @ExceptionHandler(NFTCustomException.class)

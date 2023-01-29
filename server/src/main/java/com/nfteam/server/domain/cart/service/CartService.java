@@ -131,19 +131,13 @@ public class CartService {
 
     private void checkItemSaleStatus(List<Item> items) {
         List<Long> notSaleList = new ArrayList<>();
-
         items.stream().forEach(i -> {
             if (!i.getOnSale()) notSaleList.add(i.getItemId());
         });
 
         // 판매 불가능한 상품이 섞여있을 경우 해당 아이디 리스트를 에러메시지로 반환
         if (!notSaleList.isEmpty()) {
-            StringBuilder message = new StringBuilder();
-            notSaleList.stream().forEach(id -> {
-                message.append(id).append(",");
-            });
-            message.deleteCharAt(message.lastIndexOf(","));
-            throw new CartItemNotSaleException(message.toString());
+            throw new CartItemNotSaleException(notSaleList);
         }
     }
 

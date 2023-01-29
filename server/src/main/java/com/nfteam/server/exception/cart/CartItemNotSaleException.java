@@ -1,12 +1,19 @@
 package com.nfteam.server.exception.cart;
 
-import com.nfteam.server.exception.ExceptionCode;
-import com.nfteam.server.exception.NFTCustomException;
+import java.util.List;
 
-public class CartItemNotSaleException extends NFTCustomException {
+public class CartItemNotSaleException extends RuntimeException {
 
-    public CartItemNotSaleException(String message) {
-        super(ExceptionCode.ITEM_NOT_ON_SALE, message);
+    private static final String message = "해당 장바구니 상품들은 판매되는 상품들이 아닙니다.";
+    private final List<Long> idList;
+
+    public CartItemNotSaleException(List<Long> idList) {
+        super(message);
+        this.idList = idList;
+    }
+
+    public List<Long> getIdList() {
+        return idList;
     }
 
 }
