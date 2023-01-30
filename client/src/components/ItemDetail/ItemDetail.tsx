@@ -14,16 +14,9 @@ import CountdownTimer from './CountDownTime/CountDown';
 import Footer from 'components/Layout/Footer';
 import { useQuery } from '@tanstack/react-query';
 import MissingPage from 'pages/MissingPage';
-import Header from 'components/Header/Header';
-
-interface ItemsData {
-  sellerId: number;
-  sellerName: string;
-  buyerId: number;
-  transPrice: number;
-  coinName: string;
-  transData: number;
-}
+import Header from 'components/Header/Header';import SellModal from 'components/CartingModal/SellModal';
+import Rechart from './Rechart';
+import { date } from 'yup';
 
 export interface ItemProps {
   coinId: number;
@@ -37,11 +30,25 @@ export interface ItemProps {
   onSale: boolean;
   trueownerId: number;
   ownerName: string;
-  priceHistory: null;
+  priceHistory: PriceData[];
   tradeHistory: ItemsData[];
   withdrawFee: number;
   logoImgName: string;
   collectionName: string;
+}
+interface ItemsData {
+  sellerId: number;
+  sellerName: string;
+  buyerId: number;
+  buyerName: string;
+  transPrice: number;
+  coinName: string;
+  transDate: number;
+}
+
+interface PriceData {
+  transPrice: number;
+  transDate: number;
 }
 
 const ButtonWrapper = styled.div`
@@ -65,59 +72,62 @@ const Asset = () => {
 
   return (
     <>
-      <Header />
-      <div className="asset">
-        <div className="container">
-          <div className="asset__grid">
-            <div className="asset__grid__item">
-              <img
-                src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
-                className="asset__image"
-                alt=""
-              />
-              <div className="card">
-                <div className="card__header">
-                  <TbFileDescription />
-                  Description
-                </div>
-                <div className="card__body">
-                  <div className="asset__properties"></div>
-                  <div>{data?.itemDescription}</div>
-                </div>
+    <Header />
+    <div className="asset">
+      <div className="container">
+        <div className="asset__grid">
+          <div className="asset__grid__item">
+            <img
+              src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
+              className="asset__image"
+              alt=""
+            />
+            <div className="card">
+              <div className="card__header">
+                <TbFileDescription />
+                Description
               </div>
-
-              <div className="card">
-                <div className="card__header">
-                  <SlGraph />
-                  Price History
-                </div>
-
-                <div className="card__body">
-                  <div className="asset__properties"></div>
+              <div className="card__body">
+                <div className="asset__properties"></div>
+                <div>{data?.itemDescription}</div>
+              </div>
+            </div>
+            <div className="card">
+              <div className="card__header">
+                <SlGraph />
+                Price History
+              </div>
+              <div className="card__body">
+                <div className="asset__properties"></div>
+                <div style={{ width: 460, height: 400 }}>
+                  <Rechart data={data} />
                 </div>
               </div>
             </div>
-            <div className="asset__grid__item asset__grid__item--expanded">
-              <h2>#{data?.itemId}</h2>
-              <div className="text-4xl font-bold">{data?.collectionName}</div>
-              <div className="asset__meta">
-                <div className="asset__meta__item">
-                  Owned by{' '}
-                  <Link to={`/collection/${itemId}`}>{data?.ownerName}</Link>
-                </div>
-                <div className="asset__meta__item">
-                  <EyeIcon /> 0 views
-                </div>
-                <div className="asset__meta__item">
-                  <HeartIcon /> 0 favorites
-                </div>
+          </div>
+          <div className="asset__grid__item asset__grid__item--expanded">
+            <h2>#{data?.itemId}</h2>
+            <div className="text-4xl font-bold">{data?.collectionName}</div>
+            <div className="asset__meta">
+              <div className="asset__meta__item">
+                Owned by{' '}
+                <Link to={`/collection/${itemId}`}>
+                  <a>{data?.ownerName}</a>
+                </Link>
               </div>
-              <div className="card">
-                <div className="card__header">
-                  <TimeIcon />
-                  Sale ends january 31, 2023 at 23:59 UTC+9
-                </div>
-                <CountdownTimer />
+              <div className="asset__meta__item">
+                <EyeIcon /> 0 views
+              </div>
+              <div className="asset__meta__item">
+                <HeartIcon /> 0 favorites
+              </div>
+            </div>
+            <div className="card">
+              <div className="card__header">
+                <TimeIcon />
+                Sale ends january 31, 2023 at 23:59 UTC+9
+              </div>
+              <CountdownTimer />
 
                 <div className="card__body">
                   <div>
@@ -132,47 +142,48 @@ const Asset = () => {
                   </ButtonWrapper>
                 </div>
               </div>
-              <div className="card">
-                <div className="card__header">
-                  <OfferIcon />
-                  Trade History
-                </div>
-                <div className="card__body">
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Price</th>
-                        <th>USD Price</th>
-                        <th>Commission</th>
-                        <th>From</th>
-                        <th>To</th>
+            </div>
+            <div className="card">
+              <div className="card__header">
+                <OfferIcon />
+                Trade History
+              </div>
+              <div className="card__body">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Price</th>
+                      <th>Commission</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data?.tradeHistory.map((item) => (
+                      <tr key={item.buyerId}>
+                        <td>
+                          <div className="price">
+                            <ETHIcon />
+                            {item.transPrice}
+                          </div>
+                        </td>
+                        <td>{data?.withdrawFee}</td>
+                        <td>{item.coinName}</td>
+                        <td>{item.sellerName}</td>
+                        <td>{item.buyerName}</td>
+                        <td>{item.transDate}</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {data?.tradeHistory.map((item) => (
-                        <tr key={item.buyerId}>
-                          <td>
-                            <div className="price">
-                              <ETHIcon />
-                              {item.sellerId}
-                            </div>
-                          </td>
-                          <td></td>
-                          <td>{item.coinName}</td>
-                          <td>{item.sellerId}</td>
-                          <td>{}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+    </div>
+      </>
   );
 };
 

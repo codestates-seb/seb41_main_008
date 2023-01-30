@@ -1,5 +1,4 @@
 import Footer from 'components/Layout/Footer';
-import Top from '../components/Trending/Top';
 import MainCarousel from 'components/Carousel/MainCarousel';
 import Carousel from 'components/Carousel/Carousel';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
@@ -8,6 +7,7 @@ import { BsCheckCircleFill } from 'react-icons/bs';
 import Notification from 'components/Notification';
 import { useEffect } from 'react';
 import Header from 'components/Header/Header';
+import Top from '../components/Trending/Top';
 
 const MainPage = () => {
   const deleteUserOpen = useAppSelector((state) => state.toast.deleteUserOpen);
