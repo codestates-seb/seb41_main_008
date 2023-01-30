@@ -7,10 +7,9 @@ export const logout = () => {
         RefreshToken: localStorage.getItem('REFRESH_TOKEN'),
       },
     })
-    .then(() => window.localStorage.clear())
     .then(() => {
+      window.localStorage.clear();
       window.location.replace('/');
-      window.location.reload();
     });
 };
 
@@ -24,6 +23,10 @@ export const getUserProFile = async (memberId: string) => {
 
 export const getItemsData = async (itemId: string | number | undefined) => {
   return await customAxios.get(`/api/items/${itemId}`);
+};
+
+export const getRaingkingData = async (time: string | number | undefined) => {
+  return await customAxios.get(`/api/ranking/time/${time}`);
 };
 
 /**카트정보 저장 api */

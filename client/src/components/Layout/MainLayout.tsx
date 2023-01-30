@@ -1,5 +1,4 @@
-import Header from '../Header/Header';
-// import CartingModal from '../CartingModal/CartingModal';
+// import Header from '../Header/Header';
 import { Outlet } from 'react-router-dom';
 import BuyCoinModal from 'components/Modals/BuyCoinModal';
 import SellModal from 'components/Modals/SellModal';

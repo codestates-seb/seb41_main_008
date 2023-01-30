@@ -10,6 +10,7 @@ import Cards from 'components/MyCollection/Cards';
 import MissingPage from 'pages/MissingPage';
 import { useQuery } from '@tanstack/react-query';
 import Notification from 'components/Notification';
+import Header from 'components/Header/Header';
 
 interface Item {
   itemDescription: string;
@@ -63,6 +64,7 @@ export default function CollectionDetails() {
 
   return (
     <>
+      <Header />
       <div className="space-y-16">
         <section className="flex flex-col w-full">
           <div className="h-64 relative">
@@ -120,13 +122,13 @@ export default function CollectionDetails() {
           <div className="flex space-x-5">
             <div className="text-center">
               <div className="font-semibold text-2xl">
-                {data?.totalVolume} ETH
+                {data?.totalVolume + ' ' + data?.coinName}
               </div>
               <div className="text">total volume</div>
             </div>
             <div className="text-center">
               <div className="font-semibold text-2xl">
-                {data?.lowestPrice} ETH
+                {data?.lowestPrice + ' ' + data?.coinName}
               </div>
               <div className="text">floor price</div>
             </div>

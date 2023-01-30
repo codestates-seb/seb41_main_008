@@ -17,7 +17,7 @@ export default function ProfileLogo({
   const [logoFile, setLogoFile] = useState<File | undefined>();
   const [logoTypeError, setLogoTypeError] = useState(false);
   const [logoSizeError, setLogoSizeError] = useState(false);
-
+  console.log(profileLogo);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 

@@ -7,11 +7,11 @@ type cartBtnType = {
 };
 
 interface Item {
-  // itemDescription: string;
-  //   itemImageName: string;
-  //   itemName: string;
-  //   itemPrice: number;
-  //   ownerName: string;
+  itemDescription: string;
+  itemImageName: string;
+  itemName: string;
+  itemPrice: number;
+  ownerName: string;
   itemId: number;
   onSale: boolean;
   ownerId: number;
@@ -19,17 +19,17 @@ interface Item {
 }
 
 interface CardType {
-  ownerId: number;
   itemId: number;
   data: Item[];
-  collectionName: string;
-  logoImgName: string;
   itemImageName: string;
   itemPrice: number;
-  itemDescription: string;
-  filter?: string;
-  coinName: string;
   onSale: boolean;
+  collectionName: string;
+  ownerId: number;
+  itemDescription: string;
+  filter: string;
+  coinName: string;
+  logoImgName: string;
   collectionId: number;
 }
 
@@ -49,16 +49,17 @@ const Card = ({
   data,
   itemId,
   collectionName,
-  logoImgName,
   itemImageName,
   itemPrice,
-  itemDescription,
+  onSale,
   filter,
   coinName,
-  onSale,
-}: // coinImage,
-CardType) => {
+  itemDescription,
+  logoImgName,
+  ownerId,
+}: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
+
   return (
     <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold">
       <article
@@ -82,8 +83,8 @@ CardType) => {
               className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"
               src={
                 filter === 'Collected'
-                  ? process.env.REACT_APP_IMAGE + itemImageName
-                  : process.env.REACT_APP_IMAGE + logoImgName
+                  ? process.env.REACT_APP_IMAGE + itemImageName!
+                  : process.env.REACT_APP_IMAGE + logoImgName!
               }
               alt="NFTImage"
             />
