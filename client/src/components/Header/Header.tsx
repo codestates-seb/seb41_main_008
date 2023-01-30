@@ -77,14 +77,14 @@ const Header = () => {
 
   return (
     <header
-      className={`duration-300 transition-colors flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-20 text-lg 
+      className={`duration-300 transition-colors flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-20 text-lg
       ${!home && 'bg-white'} ${walletState && 'bg-white transition-none'} ${
         isScrolled && home && 'bg-white'
       }`}
     >
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
-        <Link className={`${!isScrolled && home && 'text-white'}`} className={`${!isScrolled && home && 'text-white'}`} to={'/'}>
+        <Link className={`${!isScrolled && home && 'text-white'}`} to={'/'}>
           
           NFTeam
         

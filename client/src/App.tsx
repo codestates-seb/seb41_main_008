@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from '../src/pages/LoginPage';
 import SignupPage from '../src/pages/SignupPage';
@@ -12,8 +13,8 @@ import CreateCollectionPage from 'pages/CreateCollectionPage';
 import ProfilePage from 'pages/ProfilePage';
 import SuccessPaymentPage from 'pages/SuccessPaymentPage';
 import ScrollToTop from './utils/ScrollToTop';
-import MyAccount from 'pages/MyAccount';
 import Search from 'pages/Search';
+import AccountPage from 'pages/AccountPage';
 function App() {
   return (
     <div className="App">
