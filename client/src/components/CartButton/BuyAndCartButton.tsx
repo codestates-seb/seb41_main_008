@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { addTocart } from 'store/cartSlice';
 import { openSell } from 'store/modalSlice';
+
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -46,7 +47,7 @@ const BuyAndCartButton = ({ data }: any) => {
         ) : null}
 
         {data?.onSale === false && data?.ownerId === memberId ? (
-          <div className="grow BasicButton ">
+          <div className="grow BasicButton">
             <button
               className="h-full w-full p-2 text-lg font-semibold"
               onClick={() => forSaleHandler(data.itemId)}

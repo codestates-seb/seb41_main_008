@@ -84,8 +84,10 @@ const Header = () => {
     >
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
-        <Link className={`${!isScrolled && home && 'text-white'}`} to={'/'}>
+        <Link className={`${!isScrolled && home && 'text-white'}`} className={`${!isScrolled && home && 'text-white'}`} to={'/'}>
+          
           NFTeam
+        
         </Link>
       </div>
 
@@ -106,8 +108,11 @@ const Header = () => {
       <nav>
         <ul className="flex gap-5 items-center">
           <button
-            className="hidden  max-[1040px]:flex"
+           
+            className="hidden   max-[1040px]:flex"
+           
             onClick={visibleHandler}
+          
           >
             {visible ? (
               <FontAwesomeIcon

@@ -3,14 +3,14 @@ import modalSlice from './modalSlice';
 import loginSlice from './loginSlice';
 import signupSlice from './signupSlice';
 import cartSlice from './cartSlice';
-import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import toastReducer from './toastSlice';
+import { persistReducer } from 'redux-persist';
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['signup', 'logo', 'banner'],
+  whitelist: ['cart', 'login'],
 };
 const reducer = combineReducers({
   modal: modalSlice,
@@ -20,6 +20,7 @@ const reducer = combineReducers({
   cart: cartSlice,
 });
 const persistedReducer = persistReducer(persistConfig, reducer);
+
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

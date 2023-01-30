@@ -10,6 +10,7 @@ import Cards from 'components/MyCollection/Cards';
 import MissingPage from 'pages/MissingPage';
 import { useQuery } from '@tanstack/react-query';
 import Notification from 'components/Notification';
+import Header from 'components/Header/Header';
 
 interface Item {
   itemDescription: string;
@@ -56,13 +57,14 @@ export default function CollectionDetails() {
     queryFn: () =>
       customAxios.get(`/api/collections/only/${id}`).then((res) => res.data),
   });
-
+  console.log(data);
   if (isLoading) return <p>Loading...</p>;
 
   if (error) return <MissingPage />;
 
   return (
     <>
+      <Header />
       <div className="space-y-16">
         <section className="flex flex-col w-full">
           <div className="h-64 relative">
@@ -120,13 +122,13 @@ export default function CollectionDetails() {
           <div className="flex space-x-5">
             <div className="text-center">
               <div className="font-semibold text-2xl">
-                {data?.totalVolume} ETH
+                {data?.totalVolume + ' ' + data?.coinName}
               </div>
               <div className="text">total volume</div>
             </div>
             <div className="text-center">
               <div className="font-semibold text-2xl">
-                {data?.lowestPrice} ETH
+                {data?.lowestPrice + ' ' + data?.coinName}
               </div>
               <div className="text">floor price</div>
             </div>
@@ -136,6 +138,7 @@ export default function CollectionDetails() {
             </div>
           </div>
         </section>
+
         {data?.itemCount ? (
           <Cards id={id!} />
         ) : (
@@ -143,6 +146,7 @@ export default function CollectionDetails() {
             <h2 className="text-3xl">No items to display</h2>
           </section>
         )}
+
         <Notification open={createColOpen} setOpen={setCreateColOpen}>
           <p className="flex items-center gap-1 text-emerald-700">
             <span>

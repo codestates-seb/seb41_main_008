@@ -4,6 +4,7 @@ import { closePayment } from 'store/modalSlice';
 import { clearCart } from 'store/cartSlice';
 import { ModalBack } from './CartingModal';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getCoinPrice, transAction } from 'utils/api/api';
 import CartItems from './CartItems';
 const TransActionContainer = styled.div`
@@ -31,6 +32,7 @@ const TransActionContainer = styled.div`
 
 const TransActionModal = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [coinPrice, setCoinPrice] = useState(0);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { paymentOpen } = useAppSelector((state) => state.modal);
@@ -53,9 +55,25 @@ const TransActionModal = () => {
   console.log(cartItems);
   console.log('최적화 필요', totalPrice);
 
+  const transActionHandler = () => {
+    transAction({ cartId, itemInfo })
+      .then((res) => {
+        localStorage.setItem('CART_ID', res.data.cartId);
+        dispatch(clearCart());
+        dispatch(closePayment());
+        navigate(`/account/${memberId}`);
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+          alert('코인이 부족합니다');
+        }
+      });
+  };
+
   useEffect(() => {
     getCoinPrice(cartItems[0]?.coinName)
-      .then((res) => setCoinPrice(res[0].trade_price))
+      .then((res: any) => setCoinPrice(res.data[0].trade_price))
       .catch((err) => console.log(err));
   }, [cartItems]);
 
@@ -79,8 +97,8 @@ const TransActionModal = () => {
             <div className="w-full text-center">Payment for NFT</div>
             <button onClick={() => dispatch(closePayment())}>x</button>
           </header>
-          <section className="overflow-auto h-full ">
-            <ul className="">
+          <section className="overflow-auto h-full w-full">
+            <ul className="w-full">
               {cartItems.map((el: any) => {
                 return <CartItems key={el.itemId} {...el} />;
               })}
@@ -92,15 +110,8 @@ const TransActionModal = () => {
             </div>
             <div>Total price: {(totalPrice * coinPrice).toLocaleString()}₩</div>
             <button
-              className="BasicButton font-bold p-2 rounded-xl"
-              onClick={() =>
-                transAction({ cartId, itemInfo }).then((res) => {
-                  localStorage.setItem('CART_ID', res.data.cartId);
-                  dispatch(clearCart());
-                  dispatch(closePayment());
-                  window.location.replace(`/account/${memberId}`);
-                })
-              }
+              className="BasicButton font-bold p-4 rounded-xl"
+              onClick={transActionHandler}
             >
               Complete Payment
             </button>

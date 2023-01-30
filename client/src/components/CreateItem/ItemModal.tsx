@@ -62,17 +62,18 @@ export default function ItemModal({
               selectedCol={selectedCol}
               setCollection={setCollection}
             />
-
-            <div className="flex mt-2 justify-end">
-              <Dialog.Close asChild>
-                <button
-                  onClick={() => collection && setSelectedCol(collection)}
-                  className="text-lg font-semibold px-3 py-1.5 green"
-                >
-                  Save changes
-                </button>
-              </Dialog.Close>
-            </div>
+            {collections?.length ? (
+              <div className="flex mt-2 justify-end">
+                <Dialog.Close asChild>
+                  <button
+                    onClick={() => collection && setSelectedCol(collection)}
+                    className="text-lg font-semibold px-3 py-1.5 green"
+                  >
+                    Save changes
+                  </button>
+                </Dialog.Close>
+              </div>
+            ) : null}
             <Dialog.Close asChild>
               <button className="IconBtn" aria-label="Close">
                 <RxCross2 className="h-4 w-4" />

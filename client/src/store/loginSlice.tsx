@@ -41,7 +41,7 @@ export const googleLogin = createAsyncThunk(
       localStorage.setItem('ACCESS_TOKEN', res.headers.authorization);
       localStorage.setItem('REFRESH_TOKEN', res.headers.refreshtoken);
       localStorage.setItem('MEMBER_ID', res.data.id);
-      localStorage.setItem('CART_ID', res.data.cart.cartId);
+      localStorage.setItem('CART_ID', res.data.cartId);
     }
     return res.data;
   }

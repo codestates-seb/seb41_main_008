@@ -69,7 +69,7 @@ const SellModal = () => {
 
   useEffect(() => {
     getCoinPrice(data?.coinName)
-      .then((res) => setCoinPrice(res[0].trade_price))
+      .then((res: any) => setCoinPrice(res.data[0].trade_price))
       .catch((err) => console.log(err));
   }, [data?.coinName]);
 

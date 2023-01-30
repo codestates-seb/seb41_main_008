@@ -1,6 +1,4 @@
-/* eslint-disable */
-import { Link } from 'react-router-dom';
-import { AxiosError } from 'axios';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import customAxios from 'utils/api/axios';
 import ETHIcon from '../../assets/icons/PurchaseIcons/ETH';
@@ -13,11 +11,10 @@ import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
 import CountdownTimer from './CountDownTime/CountDown';
-import { getItemsData } from 'utils/api/api';
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useAppSelector } from 'hooks/hooks';
-import SellModal from 'components/CartingModal/SellModal';
+import Footer from 'components/Layout/Footer';
+import { useQuery } from '@tanstack/react-query';
+import MissingPage from 'pages/MissingPage';
+import Header from 'components/Header/Header';
 import Rechart from './Rechart';
 import { date } from 'yup';
 
@@ -188,7 +185,7 @@ const Asset = () => {
                   </thead>
                   <tbody>
                     {data?.tradeHistory.map((item) => (
-                      <tr>
+                      <tr key={item.buyerId}>
                         <td>
                           <div className="price">
                             <img
@@ -213,7 +210,8 @@ const Asset = () => {
           </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
