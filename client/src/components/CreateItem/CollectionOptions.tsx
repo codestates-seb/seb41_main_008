@@ -52,7 +52,10 @@ export default function CollectionOptions({
           </button>
         ))
       ) : (
-        <Link to="/collection/create" className="text-emerald-700 font-bold">
+        <Link
+          to="/collection/create"
+          className="text-emerald-700 hover:opacity-80 font-bold"
+        >
           Please create a collection first
         </Link>
       )}

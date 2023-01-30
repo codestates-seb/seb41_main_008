@@ -1,12 +1,11 @@
-import Header from '../Header/Header';
-// import CartingModal from '../CartingModal/CartingModal';
+// import Header from '../Header/Header';
 import { Outlet } from 'react-router-dom';
 import BuyCoinModal from 'components/CartingModal/BuyCoinModal';
 import SellModal from 'components/CartingModal/SellModal';
 const MainLayout = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <BuyCoinModal />
       <SellModal />
       <Outlet />

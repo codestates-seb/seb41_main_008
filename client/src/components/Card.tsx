@@ -7,28 +7,28 @@ type cartBtnType = {
 };
 
 interface Item {
-  // itemDescription: string;
-  //   itemImageName: string;
-  //   itemName: string;
-  //   itemPrice: number;
-  //   ownerName: string;
+  itemDescription: string;
+  itemImageName: string;
+  itemName: string;
+  itemPrice: number;
+  ownerName: string;
   itemId: number;
   onSale: boolean;
   ownerId: number;
 }
 
 interface CardType {
-  ownerId: number;
   itemId: number;
   data: Item[];
-  collectionName: string;
-  logoImgName: string;
   itemImageName: string;
   itemPrice: number;
-  itemDescription: string;
-  filter?: string;
-  coinName: string;
   onSale: boolean;
+  collectionName: string;
+  ownerId: number;
+  itemDescription: string;
+  filter: string;
+  coinName: string;
+  logoImgName: string;
 }
 
 const HideWrapper = styled.div<cartBtnType>`
@@ -42,19 +42,20 @@ const HideWrapper = styled.div<cartBtnType>`
   }
 `;
 const Card = ({
-  ownerId,
   data,
   itemId,
   collectionName,
-  logoImgName,
   itemImageName,
   itemPrice,
-  itemDescription,
+  onSale,
   filter,
   coinName,
-  onSale,
+  itemDescription,
+  logoImgName,
+  ownerId,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
+
   return (
     <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold">
       <article
@@ -65,14 +66,14 @@ const Card = ({
           setHide(false);
         }}
       >
-        <Link to={`/items/${itemId}`} className="flex flex-col ">
+        <Link to={`/items/${itemId}`} className="flex flex-col">
           <div className="overflow-hidden rounded-t-xl w-full aspect-square">
             <img
               className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"
               src={
                 filter === 'Collected'
-                  ? process.env.REACT_APP_IMAGE + itemImageName
-                  : process.env.REACT_APP_IMAGE + logoImgName
+                  ? process.env.REACT_APP_IMAGE + itemImageName!
+                  : process.env.REACT_APP_IMAGE + logoImgName!
               }
               alt="NFTImage"
             />
