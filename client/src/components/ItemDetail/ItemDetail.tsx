@@ -35,6 +35,7 @@ export interface ItemProps {
   withdrawFee: number;
   logoImgName: string;
   collectionName: string;
+  coinImage:string;
 }
 interface ItemsData {
   sellerId: number;
@@ -58,80 +59,104 @@ const ButtonWrapper = styled.div`
 `;
 
 const Asset = () => {
+  const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
 
-  const { isLoading, error, data } = useQuery<ItemProps>({
-    queryKey: ['items', itemId],
-    queryFn: () =>
-      customAxios.get(`/api/items/${itemId}`).then((res) => res.data),
-  });
 
-  if (isLoading) return <p>Loading...</p>;
+  useEffect(() => {
+    getItemsData(itemId).then((res) => setData(res.data));
+  }, [itemId]);
 
-  if (error) return <MissingPage />;
+  useEffect(() => {
+    const getItemsData = async () => {
+      try {
+        const res = await customAxios.get(`/api/items/${itemId}`);
+        setData(res.data);
+        console.log(res.data);
+      } catch (error) {
+        const err = error as AxiosError;
+        console.log(err);
+      }
+    };
+
+    getItemsData();
+  }, [itemId]);
+
+  
 
   return (
-    <>
-      <Header />
-      <div className="asset">
-        <div className="container">
-          <div className="asset__grid">
-            <div className="asset__grid__item">
+    <div className="asset">
+      <div className="container">
+        <div className="asset__grid">
+          <div className="asset__grid__item">
+            <div className="bg-w center flex p-1 h-12 w-full border border-gray-300 rounded-tl-lg rounded-tr-lg ;">
               <img
-                src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
-                className="asset__image"
-                alt=""
+                className=" w-5 h-5 "
+                src={data?.coinImage}
+                alt="EthLogo"
               />
-              <div className="card">
-                <div className="card__header">
-                  <TbFileDescription />
-                  Description
-                </div>
-                <div className="card__body">
-                  <div className="asset__properties"></div>
-                  <div>{data?.itemDescription}</div>
-                </div>
+            </div>
+            <img
+              src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
+              className="asset__image"
+              alt=""
+            />
+            <div className="card">
+              <div className="card__header">
+                <TbFileDescription />
+                Description
               </div>
-              <div className="card">
-                <div className="card__header">
-                  <SlGraph />
-                  Price History
-                </div>
-                <div className="card__body">
-                  <div className="asset__properties"></div>
-                  <div style={{ width: 460, height: 400 }}>
-                    <Rechart data={data} />
-                  </div>
+              <div className="card__body">
+                <div className="asset__properties"></div>
+                <div>{data?.itemDescription}</div>
+              </div>
+            </div>
+            <div className="card">
+              <div className="card__header">
+                <SlGraph />
+                Price History
+              </div>
+              <div className="card__body">
+                <div className="asset__properties"></div>
+                <div style={{ width: 460, height: 400 }}>
+                  <Rechart data={data} />
                 </div>
               </div>
             </div>
-            <div className="asset__grid__item asset__grid__item--expanded">
-              <h2>#{data?.itemId}</h2>
-              <div className="text-4xl font-bold">{data?.collectionName}</div>
-              <div className="asset__meta">
-                <div className="asset__meta__item">
-                  Owned by{' '}
-                  <Link to={`/collection/${itemId}`}>{data?.ownerName}</Link>
-                </div>
-                <div className="asset__meta__item">
-                  <EyeIcon /> 0 views
-                </div>
-                <div className="asset__meta__item">
-                  <HeartIcon /> 0 favorites
-                </div>
+          </div>
+          <div className="asset__grid__item asset__grid__item--expanded">
+            <h2>#{data?.itemId}</h2>
+            <div className="text-4xl font-bold">{data?.collectionName}</div>
+            <div className="asset__meta">
+              <div className="asset__meta__item">
+                Owned by{' '}
+                <Link to={`/collection/${itemId}`}>
+                  <a>{data?.ownerName}</a>
+                </Link>
               </div>
+              <div className="asset__meta__item">
+                <EyeIcon /> 0 views
+              </div>
+              <div className="asset__meta__item">
+                <HeartIcon /> 0 favorites
+              </div>
+            </div>
+            {data?.onSale && (
               <div className="card">
                 <div className="card__header">
                   <TimeIcon />
                   Sale ends january 31, 2023 at 23:59 UTC+9
                 </div>
                 <CountdownTimer />
-
                 <div className="card__body">
                   <div>
                     <div className="label">Current price</div>
                     <div className="asset__price">
-                      <ETHIcon />
+                      <img
+                        className=" w-4 h-4"
+                        src={data?.coinImage}
+                        alt="EthLogo"
+                      />{' '}
                       <span>{data?.itemPrice}</span>
                     </div>
                   </div>
@@ -140,7 +165,7 @@ const Asset = () => {
                   </ButtonWrapper>
                 </div>
               </div>
-            </div>
+            )}
             <div className="card">
               <div className="card__header">
                 <OfferIcon />
@@ -152,6 +177,7 @@ const Asset = () => {
                     <tr>
                       <th>Price</th>
                       <th>Commission</th>
+                      <th>Coin</th>
                       <th>From</th>
                       <th>To</th>
                       <th>Date</th>
@@ -162,7 +188,11 @@ const Asset = () => {
                       <tr key={item.buyerId}>
                         <td>
                           <div className="price">
-                            <ETHIcon />
+                            <img
+                              className="w-3 h-3"
+                              src={data?.coinImage}
+                              alt="EthLogo"
+                            />
                             {item.transPrice}
                           </div>
                         </td>

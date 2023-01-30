@@ -12,8 +12,8 @@ import CreateCollectionPage from 'pages/CreateCollectionPage';
 import ProfilePage from 'pages/ProfilePage';
 import SuccessPaymentPage from 'pages/SuccessPaymentPage';
 import ScrollToTop from './utils/ScrollToTop';
-import AccountPage from 'pages/AccountPage';
-
+import MyAccount from 'pages/MyAccount';
+import Search from 'pages/Search';
 function App() {
   return (
     <div className="App">
@@ -33,6 +33,7 @@ function App() {
             <Route path="/account/:memberId" element={<AccountPage />} />
             <Route path="/account/profile" element={<ProfilePage />} />
             <Route path="/success" element={<SuccessPaymentPage />} />
+            <Route path="/search/query/:id" element={<Search />} />
             <Route path="*" element={<MissingPage />} />
           </Route>
 

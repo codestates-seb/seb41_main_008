@@ -6,8 +6,8 @@ import { setDeleteUserOpen } from 'store/toastSlice';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import Notification from 'components/Notification';
 import { useEffect } from 'react';
+import Top from 'components/Trending/Top';
 import Header from 'components/Header/Header';
-import Top from '../components/Trending/Top';
 
 const MainPage = () => {
   const deleteUserOpen = useAppSelector((state) => state.toast.deleteUserOpen);
