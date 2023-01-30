@@ -9,10 +9,10 @@ import ItemDetailPage from 'pages/ItemDetailPage';
 import CreateItemPage from 'pages/CreateItemPage';
 import MyCollection from 'pages/MyCollection';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
-import ProfilePage from 'pages/ProfilePage';
 import SuccessPaymentPage from 'pages/SuccessPaymentPage';
 import ScrollToTop from './utils/ScrollToTop';
 import AccountPage from 'pages/AccountPage';
+import EditProfile from 'pages/EditProfile';
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
             <Route path="asset/create" element={<CreateItemPage />} />
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
             <Route path="/account/:memberId" element={<AccountPage />} />
-            <Route path="/account/profile" element={<ProfilePage />} />
+            <Route path="/account/profile" element={<EditProfile />} />
             <Route path="/succes\s" element={<SuccessPaymentPage />} />
             <Route path="*" element={<MissingPage />} />
           </Route>

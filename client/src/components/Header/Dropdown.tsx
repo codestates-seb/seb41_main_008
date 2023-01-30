@@ -58,11 +58,7 @@ const Dropdown = ({ isScrolled, home }: Props) => {
               >
                 <img
                   className="object-cover w-full h-full rounded-full"
-                  src={
-                    data?.profileImageName?.slice(0, 8) !== 'https://'
-                      ? process.env.REACT_APP_IMAGE! + data?.profileImageName
-                      : data?.profileImageName
-                  }
+                  src={data?.profileImageName}
                   alt="Profile pic"
                 />
               </button>

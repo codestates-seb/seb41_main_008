@@ -7,7 +7,7 @@ import customAxios from 'utils/api/axios';
 import { MemberInfo } from './AccountPage';
 import Header from 'components/Header/Header';
 
-export default function ProfilePage() {
+export default function EditProfile() {
   const { isLoading, error, data } = useQuery<MemberInfo>({
     queryKey: ['members', 'mypage'],
     queryFn: () =>
