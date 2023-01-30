@@ -14,8 +14,9 @@ import CountdownTimer from './CountDownTime/CountDown';
 import Footer from 'components/Layout/Footer';
 import { useQuery } from '@tanstack/react-query';
 import MissingPage from 'pages/MissingPage';
-import Header from 'components/Header/Header';import SellModal from 'components/CartingModal/SellModal';
+import Header from 'components/Header/Header';
 import Rechart from './Rechart';
+import SellModal from 'components/CartingModal/SellModal';
 import { date } from 'yup';
 
 export interface ItemProps {
@@ -72,62 +73,60 @@ const Asset = () => {
 
   return (
     <>
-    <Header />
-    <div className="asset">
-      <div className="container">
-        <div className="asset__grid">
-          <div className="asset__grid__item">
-            <img
-              src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
-              className="asset__image"
-              alt=""
-            />
-            <div className="card">
-              <div className="card__header">
-                <TbFileDescription />
-                Description
+      <Header />
+      <div className="asset">
+        <div className="container">
+          <div className="asset__grid">
+            <div className="asset__grid__item">
+              <img
+                src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
+                className="asset__image"
+                alt=""
+              />
+              <div className="card">
+                <div className="card__header">
+                  <TbFileDescription />
+                  Description
+                </div>
+                <div className="card__body">
+                  <div className="asset__properties"></div>
+                  <div>{data?.itemDescription}</div>
+                </div>
               </div>
-              <div className="card__body">
-                <div className="asset__properties"></div>
-                <div>{data?.itemDescription}</div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card__header">
-                <SlGraph />
-                Price History
-              </div>
-              <div className="card__body">
-                <div className="asset__properties"></div>
-                <div style={{ width: 460, height: 400 }}>
-                  <Rechart data={data} />
+              <div className="card">
+                <div className="card__header">
+                  <SlGraph />
+                  Price History
+                </div>
+                <div className="card__body">
+                  <div className="asset__properties"></div>
+                  <div style={{ width: 460, height: 400 }}>
+                    <Rechart data={data} />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="asset__grid__item asset__grid__item--expanded">
-            <h2>#{data?.itemId}</h2>
-            <div className="text-4xl font-bold">{data?.collectionName}</div>
-            <div className="asset__meta">
-              <div className="asset__meta__item">
-                Owned by{' '}
-                <Link to={`/collection/${itemId}`}>
-                  <a>{data?.ownerName}</a>
-                </Link>
+            <div className="asset__grid__item asset__grid__item--expanded">
+              <h2>#{data?.itemId}</h2>
+              <div className="text-4xl font-bold">{data?.collectionName}</div>
+              <div className="asset__meta">
+                <div className="asset__meta__item">
+                  Owned by{' '}
+                  <Link to={`/collection/${itemId}`}>{data?.ownerName}</Link>
+                </div>
+                <div className="asset__meta__item">
+                  <EyeIcon /> 0 views
+                </div>
+                <div className="asset__meta__item">
+                  <HeartIcon /> 0 favorites
+                </div>
               </div>
-              <div className="asset__meta__item">
-                <EyeIcon /> 0 views
-              </div>
-              <div className="asset__meta__item">
-                <HeartIcon /> 0 favorites
-              </div>
-            </div>
-            <div className="card">
-              <div className="card__header">
-                <TimeIcon />
-                Sale ends january 31, 2023 at 23:59 UTC+9
-              </div>
-              <CountdownTimer />
+              <div className="card">
+                <div className="card__header">
+                  <TimeIcon />
+                  Sale ends january 31, 2023 at 23:59 UTC+9
+                </div>
+                <CountdownTimer />
 
                 <div className="card__body">
                   <div>
@@ -182,8 +181,8 @@ const Asset = () => {
           </div>
         </div>
       </div>
-    </div>
-      </>
+      <Footer />
+    </>
   );
 };
 
