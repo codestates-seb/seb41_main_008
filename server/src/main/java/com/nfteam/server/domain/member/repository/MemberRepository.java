@@ -15,7 +15,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByEmail(String email);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Modifying(clearAutomatically = true)
     @Query("update Member m set m.memberStatus =:memberStatus where m.lastLoginTime <:localDateTimeBefore")
     void updateSleepStatus(LocalDateTime localDateTimeBefore, MemberStatus memberStatus);
 
