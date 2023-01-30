@@ -3,66 +3,78 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { RxCross2 } from 'react-icons/rx';
 import { useAppDispatch } from 'hooks/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-import { setOpen } from 'store/toastSlice';
+import { setUpdateUserOpen } from 'store/toastSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Bio {
   nickname: string;
-  bio: string;
+  description: string;
 }
 
-interface Props {
+interface Props extends Bio {
   id: number | undefined;
   profileImageName: string;
   bannerImageName: string;
 }
 
-type ProfileInfo = Omit<Props, 'id'> & Bio;
-
-const schema = yup.object({
-  nickname: yup.string().required('This field is required.'),
-  bio: yup.string().required('This field is required.'),
-});
+type ProfileInfo = Omit<Props, 'id'>;
 
 export default function ProfileBio({
   profileImageName,
   bannerImageName,
   id,
+  nickname,
+  description,
 }: Props) {
   const dispatch = useAppDispatch();
   const [nicknameFocus, setNicknameFocus] = useState(false);
-  const [bioFocus, setBioFocus] = useState(false);
+  const [descFocus, setDescFocus] = useState(false);
   const navigate = useNavigate();
+
+  const schema = yup.object().shape({
+    nickname: yup.string().required('This field is required.'),
+    description: yup.string().required('This field is required.'),
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Bio>({
+    defaultValues: {
+      nickname,
+      description,
+    },
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    reset({
+      nickname,
+      description,
+    });
+  }, [reset, nickname, description]);
+
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (newProfile: ProfileInfo) => {
-      const res = await customAxios.patch(`/api/members/${id}`, newProfile);
-      return res.data;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['profile']);
-      navigate(`/account/${id}`);
+    mutationFn: (newProfile: ProfileInfo) =>
+      customAxios.patch(`/api/members/${id}`, newProfile),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['members', 'mypage']);
+      navigate('/account');
     },
   });
 
-  const onSubmit = async (data: Bio) => {
-    dispatch(setOpen(true));
+  const onSubmit = (data: Bio) => {
+    dispatch(setUpdateUserOpen(true));
 
     mutate({
       nickname: data.nickname,
-      bio: data.bio,
+      description: data.description,
       profileImageName,
       bannerImageName,
     });
@@ -74,7 +86,7 @@ export default function ProfileBio({
       className="text-center w-full space-y-10"
     >
       <div className="space-y-3">
-        <label htmlFor="name" className="mx-auto font-bold text-lg">
+        <label htmlFor="nickname" className="mx-auto font-bold text-lg">
           Name{' '}
           <span className="text-red-500 text-xl font-bold align-top">*</span>
         </label>
@@ -95,6 +107,7 @@ export default function ProfileBio({
             className="w-full rounded-lg p-3 text-lg group outline-none h-full"
             onFocus={() => setNicknameFocus(true)}
             onBlur={() => setNicknameFocus(false)}
+            defaultValue={nickname}
           />
         </div>
         {errors.nickname && (
@@ -106,38 +119,39 @@ export default function ProfileBio({
       </div>
 
       <div className="space-y-3">
-        <label htmlFor="bio" className="mx-auto font-bold text-lg">
+        <label htmlFor="description" className="mx-auto font-bold text-lg">
           Bio{' '}
           <span className="text-red-500 text-xl font-bold align-top">*</span>
         </label>
         <div
           className={`border-2 rounded-lg duration-300 ${
-            errors.bio
+            errors.description
               ? 'border-red-600'
-              : bioFocus
+              : descFocus
               ? 'border-focused'
               : 'border-gray-300'
           }`}
         >
           <textarea
-            {...register('bio')}
+            {...register('description')}
             className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg"
-            onFocus={() => setBioFocus(true)}
-            onBlur={() => setBioFocus(false)}
+            onFocus={() => setDescFocus(true)}
+            onBlur={() => setDescFocus(false)}
             placeholder="Tell the world your story!"
+            defaultValue={description}
           />
         </div>
-        {errors.bio && (
+        {errors.description && (
           <p className="text-red-600 flex items-center space-x-0.5">
             <RxCross2 className="h-6 w-6" />
-            <span>{errors.bio.message}</span>
+            <span>{errors.description.message}</span>
           </p>
         )}
       </div>
 
       <input
         type="submit"
-        className="bg-emerald-700 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
+        className=" cursor-pointer font-bold BasicButton rounded-lg px-5 py-3 text-lg"
         value="Save"
       />
       {isLoading ? (

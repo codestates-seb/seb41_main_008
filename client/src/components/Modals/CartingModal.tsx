@@ -27,8 +27,7 @@ export const ModalBack = styled.div<ModalBackProps>`
   height: 100%;
   margin: auto;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: ${(props) => (props.zIndex ? props.zIndex : '10')}
-    /**숫자로 props를 받아보자 */;
+  z-index: ${(props) => (props.zIndex ? props.zIndex : '10')};
 `;
 const ModalContainer = styled.div<ModalContainerProps>`
   z-index: 60;
@@ -39,7 +38,7 @@ const ModalContainer = styled.div<ModalContainerProps>`
   height: 750px;
   right: 28px;
   top: 30px;
-
+  font-weight: bold;
   overflow: auto;
   border-radius: 20px;
   background-color: #ffffff;
@@ -67,7 +66,7 @@ const CartingModal = () => {
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const [coinPrice, setCoinPrice] = useState(0);
-
+  const [soldoutArr, setSoldoutArr] = useState<number[]>([]);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { isOpen } = useAppSelector((state) => state.modal);
   const { isLogin } = useAppSelector((state) => state.login);
@@ -93,10 +92,11 @@ const CartingModal = () => {
 
   useEffect(() => {
     getCoinPrice(cartItems[0]?.coinName)
-      .then((res) => setCoinPrice(res[0].trade_price))
+      .then((res: any) => {
+        setCoinPrice(res.data[0]?.trade_price);
+      })
       .catch((err) => console.log(err));
   }, [cartItems]);
-
   const purchaseHandler = () => {
     if (!isLogin) {
       alert('로그인 먼저 해주세요.');
@@ -106,17 +106,26 @@ const CartingModal = () => {
       cartSaveHandler({
         cartId: Number(localStorage.getItem('CART_ID')),
         itemIdList: cartItemsItemId,
-        totalPrice: 150,
-      });
-      dispatch(closeModal());
-      dispatch(openPayment());
+        totalPrice,
+      })
+        .then(() => {
+          dispatch(closeModal());
+          dispatch(openPayment());
+        })
+        .catch((err) => {
+          if (err) {
+            console.log(err);
+            setSoldoutArr(err.response.data.idList);
+          }
+        });
     }
   };
+
   return (
     <>
       {isOpen && <ModalBack ref={ref} zIndex={'50'} />}
       <ModalContainer visible={isOpen}>
-        <header className="flex justify-between items-center font-semibold text-2xl p-4 border-b-2">
+        <header className="flex justify-between items-center text-2xl p-4 border-b-2">
           <span>Your cart</span>
           <FontAwesomeIcon
             className="cursor-pointer"
@@ -132,7 +141,9 @@ const CartingModal = () => {
             </div>
             <ul className="flex flex-col gap-2 h-auto overflow-hidden ">
               {cartItems.map((el: any) => {
-                return <CartItems key={el.itemId} {...el} />;
+                return (
+                  <CartItems key={el.itemId} {...el} soldoutArr={soldoutArr} />
+                );
               })}
             </ul>
           </section>
@@ -144,7 +155,10 @@ const CartingModal = () => {
 
         {cartItems.length !== 0 && (
           <footer className="flex justify-between p-4">
-            <div>Total price</div>
+            <div>
+              <div>Total amount</div>
+              <div>Total price</div>
+            </div>
             <div className="flex flex-col">
               <div>
                 {totalPrice} {cartItems[0].coinName}
@@ -156,7 +170,7 @@ const CartingModal = () => {
         <div className="flex justify-center mt-5 p-4">
           <button
             disabled={cartItems.length === 0 ? true : false}
-            className={`${'bg-emerald-600 text-white px-10 py-3 rounded-lg mb-5 w-full'} ${
+            className={`${'BasicButton px-10 py-3 rounded-lg mb-5 w-full'} ${
               cartItems.length > 0 ? 'bg-opacity-100' : 'bg-opacity-50 '
             }`}
             onClick={purchaseHandler}

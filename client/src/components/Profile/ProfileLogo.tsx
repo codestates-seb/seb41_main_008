@@ -17,7 +17,7 @@ export default function ProfileLogo({
   const [logoFile, setLogoFile] = useState<File | undefined>();
   const [logoTypeError, setLogoTypeError] = useState(false);
   const [logoSizeError, setLogoSizeError] = useState(false);
-
+  console.log(profileLogo);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -45,15 +45,12 @@ export default function ProfileLogo({
   const queryClient = useQueryClient();
 
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (file: FormData) => {
-      const res = await customAxios.post(
-        `${process.env.REACT_APP_API_URL}/images`,
-        file
-      );
-      return res.data;
-    },
+    mutationFn: (file: FormData) =>
+      customAxios
+        .post(`${process.env.REACT_APP_API_URL}/images`, file)
+        .then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['images']);
+      queryClient.invalidateQueries(['images'], { exact: true });
       setLogoName(data.imageName);
     },
   });
@@ -90,7 +87,12 @@ export default function ProfileLogo({
 
       <div className="relative group cursor-pointer rounded-full mt-3 w-44 h-44">
         <img
-          src={profileLogo}
+          src={
+            profileLogo?.slice(0, 8) === 'https://' ||
+            profileLogo?.slice(0, 4) === 'data'
+              ? profileLogo
+              : process.env.REACT_APP_IMAGE + profileLogo
+          }
           alt="Profile Logo"
           role="presentation"
           className="h-full w-full rounded-full object-cover cursor-pointer absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"

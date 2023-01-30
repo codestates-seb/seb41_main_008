@@ -1,7 +1,7 @@
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
-export default function DropMenu() {
+export default function MintDropdown() {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>

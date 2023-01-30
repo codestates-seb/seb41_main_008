@@ -1,6 +1,5 @@
-/* eslint-disable */
-import { Link } from 'react-router-dom';
-import { AxiosError } from 'axios';
+import { Link, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import customAxios from 'utils/api/axios';
 import ETHIcon from '../../assets/icons/PurchaseIcons/ETH';
 import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
@@ -12,11 +11,12 @@ import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
 import CountdownTimer from './CountDownTime/CountDown';
-import { getItemsData } from 'utils/api/api';
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useAppSelector } from 'hooks/hooks';
-import SellModal from 'components/CartingModal/SellModal';
+import Footer from 'components/Layout/Footer';
+import { useQuery } from '@tanstack/react-query';
+import MissingPage from 'pages/MissingPage';
+import Header from 'components/Header/Header';
+import Rechart from './Rechart';
+import { date } from 'yup';
 
 export interface ItemProps {
   coinId: number;
@@ -30,7 +30,7 @@ export interface ItemProps {
   onSale: boolean;
   trueownerId: number;
   ownerName: string;
-  priceHistory: null;
+  priceHistory: PriceData[];
   tradeHistory: ItemsData[];
   withdrawFee: number;
   logoImgName: string;
@@ -40,102 +40,105 @@ interface ItemsData {
   sellerId: number;
   sellerName: string;
   buyerId: number;
+  buyerName: string;
   transPrice: number;
   coinName: string;
-  transData: number;
+  transDate: number;
 }
 
+interface PriceData {
+  transPrice: number;
+  transDate: number;
+}
+
+const ButtonWrapper = styled.div`
+  div {
+    border-radius: 8px;
+  }
+`;
+
 const Asset = () => {
-  const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
-  const { cartItems } = useAppSelector((state) => state.cart);
-  console.log(cartItems);
-  console.log(data);
 
-  useEffect(() => {
-    getItemsData(itemId).then((res) => setData(res.data));
-  }, [itemId]);
+  const { isLoading, error, data } = useQuery<ItemProps>({
+    queryKey: ['items', itemId],
+    queryFn: () =>
+      customAxios.get(`/api/items/${itemId}`).then((res) => res.data),
+  });
 
-  useEffect(() => {
-    const getItemsData = async () => {
-      try {
-        const res = await customAxios.get(`/api/items/${itemId}`);
-        setData(res.data);
-        console.log(res);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
-    };
+  if (isLoading) return <p>Loading...</p>;
 
-    getItemsData();
-  }, [itemId]);
+  if (error) return <MissingPage />;
 
   return (
-    <div className="asset">
-      <div className="container">
-        <div className="asset__grid">
-          <div className="asset__grid__item">
-            <img
-              src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
-              className="asset__image"
-              alt=""
-            />
-            <div className="card">
-              <div className="card__header">
-                <TbFileDescription />
-                Description
+    <>
+      <Header />
+      <div className="asset">
+        <div className="container">
+          <div className="asset__grid">
+            <div className="asset__grid__item">
+              <img
+                src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
+                className="asset__image"
+                alt=""
+              />
+              <div className="card">
+                <div className="card__header">
+                  <TbFileDescription />
+                  Description
+                </div>
+                <div className="card__body">
+                  <div className="asset__properties"></div>
+                  <div>{data?.itemDescription}</div>
+                </div>
               </div>
-              <div className="card__body">
-                <div className="asset__properties"></div>
-                <div>{data?.itemDescription}</div>
-              </div>
-            </div>
-
-            <div className="card">
-              <div className="card__header">
-                <SlGraph />
-                Price History
-              </div>
-
-              <div className="card__body">
-                <div className="asset__properties"></div>
-              </div>
-            </div>
-          </div>
-          <div className="asset__grid__item asset__grid__item--expanded">
-            <h2>#{data?.itemId}</h2>
-            <div className="text-4xl font-bold">{data?.collectionName}</div>
-            <div className="asset__meta">
-              <div className="asset__meta__item">
-                Owned by{' '}
-                <Link to={`/collection/${itemId}`}>
-                  <a>{data?.ownerName}</a>
-                </Link>
-              </div>
-              <div className="asset__meta__item">
-                <EyeIcon /> 0 views
-              </div>
-              <div className="asset__meta__item">
-                <HeartIcon /> 0 favorites
-              </div>
-            </div>
-            <div className="card">
-              <div className="card__header">
-                <TimeIcon />
-                Sale ends january 31, 2023 at 23:59 UTC+9
-              </div>
-              <CountdownTimer />
-
-              <div className="card__body">
-                <div>
-                  <div className="label">Current price</div>
-                  <div className="asset__price">
-                    <ETHIcon />
-                    <span>{data?.itemPrice}</span>
+              <div className="card">
+                <div className="card__header">
+                  <SlGraph />
+                  Price History
+                </div>
+                <div className="card__body">
+                  <div className="asset__properties"></div>
+                  <div style={{ width: 460, height: 400 }}>
+                    <Rechart data={data} />
                   </div>
                 </div>
-                <BuyAndCartButton data={data} />
+              </div>
+            </div>
+            <div className="asset__grid__item asset__grid__item--expanded">
+              <h2>#{data?.itemId}</h2>
+              <div className="text-4xl font-bold">{data?.collectionName}</div>
+              <div className="asset__meta">
+                <div className="asset__meta__item">
+                  Owned by{' '}
+                  <Link to={`/collection/${itemId}`}>{data?.ownerName}</Link>
+                </div>
+                <div className="asset__meta__item">
+                  <EyeIcon /> 0 views
+                </div>
+                <div className="asset__meta__item">
+                  <HeartIcon /> 0 favorites
+                </div>
+              </div>
+              <div className="card">
+                <div className="card__header">
+                  <TimeIcon />
+                  Sale ends january 31, 2023 at 23:59 UTC+9
+                </div>
+                <CountdownTimer />
+
+                <div className="card__body">
+                  <div>
+                    <div className="label">Current price</div>
+                    <div className="asset__price">
+                      <ETHIcon />
+                      <span>{data?.itemPrice}</span>
+                    </div>
+                  </div>
+                  <ButtonWrapper>
+                    <BuyAndCartButton data={data} />
+                  </ButtonWrapper>
+                </div>
               </div>
             </div>
             <div className="card">
@@ -148,25 +151,26 @@ const Asset = () => {
                   <thead>
                     <tr>
                       <th>Price</th>
-                      <th>USD Price</th>
                       <th>Commission</th>
                       <th>From</th>
                       <th>To</th>
+                      <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data?.tradeHistory.map((item) => (
-                      <tr>
+                      <tr key={item.buyerId}>
                         <td>
                           <div className="price">
                             <ETHIcon />
-                            {item.sellerId}
+                            {item.transPrice}
                           </div>
                         </td>
-                        <td></td>
+                        <td>{data?.withdrawFee}</td>
                         <td>{item.coinName}</td>
-                        <td>{item.sellerId}</td>
-                        <td>{}</td>
+                        <td>{item.sellerName}</td>
+                        <td>{item.buyerName}</td>
+                        <td>{item.transDate}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -176,7 +180,8 @@ const Asset = () => {
           </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

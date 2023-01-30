@@ -1,5 +1,5 @@
 import customAxios from './axios';
-
+import axios from 'axios';
 export const logout = () => {
   return customAxios
     .get('/auth/logout', {
@@ -7,8 +7,10 @@ export const logout = () => {
         RefreshToken: localStorage.getItem('REFRESH_TOKEN'),
       },
     })
-    .then(() => window.localStorage.clear())
-    .then(() => window.location.reload());
+    .then(() => {
+      window.localStorage.clear();
+      window.location.replace('/');
+    });
 };
 
 export const getMyProFile = async () => {
@@ -23,15 +25,18 @@ export const getItemsData = async (itemId: string | number | undefined) => {
   return await customAxios.get(`/api/items/${itemId}`);
 };
 
+export const getRaingkingData = async (time: string | number | undefined) => {
+  return await customAxios.get(`/api/ranking/time/${time}`);
+};
+
 /**카트정보 저장 api */
-export const cartSaveHandler = (data: {
+export const cartSaveHandler = async (data: {
   cartId: number;
   itemIdList: number[];
   totalPrice: number;
 }) => {
-  alert('결제로진행~');
   console.log(data);
-  return customAxios
+  return await customAxios
     .post('/api/carts/save', data)
     .then((res) => console.log(res));
 };
@@ -42,7 +47,8 @@ export const sellItemHandler = async (
 ) => {
   await customAxios
     .post(`/api/items/sell/${itemId}`, data)
-    .then((res) => console.log(res));
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 };
 
 /**TransAction api */
@@ -61,16 +67,20 @@ export const buyCoin = async (data: any) => {
 
 /**카카오페이 api */
 export const kakaoPay = async (pgToken: string, tid: string | null) => {
+  if (!pgToken || !tid) return;
   return await customAxios.get(
     `/api/coins/approve?pg_token=${pgToken}&tid=${tid}`
   );
 };
 
+/**코인 주문정보 조회 */
+export const getCoinOrderInfo = async (tid?: string | null) => {
+  return await customAxios.get(`/api/coins/success?tid=${tid}`);
+};
+
 /**업비트 Open API */
 export const getCoinPrice = async (coin: string | undefined) => {
-  const options = { method: 'GET', headers: { accept: 'application/json' } };
-  return await fetch(
-    `https://api.upbit.com/v1/ticker?markets=krw-${coin}`,
-    options
-  ).then((res) => res.json());
+  if (coin === undefined) return;
+
+  return await axios.get(`https://api.upbit.com/v1/ticker?markets=krw-${coin}`);
 };

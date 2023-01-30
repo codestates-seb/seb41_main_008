@@ -42,7 +42,7 @@ const modalSlice = createSlice({
       state.paymentOpen = false;
     },
     openWallet: (state) => {
-      state.walletOpen = true;
+      state.walletOpen = !state.walletOpen;
     },
     closeWallet: (state) => {
       state.walletOpen = false;

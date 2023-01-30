@@ -6,7 +6,7 @@ import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-import { setOpen } from 'store/toastSlice';
+import { setCreateColOpen } from 'store/toastSlice';
 import Modal from './CollectionModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -71,18 +71,16 @@ export default function CreateCollection({
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (col: ColInfo) => {
-      const res = await customAxios.post('/api/collections', col);
-      return res.data;
-    },
+    mutationFn: (col: ColInfo) =>
+      customAxios.post('/api/collections', col).then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['collections']);
+      queryClient.invalidateQueries(['collections'], { exact: true });
       setCollection(data);
     },
   });
 
   const onSubmit = async (data: Inputs) => {
-    dispatch(setOpen(true));
+    dispatch(setCreateColOpen(true));
 
     if (logoFile && bannerFile) {
       mutate({

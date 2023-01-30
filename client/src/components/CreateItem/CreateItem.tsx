@@ -6,7 +6,7 @@ import { useAppDispatch } from 'hooks/hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
-import { setOpen } from 'store/toastSlice';
+import { setCreateItemOpen } from 'store/toastSlice';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ItemModal from './ItemModal';
 import {
@@ -18,6 +18,10 @@ export interface Collection {
   collectionName: string;
   collectionId: number;
   logoImgName: string;
+}
+
+interface Profile {
+  collections?: Collection[];
 }
 
 interface Image {
@@ -48,6 +52,7 @@ export default function CreateItem({
   const dispatch = useAppDispatch();
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
+  const [collections, setCollections] = useState<Collection[]>([]);
   const [item, setItem] = useState<SuccessResponse>();
   const navigate = useNavigate();
 
@@ -59,32 +64,29 @@ export default function CreateItem({
     resolver: yupResolver(schema),
   });
 
-  const {
-    isLoading: loading,
-    error: err,
-    data,
-  } = useQuery<Collection[]>({
-    queryKey: ['myCollections'],
-    queryFn: async () => {
-      const res = await customAxios.get('/api/members/mypage');
-      return res.data.collections;
+  const { isLoading: loading, error: err } = useQuery<Profile>({
+    queryKey: ['members', 'mypage'],
+    queryFn: () =>
+      customAxios.get('/api/members/mypage').then((res) => res.data),
+    onSuccess: (data) => {
+      if (data.collections) {
+        setCollections(data.collections);
+      }
     },
   });
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: async (item: ItemInfo) => {
-      const res = await customAxios.post('/api/items', item);
-      return res.data;
-    },
+    mutationFn: (item: ItemInfo) =>
+      customAxios.post('/api/items', item).then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['items']);
+      queryClient.invalidateQueries(['items'], { exact: true });
       setItem(data);
     },
   });
 
   const onSubmit = async (data: Inputs) => {
-    dispatch(setOpen(true));
+    dispatch(setCreateItemOpen(true));
 
     if (itemFile) {
       mutate({
@@ -172,7 +174,7 @@ export default function CreateItem({
       <ItemModal
         isLoading={loading}
         error={err instanceof Error ? err : null}
-        collections={data}
+        collections={collections}
         selectedCol={selectedCol}
         setSelectedCol={setSelectedCol}
       />

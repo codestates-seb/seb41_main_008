@@ -3,9 +3,11 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { ModalBack } from './CartingModal';
 import { closeBuyCoin, closeWallet } from 'store/modalSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getCoinPrice, buyCoin, kakaoPay } from 'utils/api/api';
 import { useLocation, useNavigate } from 'react-router-dom';
+import kakaopayLogo from '../../../src/assets/kakaopayS.png';
+
 const BuyCoinContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,11 +20,14 @@ const BuyCoinContainer = styled.div`
   left: 0;
   right: 0;
   transform: translateY(-50%);
-  z-index: 30;
+  z-index: 40;
   font-weight: bold;
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 4px 8px 8px hsl(0deg 0% 0% / 0.38);
+  box-shadow: 4.8px 9.6px 9.6px hsl(0deg 0% 0% / 0.35);
+  @media screen and (max-width: 764px) {
+    width: 100vw;
+  }
 `;
 interface FormValue {
   coinCount: number;
@@ -39,6 +44,8 @@ const BuyCoinModal = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const ref = useRef<HTMLDivElement>(null);
+
   const { buyCoinOpen } = useAppSelector((state) => state.modal);
   const [coinName, setCoinName] = useState('SOL');
   const [tradePrice, setTradePrice] = useState(0);
@@ -53,15 +60,16 @@ const BuyCoinModal = () => {
   const selectBoxHandler = (e: any) => {
     setCoinName(e.target.value);
   };
-
+  console.log(coinName);
   const pgToken = location.search.split('=')[1];
   const tid = localStorage.getItem('tid');
   const paidPrice = tradePrice * watch('coinCount');
+  const coinFee = tradePrice * watch('coinCount') * 0.01;
+  const totalPrice = coinFee + tradePrice * watch('coinCount');
 
   const onClickSubmit: SubmitHandler<FormValue> = (data: any) => {
-    const coinFee = tradePrice * watch('coinCount') * 0.01;
-    const totalPrice = coinFee + tradePrice * watch('coinCount');
     console.log('totalPrice', totalPrice);
+    console.log(data);
     console.log(errors);
     buyCoin({ ...data, totalPrice }).then((res: any) => {
       window.location.href = res.data.next_redirect_pc_url;
@@ -73,20 +81,32 @@ const BuyCoinModal = () => {
     console.log('a');
     kakaoPay(pgToken, tid).then(() => {
       dispatch(closeBuyCoin());
-      navigate(`/account/${memberId}`);
     });
   }, [pgToken, tid, dispatch, memberId, navigate]);
 
   useEffect(() => {
-    getCoinPrice(coinName).then((res) => setTradePrice(res[0].trade_price));
+    getCoinPrice(coinName).then((res: any) =>
+      setTradePrice(res.data[0].trade_price)
+    );
   }, [coinName]);
+  const modalClose = (e: MouseEvent) => {
+    if (buyCoinOpen && ref.current?.contains(e.target as Node)) {
+      dispatch(closeBuyCoin());
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('click', modalClose);
+    return () => {
+      document.removeEventListener('click', modalClose);
+    };
+  });
 
   return (
     <>
-      {buyCoinOpen && <ModalBack zIndex={'30'} />}
+      {buyCoinOpen && <ModalBack zIndex={'30'} ref={ref} />}
       {buyCoinOpen && (
         <BuyCoinContainer>
-          <header className="flex justify-between items-center p-2 w-full border-b-2">
+          <header className="flex justify-between items-center p-2 w-full ">
             <div className="grow text-center text-2xl">
               Buy crypto with KAKAO PAY
             </div>
@@ -95,7 +115,7 @@ const BuyCoinModal = () => {
             </button>
           </header>
           <form
-            className="p-4 bg-[#1c1c1e] rounded-xl"
+            className="p-4 bg-[#1c1c1e] h-full rounded-xl"
             onSubmit={handleSubmit(onClickSubmit)}
           >
             <section className="">
@@ -111,39 +131,47 @@ const BuyCoinModal = () => {
                     >
                       I want to buy
                     </label>
-                    <input
-                      id="selectCoin"
-                      type="text"
-                      className="bg-[#3d3d41] text-white p-2 rounded-xl "
-                      {...register('coinCount', {
-                        valueAsNumber: true,
-                        pattern: {
-                          value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                          message: '숫자만 입력가능합니다.',
-                        },
-                      })}
-                    />
-                    <select
-                      className="rounded-xl"
-                      {...register('coinName')}
-                      onChange={selectBoxHandler}
+                    <div
+                      className={`${
+                        errors.coinCount ? 'border-red-500 border-2' : null
+                      } ${'flex rounded-xl'}`}
                     >
-                      {coinOptions.map((el) => {
-                        return (
-                          <option
-                            key={el.id}
-                            defaultValue={coinOptions[0].name}
-                          >
-                            {el.name}
-                          </option>
-                        );
-                      })}
-                    </select>
+                      <input
+                        id="selectCoin"
+                        type="text"
+                        className={`${'grow bg-[#3d3d41] text-white p-2 rounded-l-xl outline-none'}`}
+                        {...register('coinCount', {
+                          required: true,
+                          pattern: /^[0-9.]*$/,
+                        })}
+                      />
+                      <select
+                        className="rounded-r-xl bg-[#3d3d41] text-white"
+                        {...register('coinName')}
+                        onChange={selectBoxHandler}
+                      >
+                        {coinOptions.map((el) => {
+                          return (
+                            <option
+                              key={el.id}
+                              defaultValue={coinOptions[0].name}
+                            >
+                              {el.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                    {errors.coinCount && (
+                      <span className="text-red-500 text-xs font-semibold mt-1">
+                        Please enter the exact amount.
+                      </span>
+                    )}
                     <div className="flex flex-col mt-8">
                       <div className="text-[rgba(235,235,245,0.6)] text-xs mb-1">
                         I have to spend
                       </div>
-                      <div className="bg-[#3d3d41] text-white p-2 rounded-xl">
+                      <div className="bg-[#3d3d41] text-white p-2 rounded-xl truncate">
                         {isNaN(paidPrice) ? '--' : paidPrice.toLocaleString()}₩
                       </div>
                     </div>
@@ -152,8 +180,10 @@ const BuyCoinModal = () => {
               </div>
             </section>
             <footer className="">
-              <div className="flex items-center justify-center p-2 bg-emerald-600 text-white rounded-xl mt-8 ">
-                <button>카카오페이 호출버튼</button>
+              <div className="flex items-center justify-center p-1 bg-[#ffeb00] rounded-xl mt-6  ">
+                <button>
+                  <img src={kakaopayLogo} alt="kakaopay" />
+                </button>
               </div>
             </footer>
           </form>
