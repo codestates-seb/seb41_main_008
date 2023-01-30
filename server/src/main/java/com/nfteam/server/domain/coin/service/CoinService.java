@@ -161,8 +161,7 @@ public class CoinService {
 
     @Transactional
     public CoinPurchaseApproveResponse approvePayment(String pgToken, String tid) {
-        CoinOrder coinOrder = coinOrderRepository.findByTidWithBuyer(tid)
-                .orElseThrow(() -> new CoinPaymentFailedException());
+        CoinOrder coinOrder = getCoinOrder(tid);
 
         Member buyer = coinOrder.getBuyer();
         int totalPriceIntValue = coinOrder.getTotalPrice().intValue();
@@ -191,6 +190,11 @@ public class CoinService {
         }
     }
 
+    private CoinOrder getCoinOrder(String tid) {
+        return coinOrderRepository.findByTidWithBuyer(tid)
+                .orElseThrow(() -> new CoinOrderNotFoundException(tid));
+    }
+
     private static MultiValueMap<String, Object> getApprovalParameters(String pgToken, String tid, CoinOrder coinOrder, int totalPriceIntValue) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
@@ -203,12 +207,7 @@ public class CoinService {
     }
 
     public CoinOrderResponse getCoinOrderInfo(String tid) {
-        return CoinOrderResponse.of(getCoinOrderByTid(tid));
-    }
-
-    private CoinOrder getCoinOrderByTid(String tid) {
-        return coinOrderRepository.findByTidWithCoin(tid)
-                .orElseThrow(() -> new CoinOrderNotFoundException(tid));
+        return CoinOrderResponse.of(getCoinOrder(tid));
     }
 
 }
