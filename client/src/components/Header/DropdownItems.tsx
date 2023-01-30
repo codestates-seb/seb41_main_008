@@ -1,15 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from 'hooks/hooks';
-import { logout, cartSaveHandler } from 'utils/api/api';
+import { logout } from 'utils/api/api';
 import { MdCreateNewFolder, MdNightlight } from 'react-icons/md';
 import { IoIosCreate } from 'react-icons/io';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 const DropdownItems = () => {
   const navigate = useNavigate();
   const { isLogin } = useAppSelector((state) => state.login);
-  const { cartItems } = useAppSelector((state) => state.cart);
-  const cartId = Number(localStorage.getItem('CART_ID'));
-  const cartItemsItemId = cartItems.map((el: any) => el.itemId);
 
   const onRoute = (route: string) => {
     if (!isLogin) {
@@ -21,7 +18,6 @@ const DropdownItems = () => {
   };
   const logoutHandler = () => {
     logout();
-    cartSaveHandler({ cartId, itemIdList: cartItemsItemId, totalPrice: 1 });
   };
   return (
     <div className="absolute">

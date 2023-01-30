@@ -32,7 +32,7 @@ function App() {
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
             <Route path="/account/:memberId" element={<AccountPage />} />
             <Route path="/account/profile" element={<ProfilePage />} />
-            <Route path="/succes\s" element={<SuccessPaymentPage />} />
+            <Route path="/success" element={<SuccessPaymentPage />} />
             <Route path="*" element={<MissingPage />} />
           </Route>
 

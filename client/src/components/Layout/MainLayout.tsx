@@ -8,7 +8,6 @@ import TransActionModal from '../Modals/TransActionModal';
 const MainLayout = () => {
   return (
     <>
-      <Header />
       <CartingModal />
       <BuyCoinModal />
       <SellModal />

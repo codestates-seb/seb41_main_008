@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAppSelector } from 'hooks/hooks';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MobileDropdownList from './MobileDropdownLIst';
@@ -18,6 +19,7 @@ const SearchInput = styled.input`
 
 const Header = () => {
   const location = useLocation();
+  const { walletOpen } = useAppSelector((state) => state.modal);
   const [home, setHome] = useState<boolean | undefined>();
   const [isScrolled, setIsScrolled] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -48,8 +50,8 @@ const Header = () => {
 
   return (
     <header
-      className={`duration-300 flex justify-center items-center font-bold z-20 p-4 sticky top-0 text-lg  ${
-        !home && 'bg-white'
+      className={`duration-300 flex justify-center items-center font-bold z-20 p-4 fixed w-full text-lg  ${
+        (!home || walletOpen) && 'bg-white'
       } ${isScrolled && home && 'bg-white'}`}
     >
       <div className="flex gap-2 mr-2">

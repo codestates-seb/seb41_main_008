@@ -46,7 +46,7 @@ const AccountPage = () => {
     queryFn: () =>
       customAxios.get(`/api/members/${memberId}`).then((res) => res.data),
   });
-
+  console.log(data);
   const onFilter = (filterType: string) => {
     setFilter(filterType);
   };
@@ -115,7 +115,7 @@ const AccountPage = () => {
               </button>
             </ul>
           </div>
-          <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
+          <div className="mt-5 grid gap-4 grid-cols-8 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
             {filter === 'Collected' ? (
               data?.items.length !== 0 ? (
                 data?.items.map((el: any) => {
@@ -133,6 +133,7 @@ const AccountPage = () => {
                       itemPrice={el.itemPrice}
                       itemDescription={el.itemDescription}
                       coinName={el.coinName}
+                      itemName={el.itemName}
                     />
                   );
                 })

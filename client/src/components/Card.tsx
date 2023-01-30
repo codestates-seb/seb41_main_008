@@ -15,10 +15,11 @@ interface Item {
   itemId: number;
   onSale: boolean;
   ownerId: number;
-  coinImage: string;
+  coinImage?: string;
 }
 
 interface CardType {
+  itemName: string;
   itemId: number;
   data: Item[];
   itemImageName: string;
@@ -30,7 +31,7 @@ interface CardType {
   filter: string;
   coinName: string;
   logoImgName: string;
-  collectionId: number;
+  collectionId?: number;
 }
 
 const HideWrapper = styled.div<cartBtnType>`
@@ -45,7 +46,6 @@ const HideWrapper = styled.div<cartBtnType>`
 `;
 const Card = ({
   collectionId,
-  ownerId,
   data,
   itemId,
   collectionName,
@@ -54,12 +54,13 @@ const Card = ({
   onSale,
   filter,
   coinName,
+  itemName,
   itemDescription,
   logoImgName,
   ownerId,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
-
+  console.log(data);
   return (
     <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold">
       <article
@@ -90,7 +91,7 @@ const Card = ({
             />
           </div>
           <div className="flex flex-col p-4 rounded-b-xl">
-            <div>{itemDescription}</div>
+            <div>{itemName}</div>
             <div>{collectionName}</div>
             <div className="flex">
               {onSale && <span className="mr-2">{itemPrice}</span>}
