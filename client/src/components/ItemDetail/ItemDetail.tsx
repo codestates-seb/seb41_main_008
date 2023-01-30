@@ -38,6 +38,7 @@ export interface ItemProps {
   withdrawFee: number;
   logoImgName: string;
   collectionName: string;
+  coinImage:string;
 }
 interface ItemsData {
   sellerId: number;
@@ -63,6 +64,7 @@ const ButtonWrapper = styled.div`
 const Asset = () => {
   const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
+
 
   useEffect(() => {
     getItemsData(itemId).then((res) => setData(res.data));
@@ -90,6 +92,13 @@ const Asset = () => {
       <div className="container">
         <div className="asset__grid">
           <div className="asset__grid__item">
+            <div className="bg-w center flex p-1 h-12 w-full border border-gray-300 rounded-tl-lg rounded-tr-lg ;">
+              <img
+                className=" w-5 h-5 "
+                src={data?.coinImage}
+                alt="EthLogo"
+              />
+            </div>
             <img
               src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
               className="asset__image"
@@ -135,26 +144,31 @@ const Asset = () => {
                 <HeartIcon /> 0 favorites
               </div>
             </div>
-            <div className="card">
-              <div className="card__header">
-                <TimeIcon />
-                Sale ends january 31, 2023 at 23:59 UTC+9
-              </div>
-              <CountdownTimer />
-
-              <div className="card__body">
-                <div>
-                  <div className="label">Current price</div>
-                  <div className="asset__price">
-                    <ETHIcon />
-                    <span>{data?.itemPrice}</span>
-                  </div>
+            {data?.onSale && (
+              <div className="card">
+                <div className="card__header">
+                  <TimeIcon />
+                  Sale ends january 31, 2023 at 23:59 UTC+9
                 </div>
-                <ButtonWrapper>
-                  <BuyAndCartButton data={data} />
-                </ButtonWrapper>
+                <CountdownTimer />
+                <div className="card__body">
+                  <div>
+                    <div className="label">Current price</div>
+                    <div className="asset__price">
+                      <img
+                        className=" w-4 h-4"
+                        src={data?.coinImage}
+                        alt="EthLogo"
+                      />{' '}
+                      <span>{data?.itemPrice}</span>
+                    </div>
+                  </div>
+                  <ButtonWrapper>
+                    <BuyAndCartButton data={data} />
+                  </ButtonWrapper>
+                </div>
               </div>
-            </div>
+            )}
             <div className="card">
               <div className="card__header">
                 <OfferIcon />
@@ -177,7 +191,11 @@ const Asset = () => {
                       <tr>
                         <td>
                           <div className="price">
-                            <ETHIcon />
+                            <img
+                              className="w-3 h-3"
+                              src={data?.coinImage}
+                              alt="EthLogo"
+                            />
                             {item.transPrice}
                           </div>
                         </td>

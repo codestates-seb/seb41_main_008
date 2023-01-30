@@ -1,5 +1,5 @@
 .footer {
-  background-color: rgb(4 120 87);
+  background-color: #FECBC9;
   margin-top: 48px;
   padding: 0 120px;
 }
@@ -36,7 +36,7 @@
 
 .socials {
   flex: 1;
-  padding: 40px 0 0 64px;
+  padding: 40px 0 0 80px;
 }
 
 .socialLink {
@@ -48,13 +48,13 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(5 150 105);
+  
   color: rgb(255, 255, 255);
   width: 54px;
   height: 54px;
   margin: 8px 12px 0 0;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 18px;
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -65,7 +65,7 @@
 .socialBtn:hover {
   filter: brightness(1.1);
   border: 1px solid rgba(0, 0, 0, 0);
-  background-color: rgb(16 185 129);
+  
 }
 
 .form {
