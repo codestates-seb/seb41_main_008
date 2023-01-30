@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemCollectionRepository extends JpaRepository<ItemCollection, Long> {
+public interface ItemCollectionRepository extends JpaRepository<ItemCollection, Long>, ItemCollectionRepositoryCustom {
 
     @Query("select c from ItemCollection c left join fetch c.coin where c.collectionId =:id")
     Optional<ItemCollection> findCollectionWithCoin(Long id);

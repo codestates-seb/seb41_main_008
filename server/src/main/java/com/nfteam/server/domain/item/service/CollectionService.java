@@ -10,6 +10,7 @@ import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.dto.request.item.CollectionCreateRequest;
 import com.nfteam.server.dto.request.item.CollectionPatchRequest;
 import com.nfteam.server.dto.response.item.CollectionItemResponse;
+import com.nfteam.server.dto.response.item.CollectionMainResponse;
 import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.dto.response.member.MemberCollectionResponse;
@@ -17,6 +18,8 @@ import com.nfteam.server.exception.auth.NotAuthorizedException;
 import com.nfteam.server.exception.item.ItemCollectionNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.security.userdetails.MemberDetails;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -146,6 +149,10 @@ public class CollectionService {
         return itemCollectionRepository.findCollectionListWithCoinByMemberId(memberId)
                 .stream().map(collection -> collection.toMemberResponse())
                 .collect(Collectors.toList());
+    }
+
+    public Page<CollectionMainResponse> getMainCollectionList(Pageable pageable) {
+        return itemCollectionRepository.findCollectionOnlyResponsePage(pageable);
     }
 
 }

@@ -7,6 +7,7 @@ import com.nfteam.server.dto.response.common.SingleIdResponse;
 import com.nfteam.server.dto.response.item.CollectionOnlyResponse;
 import com.nfteam.server.dto.response.item.CollectionResponse;
 import com.nfteam.server.security.userdetails.MemberDetails;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -59,6 +60,11 @@ public class CollectionController {
     @GetMapping("/members/{memberId}")
     public ResponseEntity getUserCollection(@PathVariable("memberId") Long memberId) {
         return new ResponseEntity<>(collectionService.getMemberCollectionList(memberId), HttpStatus.OK);
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity getMainCollection(Pageable pageable) {
+        return new ResponseEntity<>(collectionService.getMainCollectionList(pageable).getContent(), HttpStatus.OK);
     }
 
 }
