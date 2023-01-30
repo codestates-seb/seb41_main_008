@@ -9,7 +9,7 @@ name: 프론트엔드 운영서버 배포 자동화
 
 on:
   push:
-    branches: [ "prod" ]
+    branches: [ "release" ]
     paths: 'client/**'
 
 env:

@@ -1,4 +1,4 @@
 spring:
   config:
     import:
-      - config/application-dev.yml
+      - config/application-prod.yml
