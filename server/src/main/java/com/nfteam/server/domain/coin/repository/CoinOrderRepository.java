@@ -14,4 +14,7 @@ public interface CoinOrderRepository extends JpaRepository<CoinOrder, Long> {
             "where c.tid =:tid")
     Optional<CoinOrder> findByTidWithBuyer(String tid);
 
+    @Query("select c from CoinOrder c left join fetch c.coin where c.tid =:tid")
+    Optional<CoinOrder> findByTidWithCoin(String tid);
+
 }

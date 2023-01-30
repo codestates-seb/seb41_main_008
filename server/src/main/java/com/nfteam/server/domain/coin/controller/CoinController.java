@@ -43,4 +43,9 @@ public class CoinController {
         return new ResponseEntity<>(coinService.approvePayment(pgToken, tid), HttpStatus.MOVED_PERMANENTLY);
     }
 
+    @GetMapping(value = "/success")
+    public ResponseEntity success(@RequestParam(value = "tid") String tid) {
+        return new ResponseEntity<>(coinService.getCoinOrderInfo(tid), HttpStatus.OK);
+    }
+
 }

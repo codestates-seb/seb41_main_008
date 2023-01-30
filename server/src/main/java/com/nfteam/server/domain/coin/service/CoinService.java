@@ -9,10 +9,12 @@ import com.nfteam.server.domain.coin.repository.CoinRepository;
 import com.nfteam.server.domain.member.entity.Member;
 import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.dto.request.coin.CoinPurchaseRequest;
+import com.nfteam.server.dto.response.coin.CoinOrderResponse;
 import com.nfteam.server.dto.response.coin.CoinPurchaseApproveResponse;
 import com.nfteam.server.dto.response.coin.CoinPurchaseReadyResponse;
 import com.nfteam.server.dto.response.coin.MemberCoinResponse;
 import com.nfteam.server.exception.coin.CoinNotFoundException;
+import com.nfteam.server.exception.coin.CoinOrderNotFoundException;
 import com.nfteam.server.exception.coin.CoinPaymentFailedException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.security.userdetails.MemberDetails;
@@ -198,6 +200,15 @@ public class CoinService {
         parameters.add("pg_token", pgToken);
         parameters.add("total_amount", totalPriceIntValue);
         return parameters;
+    }
+
+    public CoinOrderResponse getCoinOrderInfo(String tid) {
+        return CoinOrderResponse.of(getCoinOrderByTid(tid));
+    }
+
+    private CoinOrder getCoinOrderByTid(String tid) {
+        return coinOrderRepository.findByTidWithCoin(tid)
+                .orElseThrow(() -> new CoinOrderNotFoundException(tid));
     }
 
 }
