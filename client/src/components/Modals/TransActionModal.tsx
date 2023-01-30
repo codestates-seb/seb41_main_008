@@ -4,6 +4,7 @@ import { closePayment } from 'store/modalSlice';
 import { clearCart } from 'store/cartSlice';
 import { ModalBack } from './CartingModal';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getCoinPrice, transAction } from 'utils/api/api';
 import CartItems from './CartItems';
 const TransActionContainer = styled.div`
@@ -31,6 +32,7 @@ const TransActionContainer = styled.div`
 
 const TransActionModal = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [coinPrice, setCoinPrice] = useState(0);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { paymentOpen } = useAppSelector((state) => state.modal);
@@ -59,7 +61,7 @@ const TransActionModal = () => {
         localStorage.setItem('CART_ID', res.data.cartId);
         dispatch(clearCart());
         dispatch(closePayment());
-        window.location.replace(`/account/${memberId}`);
+        navigate(`/account/${memberId}`);
       })
       .catch((err) => {
         if (err) {

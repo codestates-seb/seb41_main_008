@@ -16,7 +16,6 @@ import { useQuery } from '@tanstack/react-query';
 import MissingPage from 'pages/MissingPage';
 import Header from 'components/Header/Header';
 import Rechart from './Rechart';
-import SellModal from 'components/CartingModal/SellModal';
 import { date } from 'yup';
 
 export interface ItemProps {

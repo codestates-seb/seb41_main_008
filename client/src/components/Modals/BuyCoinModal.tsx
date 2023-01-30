@@ -89,7 +89,6 @@ const BuyCoinModal = () => {
       setTradePrice(res.data[0].trade_price)
     );
   }, [coinName]);
-  console.log(errors);
   const modalClose = (e: MouseEvent) => {
     if (buyCoinOpen && ref.current?.contains(e.target as Node)) {
       dispatch(closeBuyCoin());
