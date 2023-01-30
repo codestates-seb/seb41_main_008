@@ -1,6 +1,4 @@
-/* eslint-disable */
-import { Link } from 'react-router-dom';
-import { AxiosError } from 'axios';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import customAxios from 'utils/api/axios';
 import ETHIcon from '../../assets/icons/PurchaseIcons/ETH';
@@ -13,11 +11,10 @@ import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
 import CountdownTimer from './CountDownTime/CountDown';
-import { getItemsData } from 'utils/api/api';
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useAppSelector } from 'hooks/hooks';
-import SellModal from 'components/CartingModal/SellModal';
+import Footer from 'components/Layout/Footer';
+import { useQuery } from '@tanstack/react-query';
+import MissingPage from 'pages/MissingPage';
+import Header from 'components/Header/Header';import SellModal from 'components/CartingModal/SellModal';
 import Rechart from './Rechart';
 import { date } from 'yup';
 
@@ -61,31 +58,21 @@ const ButtonWrapper = styled.div`
 `;
 
 const Asset = () => {
-  const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
 
-  useEffect(() => {
-    getItemsData(itemId).then((res) => setData(res.data));
-  }, [itemId]);
+  const { isLoading, error, data } = useQuery<ItemProps>({
+    queryKey: ['items', itemId],
+    queryFn: () =>
+      customAxios.get(`/api/items/${itemId}`).then((res) => res.data),
+  });
 
-  useEffect(() => {
-    const getItemsData = async () => {
-      try {
-        const res = await customAxios.get(`/api/items/${itemId}`);
-        setData(res.data);
-        console.log(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
-    };
+  if (isLoading) return <p>Loading...</p>;
 
-    getItemsData();
-  }, [itemId]);
-
-  
+  if (error) return <MissingPage />;
 
   return (
+    <>
+    <Header />
     <div className="asset">
       <div className="container">
         <div className="asset__grid">
@@ -142,17 +129,18 @@ const Asset = () => {
               </div>
               <CountdownTimer />
 
-              <div className="card__body">
-                <div>
-                  <div className="label">Current price</div>
-                  <div className="asset__price">
-                    <ETHIcon />
-                    <span>{data?.itemPrice}</span>
+                <div className="card__body">
+                  <div>
+                    <div className="label">Current price</div>
+                    <div className="asset__price">
+                      <ETHIcon />
+                      <span>{data?.itemPrice}</span>
+                    </div>
                   </div>
+                  <ButtonWrapper>
+                    <BuyAndCartButton data={data} />
+                  </ButtonWrapper>
                 </div>
-                <ButtonWrapper>
-                  <BuyAndCartButton data={data} />
-                </ButtonWrapper>
               </div>
             </div>
             <div className="card">
@@ -166,7 +154,6 @@ const Asset = () => {
                     <tr>
                       <th>Price</th>
                       <th>Commission</th>
-                      <th>Coin</th>
                       <th>From</th>
                       <th>To</th>
                       <th>Date</th>
@@ -174,7 +161,7 @@ const Asset = () => {
                   </thead>
                   <tbody>
                     {data?.tradeHistory.map((item) => (
-                      <tr>
+                      <tr key={item.buyerId}>
                         <td>
                           <div className="price">
                             <ETHIcon />
@@ -196,6 +183,7 @@ const Asset = () => {
         </div>
       </div>
     </div>
+      </>
   );
 };
 

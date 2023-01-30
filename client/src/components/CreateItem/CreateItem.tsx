@@ -20,6 +20,10 @@ export interface Collection {
   logoImgName: string;
 }
 
+interface Profile {
+  collections?: Collection[];
+}
+
 interface Image {
   itemFile: File | null;
   itemName: string;
@@ -48,6 +52,7 @@ export default function CreateItem({
   const dispatch = useAppDispatch();
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
+  const [collections, setCollections] = useState<Collection[]>([]);
   const [item, setItem] = useState<SuccessResponse>();
   const navigate = useNavigate();
 
@@ -59,16 +64,15 @@ export default function CreateItem({
     resolver: yupResolver(schema),
   });
 
-  const {
-    isLoading: loading,
-    error: err,
-    data,
-  } = useQuery<Collection[]>({
+  const { isLoading: loading, error: err } = useQuery<Profile>({
     queryKey: ['members', 'mypage'],
     queryFn: () =>
-      customAxios
-        .get('/api/members/mypage')
-        .then((res) => res.data.collections),
+      customAxios.get('/api/members/mypage').then((res) => res.data),
+    onSuccess: (data) => {
+      if (data.collections) {
+        setCollections(data.collections);
+      }
+    },
   });
 
   const queryClient = useQueryClient();
@@ -170,7 +174,7 @@ export default function CreateItem({
       <ItemModal
         isLoading={loading}
         error={err instanceof Error ? err : null}
-        collections={data}
+        collections={collections}
         selectedCol={selectedCol}
         setSelectedCol={setSelectedCol}
       />

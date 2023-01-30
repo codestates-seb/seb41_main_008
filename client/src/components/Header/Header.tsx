@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/hooks';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MobileDropdownList from './MobileDropdownLIst';
@@ -16,31 +15,73 @@ const SearchInput = styled.input`
   outline: none;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 `;
+
 const Header = () => {
-  const { cartItems } = useAppSelector((state) => state.cart);
+  const location = useLocation();
+  const [home, setHome] = useState<boolean | undefined>();
+  const [isScrolled, setIsScrolled] = useState(false);
   const [visible, setVisible] = useState(false);
+
   const visibleHandler = () => {
     setVisible(!visible);
   };
-  console.log(cartItems);
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setHome(true);
+    } else setHome(false);
+
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [location.pathname]);
+
   return (
-    <header className="flex justify-center items-center font-bold z-20 p-4 sticky top-0 border-b-2 bg-white text-lg">
+    <header
+      className={`duration-300 flex justify-center items-center font-bold z-20 p-4 sticky top-0 text-lg  ${
+        !home && 'bg-white'
+      } ${isScrolled && home && 'bg-white'}`}
+    >
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
-        <Link to={'/'}>NFTeam</Link>
+        <Link className={`${!isScrolled && home && 'text-white'}`} to={'/'}>
+          NFTeam
+        </Link>
       </div>
 
       <div className="w-full">
-        <SearchInput placeholder="Search items, collections, and accounts..." />
+        <SearchInput
+          className="bg-transparent/5 font-normal placeholder-transparent/40"
+          placeholder="Search items, collections, and accounts..."
+        />
       </div>
-      <Dropdown />
+      <Dropdown isScrolled={isScrolled} home={home} />
       <nav>
         <ul className="flex gap-5 items-center">
-          <button className="hidden max-[1040px]:flex" onClick={visibleHandler}>
+          <button
+            className="hidden  max-[1040px]:flex"
+            onClick={visibleHandler}
+          >
             {visible ? (
-              <FontAwesomeIcon icon={faXmark} />
+              <FontAwesomeIcon
+                className={`${!isScrolled && home && 'text-white'}`}
+                icon={faXmark}
+              />
             ) : (
-              <FontAwesomeIcon icon={faBars} />
+              <FontAwesomeIcon
+                className={`${!isScrolled && home && 'text-white'}`}
+                icon={faBars}
+              />
             )}
           </button>
         </ul>

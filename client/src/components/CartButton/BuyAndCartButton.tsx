@@ -46,7 +46,7 @@ const BuyAndCartButton = ({ data }: any) => {
         ) : null}
 
         {data?.onSale === false && data?.ownerId === memberId ? (
-          <div className="grow BasicButton ">
+          <div className="grow BasicButton">
             <button
               className="h-full w-full p-2 text-lg font-semibold"
               onClick={() => forSaleHandler(data.itemId)}
