@@ -19,7 +19,7 @@ export default function CreateItemPage() {
   return (
     <>
       <Header />
-      <div className="max-w-2xl mx-auto p-6">
+      <div className="mt-20 max-w-2xl mx-auto p-6">
         <div className="flex flex-col items-center space-y-10">
           <h1 className="text-5xl font-bold">Create New Item</h1>
           <Link

@@ -39,7 +39,7 @@ export default function MyCollectionPage() {
   return (
     <>
       <Header />
-      <div className="max-w-7xl p-6 mx-auto">
+      <div className="mt-20 max-w-7xl p-6 mx-auto">
         <h1 className="text-5xl font-bold mb-12">My Collections</h1>
         <div className="max-w-sm md:max-w-7xl mx-auto flex flex-col items-center md:block">
           <div className="mb-6">
@@ -52,7 +52,7 @@ export default function MyCollectionPage() {
           <div className="space-x-5 flex items-center">
             <Link
               to="/collection/create"
-              className="hover:opacity-80 bg-emerald-700 px-7 py-5 text-xl font-bold rounded-xl text-white"
+              className="BasicButton px-7 py-5 text-xl font-bold rounded-xl text-white"
             >
               Create a collection
             </Link>
