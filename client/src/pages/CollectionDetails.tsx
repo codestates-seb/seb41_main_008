@@ -56,7 +56,7 @@ export default function CollectionDetails() {
     queryFn: () =>
       customAxios.get(`/api/collections/only/${id}`).then((res) => res.data),
   });
-
+  console.log(data);
   if (isLoading) return <p>Loading...</p>;
 
   if (error) return <MissingPage />;
@@ -136,6 +136,7 @@ export default function CollectionDetails() {
             </div>
           </div>
         </section>
+
         {data?.itemCount ? (
           <Cards id={id!} />
         ) : (
@@ -143,6 +144,7 @@ export default function CollectionDetails() {
             <h2 className="text-3xl">No items to display</h2>
           </section>
         )}
+
         <Notification open={createColOpen} setOpen={setCreateColOpen}>
           <p className="flex items-center gap-1 text-emerald-700">
             <span>

@@ -27,8 +27,7 @@ export const ModalBack = styled.div<ModalBackProps>`
   height: 100%;
   margin: auto;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: ${(props) => (props.zIndex ? props.zIndex : '10')}
-    /**숫자로 props를 받아보자 */;
+  z-index: ${(props) => (props.zIndex ? props.zIndex : '10')};
 `;
 const ModalContainer = styled.div<ModalContainerProps>`
   z-index: 60;
@@ -67,16 +66,13 @@ const CartingModal = () => {
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const [coinPrice, setCoinPrice] = useState(0);
-
+  const [soldoutArr, setSoldoutArr] = useState<number[]>([]);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { isOpen } = useAppSelector((state) => state.modal);
   const { isLogin } = useAppSelector((state) => state.login);
   /**여러개 트랜잭션 보낼떄 이거보내주면됨*/
   const cartItemsItemId = cartItems.map((el: any) => el.itemId);
-  // const test: any = localStorage.getItem('CART_ITEMS');
-  // const parse = JSON.parse(test);
-  // console.log(cartItems);
-  // console.log('parse', parse);
+
   const totalPrice = cartItems
     .map((el: any) => el.itemPrice)
     .reduce((prev, curr) => prev + curr, 0);
@@ -96,10 +92,11 @@ const CartingModal = () => {
 
   useEffect(() => {
     getCoinPrice(cartItems[0]?.coinName)
-      .then((res) => setCoinPrice(res[0].trade_price))
+      .then((res: any) => {
+        setCoinPrice(res.data[0]?.trade_price);
+      })
       .catch((err) => console.log(err));
   }, [cartItems]);
-
   const purchaseHandler = () => {
     if (!isLogin) {
       alert('로그인 먼저 해주세요.');
@@ -109,12 +106,21 @@ const CartingModal = () => {
       cartSaveHandler({
         cartId: Number(localStorage.getItem('CART_ID')),
         itemIdList: cartItemsItemId,
-        totalPrice: 150,
-      });
-      dispatch(closeModal());
-      dispatch(openPayment());
+        totalPrice,
+      })
+        .then(() => {
+          dispatch(closeModal());
+          dispatch(openPayment());
+        })
+        .catch((err) => {
+          if (err) {
+            console.log(err);
+            setSoldoutArr(err.response.data.idList);
+          }
+        });
     }
   };
+
   return (
     <>
       {isOpen && <ModalBack ref={ref} zIndex={'50'} />}
@@ -135,7 +141,9 @@ const CartingModal = () => {
             </div>
             <ul className="flex flex-col gap-2 h-auto overflow-hidden ">
               {cartItems.map((el: any) => {
-                return <CartItems key={el.itemId} {...el} />;
+                return (
+                  <CartItems key={el.itemId} {...el} soldoutArr={soldoutArr} />
+                );
               })}
             </ul>
           </section>

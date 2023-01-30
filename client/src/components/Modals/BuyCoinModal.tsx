@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { ModalBack } from './CartingModal';
 import { closeBuyCoin, closeWallet } from 'store/modalSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getCoinPrice, buyCoin, kakaoPay } from 'utils/api/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import kakaopayLogo from '../../../src/assets/kakaopayS.png';
@@ -20,7 +20,7 @@ const BuyCoinContainer = styled.div`
   left: 0;
   right: 0;
   transform: translateY(-50%);
-  z-index: 30;
+  z-index: 40;
   font-weight: bold;
   border-radius: 20px;
   padding: 20px;
@@ -44,6 +44,8 @@ const BuyCoinModal = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const ref = useRef<HTMLDivElement>(null);
+
   const { buyCoinOpen } = useAppSelector((state) => state.modal);
   const [coinName, setCoinName] = useState('SOL');
   const [tradePrice, setTradePrice] = useState(0);
@@ -58,7 +60,7 @@ const BuyCoinModal = () => {
   const selectBoxHandler = (e: any) => {
     setCoinName(e.target.value);
   };
-
+  console.log(coinName);
   const pgToken = location.search.split('=')[1];
   const tid = localStorage.getItem('tid');
   const paidPrice = tradePrice * watch('coinCount');
@@ -73,7 +75,6 @@ const BuyCoinModal = () => {
       window.location.href = res.data.next_redirect_pc_url;
       localStorage.setItem('tid', res.data.tid);
       dispatch(closeWallet());
-      navigate('/success');
     });
   };
   useEffect(() => {
@@ -84,13 +85,26 @@ const BuyCoinModal = () => {
   }, [pgToken, tid, dispatch, memberId, navigate]);
 
   useEffect(() => {
-    getCoinPrice(coinName).then((res) => setTradePrice(res[0].trade_price));
+    getCoinPrice(coinName).then((res: any) =>
+      setTradePrice(res.data[0].trade_price)
+    );
   }, [coinName]);
   console.log(errors);
+  const modalClose = (e: MouseEvent) => {
+    if (buyCoinOpen && ref.current?.contains(e.target as Node)) {
+      dispatch(closeBuyCoin());
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('click', modalClose);
+    return () => {
+      document.removeEventListener('click', modalClose);
+    };
+  });
 
   return (
     <>
-      {buyCoinOpen && <ModalBack zIndex={'30'} />}
+      {buyCoinOpen && <ModalBack zIndex={'30'} ref={ref} />}
       {buyCoinOpen && (
         <BuyCoinContainer>
           <header className="flex justify-between items-center p-2 w-full ">
@@ -128,6 +142,7 @@ const BuyCoinModal = () => {
                         type="text"
                         className={`${'grow bg-[#3d3d41] text-white p-2 rounded-l-xl outline-none'}`}
                         {...register('coinCount', {
+                          required: true,
                           pattern: /^[0-9.]*$/,
                         })}
                       />

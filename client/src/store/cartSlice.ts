@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface CartItemsType {
   cartItems: Array<{ itemId: number; coinName: string }>;
@@ -12,7 +12,6 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addTocart: (state, action) => {
-      console.log(current(state.cartItems));
       state.cartItems.push(action.payload);
     },
     removeCart: (state, action) => {

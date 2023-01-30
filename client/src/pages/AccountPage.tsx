@@ -4,8 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getUserProFile } from 'utils/api/api';
 import { useState, useEffect } from 'react';
 import { IoSettingsSharp } from 'react-icons/io5';
-import { BsCheckCircleFill } from 'react-icons/bs';
-import Notification from 'components/Notification';
+
 interface UserType {
   member: {
     nickname: string;
@@ -30,15 +29,15 @@ const AccountPage = () => {
   const { memberId }: any = useParams();
   const [data, setData] = useState<UserType>();
   const [filter, setFilter] = useState<string>('Collected');
-  const [, setCollections] = useState<any>([]);
+  // const [collection, setCollections] = useState<any>([]);
 
   useEffect(() => {
     getUserProFile(memberId).then(async (res) => {
-      setCollections(res.data?.collections);
+      // setCollections(res.data?.collections);
       setData(res.data);
     });
   }, [memberId]);
-
+  // console.log(collection);
   const onFilter = (filterType: string) => {
     setFilter(filterType);
   };
@@ -94,24 +93,16 @@ const AccountPage = () => {
             </button>
           </ul>
         </div>
-        <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
+        <div className="mt-5 grid gap-4 grid-cols-8 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
           {filter === 'Collected' ? (
             data?.items.length !== 0 ? (
               data?.items.map((el: any) => {
                 return (
                   <Card
-                    ownerId={el.ownerId}
                     key={el.itemId}
                     data={data.items}
-                    onSale={el.onSale}
                     filter={filter}
-                    itemId={el.itemId}
-                    collectionName={el.collectionName}
-                    logoImgName={el.logoImgName}
-                    itemImageName={el.itemImageName}
-                    itemPrice={el.itemPrice}
-                    itemDescription={el.itemDescription}
-                    coinName={el.coinName}
+                    {...el}
                   />
                 );
               })
