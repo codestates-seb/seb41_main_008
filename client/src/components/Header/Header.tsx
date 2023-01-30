@@ -48,7 +48,7 @@ const Header = () => {
 
   return (
     <header
-      className={`duration-300 flex justify-center items-center font-bold z-20 p-4 sticky top-0 text-lg  ${
+      className={`duration-300 flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-10 text-lg  ${
         !home && 'bg-white'
       } ${isScrolled && home && 'bg-white'}`}
     >
