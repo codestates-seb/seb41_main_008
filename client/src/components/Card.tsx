@@ -60,7 +60,6 @@ const Card = ({
   ownerId,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
-  console.log(data);
   return (
     <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold">
       <article

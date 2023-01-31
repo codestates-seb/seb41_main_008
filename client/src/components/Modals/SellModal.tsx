@@ -177,11 +177,11 @@ const SellModal = () => {
               <div>
                 <button
                   disabled={isCheckd ? false : true}
-                  className={`${'p-2 rounded-xl w-full bg-emerald-600 text-white'} ${
+                  className={`${'p-2 rounded-xl w-full bg-emerald-600 text-white hover:bg-emerald-500 font-bold'} ${
                     isCheckd ? 'bg-opacity-100' : 'bg-opacity-50'
                   }`}
                 >
-                  판매등록버튼
+                  Sell
                 </button>
               </div>
             </footer>
