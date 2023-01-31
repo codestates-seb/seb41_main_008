@@ -70,15 +70,15 @@ const InputContainer = ({ isSignup }: Props) => {
         className="flex flex-col p-10 bg-white  gap-2 shadow-[0px_20px_30px_-10px_rgb(38,57,77)] rounded-md bg-transparent"
         onSubmit={handleSubmit(onClickSubmit, onError)}
       >
-        <h1 className="mb-10 font-bold text-3xl text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)] flex-1 text-center">
+        <h1 className="mb-10 font-bold text-3xl inputTextStyle flex-1 text-center">
           {isSignup ? 'Signup' : 'Login'}
         </h1>
         {isSignup ? (
-          <p className="font-bold text-center text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+          <p className="font-bold text-center inputTextStyle">
             Sign up and have your own NFT
           </p>
         ) : (
-          <p className="font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+          <p className="font-bold inputTextStyle">
             Let`s go on a trip to the world of NFT
           </p>
         )}
@@ -90,17 +90,14 @@ const InputContainer = ({ isSignup }: Props) => {
         </GoogleOAuthProvider>
 
         {isSignup && (
-          <label
-            htmlFor="nickname"
-            className="font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)] "
-          >
+          <label htmlFor="nickname" className="font-bold inputTextStyle ">
             NickName
           </label>
         )}
         {isSignup && (
           <input
             id="nickname"
-            className="border-b-2 w-full p-1 border-black  focus:outline-none bg-transparent font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
+            className="border-b-2 w-full p-1 border-black  focus:outline-none bg-transparent font-bold inputTextStyle"
             required
             {...register('nickname', {
               minLength: {
@@ -115,23 +112,18 @@ const InputContainer = ({ isSignup }: Props) => {
             errors={errors}
             name="nickname"
             render={({ message }) => (
-              <span className="text-center bg-red-100 border-red-400 border-2 rounded-md p-1 text-red-500 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
-                {message}
-              </span>
+              <span className="errorMsg">{message}</span>
             )}
           />
         )}
-        <label
-          htmlFor="email"
-          className="font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)] "
-        >
+        <label htmlFor="email" className="font-bold inputTextStyle ">
           Email
         </label>
         <input
           id="email"
-          className="border-b-2 w-full p-1 border-black focus:outline-none bg-transparent font-bold placeholder-black text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
+          className="border-b-2 w-full p-1 border-black focus:outline-none bg-transparent font-bold placeholder-black inputTextStyle"
           required
-          placeholder="ex) kanye123@gmail.com"
+          placeholder="ex) codestates@gmail.com"
           {...register('email', {
             pattern: {
               value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
@@ -142,16 +134,9 @@ const InputContainer = ({ isSignup }: Props) => {
         <ErrorMessage
           errors={errors}
           name="email"
-          render={({ message }) => (
-            <span className="text-center bg-red-100  border-red-400 border-2 rounded-md p-1 text-red-600 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
-              {message}
-            </span>
-          )}
+          render={({ message }) => <span className="errorMsg">{message}</span>}
         />
-        <label
-          htmlFor="password"
-          className="font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)] "
-        >
+        <label htmlFor="password" className="font-bold inputTextStyle ">
           Password
         </label>
         <input
@@ -171,19 +156,16 @@ const InputContainer = ({ isSignup }: Props) => {
         <ErrorMessage
           errors={errors}
           name="password"
-          render={({ message }) => (
-            <span className="text-center bg-red-100 border-red-400 border-2 rounded-md p-1 text-red-500 drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
-              {message}
-            </span>
-          )}
+          render={({ message }) => <span className="errorMsg">{message}</span>}
         />
 
-        <p className="text-xs w-[300px] font-semibold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
+        <p className="text-xs w-[300px] font-semibold inputTextStyle">
           Passwords must contain at least 8 characters, including at least 1
           letter and 1 special character.
         </p>
 
-        <Button bgColor="">{isSignup ? 'Signup' : 'Login'}</Button>
+        <Button>{isSignup ? 'Signup' : 'Login'}</Button>
+
         <div className="flex justify-between mt-5">
           <span className="font-bold text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]">
             {isSignup ? (
@@ -193,17 +175,11 @@ const InputContainer = ({ isSignup }: Props) => {
             )}
           </span>
           {isSignup ? (
-            <Link
-              to={'/login'}
-              className="text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
-            >
+            <Link to={'/login'} className="inputTextStyle">
               Login
             </Link>
           ) : (
-            <Link
-              to={'/signup'}
-              className="text-white drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)]"
-            >
+            <Link to={'/signup'} className="inputTextStyle">
               Sign up
             </Link>
           )}

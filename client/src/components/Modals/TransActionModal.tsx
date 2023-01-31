@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { closePayment } from 'store/modalSlice';
 import { clearCart } from 'store/cartSlice';
 import { ModalBack } from './CartingModal';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCoinPrice, transAction } from 'utils/api/api';
 import CartItems from './CartItems';
@@ -48,10 +48,13 @@ const TransActionModal = () => {
       transPrice: el.itemPrice,
     };
   });
-  console.log(itemInfo);
-  const totalPrice = cartItems
-    .map((el: any) => el.itemPrice)
-    .reduce((prev, curr) => prev + curr, 0);
+  const totalPrice = useMemo(
+    () =>
+      cartItems
+        .map((el: any) => el.itemPrice)
+        .reduce((prev, curr) => prev + curr, 0),
+    [cartItems]
+  );
   console.log(cartItems);
   console.log('최적화 필요', totalPrice);
 
