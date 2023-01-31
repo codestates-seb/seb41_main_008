@@ -68,9 +68,6 @@ const BuyCoinModal = () => {
   const totalPrice = coinFee + tradePrice * watch('coinCount');
 
   const onClickSubmit: SubmitHandler<FormValue> = (data: any) => {
-    console.log('totalPrice', totalPrice);
-    console.log(data);
-    console.log(errors);
     buyCoin({ ...data, totalPrice }).then((res: any) => {
       window.location.href = res.data.next_redirect_pc_url;
       localStorage.setItem('tid', res.data.tid);
@@ -78,7 +75,6 @@ const BuyCoinModal = () => {
     });
   };
   useEffect(() => {
-    console.log('a');
     kakaoPay(pgToken, tid).then(() => {
       dispatch(closeBuyCoin());
     });

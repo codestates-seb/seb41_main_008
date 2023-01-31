@@ -5,7 +5,10 @@ import { ModalBack } from './CartingModal';
 import { closeWallet, openBuyCoin } from 'store/modalSlice';
 import { getMyCoin, getCoinPrice } from 'utils/api/api';
 import { IoChevronBackSharp } from 'react-icons/io5';
-const WalletContainer = styled.div`
+interface WalletContainerProps {
+  visible: boolean;
+}
+const WalletContainer = styled.div<WalletContainerProps>`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -16,6 +19,11 @@ const WalletContainer = styled.div`
   top: 76px;
   right: 0;
   font-weight: 600;
+  transition: 0.3s;
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.visible ? '1' : '0')};
+  transform: ${(props) =>
+    props.visible ? 'translateX(0px)' : 'translateX(380px)'};
   @media screen and (max-width: 1024px) {
     width: 100vw;
     height: 100vh;
@@ -85,70 +93,69 @@ const WalletModal = () => {
 
   useEffect(() => {
     getCoinPriceList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletOpen]);
 
   return (
     <>
       {walletOpen && <ModalBack zIndex={'10'} ref={ref} />}
-      {walletOpen && (
-        <WalletContainer>
-          <header className="flex justify-between items-center w-full p-4 border-b-2">
-            <div className="flex">
-              <button
-                onClick={() => dispatch(closeWallet())}
-                className="hidden max-[764px]:block"
-              >
-                <IoChevronBackSharp />
-              </button>
-              {data[0]?.nickname}
+      <WalletContainer visible={walletOpen}>
+        <header className="flex justify-between items-center w-full p-4 border-b-2">
+          <div className="flex justify-center items-center">
+            <button
+              onClick={() => dispatch(closeWallet())}
+              className="hidden max-[764px]:block text-2xl border-2 rounded-full mr-1 text-gray-400 hover:text-black hover:border-black"
+            >
+              <IoChevronBackSharp />
+            </button>
+            {data[0]?.nickname}
+          </div>
+          <div>ID: {memberId}</div>
+        </header>
+        <section className="p-4">
+          <div className="flex flex-col justify-center items-center text-center">
+            <div className="flex flex-col justify-center items-center p-4 w-full gap-4 border-x-2 border-t-2 rounded-t-xl">
+              <div>Total balance</div>
+              <div>{totalbalance.toLocaleString()} ₩</div>
             </div>
-            <div>ID: {memberId}</div>
-          </header>
-          <section className="p-4">
-            <div className="flex flex-col justify-center items-center text-center">
-              <div className="flex flex-col justify-center items-center p-4 w-full gap-4 border-x-2 border-t-2 rounded-t-xl">
-                <div>Total balance</div>
-                <div>{totalbalance.toLocaleString()} ₩</div>
-              </div>
-              <div className="p-4 bg-emerald-600 hover:bg-emerald-500 w-full rounded-b-xl text-white">
-                <button onClick={buyCoinHandler}>Add funds</button>
-              </div>
+            <div className="p-4 bg-emerald-600 hover:bg-emerald-500 w-full rounded-b-xl text-white">
+              <button onClick={buyCoinHandler}>Add funds</button>
             </div>
-            {data.length > 0 ? (
-              <div className="border-2 rounded-lg mt-8">
-                <ul>
-                  {data.map((el, index) => {
-                    return (
-                      <li
-                        key={index}
-                        className="flex justify-between items-center p-2 w-full border-b-2"
-                      >
-                        <div className=" w-6 h-6">
-                          <img
-                            className="grow-0 w-full h-full"
-                            src={el.coinImage}
-                            alt=""
-                          />
+          </div>
+          {data.length > 0 ? (
+            <div className="border-2 rounded-lg mt-8">
+              <ul>
+                {data.map((el, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className="flex justify-between items-center p-2 w-full border-b-2"
+                    >
+                      <div className=" w-6 h-6">
+                        <img
+                          className="grow-0 w-full h-full"
+                          src={el.coinImage}
+                          alt=""
+                        />
+                      </div>
+                      <div className="grow ml-1">{el.coinName}</div>
+                      <div className="flex  flex-col">
+                        <div>{el.coinCount}</div>
+                        <div>
+                          {(
+                            el.coinCount * eachCoinPrice[index]
+                          ).toLocaleString()}
+                          ₩
                         </div>
-                        <div className="grow ml-1">{el.coinName}</div>
-                        <div className="flex  flex-col">
-                          <div>{el.coinCount}</div>
-                          <div>
-                            {(
-                              el.coinCount * eachCoinPrice[index]
-                            ).toLocaleString()}
-                            ₩
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ) : null}
-          </section>
-        </WalletContainer>
-      )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
+        </section>
+      </WalletContainer>
     </>
   );
 };

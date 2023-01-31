@@ -7,7 +7,7 @@ const Button = ({ children, bgColor }: Props) => {
   return (
     <button
       className={`${
-        bgColor ? bgColor : 'bg-white text-black border-2'
+        bgColor ? bgColor : 'bg-white text-black '
       } rounded-xl p-2 font-bold text-white`}
     >
       {children}
