@@ -9,7 +9,7 @@
   한 곳에서 모든 것이 가능한 ONE-STOP NFT 거래소!!
   <br>
 
-[![shop](http://img.shields.io/badge/SHOP-yellow?logo=Bitcoin&logoColor=white&link=https://www.nfteam008.com/)](https://www.nfteam008.com/)
+[![Application](http://img.shields.io/badge/Application-yellow?logo=Bitcoin&logoColor=white&link=https://www.nfteam008.com/)](https://www.nfteam008.com/)
 [![RestDocs](http://img.shields.io/badge/APIDOCS-green?logo=ReadtheDocs&logoColor=white&link=https://nfteam008.com)](https://nfteam008.com)
 [![서비스_가이드](http://img.shields.io/badge/-프로젝트_기록저장소-098223?logo=Ello&logoColor=white&link=https://www.notion.so/codestates/Non-fungible-Team-NFT-3559116acd934cb69a3c90660c678518)](https://www.notion.so/codestates/Non-fungible-Team-NFT-3559116acd934cb69a3c90660c678518)
 </div>
