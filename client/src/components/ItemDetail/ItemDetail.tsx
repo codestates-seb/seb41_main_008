@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import styled from 'styled-components';
 import customAxios from 'utils/api/axios';
-import ETHIcon from '../../assets/icons/PurchaseIcons/ETH';
 import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
 import HeartIcon from '../../assets/icons/PurchaseIcons/Heart';
 import OfferIcon from '../../assets/icons/PurchaseIcons/Offer';
@@ -13,11 +12,8 @@ import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
 import CountdownTimer from './CountDownTime/CountDown';
 import { getItemsData } from 'utils/api/api';
-import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useAppSelector } from 'hooks/hooks';
 import Rechart from './Rechart';
-import { date } from 'yup';
 import Header from 'components/Header/Header';
 import Footer from 'components/Layout/Footer';
 
@@ -131,9 +127,7 @@ const Asset = () => {
               <div className="asset__meta">
                 <div className="asset__meta__item">
                   Owned by{' '}
-                  <Link to={`/collection/${itemId}`}>
-                    <a>{data?.ownerName}</a>
-                  </Link>
+                  <Link to={`/collection/${itemId}`}>{data?.ownerName}</Link>
                 </div>
                 <div className="asset__meta__item">
                   <EyeIcon /> 0 views
@@ -186,7 +180,7 @@ const Asset = () => {
                     </thead>
                     <tbody>
                       {data?.tradeHistory.map((item) => (
-                        <tr>
+                        <tr key={item.buyerId}>
                           <td>
                             <div className="price">
                               <img

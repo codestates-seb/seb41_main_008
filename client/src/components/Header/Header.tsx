@@ -1,17 +1,14 @@
 /* eslint-disable */
 import styled from 'styled-components';
-import { SetStateAction, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { GoSearch } from 'react-icons/go';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MobileDropdownList from './MobileDropdownLIst';
 import MobileDropdown from './MobileDropdown';
 import Dropdown from './Dropdown';
-import { useAppSelector } from 'hooks/hooks';
 
 const SearchInput = styled.input`
   display: flex;
@@ -23,7 +20,6 @@ const SearchInput = styled.input`
 `;
 
 const Header = () => {
-  const [home, setHome] = useState<boolean | undefined>();
   const [isScrolled, setIsScrolled] = useState(false);
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -41,15 +37,6 @@ const Header = () => {
       return;
     }
   };
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   if (
-  //     searchValue.trim().length > 0
-  //   ) {
-  //     navigate(`/search/query/${searchValue}`);
-  //   }
-  // }
 
   const visibleHandler = () => {
     setVisible(!visible);
@@ -71,6 +58,8 @@ const Header = () => {
   }, [location.pathname]);
 
   const walletState = useAppSelector((state) => state.modal.walletOpen);
+
+  const home = location.pathname === '/';
 
   return (
     <header

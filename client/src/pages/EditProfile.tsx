@@ -4,20 +4,21 @@ import ProfileBio from 'components/Profile/ProfileBio';
 import ProfileLogo from 'components/Profile/ProfileLogo';
 import { useState } from 'react';
 import customAxios from 'utils/api/axios';
-import { MemberInfo } from './AccountPage';
+import { UserType } from './AccountPage';
 import Header from 'components/Header/Header';
 
 export default function EditProfile() {
   const id = window.localStorage.getItem('MEMBER_ID');
-  const { isLoading, error, data } = useQuery<MemberInfo>({
+
+  const { isLoading, error, data } = useQuery<UserType>({
     queryKey: ['members', id],
     queryFn: () =>
-      customAxios.get(`/api/members/${id}`).then((res) => res.data.member),
+      customAxios.get(`/api/members/${id}`).then((res) => res.data),
     onSuccess: (data) => {
-      setProfileLogo(data.profileImageName);
-      setProfileBanner(data.bannerImageName);
-      setNickname(data.nickname);
-      setDesc(data.description);
+      setProfileLogo(data.member.profileImageName);
+      setProfileBanner(data.member.bannerImageName);
+      setNickname(data.member.nickname);
+      setDesc(data.member.description);
     },
   });
 
@@ -65,7 +66,7 @@ export default function EditProfile() {
           <ProfileBio
             profileImageName={logoName || profileLogo}
             bannerImageName={bannerName || profileBanner}
-            id={data?.memberId}
+            id={data?.member.memberId}
             nickname={nickname}
             description={desc}
           />

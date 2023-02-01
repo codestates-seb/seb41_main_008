@@ -35,7 +35,7 @@ const CartItems = ({
     >
       <a
         className="w-3/12"
-        href={`/items/${itemId}`}
+        href={`/item/${itemId}`}
         onClick={() => {
           dispatch(closeModal());
           dispatch(closePayment());
