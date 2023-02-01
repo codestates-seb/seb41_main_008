@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --background: white;
   --text-primary: black;
@@ -312,6 +313,7 @@
     position: fixed;
     inset: 0;
     animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 20;
   }
 
   .AlertDialogContent {
@@ -328,6 +330,7 @@
     max-height: 85vh;
     padding: 25px;
     animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 30;
   }
   .AlertDialogContent:focus {
     outline: none;
@@ -445,6 +448,51 @@
 }
 .dropdown-munu-btn {
   @apply w-full text-left pl-4 py-4;
+}
+
+.main-carousel {
+  overflow: visible !important;
+}
+
+.carousel {
+  overflow: visible !important;
+}
+
+.main-carousel:hover .swiper-button-prev {
+  @apply opacity-100;
+}
+.main-carousel:hover .swiper-button-next {
+  @apply opacity-100;
+}
+
+.carousel:hover .swiper-button-prev {
+  @apply opacity-100;
+}
+.carousel:hover .swiper-button-next {
+  @apply opacity-100;
+}
+
+.swiper-button-prev {
+  background: url('https://cdn-icons-png.flaticon.com/512/566/566011.png')
+    no-repeat;
+  background-size: 50% auto;
+  background-position: center;
+  left: -24px !important;
+  @apply opacity-0 rounded-full p-[1.5rem] bg-white duration-300;
+}
+
+.swiper-button-next {
+  background: url('https://cdn-icons-png.flaticon.com/512/566/566012.png')
+    no-repeat;
+  background-size: 50% auto;
+  background-position: center;
+  right: -24px !important;
+  @apply opacity-0 rounded-full p-[1.5rem] bg-white duration-300;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  @apply hidden;
 }
 
 .BasicButton {

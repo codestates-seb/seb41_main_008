@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MobileDropdownList from './MobileDropdownLIst';
 import MobileDropdown from './MobileDropdown';
 import Dropdown from './Dropdown';
+import { useAppSelector } from 'hooks/hooks';
 
 const SearchInput = styled.input`
   display: flex;
@@ -46,11 +47,14 @@ const Header = () => {
     };
   }, [location.pathname]);
 
+  const walletState = useAppSelector((state) => state.modal.walletOpen);
+
   return (
     <header
-      className={`duration-300 flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-10 text-lg  ${
-        !home && 'bg-white'
-      } ${isScrolled && home && 'bg-white'}`}
+      className={`duration-300 transition-colors flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-20 text-lg 
+      ${!home && 'bg-white'} ${walletState && 'bg-white transition-none'} ${
+        isScrolled && home && 'bg-white'
+      }`}
     >
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
@@ -74,12 +78,16 @@ const Header = () => {
           >
             {visible ? (
               <FontAwesomeIcon
-                className={`${!isScrolled && home && 'text-white'}`}
+                className={`${walletState && 'text-black'} ${
+                  !isScrolled && home && 'text-white'
+                }`}
                 icon={faXmark}
               />
             ) : (
               <FontAwesomeIcon
-                className={`${!isScrolled && home && 'text-white'}`}
+                className={`${walletState && 'text-black'} ${
+                  !isScrolled && home && 'text-white'
+                }`}
                 icon={faBars}
               />
             )}

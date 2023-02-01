@@ -11,8 +11,8 @@ export default function Alert({ id }: { id: number | undefined }) {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
     mutationFn: (id: string) => customAxios.delete(`api/members/${id}`),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['members', 'mypage'], { exact: true });
+    onSuccess: () => {
+      queryClient.invalidateQueries(['members', id]);
       navigate('/');
     },
   });

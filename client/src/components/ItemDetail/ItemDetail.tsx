@@ -16,8 +16,6 @@ import { useQuery } from '@tanstack/react-query';
 import MissingPage from 'pages/MissingPage';
 import Header from 'components/Header/Header';
 import Rechart from './Rechart';
-import SellModal from 'components/CartingModal/SellModal';
-import { date } from 'yup';
 
 export interface ItemProps {
   coinId: number;
@@ -69,7 +67,10 @@ const Asset = () => {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <MissingPage />;
+  if (error instanceof Error)
+    return <p>An error has occurred: + {error.message}</p>;
+
+  if (!data) return <MissingPage />;
 
   return (
     <>

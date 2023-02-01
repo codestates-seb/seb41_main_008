@@ -39,11 +39,12 @@ const Dropdown = ({ isScrolled, home }: Props) => {
   const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
   const { isLogin } = useAppSelector((state) => state.login);
-
+  const walletState = useAppSelector((state) => state.modal.walletOpen);
+  const id = window.localStorage.getItem('MEMBER_ID');
   const { data } = useQuery<MemberInfo>({
-    queryKey: ['members', 'mypage'],
+    queryKey: ['members', id],
     queryFn: () =>
-      customAxios.get('api/members/mypage').then((res) => res.data.member),
+      customAxios.get(`api/members/${id}`).then((res) => res.data.member),
   });
 
   return (
@@ -67,7 +68,9 @@ const Dropdown = ({ isScrolled, home }: Props) => {
           ) : (
             <Link
               to={'/signup'}
-              className={`p-2 ${!isScrolled && home && 'text-white'}`}
+              className={`p-2 ${walletState && 'text-black'} ${
+                !isScrolled && home && 'text-white'
+              }`}
             >
               {' '}
               Signup
@@ -79,7 +82,9 @@ const Dropdown = ({ isScrolled, home }: Props) => {
             {!isLogin && (
               <Link
                 to={'/login'}
-                className={`p-2 ${!isScrolled && home && 'text-white'}`}
+                className={`p-2 ${walletState && 'text-black'} ${
+                  !isScrolled && home && 'text-white'
+                }`}
               >
                 <span>Login</span>
               </Link>
@@ -97,7 +102,9 @@ const Dropdown = ({ isScrolled, home }: Props) => {
             }}
           >
             <FontAwesomeIcon
-              className={`${!isScrolled && home && 'text-white'}`}
+              className={`${walletState && 'text-black'} ${
+                !isScrolled && home && 'text-white'
+              }`}
               icon={faWallet}
             />
           </button>
@@ -110,7 +117,9 @@ const Dropdown = ({ isScrolled, home }: Props) => {
             }}
           >
             <FontAwesomeIcon
-              className={`${!isScrolled && home && 'text-white'} flex`}
+              className={`${walletState && 'text-black'} ${
+                !isScrolled && home && 'text-white'
+              } flex`}
               icon={faCartShopping}
             />
           </button>

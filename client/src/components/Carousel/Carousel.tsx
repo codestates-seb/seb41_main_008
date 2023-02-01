@@ -1,74 +1,33 @@
 import axios from 'axios';
-import styled from 'styled-components';
-import Collection from './Collection';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper';
 import { useQuery } from '@tanstack/react-query';
+import { ColInfo } from './MainCarousel';
+import Collection from './Collection';
 
-interface urls {
-  raw: string;
+interface Info extends ColInfo {
+  description: string;
 }
 
-interface Collections {
-  likes: number;
-  color: string;
-  urls: urls;
-  id: string;
-  width?: number;
-}
-
-const Container = styled.div`
-  padding: 2rem;
-  margin-top: 2rem;
-  .swiper-button-prev,
-  .swiper-button-next {
-    color: white;
-    font-weight: 900;
-    border-radius: 50%;
-    padding: 1.5rem;
-    background-color: rgb(0 0 0 / 0.5);
-  }
-
-  .swiper-button-prev:hover,
-  .swiper-button-next:hover {
-    color: black;
-    background-color: white;
-    box-shadow: rgb(0 0 0 / 15%) 0px 4px 10px;
-  }
-
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 1.5rem;
-  }
-`;
-
-export default function Carousel({
-  title,
-  page,
-}: {
-  title: string;
-  page: string;
-}) {
-  const { isLoading, error, data } = useQuery<Collections[]>({
-    queryKey: [{ page, per_page: 10 }],
+export default function Carousel() {
+  const { isLoading, error, data } = useQuery<Info[]>({
+    queryKey: ['collections', 'main', { page: 1, size: 10 }],
     queryFn: () =>
       axios
         .get(
-          `https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&page=${page}&per_page=10`
+          `${process.env.REACT_APP_API_URL}/api/collections/main?page=2&size=10`
         )
         .then((res) => res.data),
   });
-
   if (isLoading) return <p>Loading...</p>;
 
   if (error instanceof Error)
     return <p>An error has occurred: + {error.message}</p>;
 
   return (
-    <Container>
-      <h1 className="text-2xl font-bold mb-4">{title}</h1>
+    <div className="p-[2rem] mt-[2rem]">
       <Swiper
         spaceBetween={15}
         loop={true}
@@ -97,19 +56,23 @@ export default function Carousel({
             slidesPerGroup: 5,
           },
         }}
-        className="rounded-md"
+        className="carousel"
       >
-        {data?.map((collection) => (
-          <SwiperSlide key={collection.id} className="py-2">
+        {data?.map((col) => (
+          <SwiperSlide
+            className="my-3 rounded-md aspect-square shadow-md hover:shadow-lg hover:-translate-y-2 duration-300"
+            key={col.collectionId}
+          >
             <Collection
-              url={collection.urls?.raw + '&w=500&auto=format'}
-              price={collection.likes}
-              name={collection.color}
-              volume={collection.width}
+              id={col.collectionId}
+              name={col.collectionName}
+              logo={process.env.REACT_APP_IMAGE + col.logoImgName}
+              coin={col.coinImage}
+              description={col.description}
             />
           </SwiperSlide>
         ))}
       </Swiper>
-    </Container>
+    </div>
   );
 }

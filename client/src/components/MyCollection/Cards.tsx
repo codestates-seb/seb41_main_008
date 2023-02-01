@@ -3,16 +3,18 @@
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import customAxios from 'utils/api/axios';
 import ItemCard, { Item } from 'components/ItemCard';
+import axios from 'axios';
 
 export default function Cards({ id }: { id: string }) {
   const { status, data, error, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery(
       ['items', 'collections', id],
       ({ pageParam = 1 }) =>
-        customAxios
-          .get(`/api/items/collections/${id}?page=${pageParam}&size=18`)
+        axios
+          .get(
+            `${process.env.REACT_APP_API_URL}/api/items/collections/${id}?page=${pageParam}&size=18`
+          )
           .then((res) => res.data.data),
 
       {
@@ -29,7 +31,6 @@ export default function Cards({ id }: { id: string }) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
-  console.log(data);
 
   return status === 'loading' ? (
     <p>Loading...</p>
