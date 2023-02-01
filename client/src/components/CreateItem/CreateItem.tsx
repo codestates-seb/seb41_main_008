@@ -131,7 +131,7 @@ export default function CreateItem({
             type="text"
             {...register('name')}
             placeholder="Item name"
-            className="w-full rounded-lg p-3 text-lg group outline-none h-full"
+            className="w-full rounded-lg p-3 text-lg group outline-none h-full dark:bg-[#3d3d41]"
             onFocus={() => setNameFocus(true)}
             onBlur={() => setNameFocus(false)}
           />
@@ -160,7 +160,7 @@ export default function CreateItem({
         >
           <textarea
             {...register('description')}
-            className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg"
+            className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg dark:bg-[#3d3d41]"
             onFocus={() => setDescFocus(true)}
             onBlur={() => setDescFocus(false)}
             placeholder="Provide a detailed description of your item."

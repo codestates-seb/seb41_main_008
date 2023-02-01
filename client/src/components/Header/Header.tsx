@@ -85,7 +85,7 @@ const Header = () => {
       </div>
       <Dropdown isScrolled={isScrolled} home={home} />
       <nav>
-        <ul className="flex gap-5 items-center">
+        <ul className="flex gap-5 items-center ">
           <button
             className="hidden   max-[1040px]:flex"
             onClick={visibleHandler}

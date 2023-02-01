@@ -100,12 +100,7 @@ const Dropdown = ({ isScrolled, home }: Props) => {
               }
             }}
           >
-            <FontAwesomeIcon
-              className={`${walletState && 'text-black'} ${
-                !isScrolled && home && 'text-white'
-              }`}
-              icon={faWallet}
-            />
+            <FontAwesomeIcon className=" dark:text-white" icon={faWallet} />
           </button>
         </li>
         <li className="flex flex-col relative justify-center w-full leading-6">
@@ -116,9 +111,7 @@ const Dropdown = ({ isScrolled, home }: Props) => {
             }}
           >
             <FontAwesomeIcon
-              className={`${walletState && 'text-black'} ${
-                !isScrolled && home && 'text-white'
-              } flex`}
+              className=" dark:text-white"
               icon={faCartShopping}
             />
           </button>

@@ -14,10 +14,10 @@ const MobileDropdownItems = () => {
   const { isLogin } = useAppSelector((state) => state.login);
   const memberId = localStorage.getItem('MEMBER_ID');
   return (
-    <>
+    <div>
       <Link
         to={isLogin ? '/' : '/login'}
-        className="flex justify-between  hover:text-blue-600 "
+        className="flex justify-between  hover:text-blue-600 dark:hover:text-gray-400"
       >
         <div className="flex items-center p-6 ">
           <FontAwesomeIcon icon={faRightToBracket} className="mr-2" />
@@ -37,7 +37,7 @@ const MobileDropdownItems = () => {
       {isLogin ? null : (
         <Link
           to={'/signup'}
-          className="flex justify-between hover:text-blue-600"
+          className="flex justify-between hover:text-blue-600 dark:hover:text-gray-400"
         >
           <div className="flex items-center p-6">
             <FontAwesomeIcon icon={faHand} className="mr-2" />
@@ -51,7 +51,7 @@ const MobileDropdownItems = () => {
 
       <Link
         to={`/account/${memberId}`}
-        className="flex justify-between hover:text-blue-600"
+        className="flex justify-between hover:text-blue-600 dark:hover:text-gray-400"
       >
         <div className="flex items-center p-6">
           <FontAwesomeIcon icon={faUser} className="mr-2" />
@@ -65,7 +65,7 @@ const MobileDropdownItems = () => {
       {isLogin && (
         <Link
           to={'/collections'}
-          className="flex justify-between hover:text-blue-600"
+          className="flex justify-between hover:text-blue-600 dark:hover:text-gray-400"
         >
           <div className="flex items-center p-6">
             <FontAwesomeIcon icon={faPaintBrush} className="mr-2" />
@@ -78,7 +78,10 @@ const MobileDropdownItems = () => {
       )}
 
       {isLogin && (
-        <Link to={'/item'} className="flex justify-between hover:text-blue-600">
+        <Link
+          to={'/item'}
+          className="flex justify-between hover:text-blue-600 dark:hover:text-gray-400"
+        >
           <div className="flex items-center p-6">
             <FontAwesomeIcon icon={faPaintBrush} className="mr-2" />
             <div className="font-bold text-xl">Create NFT</div>
@@ -88,7 +91,7 @@ const MobileDropdownItems = () => {
           </div>
         </Link>
       )}
-    </>
+    </div>
   );
 };
 export default MobileDropdownItems;
