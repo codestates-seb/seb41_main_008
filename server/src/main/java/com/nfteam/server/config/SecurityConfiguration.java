@@ -33,6 +33,7 @@ import java.util.List;
 public class SecurityConfiguration {
 
     private static final String HTTPS_SERVER_DOMAIN = "https://www.nfteam008.com";
+    private static final String API_DOMAIN = "https://nfteam008.com";
     private static final String LOCALHOST = "http://localhost:3000";
 
     private final JwtTokenizer jwtTokenizer;
@@ -64,10 +65,10 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-//                        .antMatchers(HttpMethod.GET, "/api/members/mypage", "/api/coins/my").hasRole("USER")
-//                        .antMatchers(HttpMethod.POST, "/api/collections", "/api/items", "/api/items/sell/**", "/api/carts/save", "/api/trans", "/images", "/api/coins/purchase").hasRole("USER")
-//                        .antMatchers(HttpMethod.PATCH, "/api/members/**", "/api/items/**", "/api/collections/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.DELETE, "/api/members/**", "/api/collections/**", "/api/items/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/api/members/mypage", "/api/coins/my").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/api/collections", "/api/items", "/api/items/sell/**", "/api/carts/save", "/api/trans", "/images", "/api/coins/purchase").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/api/members/**", "/api/items/**", "/api/collections/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/api/members/**", "/api/collections/**", "/api/items/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )
                 .build();
@@ -76,7 +77,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(HTTPS_SERVER_DOMAIN, LOCALHOST));
+        configuration.setAllowedOrigins(List.of(HTTPS_SERVER_DOMAIN, LOCALHOST, API_DOMAIN));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
         configuration.setExposedHeaders(List.of("RefreshToken", HttpHeaders.AUTHORIZATION, HttpHeaders.LOCATION));
         configuration.setAllowedHeaders(List.of("*"));
