@@ -30,7 +30,6 @@ const BuyAndCartButton = ({ data }: any) => {
     /**판매하기 기능 로직작성 */
     dispatch(openSell(itemId));
   };
-
   /**NFTownerId 와 memberId가 같은경우에만 sell버튼 활성화 밑 둘이 같다면 addTocart는 랜더링x + onSale true일경우 addTocart버튼랜더링 및  false일 경우 아예랜더x*/
   return (
     <>

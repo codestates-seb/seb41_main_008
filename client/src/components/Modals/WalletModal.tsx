@@ -95,7 +95,7 @@ const WalletModal = () => {
     getCoinPriceList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletOpen]);
-
+  console.log(data);
   return (
     <>
       {walletOpen && <ModalBack zIndex={'10'} ref={ref} />}
