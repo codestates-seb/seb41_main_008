@@ -485,6 +485,10 @@
   @apply hidden;
 }
 
+.swiper-slide {
+  @apply h-auto !important;
+}
+
 .BasicButton {
   @apply bg-emerald-600 hover:bg-emerald-500 text-white text-center;
 }

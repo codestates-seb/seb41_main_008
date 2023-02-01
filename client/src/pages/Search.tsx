@@ -1,22 +1,10 @@
 /* eslint-disable */
-import customAxios from 'utils/api/axios';
-import { getSearchdata } from 'utils/api/api';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { AxiosError } from 'axios';
-
-export interface Search {
-  collections: collectionsData[];
-  items: itemsData[];
-  pageInfo: pageData[];
-}
-
-interface collectionsData {
-  collectionId: number;
-  collectionName: string;
-  logoImgName: number;
-  bannerImgName: string;
-}
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import Header from 'components/Header/Header';
+import ColResults from 'components/Search/ColResults';
+import { SearchCol } from './MyCollection';
 
 interface itemsData {
   itemPrice: number;
@@ -31,19 +19,48 @@ interface itemsData {
   coinImage: string;
 }
 
-interface pageData {
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  page: number;
+// interface pageData {
+//   totalElements: number;
+//   totalPages: number;
+//   size: number;
+//   page: number;
+// }
+
+interface Data {
+  data: itemsData[];
+}
+
+interface Results {
+  collections: SearchCol[];
+  items: Data;
 }
 
 const Search = () => {
-  const [data, setData] = useState<Search>();
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q');
 
-  return <div>search results</div>;
+  const { isLoading, error, data } = useQuery<Results>({
+    queryKey: ['search', { keyword: query }],
+    queryFn: () =>
+      axios
+        .get(
+          `${process.env.REACT_APP_API_URL}/api/search?keyword=${query}&page=1&size=6`
+        )
+        .then((res) => res.data),
+  });
+
+  console.log(data);
+  if (isLoading) return <p>Loading...</p>;
+
+  if (error instanceof Error)
+    return <p> An error has occurred + {error.message}</p>;
+
+  return (
+    <div>
+      <Header />
+      <ColResults cols={data?.collections} />
+    </div>
+  );
 };
 
 export default Search;

@@ -7,12 +7,13 @@ import { useAppSelector } from 'hooks/hooks';
 import { useEffect } from 'react';
 import Header from 'components/Header/Header';
 
-interface Collection {
+export interface SearchCol {
   collectionId: number;
   collectionName: string;
   logoImgName: string;
   bannerImgName: string;
 }
+
 export default function MyCollectionPage() {
   const { isLogin } = useAppSelector((state) => state.login);
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function MyCollectionPage() {
     }
     return;
   }, [isLogin, navigate]);
-  const { isLoading, error } = useQuery<Collection[]>({
+  const { isLoading, error } = useQuery<SearchCol[]>({
     queryKey: ['members', 'mypage'],
     queryFn: () =>
       customAxios

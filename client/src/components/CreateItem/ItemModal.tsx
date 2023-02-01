@@ -2,12 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import CollectionOptions from './CollectionOptions';
-
-interface Collection {
-  collectionName: string;
-  collectionId: number;
-  logoImgName: string;
-}
+import { Collection } from './CreateItem';
 
 interface Props {
   isLoading: boolean;
