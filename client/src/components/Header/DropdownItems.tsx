@@ -69,7 +69,7 @@ const DropdownItems = () => {
   return (
     <div className="absolute">
       <ul className="w-56 shadow-2xl rounded-xl bg-white dark:bg-[#303339] dark:text-white ">
-        <li className=" hover:shadow-2xl ">
+        <li className="border-b-2 dark:border-gray-600">
           {/**Link 태그를 안쓴이유: Link를 쓰게된다면 로그인이 안된상태에서 메뉴를 클릭할시 to={''} 에 할당된 주소로 먼저 이동하고 로그인페이지로 이동하게됨. 컬렉션생성,NFT생성의경우 로그인이 필수이기때문에 Link를 사용안하였음. */}
           <button
             onClick={() => onRoute('/collections')}
@@ -79,7 +79,7 @@ const DropdownItems = () => {
             <span className="">Create Collection</span>
           </button>
         </li>
-        <li className="hover:shadow-2xl">
+        <li className="border-b-2 dark:border-gray-600">
           <button
             onClick={() => onRoute('/asset/create')}
             className="dropdown-style"
@@ -89,14 +89,14 @@ const DropdownItems = () => {
           </button>
         </li>
         {isLogin && (
-          <li className=" shadow hover:border-y-2">
+          <li className="border-b-2 dark:border-gray-600">
             <button onClick={logoutHandler} className="dropdown-style">
               <RiLogoutBoxRLine />
               <span>Logout</span>
             </button>
           </li>
         )}
-        <li className="rounded-b-xl shadow hover:border-y-2">
+        <li className="rounded-b-xl ">
           <label htmlFor="night-mode" className="dropdown-style">
             {isOn ? <MdNightlight /> : <IoMdSunny />}
             <span>Night Mode</span>

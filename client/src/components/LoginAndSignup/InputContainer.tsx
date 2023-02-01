@@ -58,7 +58,7 @@ const InputContainer = ({ isSignup }: Props) => {
     console.log(error);
   };
   return (
-    <div>
+    <>
       {unAuth && (
         <div className="flex justify-start items-center fixed top-14 text-center  rounded-3xl p-4 bg-black bg-opacity-70 text-white font-semibold left-1/2 -translate-x-1/2 w-96 ">
           <AiOutlineInfoCircle color="red" size="20" />
@@ -67,7 +67,7 @@ const InputContainer = ({ isSignup }: Props) => {
       )}
 
       <form
-        className="flex flex-col p-10 bg-white  gap-2 shadow-[0px_20px_30px_-10px_rgb(38,57,77)] rounded-md bg-transparent"
+        className="flex flex-col p-10  gap-2 shadow-[0px_20px_30px_-10px_rgb(38,57,77)] rounded-md bg-transparent"
         onSubmit={handleSubmit(onClickSubmit, onError)}
       >
         <h1 className="mb-10 font-bold text-3xl inputTextStyle flex-1 text-center">
@@ -97,7 +97,7 @@ const InputContainer = ({ isSignup }: Props) => {
         {isSignup && (
           <input
             id="nickname"
-            className="border-b-2 w-full p-1 border-black  focus:outline-none bg-transparent font-bold inputTextStyle"
+            className="border-b-2 w-full p-1 border-black  focus:outline-none bg-transparent font-bold "
             required
             {...register('nickname', {
               minLength: {
@@ -185,7 +185,7 @@ const InputContainer = ({ isSignup }: Props) => {
           )}
         </div>
       </form>
-    </div>
+    </>
   );
 };
 export default InputContainer;

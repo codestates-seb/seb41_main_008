@@ -39,7 +39,7 @@ export default function MyCollectionPage() {
   return (
     <>
       <Header />
-      <div className="mt-20 max-w-7xl p-6 mx-auto">
+      <div className="mt-20 max-w-7xl p-6 mx-auto h-screen">
         <h1 className="text-5xl font-bold mb-12">My Collections</h1>
         <div className="max-w-sm md:max-w-7xl mx-auto flex flex-col items-center md:block">
           <div className="mb-6">
