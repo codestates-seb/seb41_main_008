@@ -176,8 +176,8 @@ const BuyCoinModal = () => {
               </div>
             </section>
             <footer className="">
-              <div className="flex items-center justify-center p-1 bg-[#ffeb00] rounded-xl mt-6  ">
-                <button>
+              <div className="flex items-center justify-center p-1 bg-[#ffeb00] rounded-xl mt-6  w-full">
+                <button className="w-full m-auto">
                   <img src={kakaopayLogo} alt="kakaopay" />
                 </button>
               </div>

@@ -69,7 +69,9 @@ const AccountPage = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-col w-full dark:bg-[#202225] dark:text-white">
+      <div
+        className={`${'flex flex-col w-full dark:bg-[#202225] dark:text-white min-h-screen'} `}
+      >
         <div className="h-64 relative ">
           <span className="absolute top-0 left-0 bottom-0 right-0 ">
             <img
