@@ -21,7 +21,6 @@ const SearchInput = styled.input`
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 `;
 
-
 const Header = () => {
   const [home, setHome] = useState<boolean | undefined>();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,17 +29,14 @@ const Header = () => {
   const navigate = useNavigate();
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
-    console.log(e.target.value)
+    console.log(e.target.value);
   };
-  
+
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (
-      e.key === 'Enter' &&
-      searchValue.trim().length > 0
-    ) {
+    if (e.key === 'Enter' && searchValue.trim().length > 0) {
       navigate(`/search/query/${searchValue}`);
     } else {
-      return ;
+      return;
     }
   };
 
@@ -57,7 +53,7 @@ const Header = () => {
     setVisible(!visible);
   };
 
-    useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
         setIsScrolled(true);
@@ -85,9 +81,7 @@ const Header = () => {
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
         <Link className={`${!isScrolled && home && 'text-white'}`} to={'/'}>
-          
           NFTeam
-        
         </Link>
       </div>
 
@@ -102,17 +96,13 @@ const Header = () => {
         {/* <form onSubmit={handleSubmit}>
         <button className='hidden' type="submit">sdfasdf</button>
         </form> */}
-
       </div>
-      {/* <Dropdown isScrolled={isScrolled} home={home} /> */}
+      <Dropdown isScrolled={isScrolled} home={home} />
       <nav>
         <ul className="flex gap-5 items-center">
           <button
-           
             className="hidden   max-[1040px]:flex"
-           
             onClick={visibleHandler}
-          
           >
             {visible ? (
               <FontAwesomeIcon

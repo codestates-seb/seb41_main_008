@@ -28,7 +28,7 @@ interface CardType {
   collectionName: string;
   ownerId: number;
   itemDescription: string;
-  filter: string;
+  filter?: string;
   coinName: string;
   logoImgName: string;
   collectionId?: number;
