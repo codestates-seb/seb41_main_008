@@ -6,12 +6,12 @@ import { HiOutlineStar, HiShare } from 'react-icons/hi';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setCreateColOpen } from 'store/toastSlice';
 import { format } from 'date-fns';
-import Cards from 'components/MyCollection/Cards';
 import MissingPage from 'pages/MissingPage';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import Notification from 'components/Notification';
 import Header from 'components/Header/Header';
-
+import Card from 'components/Card';
+import { useInView } from 'react-intersection-observer';
 interface Item {
   itemDescription: string;
   itemId: number;
@@ -44,7 +44,7 @@ interface Collection {
 
 export default function CollectionDetails() {
   const { id } = useParams();
-
+  const { ref, inView } = useInView();
   const dispatch = useAppDispatch();
   const createColOpen = useAppSelector((state) => state.toast.createColOpen);
 
@@ -57,7 +57,28 @@ export default function CollectionDetails() {
     queryFn: () =>
       customAxios.get(`/api/collections/only/${id}`).then((res) => res.data),
   });
+  const res: any = useInfiniteQuery({
+    queryKey: ['infinite', id],
+    queryFn: async ({ pageParam = 1 }) =>
+      await customAxios
+        .get(`/api/items/collections/${id}?page=${pageParam}&size=8`)
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, allPages) => {
+      console.log('allPages', allPages);
+      console.log('lastPage', lastPage);
 
+      return lastPage.data.length ? allPages.length + 1 : undefined;
+    },
+  });
+  const isFetchingNextPage = res.isFetchingNextPage;
+  // console.log(isFetchingNextPage);
+  console.log('res', res.data);
+  console.log('확인', res);
+
+  useEffect(() => {
+    if (inView) res.fetchNextPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
   if (isLoading) return <p>Loading...</p>;
 
   if (error) return <MissingPage />;
@@ -65,7 +86,7 @@ export default function CollectionDetails() {
   return (
     <>
       <Header />
-      <div className="space-y-16 h-screen ">
+      <div className={`${data?.itemCount === 0 ? 'h-full' : 'min-h-screen'}`}>
         <section className="flex flex-col w-full">
           <div className="h-64 relative">
             <span className="absolute top-0 left-0 bottom-0 right-0">
@@ -86,6 +107,7 @@ export default function CollectionDetails() {
         </section>
 
         <section className="px-8 space-y-3 text-[#04111D] dark:text-white">
+          <div className="h-10 w-full"></div>
           <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">{data?.collectionName}</h1>
             <div className="space-x-3 flex dark:text-black">
@@ -139,13 +161,20 @@ export default function CollectionDetails() {
           </div>
         </section>
 
-        {data?.itemCount ? (
-          <Cards id={id!} />
-        ) : (
-          <section className="border text-[#04111D] flex justify-center items-center border-gray-300 mx-8 h-64 rounded-lg">
-            <h2 className="text-3xl dark:text-white">No items to display</h2>
-          </section>
-        )}
+        <div className="mt-5 p-6 grid gap-4 grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
+          {res.data.pages.map((pages: any) => {
+            return pages?.data.map((el: any) => {
+              return (
+                <Card
+                  key={el.itemId}
+                  {...el}
+                  data={res.data.pages[0].data}
+                  filter={'Collected'}
+                />
+              );
+            });
+          })}
+        </div>
 
         <Notification open={createColOpen} setOpen={setCreateColOpen}>
           <p className="flex items-center gap-1 text-emerald-700">
@@ -155,6 +184,9 @@ export default function CollectionDetails() {
             Created!
           </p>
         </Notification>
+      </div>
+      <div className="inline-block" ref={ref}>
+        {isFetchingNextPage && 'Loading more...'}
       </div>
     </>
   );

@@ -30,8 +30,14 @@ export const getRaingkingData = async (time: string | number | undefined) => {
   return await customAxios.get(`/api/ranking/time/${time}`);
 };
 
-export const getSearchdata = async ( keyword:string | number | undefined, page:string | number | undefined, size : string | number | undefined ) => {
-  return await customAxios.get(`/api/search?keyword=${keyword}&page=${page}&size=${size}`);
+export const getSearchdata = async (
+  keyword: string | number | undefined,
+  page: string | number | undefined,
+  size: string | number | undefined
+) => {
+  return await customAxios.get(
+    `/api/search?keyword=${keyword}&page=${page}&size=${size}`
+  );
 };
 
 /**카트정보 저장 api */
