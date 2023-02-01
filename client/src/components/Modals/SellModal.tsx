@@ -84,7 +84,7 @@ const SellModal = () => {
       sellItemHandler(itemId, data).then(() => {
         setIsChecked(false);
         dispatch(closeSell());
-        navigate(`/items/${itemId}`);
+        navigate(`/item/${itemId}`);
       });
     }
   };
