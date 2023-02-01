@@ -103,7 +103,7 @@ export default function CreateItem({
 
   useEffect(() => {
     if (item) {
-      navigate(`/items/${item.id}`);
+      navigate(`/item/${item.id}`);
     }
   }, [item, navigate]);
 

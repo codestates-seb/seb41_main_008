@@ -75,7 +75,7 @@ const Card = ({
             to={
               filter === 'Created'
                 ? `/collection/${collectionId}`
-                : `/items/${itemId}`
+                : `/item/${itemId}`
             }
             className="flex flex-col "
           >

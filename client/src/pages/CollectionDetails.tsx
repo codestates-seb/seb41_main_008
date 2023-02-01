@@ -11,6 +11,8 @@ import Notification from 'components/Notification';
 import Header from 'components/Header/Header';
 import Card from 'components/Card';
 import { useInView } from 'react-intersection-observer';
+import customAxios from 'utils/api/axios';
+import axios from 'axios';
 interface Item {
   itemDescription: string;
   itemId: number;
@@ -65,16 +67,10 @@ export default function CollectionDetails() {
         .get(`/api/items/collections/${id}?page=${pageParam}&size=8`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
-      console.log('allPages', allPages);
-      console.log('lastPage', lastPage);
-
       return lastPage.data.length ? allPages.length + 1 : undefined;
     },
   });
   const isFetchingNextPage = res.isFetchingNextPage;
-  // console.log(isFetchingNextPage);
-  console.log('res', res.data);
-  console.log('확인', res);
 
   useEffect(() => {
     if (inView) res.fetchNextPage();
@@ -166,18 +162,19 @@ export default function CollectionDetails() {
         </section>
 
         <div className="mt-5 p-6 grid gap-4 grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
-          {res.data.pages.map((pages: any) => {
-            return pages?.data.map((el: any) => {
-              return (
-                <Card
-                  key={el.itemId}
-                  {...el}
-                  data={res.data.pages[0].data}
-                  filter={'Collected'}
-                />
-              );
-            });
-          })}
+          {res.data &&
+            res.data.pages?.map((pages: any) => {
+              return pages?.data.map((el: any) => {
+                return (
+                  <Card
+                    key={el.itemId}
+                    {...el}
+                    data={res.data.pages[0].data}
+                    filter={'Collected'}
+                  />
+                );
+              });
+            })}
         </div>
 
         <Notification open={createColOpen} setOpen={setCreateColOpen}>
