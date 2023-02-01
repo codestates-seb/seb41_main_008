@@ -1,33 +1,33 @@
-interface Piece {
-  name: string;
-  price: number;
-  url: string;
-  volume?: number;
+import { Link } from 'react-router-dom';
+import { Props } from './MainCollection';
+
+interface ColProp extends Props {
+  description: string;
 }
 
-export default function Collection({ url, price, name, volume }: Piece) {
+export default function Collection({
+  id,
+  name,
+  coin,
+  logo,
+  description,
+}: ColProp) {
   return (
-    <div className="rounded-md aspect-square cursor-pointer shadow-md hover:shadow-lg hover:-translate-y-2 duration-300">
+    <Link to={`/collection/${id.toString()}`} className="relative">
       <img
-        src={url}
-        alt="collection"
-        className="rounded-t-md h-2/3 w-full object-cover"
+        src={coin}
+        alt="Coin"
+        className="h-6 w-6 absolute top-1.5 left-1.5"
       />
-      <div className="px-3.5 pt-2 space-y-2 h-1/3">
+      <img
+        src={logo}
+        alt="collection"
+        className="rounded-t-md h-3/4 w-full object-cover"
+      />
+      <div className="px-3.5 pt-3.5 space-y-2 sm:space-y-0 md:pt-1 h-1/4">
         <h3 className="font-bold">{name}</h3>
-        <div className="flex justify-between">
-          <div>
-            <h2 className="uppercase text-gray-400 text-xs font-bold">floor</h2>
-            <span className="font-bold">{price} ETH</span>
-          </div>
-          <div>
-            <h2 className="uppercase text-gray-400 text-xs font-bold">
-              total volume
-            </h2>
-            <span className="font-bold">{volume} ETH</span>
-          </div>
-        </div>
+        <p className="text-gray-400 font-bold w-full truncate">{description}</p>
       </div>
-    </div>
+    </Link>
   );
 }

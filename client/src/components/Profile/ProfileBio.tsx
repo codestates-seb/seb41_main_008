@@ -65,7 +65,8 @@ export default function ProfileBio({
       customAxios.patch(`/api/members/${id}`, newProfile),
     onSuccess: () => {
       queryClient.invalidateQueries(['members', 'mypage']);
-      navigate('/account');
+      queryClient.invalidateQueries(['members', id]);
+      navigate(`/account/${id}`);
     },
   });
 
@@ -75,8 +76,8 @@ export default function ProfileBio({
     mutate({
       nickname: data.nickname,
       description: data.description,
-      profileImageName,
-      bannerImageName,
+      profileImageName: process.env.REACT_APP_IMAGE + profileImageName,
+      bannerImageName: process.env.REACT_APP_IMAGE + bannerImageName,
     });
   };
 

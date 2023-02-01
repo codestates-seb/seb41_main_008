@@ -62,7 +62,10 @@ const AccountPage = () => {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <MissingPage />;
+  if (error instanceof Error)
+    return <p>An error has occurred: + {error.message}</p>;
+
+  if (!data) return <MissingPage />;
 
   return (
     <>

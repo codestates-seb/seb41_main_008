@@ -7,11 +7,12 @@ import customAxios from 'utils/api/axios';
 import { MemberInfo } from './AccountPage';
 import Header from 'components/Header/Header';
 
-export default function ProfilePage() {
+export default function EditProfile() {
+  const id = window.localStorage.getItem('MEMBER_ID');
   const { isLoading, error, data } = useQuery<MemberInfo>({
-    queryKey: ['members', 'mypage'],
+    queryKey: ['members', id],
     queryFn: () =>
-      customAxios.get('/api/members/mypage').then((res) => res.data.member),
+      customAxios.get(`/api/members/${id}`).then((res) => res.data.member),
     onSuccess: (data) => {
       setProfileLogo(data.profileImageName);
       setProfileBanner(data.bannerImageName);
@@ -30,7 +31,7 @@ export default function ProfilePage() {
   return (
     <>
       <Header />
-      <div className="max-w-2xl mx-auto p-6 ">
+      <div className="max-w-2xl mx-auto p-6 mt-20">
         <div className="flex flex-col items-center space-y-10">
           <h1 className="text-5xl font-bold">Profile details</h1>
           <span className="ml-auto text-sm">
