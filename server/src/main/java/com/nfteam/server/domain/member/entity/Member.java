@@ -71,6 +71,10 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Item> itemList = new ArrayList<>();
 
+    private static final String DEFAULT_PROFILE_IMAGE = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/fac08fee-12b4-43f1-a24f-34a382d6fa3f.png";
+    private static final String DEFAULT_BANNER_IMAGE = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/a5dfe9b9-8fb6-43ae-a1ce-533500dae858.jpeg";
+    private static final String DEFAULT_DESC = "자기소개를 입력해주세요.";
+
     public Member() {
     }
 
@@ -84,12 +88,12 @@ public class Member extends BaseEntity {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.description = "자기소개를 입력해주세요.";
+        this.description = DEFAULT_DESC;
         this.memberPlatform = MemberPlatform.HOME;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/460a3185-7e27-48ed-a23f-9e87e5686468.jpeg";
-        this.bannerImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/5970bd4a-b60e-4d08-a8c4-0dc6bc61e1f5.jpeg";
+        this.profileImageName = DEFAULT_PROFILE_IMAGE;
+        this.bannerImageName = DEFAULT_BANNER_IMAGE;
         this.lastLoginTime = LocalDateTime.now();
     }
 
@@ -98,12 +102,12 @@ public class Member extends BaseEntity {
         this.email = email;
         this.password = UUID.randomUUID().toString();
         this.nickname = nickname;
-        this.description = "자기소개를 입력해주세요.";
+        this.description = DEFAULT_DESC;
         this.memberPlatform = memberPlatform;
         this.memberRole = MemberRole.USER;
         this.memberStatus = MemberStatus.MEMBER_ACTIVE;
-        this.profileImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/460a3185-7e27-48ed-a23f-9e87e5686468.jpeg";
-        this.bannerImageName = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/5970bd4a-b60e-4d08-a8c4-0dc6bc61e1f5.jpeg";
+        this.profileImageName = DEFAULT_PROFILE_IMAGE;
+        this.bannerImageName = DEFAULT_BANNER_IMAGE;
         this.lastLoginTime = LocalDateTime.now();
     }
 
