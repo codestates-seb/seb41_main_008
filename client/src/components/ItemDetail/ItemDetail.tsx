@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Link } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import styled from 'styled-components';
