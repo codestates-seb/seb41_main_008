@@ -62,7 +62,7 @@ export default function MainCarousel() {
 
   return (
     <Container>
-      <h1 className="text-indigo-900 text-center font-black text-4xl my-10">
+      <h1 className="text-indigo-900 text-center font-black text-4xl my-10 dark:text-white">
         Explore, collect, and sell NFTs
       </h1>
       <Swiper

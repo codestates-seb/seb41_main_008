@@ -99,8 +99,11 @@ const WalletModal = () => {
   return (
     <>
       {walletOpen && <ModalBack zIndex={'10'} ref={ref} />}
-      <WalletContainer visible={walletOpen}>
-        <header className="flex justify-between items-center w-full p-4 border-b-2">
+      <WalletContainer
+        visible={walletOpen}
+        className="dark:bg-[#262b2e] dark:text-white"
+      >
+        <header className="flex justify-between items-center w-full p-4 border-b-2 ">
           <div className="flex justify-center items-center">
             <button
               onClick={() => dispatch(closeWallet())}

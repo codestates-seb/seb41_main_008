@@ -30,7 +30,7 @@ export default function ProfilePage() {
   return (
     <>
       <Header />
-      <div className="max-w-2xl mx-auto p-6">
+      <div className="max-w-2xl mx-auto p-6 ">
         <div className="flex flex-col items-center space-y-10">
           <h1 className="text-5xl font-bold">Profile details</h1>
           <span className="ml-auto text-sm">

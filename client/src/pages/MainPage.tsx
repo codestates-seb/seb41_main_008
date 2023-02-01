@@ -18,8 +18,8 @@ const MainPage = () => {
   }, [dispatch]);
 
   return (
-    <div>
-      <div className="bg-gradient-to-b via-yellow-100 from-red-200">
+    <div className="dark:bg-[#262b2e] dark:text-white">
+      <div className="bg-gradient-to-b via-yellow-100 from-red-200 dark:bg-gradient-to-b dark:via-neutral-500 dark:from-black">
         <Header />
         <MainCarousel />
       </div>
