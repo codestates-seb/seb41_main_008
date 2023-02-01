@@ -80,7 +80,7 @@ public class ItemResponse implements Comparable<ItemResponse> {
     // 미판매 -> 판매 순 정렬
     @Override
     public int compareTo(ItemResponse o) {
-        return Boolean.compare(this.onSale, o.onSale);
+        return Boolean.compare(o.onSale, this.onSale);
     }
 
 }

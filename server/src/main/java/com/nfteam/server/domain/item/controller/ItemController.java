@@ -59,6 +59,7 @@ public class ItemController {
                                                                 Pageable pageable) {
         Page<ItemResponse> collectionItemList = itemService.getCollectionItemList(collectionId, pageable);
         List<ItemResponse> contents = collectionItemList.getContent();
+        contents.sort(ItemResponse::compareTo);
         return new ResponseEntity<>(new PageResponse(contents, collectionItemList), HttpStatus.OK);
     }
 
