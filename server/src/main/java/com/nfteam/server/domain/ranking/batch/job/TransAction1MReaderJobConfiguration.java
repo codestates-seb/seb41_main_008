@@ -21,7 +21,7 @@ import java.util.Collections;
 @EnableBatchProcessing
 public class TransAction1MReaderJobConfiguration {
 
-    private static final int chunkSize = 50;
+    private static final int chunkSize = 10;
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
