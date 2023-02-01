@@ -61,7 +61,7 @@ const Card = ({
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
   return (
-    <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold">
+    <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold dark:bg-[#363840] dark:text-white">
       <article
         onMouseEnter={() => {
           setHide(true);
@@ -78,7 +78,7 @@ const Card = ({
           }
           className="flex flex-col "
         >
-          <div className="overflow-hidden rounded-t-xl w-full aspect-square">
+          <div className="overflow-hidden rounded-t-xl w-full aspect-square ">
             <img
               className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"
               src={
@@ -89,7 +89,7 @@ const Card = ({
               alt="NFTImage"
             />
           </div>
-          <div className="flex flex-col p-4 rounded-b-xl">
+          <div className="flex flex-col p-4 rounded-b-xl ">
             <div>{itemName}</div>
             <div>{collectionName}</div>
             <div className="flex">

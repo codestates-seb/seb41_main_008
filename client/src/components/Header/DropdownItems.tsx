@@ -68,7 +68,7 @@ const DropdownItems = () => {
   };
   return (
     <div className="absolute">
-      <ul className="w-56 shadow-2xl rounded-xl bg-white dark:bg-slate-700 dark:text-white ">
+      <ul className="w-56 shadow-2xl rounded-xl bg-white dark:bg-[#303339] dark:text-white ">
         <li className=" hover:shadow-2xl ">
           {/**Link 태그를 안쓴이유: Link를 쓰게된다면 로그인이 안된상태에서 메뉴를 클릭할시 to={''} 에 할당된 주소로 먼저 이동하고 로그인페이지로 이동하게됨. 컬렉션생성,NFT생성의경우 로그인이 필수이기때문에 Link를 사용안하였음. */}
           <button

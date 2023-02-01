@@ -67,7 +67,7 @@ const AccountPage = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full dark:bg-[#202225] dark:text-white">
         <div className="h-64 relative ">
           <span className="absolute top-0 left-0 bottom-0 right-0 ">
             <img
@@ -101,7 +101,8 @@ const AccountPage = () => {
               <button
                 onClick={() => onFilter('Collected')}
                 className={`${
-                  filter === 'Collected' && 'border-b-2 border-black'
+                  filter === 'Collected' &&
+                  'border-b-2 border-black dark:border-white'
                 }`}
               >
                 Collected
@@ -109,7 +110,8 @@ const AccountPage = () => {
               <button
                 onClick={() => onFilter('Created')}
                 className={`${
-                  filter === 'Created' && 'border-b-2 border-black'
+                  filter === 'Created' &&
+                  'border-b-2 border-black dark:border-white'
                 }`}
               >
                 Created

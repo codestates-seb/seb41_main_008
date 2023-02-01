@@ -7,7 +7,7 @@ import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GoSearch } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import MobileDropdownList from './MobileDropdownLIst';
 import MobileDropdown from './MobileDropdown';
 import Dropdown from './Dropdown';
@@ -27,6 +27,7 @@ const Header = () => {
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
     console.log(e.target.value);
@@ -61,22 +62,19 @@ const Header = () => {
         setIsScrolled(false);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
-
-  const walletState = useAppSelector((state) => state.modal.walletOpen);
+  }, [isScrolled]);
+  const main = location.pathname;
+  const { walletOpen } = useAppSelector((state) => state.modal);
 
   return (
     <header
-      className={`duration-300 transition-colors flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-20 text-lg
-      ${!home && 'bg-white'} ${walletState && 'bg-white transition-none'} ${
-        isScrolled && home && 'bg-white'
-      }`}
+      className={`duration-300  flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-20 text-lg bg-white  dark:bg-[#202225] dark:text-white
+      ${!isScrolled && main === '/' && !walletOpen && 'bg-[#FED7C8]'}`}
     >
       <div className="flex gap-2 mr-2">
         <Link to={'/'}>logo</Link>
@@ -89,7 +87,7 @@ const Header = () => {
         <SearchInput
           value={searchValue}
           onChange={handleChangeValue}
-          className="bg-transparent/5 font-normal placeholder-transparent/40"
+          className="bg-transparent/5 font-normal placeholder-transparent/40 dark:bg-white dark:text-black"
           placeholder="Search items, collections, and accounts..."
           onKeyUp={handleEnter}
         />
@@ -106,14 +104,14 @@ const Header = () => {
           >
             {visible ? (
               <FontAwesomeIcon
-                className={`${walletState && 'text-black'} ${
+                className={`${walletOpen && 'text-black'} ${
                   !isScrolled && home && 'text-white'
                 }`}
                 icon={faXmark}
               />
             ) : (
               <FontAwesomeIcon
-                className={`${walletState && 'text-black'} ${
+                className={`${walletOpen && 'text-black'} ${
                   !isScrolled && home && 'text-white'
                 }`}
                 icon={faBars}
