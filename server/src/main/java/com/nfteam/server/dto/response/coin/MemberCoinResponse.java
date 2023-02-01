@@ -15,6 +15,8 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
     private Double coinCount;
     private String coinImage;
 
+    private static final String NoCoinImage = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/coin.svg";
+
     @Builder
     public MemberCoinResponse(Long memberId, String nickname, Long coinId, String coinName, Double coinCount, String coinImage) {
         this.memberId = memberId;
@@ -41,8 +43,8 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
                 .memberId(member.getMemberId())
                 .nickname(member.getNickname())
                 .coinId(0L)
-                .coinName("")
-                .coinImage("")
+                .coinName("코인이 없습니다.")
+                .coinImage(NoCoinImage)
                 .coinCount(0.0)
                 .build();
     }
