@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { addTocart } from 'store/cartSlice';
 import { openSell } from 'store/modalSlice';
+
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;

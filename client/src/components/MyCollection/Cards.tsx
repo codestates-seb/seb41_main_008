@@ -25,7 +25,7 @@ export default function Cards({ id }: { id: string }) {
     );
 
   const { ref, inView } = useInView();
-
+  console.log(data);
   useEffect(() => {
     if (inView) {
       fetchNextPage();

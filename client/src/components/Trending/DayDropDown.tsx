@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoIosArrowUp } from 'react-icons/io';
 import { useState } from 'react';
-import { useRef } from 'react';
+
 
 const DayDropdown: FC<{
   setOption: React.Dispatch<React.SetStateAction<string>>;
@@ -17,7 +17,7 @@ const DayDropdown: FC<{
     <div className="relative">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className=" flex items-center rounded text-white px-5 py-1 hover:bg-green-400 bg-green-500"
+        className=" flex items-center rounded text-white px-5 py-1 hover:bg-rose-200 bg-rose-300"
       >
         <div className="mr-1">ALL</div>
         <div>
@@ -34,7 +34,7 @@ const DayDropdown: FC<{
                   onOptionClick(time);
                   setOption(time);
                 }}
-                className="hover:bg-green-200 px-2 py-1"
+                className="hover:bg-rose-200 px-2 py-1"
                 key={time}
               >
                 {time}

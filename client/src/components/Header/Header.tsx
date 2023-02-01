@@ -1,8 +1,13 @@
+/* eslint-disable */
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { SetStateAction, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/hooks';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GoSearch } from 'react-icons/go';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 import MobileDropdownList from './MobileDropdownLIst';
 import MobileDropdown from './MobileDropdown';
 import Dropdown from './Dropdown';
@@ -18,20 +23,39 @@ const SearchInput = styled.input`
 `;
 
 const Header = () => {
-  const location = useLocation();
   const [home, setHome] = useState<boolean | undefined>();
   const [isScrolled, setIsScrolled] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchValue.trim().length > 0) {
+      navigate(`/search/query/${searchValue}`);
+    } else {
+      return;
+    }
+  };
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault()
+  //   if (
+  //     searchValue.trim().length > 0
+  //   ) {
+  //     navigate(`/search/query/${searchValue}`);
+  //   }
+  // }
 
   const visibleHandler = () => {
     setVisible(!visible);
   };
 
   useEffect(() => {
-    if (location.pathname === '/') {
-      setHome(true);
-    } else setHome(false);
-
     const handleScroll = () => {
       if (window.scrollY > 0) {
         setIsScrolled(true);
@@ -39,7 +63,6 @@ const Header = () => {
         setIsScrolled(false);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -65,15 +88,21 @@ const Header = () => {
 
       <div className="w-full">
         <SearchInput
-          className="bg-transparent/5 font-normal placeholder-transparent/40"
+          value={searchValue}
+          onChange={handleChangeValue}
+          className="bg-transparent/5 font-normal placeholder-transparent/40 dark:bg-white dark:text-black"
           placeholder="Search items, collections, and accounts..."
+          onKeyUp={handleEnter}
         />
+        {/* <form onSubmit={handleSubmit}>
+        <button className='hidden' type="submit">sdfasdf</button>
+        </form> */}
       </div>
       <Dropdown isScrolled={isScrolled} home={home} />
       <nav>
         <ul className="flex gap-5 items-center">
           <button
-            className="hidden  max-[1040px]:flex"
+            className="hidden   max-[1040px]:flex"
             onClick={visibleHandler}
           >
             {visible ? (

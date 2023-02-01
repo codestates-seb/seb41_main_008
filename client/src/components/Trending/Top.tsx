@@ -2,14 +2,14 @@
 import { useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
-import { IoIosArrowDown } from 'react-icons/io';
 import DayDropDown from './DayDropDown';
+import CoinFilter from './CoinFilter';
+
+
+
 
 const Home = () => {
-  const [activeTab] = useState('trending');
   const [option, setOption] = useState('DAY');
-
-
   return (
     <main className={styles.gridContainer}>
       <section
@@ -19,22 +19,25 @@ const Home = () => {
           <div className={styles.tabContainer}>
             <button
               className={`${styles.tabBtn} ${
-                activeTab === 'trending' && styles.tabBtnActive
+                 styles.tabBtnActive
               }`}
             >
               TOP
             </button>
           </div>
           <div>
+            {/* <CoinFilter  /> */}
+          </div>
+          <div>
             <DayDropDown
               setOption={setOption}
-              onOptionClick={(option) => {
-                // console.log(option);
+              onOptionClick={() => {
+                 console.log(option);
               }}
             />
           </div>
         </header>
-        <Trending option={option} />
+        <Trending option={option}/>
       </section>
     </main>
   );

@@ -123,7 +123,11 @@ const Dropdown = ({ isScrolled, home }: Props) => {
               icon={faCartShopping}
             />
           </button>
-          <div className="flex justify-center items-center w-5 h-5 rounded-full absolute right-0 -top-2 text-white bg-blue-500 font-bold text-sm">
+          <div
+            className={`${
+              cartItems.length > 0 && 'animate-bounce'
+            } ${'flex justify-center items-center w-5 h-5 rounded-full absolute right-0 -top-2 text-white bg-blue-500 font-bold text-sm '}`}
+          >
             {cartItems.length}
           </div>
         </li>

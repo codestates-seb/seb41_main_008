@@ -1,5 +1,6 @@
+/* eslint-disable */
 import customAxios from './axios';
-
+import axios from 'axios';
 export const logout = () => {
   return customAxios
     .get('/auth/logout', {
@@ -29,14 +30,18 @@ export const getRaingkingData = async (time: string | number | undefined) => {
   return await customAxios.get(`/api/ranking/time/${time}`);
 };
 
+export const getSearchdata = async ( keyword:string | number | undefined, page:string | number | undefined, size : string | number | undefined ) => {
+  return await customAxios.get(`/api/search?keyword=${keyword}&page=${page}&size=${size}`);
+};
+
 /**카트정보 저장 api */
-export const cartSaveHandler = (data: {
+export const cartSaveHandler = async (data: {
   cartId: number;
   itemIdList: number[];
   totalPrice: number;
 }) => {
   console.log(data);
-  return customAxios
+  return await customAxios
     .post('/api/carts/save', data)
     .then((res) => console.log(res));
 };
@@ -73,16 +78,14 @@ export const kakaoPay = async (pgToken: string, tid: string | null) => {
   );
 };
 
+/**코인 주문정보 조회 */
+export const getCoinOrderInfo = async (tid?: string | null) => {
+  return await customAxios.get(`/api/coins/success?tid=${tid}`);
+};
+
 /**업비트 Open API */
 export const getCoinPrice = async (coin: string | undefined) => {
   if (coin === undefined) return;
 
-  const options = {
-    method: 'GET',
-    headers: { accept: 'application/json' },
-  };
-  return await fetch(
-    `https://api.upbit.com/v1/ticker?markets=krw-${coin}`,
-    options
-  ).then((res) => res.json());
+  return await axios.get(`https://api.upbit.com/v1/ticker?markets=krw-${coin}`);
 };

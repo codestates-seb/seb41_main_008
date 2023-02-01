@@ -31,7 +31,7 @@ export default function MainCarousel() {
 
   return (
     <div className="py-[4rem] px-[2rem]">
-      <h1 className="text-indigo-900 text-center font-black text-4xl my-10">
+      <h1 className="text-indigo-900 text-center font-black text-4xl my-10 dark:text-white">
         Explore, collect, and sell NFTs
       </h1>
       <Swiper

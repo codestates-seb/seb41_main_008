@@ -1,13 +1,18 @@
 // import Header from '../Header/Header';
 import { Outlet } from 'react-router-dom';
-import BuyCoinModal from 'components/CartingModal/BuyCoinModal';
-import SellModal from 'components/CartingModal/SellModal';
+import BuyCoinModal from 'components/Modals/BuyCoinModal';
+import SellModal from 'components/Modals/SellModal';
+import WalletModal from 'components/Modals/WalletModal';
+import CartingModal from 'components/Modals/CartingModal';
+import TransActionModal from '../Modals/TransActionModal';
 const MainLayout = () => {
   return (
     <>
-      {/* <Header /> */}
+      <CartingModal />
       <BuyCoinModal />
       <SellModal />
+      <WalletModal />
+      <TransActionModal />
       <Outlet />
     </>
   );

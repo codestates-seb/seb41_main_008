@@ -47,6 +47,7 @@ const AccountPage = () => {
       customAxios.get(`/api/members/${memberId}`).then((res) => res.data),
   });
 
+  console.log(data);
   const onFilter = (filterType: string) => {
     setFilter(filterType);
   };
@@ -69,7 +70,7 @@ const AccountPage = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full dark:bg-[#202225] dark:text-white">
         <div className="h-64 relative ">
           <span className="absolute top-0 left-0 bottom-0 right-0 ">
             <img
@@ -103,7 +104,8 @@ const AccountPage = () => {
               <button
                 onClick={() => onFilter('Collected')}
                 className={`${
-                  filter === 'Collected' && 'border-b-2 border-black'
+                  filter === 'Collected' &&
+                  'border-b-2 border-black dark:border-white'
                 }`}
               >
                 Collected
@@ -111,31 +113,24 @@ const AccountPage = () => {
               <button
                 onClick={() => onFilter('Created')}
                 className={`${
-                  filter === 'Created' && 'border-b-2 border-black'
+                  filter === 'Created' &&
+                  'border-b-2 border-black dark:border-white'
                 }`}
               >
                 Created
               </button>
             </ul>
           </div>
-          <div className="mt-5 grid gap-4 grid-cols-6 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
+          <div className="mt-5 grid gap-4 grid-cols-8 max-2xl:grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
             {filter === 'Collected' ? (
               data?.items.length !== 0 ? (
                 data?.items.map((el: any) => {
                   return (
                     <Card
-                      ownerId={el.ownerId}
                       key={el.itemId}
                       data={data.items}
-                      onSale={el.onSale}
                       filter={filter}
-                      itemId={el.itemId}
-                      collectionName={el.collectionName}
-                      logoImgName={el.logoImgName}
-                      itemImageName={el.itemImageName}
-                      itemPrice={el.itemPrice}
-                      itemDescription={el.itemDescription}
-                      coinName={el.coinName}
+                      {...el}
                     />
                   );
                 })

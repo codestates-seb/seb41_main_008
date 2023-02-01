@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from '../src/pages/LoginPage';
 import SignupPage from '../src/pages/SignupPage';
@@ -11,12 +12,13 @@ import MyCollection from 'pages/MyCollection';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
 import SuccessPaymentPage from 'pages/SuccessPaymentPage';
 import ScrollToTop from './utils/ScrollToTop';
+import Search from 'pages/Search';
 import AccountPage from 'pages/AccountPage';
 import EditProfile from 'pages/EditProfile';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App dark:bg-[#202225] dark:text-white">
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
@@ -32,7 +34,8 @@ function App() {
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
             <Route path="/account/:memberId" element={<AccountPage />} />
             <Route path="/account/profile" element={<EditProfile />} />
-            <Route path="/succes\s" element={<SuccessPaymentPage />} />
+            <Route path="/success" element={<SuccessPaymentPage />} />
+            <Route path="/search/query/:id" element={<Search />} />
             <Route path="*" element={<MissingPage />} />
           </Route>
 

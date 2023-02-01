@@ -8,6 +8,7 @@ interface toastState {
   removeItemOpen: boolean;
   updateUserOpen: boolean;
   deleteUserOpen: boolean;
+  addToCartOpen: boolean;
 }
 
 const initialState: toastState = {
@@ -17,6 +18,7 @@ const initialState: toastState = {
   removeItemOpen: false,
   updateUserOpen: false,
   deleteUserOpen: false,
+  addToCartOpen: false,
 };
 
 export const toastSlice = createSlice({
@@ -41,6 +43,9 @@ export const toastSlice = createSlice({
     setDeleteUserOpen: (state, action: PayloadAction<boolean>) => {
       state.deleteUserOpen = action.payload;
     },
+    setAddtoCartOpen: (state, action: PayloadAction<boolean>) => {
+      state.addToCartOpen = action.payload;
+    },
   },
 });
 
@@ -51,6 +56,7 @@ export const {
   setRemoveItemOpen,
   setDeleteUserOpen,
   setUpdateUserOpen,
+  setAddtoCartOpen,
 } = toastSlice.actions;
 
 export default toastSlice.reducer;
