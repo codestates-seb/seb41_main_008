@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModal, openWallet } from '../../store/modalSlice';
 import { useQuery } from '@tanstack/react-query';
 import customAxios from 'utils/api/axios';
-import { MemberInfo } from 'pages/AccountPage';
+import { UserType } from 'pages/AccountPage';
 
 const DropdownList = styled.li`
   position: relative;
@@ -41,10 +41,9 @@ const Dropdown = ({ isScrolled, home }: Props) => {
   const { isLogin } = useAppSelector((state) => state.login);
   const walletState = useAppSelector((state) => state.modal.walletOpen);
   const id = window.localStorage.getItem('MEMBER_ID');
-  const { data } = useQuery<MemberInfo>({
+  const { data } = useQuery<UserType>({
     queryKey: ['members', id],
-    queryFn: () =>
-      customAxios.get(`api/members/${id}`).then((res) => res.data.member),
+    queryFn: () => customAxios.get(`api/members/${id}`).then((res) => res.data),
   });
 
   return (
@@ -54,12 +53,12 @@ const Dropdown = ({ isScrolled, home }: Props) => {
           {isLogin ? (
             <>
               <button
-                onClick={() => navigate(`/account/${data?.memberId}`)}
+                onClick={() => navigate(`/account/${data?.member.memberId}`)}
                 className="w-8 h-8"
               >
                 <img
                   className="object-cover w-full h-full rounded-full"
-                  src={data?.profileImageName}
+                  src={data?.member.profileImageName}
                   alt="Profile pic"
                 />
               </button>

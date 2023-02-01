@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { MemberInfo } from 'pages/AccountPage';
+import { UserType } from 'pages/AccountPage';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import customAxios from 'utils/api/axios';
@@ -26,16 +26,18 @@ export default function ItemCard({
   ownerId,
 }: Item) {
   const [show, setShow] = useState(false);
-  const { data } = useQuery<MemberInfo>({
-    queryKey: ['member', 'mypage'],
+  const id = window.localStorage.getItem('MEMBER_ID');
+
+  const { data } = useQuery<UserType>({
+    queryKey: ['member', id],
     queryFn: () =>
-      customAxios.get('/api/member/mypage').then((res) => res.data.member),
+      customAxios.get(`/api/members/${id}`).then((res) => res.data),
   });
 
   return (
     <Link
       className="inline-block"
-      to={`/items/${itemId}`}
+      to={`/item/${itemId}`}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
@@ -65,7 +67,7 @@ export default function ItemCard({
               {itemPrice + ' ' + coinName}{' '}
             </h3>
           </div>
-          {!onSale ? null : ownerId === data?.memberId ? (
+          {!onSale ? null : ownerId === data?.member.memberId ? (
             <button
               onClick={(e) => e.preventDefault()}
               className={`${

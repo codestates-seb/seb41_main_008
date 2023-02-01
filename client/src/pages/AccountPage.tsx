@@ -12,7 +12,7 @@ import customAxios from 'utils/api/axios';
 import { useQuery } from '@tanstack/react-query';
 import MissingPage from './MissingPage';
 
-export interface MemberInfo {
+interface UserInfo {
   memberId: number;
   nickname: string;
   bannerImageName: string;
@@ -20,8 +20,8 @@ export interface MemberInfo {
   description: string;
 }
 
-interface UserType {
-  member: MemberInfo;
+export interface UserType {
+  member: UserInfo;
   items: ItemsType[];
   collections: [];
 }
@@ -47,7 +47,6 @@ const AccountPage = () => {
       customAxios.get(`/api/members/${memberId}`).then((res) => res.data),
   });
 
-  console.log(data);
   const onFilter = (filterType: string) => {
     setFilter(filterType);
   };

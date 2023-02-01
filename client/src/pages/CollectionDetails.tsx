@@ -70,7 +70,7 @@ export default function CollectionDetails() {
   return (
     <>
       <Header />
-      <div className="space-y-16 h-screen ">
+      <div className="space-y-16">
         <section className="flex flex-col w-full">
           <div className="h-64 relative">
             <span className="absolute top-0 left-0 bottom-0 right-0">

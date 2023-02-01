@@ -31,7 +31,7 @@ function App() {
             />
             <Route path="collection/:id" element={<CollectionDetails />} />
             <Route path="asset/create" element={<CreateItemPage />} />
-            <Route path="/items/:itemId" element={<ItemDetailPage />} />
+            <Route path="/item/:itemId" element={<ItemDetailPage />} />
             <Route path="/account/:memberId" element={<AccountPage />} />
             <Route path="/account/profile" element={<EditProfile />} />
             <Route path="/success" element={<SuccessPaymentPage />} />
