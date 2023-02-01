@@ -48,7 +48,6 @@ export default function CollectionDetails() {
   const { ref, inView } = useInView();
   const dispatch = useAppDispatch();
   const createColOpen = useAppSelector((state) => state.toast.createColOpen);
-
   useEffect(() => {
     setTimeout(() => dispatch(setCreateColOpen(false)), 5000);
   }, [dispatch]);
@@ -64,7 +63,7 @@ export default function CollectionDetails() {
     queryKey: ['infinite', id],
     queryFn: async ({ pageParam = 1 }) =>
       await customAxios
-        .get(`/api/items/collections/${id}?page=${pageParam}&size=8`)
+        .get(`/api/items/collections/${id}?page=${pageParam}&size=6`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.data.length ? allPages.length + 1 : undefined;
@@ -86,7 +85,7 @@ export default function CollectionDetails() {
   return (
     <>
       <Header />
-      <div className={`${data?.itemCount === 0 ? 'h-full' : 'min-h-screen'}`}>
+      <div className={`${data?.itemCount === 0 ? 'h-screen' : 'min-h-screen'}`}>
         <section className="flex flex-col w-full">
           <div className="h-64 relative">
             <span className="absolute top-0 left-0 bottom-0 right-0">

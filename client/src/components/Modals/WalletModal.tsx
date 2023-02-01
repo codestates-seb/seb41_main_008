@@ -101,9 +101,9 @@ const WalletModal = () => {
       {walletOpen && <ModalBack zIndex={'10'} ref={ref} />}
       <WalletContainer
         visible={walletOpen}
-        className="dark:bg-[#262b2e] dark:text-white"
+        className="dark:bg-[#262b2e] dark:text-white "
       >
-        <header className="flex justify-between items-center w-full p-4 border-b-2 ">
+        <header className="flex justify-between items-center w-full p-4 border-b-2 dark:border-gray-500">
           <div className="flex justify-center items-center">
             <button
               onClick={() => dispatch(closeWallet())}
@@ -117,7 +117,7 @@ const WalletModal = () => {
         </header>
         <section className="p-4">
           <div className="flex flex-col justify-center items-center text-center">
-            <div className="flex flex-col justify-center items-center p-4 w-full gap-4 border-x-2 border-t-2 rounded-t-xl">
+            <div className="flex flex-col justify-center items-center p-4 w-full gap-4 border-x-2 border-t-2 rounded-t-xl dark:border-gray-500">
               <div>Total balance</div>
               <div>{totalbalance.toLocaleString()} ₩</div>
             </div>
@@ -126,28 +126,30 @@ const WalletModal = () => {
             </div>
           </div>
           {data.length > 0 ? (
-            <div className="border-2 rounded-lg mt-8">
+            <div className="border-2 rounded-lg mt-8 dark:border-gray-500">
               <ul>
                 {data.map((el, index) => {
                   return (
                     <li
                       key={index}
-                      className="flex justify-between items-center p-2 w-full border-b-2"
+                      className="flex justify-between items-center p-2 w-full border-b-2 dark:border-gray-500"
                     >
                       <div className=" w-6 h-6">
                         <img
-                          className="grow-0 w-full h-full"
+                          className="grow-0 w-full h-full rounded-full"
                           src={el.coinImage}
-                          alt=""
+                          alt="coinImage"
                         />
                       </div>
                       <div className="grow ml-1">{el.coinName}</div>
-                      <div className="flex  flex-col">
+                      <div className="flex flex-col">
                         <div>{el.coinCount}</div>
                         <div>
-                          {(
-                            el.coinCount * eachCoinPrice[index]
-                          ).toLocaleString()}
+                          {isNaN(el.coinCount * eachCoinPrice[index])
+                            ? '-- '
+                            : (
+                                el.coinCount * eachCoinPrice[index]
+                              ).toLocaleString()}
                           ₩
                         </div>
                       </div>

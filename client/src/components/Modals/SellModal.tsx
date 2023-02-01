@@ -95,7 +95,7 @@ const SellModal = () => {
       {sellOpen && (
         <SellModalContainer className="dark:bg-[#262b2e] dark:text-white">
           <form onSubmit={handleSubmit(onClickSubmit)} className="h-full">
-            <header className="flex justify-between items-center w-full px-4 py-2 border-b-2">
+            <header className="flex justify-between items-center w-full px-4 py-2 ">
               <h3 className="text-lg font-semibold">List for Sale</h3>
               <FontAwesomeIcon
                 className="cursor-pointer"
@@ -106,7 +106,7 @@ const SellModal = () => {
             <section>
               <div>
                 <img
-                  className="w-full border-b-2"
+                  className="w-full "
                   alt="nftimage"
                   src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
                 />
@@ -159,7 +159,6 @@ const SellModal = () => {
                     </div>
                   </div>
                 )}
-                {watch('itemPrice') < 0 && <span>s</span>}
               </div>
             </section>
             <footer className="p-3">

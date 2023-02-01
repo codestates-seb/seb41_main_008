@@ -32,6 +32,7 @@ const MobileDropdown = ({
     <MobileDropdownContainer
       visible={visible}
       onClick={() => setVisible(false)}
+      className="dark:bg-[#202225] dark:text-white "
     >
       {visible && children}
     </MobileDropdownContainer>
