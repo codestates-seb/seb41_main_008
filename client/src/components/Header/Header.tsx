@@ -1,7 +1,7 @@
 /* eslint-disable */
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, FormEvent } from 'react';
+import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,20 +22,29 @@ const SearchInput = styled.input`
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState<string>('');
+
   const navigate = useNavigate();
   const location = useLocation();
-  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-    console.log(e.target.value);
-  };
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && searchValue.trim().length > 0) {
-      navigate(`/search/query/${searchValue}`);
-    } else {
-      return;
-    }
+  // const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.key === 'Enter' && searchValue.trim().length > 0) {
+  //     navigate(`/search/query/${searchValue}`);
+  //   } else {
+  //     return;
+  //   }
+  // };
+
+  const params = { q: searchValue };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!searchValue.trim()) return;
+
+    navigate({
+      pathname: '/search',
+      search: `?${createSearchParams(params)}`,
+    });
   };
 
   const visibleHandler = () => {
@@ -76,16 +85,16 @@ const Header = () => {
       </div>
 
       <div className="w-full">
-        <SearchInput
-          value={searchValue}
-          onChange={handleChangeValue}
-          className="bg-transparent/5 font-normal placeholder-transparent/40 dark:bg-white dark:text-black"
-          placeholder="Search items, collections, and accounts..."
-          onKeyUp={handleEnter}
-        />
-        {/* <form onSubmit={handleSubmit}>
-        <button className='hidden' type="submit">sdfasdf</button>
-        </form> */}
+        <form onSubmit={handleSubmit}>
+          <SearchInput
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="bg-transparent/5 font-normal placeholder-transparent/40 dark:bg-white dark:text-black"
+            placeholder="Search items, collections, and accounts..."
+          />
+        </form>
+
+        <button type="submit" className="hidden" />
       </div>
       <Dropdown isScrolled={isScrolled} home={home} />
       <nav>

@@ -27,7 +27,8 @@ export default function Carousel() {
     return <p>An error has occurred: + {error.message}</p>;
 
   return (
-    <div className="p-[2rem] mt-[2rem]">
+    <div className="p-[2rem] mt-[2rem] space-y-2">
+      <h1 className="font-bold text-3xl">Notable Collections</h1>
       <Swiper
         spaceBetween={15}
         loop={true}

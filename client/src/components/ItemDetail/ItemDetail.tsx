@@ -11,11 +11,14 @@ import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
 import CountdownTimer from './CountDownTime/CountDown';
-import { getItemsData } from 'utils/api/api';
 import { useState, useEffect } from 'react';
 import Rechart from './Rechart';
 import Header from 'components/Header/Header';
 import Footer from 'components/Layout/Footer';
+import Notification from 'components/Notification';
+import { BsCheckCircleFill } from 'react-icons/bs';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { setCreateItemOpen } from 'store/toastSlice';
 
 export interface ItemProps {
   coinId: number;
@@ -60,17 +63,16 @@ const ButtonWrapper = styled.div`
 const Asset = () => {
   const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
+  const createItemOpen = useAppSelector((state) => state.toast.createItemOpen);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getItemsData(itemId).then((res) => setData(res.data));
-  }, [itemId]);
+    setTimeout(() => dispatch(setCreateItemOpen(false)), 5000);
 
-  useEffect(() => {
     const getItemsData = async () => {
       try {
         const res = await customAxios.get(`/api/items/${itemId}`);
         setData(res.data);
-        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err);
@@ -78,7 +80,7 @@ const Asset = () => {
     };
 
     getItemsData();
-  }, [itemId]);
+  }, [itemId, dispatch]);
 
   return (
     <div>
@@ -208,6 +210,14 @@ const Asset = () => {
       </div>
       <Header />
       <Footer />
+      <Notification open={createItemOpen} setOpen={setCreateItemOpen}>
+        <p className="flex items-center gap-1 text-emerald-700">
+          <span>
+            <BsCheckCircleFill className="h-7 w-7" />
+          </span>{' '}
+          Created!
+        </p>
+      </Notification>
     </div>
   );
 };
