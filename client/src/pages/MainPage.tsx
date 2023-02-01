@@ -25,7 +25,7 @@ const MainPage = () => {
       </div>
 
       <Top />
-      <Carousel title="Notable collections" page="3" />
+      <Carousel />
       <Footer />
       <Notification open={deleteUserOpen} setOpen={setDeleteUserOpen}>
         <p className="flex items-center gap-1 text-emerald-700">

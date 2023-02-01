@@ -10,11 +10,12 @@ import ItemDetailPage from 'pages/ItemDetailPage';
 import CreateItemPage from 'pages/CreateItemPage';
 import MyCollection from 'pages/MyCollection';
 import CreateCollectionPage from 'pages/CreateCollectionPage';
-import ProfilePage from 'pages/ProfilePage';
 import SuccessPaymentPage from 'pages/SuccessPaymentPage';
 import ScrollToTop from './utils/ScrollToTop';
 import Search from 'pages/Search';
 import AccountPage from 'pages/AccountPage';
+import EditProfile from 'pages/EditProfile';
+
 function App() {
   return (
     <div className="App dark:bg-[#202225] dark:text-white">
@@ -32,7 +33,7 @@ function App() {
             <Route path="asset/create" element={<CreateItemPage />} />
             <Route path="/items/:itemId" element={<ItemDetailPage />} />
             <Route path="/account/:memberId" element={<AccountPage />} />
-            <Route path="/account/profile" element={<ProfilePage />} />
+            <Route path="/account/profile" element={<EditProfile />} />
             <Route path="/success" element={<SuccessPaymentPage />} />
             <Route path="/search/query/:id" element={<Search />} />
             <Route path="*" element={<MissingPage />} />

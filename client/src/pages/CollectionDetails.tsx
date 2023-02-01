@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import customAxios from 'utils/api/axios';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { HiOutlineStar, HiShare } from 'react-icons/hi';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
@@ -11,6 +10,7 @@ import MissingPage from 'pages/MissingPage';
 import { useQuery } from '@tanstack/react-query';
 import Notification from 'components/Notification';
 import Header from 'components/Header/Header';
+import axios from 'axios';
 
 interface Item {
   itemDescription: string;
@@ -55,12 +55,17 @@ export default function CollectionDetails() {
   const { isLoading, error, data } = useQuery<Collection>({
     queryKey: ['collections', 'only', id],
     queryFn: () =>
-      customAxios.get(`/api/collections/only/${id}`).then((res) => res.data),
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/api/collections/only/${id}`)
+        .then((res) => res.data),
   });
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <MissingPage />;
+  if (error instanceof Error)
+    return <p>An error has occurred: + {error.message}</p>;
+
+  if (!data) return <MissingPage />;
 
   return (
     <>

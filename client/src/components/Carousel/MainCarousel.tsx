@@ -1,5 +1,4 @@
 import axios from 'axios';
-import styled from 'styled-components';
 import MainCollection from './MainCollection';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -7,61 +6,31 @@ import 'swiper/css/navigation';
 import { Navigation, Autoplay } from 'swiper';
 import { useQuery } from '@tanstack/react-query';
 
-interface urls {
-  raw: string;
+export interface ColInfo {
+  collectionId: number;
+  collectionName: string;
+  logoImgName: string;
+  coinImage: string;
 }
-
-interface Collections {
-  likes: number;
-  color: string;
-  urls: urls;
-  id: string;
-  width?: number;
-}
-
-const Container = styled.div`
-  padding: 4rem 2rem;
-
-  .swiper-button-prev,
-  .swiper-button-next {
-    color: white;
-    font-weight: 900;
-    border-radius: 50%;
-    padding: 1.5rem;
-    background-color: rgb(0 0 0 / 0.5);
-  }
-
-  .swiper-button-prev:hover,
-  .swiper-button-next:hover {
-    color: black;
-    background-color: white;
-    box-shadow: rgb(0 0 0 / 15%) 0px 4px 10px;
-  }
-
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 1.5rem;
-  }
-`;
 
 export default function MainCarousel() {
-  const { isLoading, error, data } = useQuery<Collections[]>({
-    queryKey: [{ per_page: 12 }],
+  const { isLoading, error, data } = useQuery<ColInfo[]>({
+    queryKey: ['collections', 'main', { page: 1, size: 12 }],
     queryFn: () =>
       axios
         .get(
-          'https://api.unsplash.com/photos/?client_id=SpTi-Now1Qi7BMcG3T1Uv84bU0y0w2uzLx1PWV3wz5g&per_page=12'
+          `${process.env.REACT_APP_API_URL}/api/collections/main?page=1&size=12`
         )
         .then((res) => res.data),
   });
-
+  console.log(data);
   if (isLoading) return <p>Loading...</p>;
 
   if (error instanceof Error)
     return <p>An error has occurred: + {error.message}</p>;
 
   return (
-    <Container>
+    <div className="py-[4rem] px-[2rem]">
       <h1 className="text-indigo-900 text-center font-black text-4xl my-10 dark:text-white">
         Explore, collect, and sell NFTs
       </h1>
@@ -94,18 +63,19 @@ export default function MainCarousel() {
             slidesPerGroup: 4,
           },
         }}
-        className="rounded-2xl"
+        className="rounded-2xl main-carousel"
       >
-        {data?.map((collection) => (
-          <SwiperSlide key={collection.id}>
+        {data?.map((col) => (
+          <SwiperSlide key={col.collectionId}>
             <MainCollection
-              url={collection.urls?.raw + '&w=500&auto=format'}
-              price={collection.likes}
-              name={collection.color}
+              id={col.collectionId}
+              name={col.collectionName}
+              logo={process.env.REACT_APP_IMAGE + col.logoImgName}
+              coin={col.coinImage}
             />
           </SwiperSlide>
         ))}
       </Swiper>
-    </Container>
+    </div>
   );
 }

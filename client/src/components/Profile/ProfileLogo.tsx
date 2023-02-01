@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import customAxios from 'utils/api/axios';
 
@@ -17,7 +17,7 @@ export default function ProfileLogo({
   const [logoFile, setLogoFile] = useState<File | undefined>();
   const [logoTypeError, setLogoTypeError] = useState(false);
   const [logoSizeError, setLogoSizeError] = useState(false);
-  console.log(profileLogo);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -42,16 +42,14 @@ export default function ProfileLogo({
     }
   };
 
-  const queryClient = useQueryClient();
-
   const { mutate, isLoading, error } = useMutation({
     mutationFn: (file: FormData) =>
       customAxios
         .post(`${process.env.REACT_APP_API_URL}/images`, file)
         .then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['images'], { exact: true });
       setLogoName(data.imageName);
+      console.log(data.imageName);
     },
   });
 

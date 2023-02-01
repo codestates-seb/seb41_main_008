@@ -52,7 +52,7 @@ export default function CreateItem({
   const dispatch = useAppDispatch();
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [collections, setCollections] = useState<Collection[]>([]);
+  const [collections, setCollections] = useState<Collection[] | []>([]);
   const [item, setItem] = useState<SuccessResponse>();
   const navigate = useNavigate();
 
@@ -64,12 +64,14 @@ export default function CreateItem({
     resolver: yupResolver(schema),
   });
 
+  const id = window.localStorage.getItem('MEMBER_ID');
+
   const { isLoading: loading, error: err } = useQuery<Profile>({
-    queryKey: ['members', 'mypage'],
+    queryKey: ['members', id],
     queryFn: () =>
-      customAxios.get('/api/members/mypage').then((res) => res.data),
+      customAxios.get(`/api/members/${id}`).then((res) => res.data),
     onSuccess: (data) => {
-      if (data.collections) {
+      if (data.collections?.length) {
         setCollections(data.collections);
       }
     },
