@@ -23,7 +23,7 @@ export default function MainCarousel() {
         )
         .then((res) => res.data),
   });
-  console.log(data);
+
   if (isLoading) return <p>Loading...</p>;
 
   if (error instanceof Error)

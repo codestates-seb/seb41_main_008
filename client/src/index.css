@@ -450,14 +450,6 @@
   @apply w-full text-left pl-4 py-4;
 }
 
-.main-carousel {
-  overflow: visible !important;
-}
-
-.carousel {
-  overflow: visible !important;
-}
-
 .main-carousel:hover .swiper-button-prev {
   @apply opacity-100;
 }
@@ -477,7 +469,6 @@
     no-repeat;
   background-size: 50% auto;
   background-position: center;
-  left: -24px !important;
   @apply opacity-0 rounded-full p-[1.5rem] bg-white duration-300;
 }
 
@@ -486,7 +477,6 @@
     no-repeat;
   background-size: 50% auto;
   background-position: center;
-  right: -24px !important;
   @apply opacity-0 rounded-full p-[1.5rem] bg-white duration-300;
 }
 
