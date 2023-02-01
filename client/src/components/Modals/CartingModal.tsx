@@ -124,7 +124,10 @@ const CartingModal = () => {
   return (
     <>
       {isOpen && <ModalBack ref={ref} zIndex={'50'} />}
-      <ModalContainer visible={isOpen}>
+      <ModalContainer
+        visible={isOpen}
+        className="dark:bg-[#262b2e] dark:text-white"
+      >
         <header className="flex justify-between items-center text-2xl p-4 border-b-2">
           <span>Your cart</span>
           <FontAwesomeIcon

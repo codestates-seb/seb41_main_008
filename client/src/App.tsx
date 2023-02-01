@@ -17,7 +17,7 @@ import Search from 'pages/Search';
 import AccountPage from 'pages/AccountPage';
 function App() {
   return (
-    <div className="App">
+    <div className="App dark:bg-[#202225] dark:text-white">
       <BrowserRouter>
         <ScrollToTop />
         <Routes>

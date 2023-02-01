@@ -95,7 +95,7 @@ const TransActionModal = () => {
     <>
       {paymentOpen && <ModalBack zIndex={'60'} ref={ref} />}
       {paymentOpen && (
-        <TransActionContainer>
+        <TransActionContainer className="dark:bg-[#262b2e] dark:text-white">
           <header className="flex justify-between items-center w-full font-bold p-4 border-b-2">
             <div className="w-full text-center">Payment for NFT</div>
             <button onClick={() => dispatch(closePayment())}>x</button>

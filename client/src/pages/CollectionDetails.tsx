@@ -65,7 +65,7 @@ export default function CollectionDetails() {
   return (
     <>
       <Header />
-      <div className="space-y-16">
+      <div className="space-y-16 h-screen ">
         <section className="flex flex-col w-full">
           <div className="h-64 relative">
             <span className="absolute top-0 left-0 bottom-0 right-0">
@@ -85,12 +85,12 @@ export default function CollectionDetails() {
           </div>
         </section>
 
-        <section className="px-8 space-y-3 text-[#04111D]">
+        <section className="px-8 space-y-3 text-[#04111D] dark:text-white">
           <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">{data?.collectionName}</h1>
-            <div className="space-x-3 flex">
+            <div className="space-x-3 flex dark:text-black">
               <button className="shadowBtn">
-                <HiOutlineStar className="h-6 w-6" />
+                <HiOutlineStar className="h-6 w-6 " />
               </button>
               <button className="shadowBtn">
                 <HiShare className="h-6 w-6" />
@@ -143,7 +143,7 @@ export default function CollectionDetails() {
           <Cards id={id!} />
         ) : (
           <section className="border text-[#04111D] flex justify-center items-center border-gray-300 mx-8 h-64 rounded-lg">
-            <h2 className="text-3xl">No items to display</h2>
+            <h2 className="text-3xl dark:text-white">No items to display</h2>
           </section>
         )}
 

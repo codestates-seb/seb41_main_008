@@ -93,7 +93,7 @@ const SellModal = () => {
     <>
       {sellOpen && <ModalBack ref={ref} zIndex={'50'} />}
       {sellOpen && (
-        <SellModalContainer>
+        <SellModalContainer className="dark:bg-[#262b2e] dark:text-white">
           <form onSubmit={handleSubmit(onClickSubmit)} className="h-full">
             <header className="flex justify-between items-center w-full px-4 py-2 border-b-2">
               <h3 className="text-lg font-semibold">List for Sale</h3>
@@ -113,7 +113,7 @@ const SellModal = () => {
               </div>
               <div className="px-3 py-2">{data?.itemName}</div>
 
-              <div className="px-3">
+              <div className="px-3 font-bold">
                 <div
                   className={`${
                     errors.itemPrice ? 'border-red-500 ' : ''
@@ -121,7 +121,9 @@ const SellModal = () => {
                 >
                   <input
                     type="text"
-                    className={'w-full p-2 outline-none rounded-l-xl'}
+                    className={
+                      'w-full p-2 outline-none rounded-l-lg dark:bg-[#3d3d41]'
+                    }
                     required
                     {...register('itemPrice', {
                       pattern: /^[0-9.]*$/,
@@ -170,7 +172,7 @@ const SellModal = () => {
                     setIsChecked(e.target.checked);
                   }}
                 />
-                <label htmlFor="sellApprove" className="text-xs ml-1">
+                <label htmlFor="sellApprove" className="text-xs ml-1 font-bold">
                   판매등록 후 에는 철회 불가합니다. 동의하십니까?
                 </label>
               </div>

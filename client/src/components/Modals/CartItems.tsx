@@ -31,7 +31,7 @@ const CartItems = ({
     <li
       className={`${
         itemSoldout() ? 'opacity-50' : ''
-      } ${'flex p-2 items-center hover:bg-[#eef1f1] rounded-lg hover:shadow-md font-bold w-full'}`}
+      } ${'flex p-2 items-center hover:bg-[#eef1f1] rounded-lg hover:shadow-md font-bold w-full dark:hover:bg-[#363840]'}`}
     >
       <a
         className="w-3/12"
