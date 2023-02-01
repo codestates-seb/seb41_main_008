@@ -28,7 +28,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,9 +69,10 @@ public class CoinService {
     public List<MemberCoinResponse> getMemberCoinList(Long memberId) {
         List<CoinMemberRel> memberCoinList = coinMemberRelRepository.findAllByMemberId(memberId);
 
-        // 현재 가지고 있는 코인이 없을 경우 빈 배열 리턴
+        // 현재 가지고 있는 코인이 없을 경우 멤버 값만 있는 객체 생성 후 리턴
         if (memberCoinList.isEmpty()) {
-            return new ArrayList<>();
+            Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
+            return List.of(MemberCoinResponse.ofMember(member));
         }
 
         List<MemberCoinResponse> responses = memberCoinList.stream()

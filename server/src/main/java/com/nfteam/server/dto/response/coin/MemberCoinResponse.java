@@ -1,6 +1,7 @@
 package com.nfteam.server.dto.response.coin;
 
 import com.nfteam.server.domain.coin.entity.CoinMemberRel;
+import com.nfteam.server.domain.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -32,6 +33,17 @@ public class MemberCoinResponse implements Comparable<MemberCoinResponse> {
                 .coinName(rel.getCoin().getCoinName())
                 .coinImage(rel.getCoin().getCoinImage())
                 .coinCount(rel.getCoinCount())
+                .build();
+    }
+
+    public static MemberCoinResponse ofMember(Member member) {
+        return MemberCoinResponse.builder()
+                .memberId(member.getMemberId())
+                .nickname(member.getNickname())
+                .coinId(0L)
+                .coinName("")
+                .coinImage("")
+                .coinCount(0.0)
                 .build();
     }
 
