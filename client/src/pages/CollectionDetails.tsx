@@ -57,7 +57,7 @@ export default function CollectionDetails() {
     queryFn: () =>
       customAxios.get(`/api/collections/only/${id}`).then((res) => res.data),
   });
-  console.log(data);
+
   if (isLoading) return <p>Loading...</p>;
 
   if (error) return <MissingPage />;

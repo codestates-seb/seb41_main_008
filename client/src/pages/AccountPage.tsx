@@ -46,6 +46,7 @@ const AccountPage = () => {
     queryFn: () =>
       customAxios.get(`/api/members/${memberId}`).then((res) => res.data),
   });
+
   console.log(data);
   const onFilter = (filterType: string) => {
     setFilter(filterType);
@@ -121,19 +122,10 @@ const AccountPage = () => {
                 data?.items.map((el: any) => {
                   return (
                     <Card
-                      ownerId={el.ownerId}
                       key={el.itemId}
                       data={data.items}
-                      onSale={el.onSale}
                       filter={filter}
-                      itemId={el.itemId}
-                      collectionName={el.collectionName}
-                      logoImgName={el.logoImgName}
-                      itemImageName={el.itemImageName}
-                      itemPrice={el.itemPrice}
-                      itemDescription={el.itemDescription}
-                      coinName={el.coinName}
-                      itemName={el.itemName}
+                      {...el}
                     />
                   );
                 })
