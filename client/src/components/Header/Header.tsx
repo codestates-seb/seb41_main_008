@@ -72,11 +72,11 @@ const Header = () => {
        ${!isScrolled && home && !walletState && 'bg-[#FED7C8]'}`}
     >
       <div className="flex items-center gap-2 mr-2">
-        <Link to={'/'} className="w-12 h-12 object-cover">
+        <Link to={'/'} className="w-12 h-12">
           <img
             src={logo}
-            alt=""
-            className="w-full h-full  rounded-full object-cover bg-[#202225]"
+            alt="Logo"
+            className="w-full h-full rounded-full object-cover bg-[#202225]"
           />
         </Link>
         <Link to={'/'}>NFTeam</Link>

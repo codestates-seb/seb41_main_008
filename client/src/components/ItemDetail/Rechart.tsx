@@ -29,8 +29,8 @@ export default function Example({ data }: { data: ItemProps | undefined }) {
         margin={{
           top: 8,
           right: 30,
-          left: 20,
-          bottom: 5,
+          bottom: 1,
+          left:2,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />

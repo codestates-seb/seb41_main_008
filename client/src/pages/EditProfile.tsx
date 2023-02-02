@@ -10,6 +10,13 @@ import Header from 'components/Header/Header';
 export default function EditProfile() {
   const id = window.localStorage.getItem('MEMBER_ID');
 
+  const [profileLogo, setProfileLogo] = useState<string>('');
+  const [profileBanner, setProfileBanner] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
+  const [desc, setDesc] = useState<string>('');
+  const [logoName, setLogoName] = useState<string>('');
+  const [bannerName, setBannerName] = useState<string>('');
+
   const { isLoading, error, data } = useQuery<UserType>({
     queryKey: ['members', id],
     queryFn: () =>
@@ -21,13 +28,6 @@ export default function EditProfile() {
       setDesc(data.member.description);
     },
   });
-
-  const [profileLogo, setProfileLogo] = useState<string>('');
-  const [profileBanner, setProfileBanner] = useState<string>('');
-  const [nickname, setNickname] = useState<string>('');
-  const [desc, setDesc] = useState<string>('');
-  const [logoName, setLogoName] = useState<string>('');
-  const [bannerName, setBannerName] = useState<string>('');
 
   return (
     <>

@@ -41,6 +41,7 @@ const Dropdown = ({ isScrolled, home }: Props) => {
   const { isLogin } = useAppSelector((state) => state.login);
   const walletState = useAppSelector((state) => state.modal.walletOpen);
   const id = window.localStorage.getItem('MEMBER_ID');
+
   const { data } = useQuery<UserType>({
     queryKey: ['members', id],
     queryFn: () => customAxios.get(`api/members/${id}`).then((res) => res.data),
@@ -53,7 +54,7 @@ const Dropdown = ({ isScrolled, home }: Props) => {
           {isLogin ? (
             <>
               <button
-                onClick={() => navigate(`/account/${data?.member.memberId}`)}
+                onClick={() => navigate(`/account/${id}`)}
                 className="w-8 h-8"
               >
                 <img
