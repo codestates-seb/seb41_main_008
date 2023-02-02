@@ -1,11 +1,3 @@
-/* eslint-disable */
-import { ReactComponent as LogoWhite } from '../../assets/icons/logo-white.svg';
-import { ReactComponent as TwitterIcon } from '../../assets/icons/twitter.svg';
-import { ReactComponent as InstagramIcon } from '../../assets/icons/instagram.svg';
-import { ReactComponent as DiscordIcon } from '../../assets/icons/discord.svg';
-import { ReactComponent as RedditIcon } from '../../assets/icons/reddit.svg';
-import { ReactComponent as YoutubeIcon } from '../../assets/icons/youtube.svg';
-import { ReactComponent as TiktokIcon } from '../../assets/icons/tiktok.svg';
 import profile1 from '../../assets/profile/65396939.png';
 import profile2 from '../../assets/profile/2.png';
 import profile3 from '../../assets/profile/3.png';
@@ -29,12 +21,13 @@ const Footer = () => {
           <form className={styles.form}></form>
         </div>
         <div className={styles.socials}>
-          <h2>Contributor's github</h2>
+          <h2>Contributor{"'"}s github</h2>
           <div>
             <a
               href="https://github.com/jaehak24"
               target="_blank"
               className={styles.socialLink}
+              rel="noreferrer"
             >
               <button className={styles.socialBtn}>
                 <img className="rounded-full " src={profile1} alt="profile1" />
@@ -45,6 +38,7 @@ const Footer = () => {
               href="https://github.com/sojeongLee0125"
               target="_blank"
               className={styles.socialLink}
+              rel="noreferrer"
             >
               <button className={styles.socialBtn}>
                 <img className="rounded-full " src={profile2} alt="profile2" />
@@ -55,6 +49,7 @@ const Footer = () => {
               href="https://github.com/ShinHB417"
               target="_blank"
               className={styles.socialLink}
+              rel="noreferrer"
             >
               <button className={styles.socialBtn}>
                 <img className="rounded-full " src={profile3} alt="profile3" />
@@ -65,6 +60,7 @@ const Footer = () => {
               href="https://github.com/taejinii"
               target="_blank"
               className={styles.socialLink}
+              rel="noreferrer"
             >
               <button className={styles.socialBtn}>
                 <img className="rounded-full " src={profile4} alt="profile4" />
@@ -75,6 +71,7 @@ const Footer = () => {
               href="https://github.com/kongalabear"
               target="_blank"
               className={styles.socialLink}
+              rel="noreferrer"
             >
               <button className={styles.socialBtn}>
                 <img className="rounded-full " src={profile5} alt="profile5" />
@@ -85,6 +82,7 @@ const Footer = () => {
               href="https://github.com/Valentin1495"
               target="_blank"
               className={styles.socialLink}
+              rel="noreferrer"
             >
               <button className={styles.socialBtn}>
                 <img className="rounded-full " src={profile6} alt="profile6" />
@@ -98,16 +96,18 @@ const Footer = () => {
         <p className={styles.copyright}>© 2022 - 2023 NFTeam, Inc</p>
         <div>
           <a
-            href="https://github.com/codestates-seb/seb41_main_008"
+            href="https://www.notion.so/codestates/41-TEAM-008-NFTEAM-b5519f19a8c1470cbb5ca29167f5a02a"
             target="_blank"
             className={styles.policy}
+            rel="noreferrer"
           >
             Guide
           </a>
           <a
-            href="https://www.notion.so/codestates/41-TEAM-008-NFTEAM-b5519f19a8c1470cbb5ca29167f5a02a"
+            href="https://github.com/codestates-seb/seb41_main_008"
             target="_blank"
             className={styles.policy}
+            rel="noreferrer"
           >
             Github
           </a>
