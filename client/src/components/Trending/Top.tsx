@@ -1,11 +1,18 @@
 /* eslint-disable */
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
+import Coin from '../Trending/Coin';
 import DayDropDown from './DayDropDown';
+import CoinFilter from './CoinFilter';
 
 const Home = () => {
   const [option, setOption] = useState('DAY');
+  const [coinId, setCoin] = useState(1);
+  const [activeTab, setActiveTab] = useState('trending');
+    const onTabChange = (tab: SetStateAction<string>) => {
+      setActiveTab(tab);
+    };
   return (
     <main className={`${styles.gridContainer} `}>
       <section
@@ -15,13 +22,29 @@ const Home = () => {
           <div className={styles.tabContainer}>
             <button
               className={`${styles.tabBtn} ${
-                styles.tabBtnActive
+               activeTab === 'trending' && styles.tabBtnActive
               } ${'dark:text-white'}`}
+              onClick={() => onTabChange('trending')}
             >
               TOP
             </button>
+            <button
+              className={`${styles.tabBtn} ${
+                activeTab === 'top' && styles.tabBtnActive
+              }`}
+              onClick={() => onTabChange('top')}
+            >
+              COIN
+            </button>
           </div>
-          <div></div>
+          <div>
+            <CoinFilter
+              setCoin={setCoin}
+              onCoinClick={() => {
+                console.log(coinId);
+              }}
+            />
+          </div>
           <div>
             <DayDropDown
               setOption={setOption}
@@ -31,7 +54,22 @@ const Home = () => {
             />
           </div>
         </header>
-        <Trending option={option} />
+
+        {activeTab === 'trending' && (
+          <>
+            <div>
+              <Trending option={option} />
+            </div>
+          </>
+        )}
+
+        {activeTab === 'top' && (
+          <>
+            <div>
+              <Coin coinId={coinId} />
+            </div>
+          </>
+        )}
       </section>
     </main>
   );

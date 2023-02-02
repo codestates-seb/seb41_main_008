@@ -10,7 +10,6 @@ const DayDropdown: FC<{
   onOptionClick: (option: string) => void;
 }> = ({ setOption, onOptionClick }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-   const [current, setCurrent] = useState();
   const showDropDown = isExpanded;
   const showDropUP = !isExpanded;
   const options = ['DAY', 'WEEK', 'MONTH'];

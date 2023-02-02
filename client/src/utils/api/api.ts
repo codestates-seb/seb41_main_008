@@ -29,6 +29,10 @@ export const getRaingkingData = async (time: string | number | undefined) => {
   return await customAxios.get(`/api/ranking/time/${time}`);
 };
 
+export const getCoinData = async (coinId: string | number | undefined) => {
+  return await customAxios.get(`/api/ranking/time/${coinId}`);
+};
+
 export const getSearchdata = async (
   keyword: string | number | undefined,
   page: string | number | undefined,
