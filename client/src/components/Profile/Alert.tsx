@@ -10,7 +10,7 @@ export default function Alert({ id }: { id: number | undefined }) {
 
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: (id: string) => customAxios.delete(`api/members/${id}`),
+    mutationFn: (id: number) => customAxios.delete(`api/members/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries(['members', id]);
       navigate('/');
@@ -20,7 +20,7 @@ export default function Alert({ id }: { id: number | undefined }) {
   const dispatch = useAppDispatch();
 
   const deleteAccount = () => {
-    mutate(id?.toString()!);
+    mutate(id!);
     dispatch(setDeleteUserOpen(true));
   };
 

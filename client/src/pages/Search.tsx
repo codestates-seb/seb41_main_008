@@ -44,7 +44,7 @@ export default function Search() {
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
-  console.log(data);
+
   return status === 'loading' ? (
     <>
       <Header />
@@ -59,10 +59,10 @@ export default function Search() {
     <>
       <Header />
       <div className="mt-32 px-8">
-        <em className="text-lg">Results for {query}</em>
-        <ColResults cols={data?.pages[0].collections} />
         {data?.pages?.map((page, idx) => (
           <>
+            <em className="text-lg">Results for {query}</em>
+            <ColResults cols={page.collections} />
             <h5 className="ml-3.5 mt-8 font-bold text-lg">
               {page.items.data.length} items
             </h5>
