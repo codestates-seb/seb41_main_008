@@ -81,7 +81,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .leftJoin(item.collection)
                 .leftJoin(item.member)
                 .where(item.collection.collectionId.eq(collectionId))
-                .orderBy(item.onSale.desc(), item.itemPrice.asc())
+                .orderBy(item.onSale.desc(), item.itemPrice.asc(), item.itemId.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
