@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import customAxios from 'utils/api/axios';
 
@@ -42,15 +42,10 @@ export default function ProfileBanner({
     }
   };
 
-  const queryClient = useQueryClient();
-
   const { mutate, isLoading, error } = useMutation({
     mutationFn: (file: FormData) =>
-      customAxios
-        .post(`${process.env.REACT_APP_API_URL}/images`, file)
-        .then((res) => res.data),
+      customAxios.post('/images', file).then((res) => res.data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['images'], { exact: true });
       setBannerName(data.imageName);
     },
   });
