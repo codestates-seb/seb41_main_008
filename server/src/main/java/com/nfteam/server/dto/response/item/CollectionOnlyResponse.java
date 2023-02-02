@@ -81,10 +81,14 @@ public class CollectionOnlyResponse {
                             Double lowestPrice,
                             Integer ownerCount) {
         this.itemCount = itemCount;
-        this.totalVolume = totalVolume;
+        this.totalVolume = convertNumber(totalVolume);
         this.highestPrice = highestPrice;
         this.lowestPrice = lowestPrice;
         this.ownerCount = ownerCount;
+    }
+
+    private Double convertNumber(Double num) {
+        return Double.parseDouble(String.valueOf(Math.round(num)));
     }
 
 }

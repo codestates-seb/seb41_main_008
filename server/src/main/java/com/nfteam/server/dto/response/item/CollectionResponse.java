@@ -68,7 +68,7 @@ public class CollectionResponse {
                             Double lowestPrice,
                             Integer ownerCount) {
         this.itemCount = itemCount;
-        this.totalVolume = totalVolume;
+        this.totalVolume = convertNumber(totalVolume);
         this.highestPrice = highestPrice;
         this.lowestPrice = lowestPrice;
         this.ownerCount = ownerCount;
@@ -77,5 +77,10 @@ public class CollectionResponse {
     public void addItemResponseList(List<CollectionItemResponse> items) {
         this.itemList = items;
     }
+
+    private Double convertNumber(Double num) {
+        return Double.parseDouble(String.valueOf(Math.round(num)));
+    }
+
 
 }
