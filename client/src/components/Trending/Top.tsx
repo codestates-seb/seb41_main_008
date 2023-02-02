@@ -3,7 +3,6 @@ import { useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
 import DayDropDown from './DayDropDown';
-import CoinFilter from './CoinFilter';
 
 const Home = () => {
   const [option, setOption] = useState('DAY');
@@ -22,7 +21,7 @@ const Home = () => {
               TOP
             </button>
           </div>
-          <div>{/* <CoinFilter  /> */}</div>
+          <div></div>
           <div>
             <DayDropDown
               setOption={setOption}

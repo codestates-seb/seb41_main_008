@@ -20,51 +20,96 @@ const Footer = () => {
     <footer className={`${styles.footer} ${'dark:bg-[#04121d]'}`}>
       <div className={`${styles.flexContainer} ${styles.row}`}>
         <div className={styles.newsletter}>
-          <h2>Introducing Page</h2>
+          <h2>About Project.</h2>
           <p>
-            Our product ideas have been primarily built on financial instruments
-            that build NFTs.With multiple Financial Instruments as the lever and
-            NFT trading as the fulcrum, stimulate, maintain and accelerate the
-            growth of NFT liquidity in a phased
+            Hello. We are NFTEAM. We wanted to make one-stop NFT Trade SHOP. You
+            can do all From coin purchases To NFT transactions right here. Make
+            your own NFT And Own your own NFT.
           </p>
           <form className={styles.form}></form>
         </div>
         <div className={styles.socials}>
           <h2>Contributor's github</h2>
           <div>
-            <a href="https://github.com/jaehak24" className={styles.socialLink}>
+            <a
+              href="https://github.com/jaehak24"
+              target="_blank"
+              className={styles.socialLink}
+            >
               <button className={styles.socialBtn}>
                 <img className="rounded-full " src={profile1} alt="profile1" />
               </button>
             </a>
-            <button className={styles.socialBtn}>
-              <img className="rounded-full " src={profile2} alt="profile2" />
-              <p></p>
-            </button>
-            <button className={styles.socialBtn}>
-              <img className="rounded-full " src={profile3} alt="profile3" />
-            </button>
-            <button className={styles.socialBtn}>
-              <img className="rounded-full " src={profile4} alt="profile4" />
-            </button>
-            <button className={styles.socialBtn}>
-              <img className="rounded-full " src={profile5} alt="profile5" />
-            </button>
-            <button className={styles.socialBtn}>
-              <img className="rounded-full " src={profile6} alt="profile6" />
-            </button>
+
+            <a
+              href="https://github.com/sojeongLee0125"
+              target="_blank"
+              className={styles.socialLink}
+            >
+              <button className={styles.socialBtn}>
+                <img className="rounded-full " src={profile2} alt="profile2" />
+              </button>
+            </a>
+
+            <a
+              href="https://github.com/ShinHB417"
+              target="_blank"
+              className={styles.socialLink}
+            >
+              <button className={styles.socialBtn}>
+                <img className="rounded-full " src={profile3} alt="profile3" />
+              </button>
+            </a>
+
+            <a
+              href="https://github.com/taejinii"
+              target="_blank"
+              className={styles.socialLink}
+            >
+              <button className={styles.socialBtn}>
+                <img className="rounded-full " src={profile4} alt="profile4" />
+              </button>
+            </a>
+
+            <a
+              href="https://github.com/kongalabear"
+              target="_blank"
+              className={styles.socialLink}
+            >
+              <button className={styles.socialBtn}>
+                <img className="rounded-full " src={profile5} alt="profile5" />
+              </button>
+            </a>
+
+            <a
+              href="https://github.com/Valentin1495"
+              target="_blank"
+              className={styles.socialLink}
+            >
+              <button className={styles.socialBtn}>
+                <img className="rounded-full " src={profile6} alt="profile6" />
+              </button>
+            </a>
           </div>
           <div></div>
         </div>
       </div>
       <div className={styles.copyrightContainer}>
-        <p className={styles.copyright}>© 2018 - 2023 Ozone Networks, Inc</p>
+        <p className={styles.copyright}>© 2022 - 2023 NFTeam, Inc</p>
         <div>
-          <a href="/" className={styles.policy}>
-            Privacy Policy
+          <a
+            href="https://github.com/codestates-seb/seb41_main_008"
+            target="_blank"
+            className={styles.policy}
+          >
+            Guide
           </a>
-          <a href="/" className={styles.policy}>
-            Terms of Service
+          <a
+            href="https://www.notion.so/codestates/41-TEAM-008-NFTEAM-b5519f19a8c1470cbb5ca29167f5a02a"
+            target="_blank"
+            className={styles.policy}
+          >
+            Github
           </a>
         </div>
       </div>

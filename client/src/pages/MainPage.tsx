@@ -35,6 +35,8 @@ const MainPage = () => {
           Deleted!
         </p>
       </Notification>
+      
+      
     </div>
   );
 };
