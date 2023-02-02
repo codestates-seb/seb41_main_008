@@ -17,7 +17,7 @@ import styles from './Footer.module.css';
 
 const Footer = () => {
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} ${'dark:bg-[#04121d]'}`}>
       <div className={`${styles.flexContainer} ${styles.row}`}>
         <div className={styles.newsletter}>
           <h2>Introducing Page</h2>

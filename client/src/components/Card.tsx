@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { GrStatusGoodSmall } from 'react-icons/gr';
 import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
 type cartBtnType = {
@@ -41,7 +42,7 @@ const HideWrapper = styled.div<cartBtnType>`
     visibility: ${(props) => (props.hide ? 'visible' : 'hidden')};
     opacity: ${(props) => (props.hide ? '1' : '0')};
     transform: ${(props) =>
-      props.hide ? 'translateY(0px)' : 'translateY(20px)'};
+      props.hide ? 'translateY(0px)' : 'translateY(10px)'};
   }
 `;
 const Card = ({
@@ -59,11 +60,9 @@ const Card = ({
   ownerId,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
-  console.log('data', data);
-  console.log(ownerId);
   return (
     <>
-      <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold dark:bg-[#363840] dark:text-white">
+      <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold dark:bg-[#363840] dark:text-white h-full">
         <article
           onMouseEnter={() => {
             setHide(true);
@@ -93,7 +92,6 @@ const Card = ({
             </div>
             <div className="flex flex-col p-4 rounded-b-xl gap-2">
               <div>{itemName}</div>
-              <div>{collectionName}</div>
               <div className="flex">
                 {onSale && <span className="mr-2">{itemPrice}</span>}
 
@@ -102,11 +100,16 @@ const Card = ({
                   {/* <img alt="coinImage" src={coinImage} /> */}
                 </span>
               </div>
-              {onSale && (
-                <div className="flex justify-center items-center bg-black bg-opacity-40 w-full rounded-full">
-                  OnSale
+              {onSale ? (
+                <div
+                  className={`${
+                    onSale ? 'visible' : 'hidden'
+                  } ${'flex  justify-center items-center w-24 rounded-full bg-green-300 dark:bg-emerald-700 text-green-700 font-bold dark:text-white'}`}
+                >
+                  <GrStatusGoodSmall className="text-emerald-700 animate-ping w-2 h-2  dark:text-emerald-500" />
+                  <span className="m-1">OnSale</span>
                 </div>
-              )}
+              ) : null}
             </div>
           </Link>
 

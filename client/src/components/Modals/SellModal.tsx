@@ -104,9 +104,9 @@ const SellModal = () => {
               />
             </header>
             <section>
-              <div>
+              <div className="flex h-[450px]">
                 <img
-                  className="w-full "
+                  className="h-full w-full"
                   alt="nftimage"
                   src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
                 />
