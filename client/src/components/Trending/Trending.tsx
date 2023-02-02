@@ -74,10 +74,10 @@ const TrendingChart = ({ option }: { option: string }) => {
                           {topData.collectionName}
                         </div>
                         <div className="priceTopColl">
-                          <div className="fPtC">Floor price:</div>
+                          <div className="fPtC">HighestPrice: </div>
                           <div className="pTopColl">
-                            <img src={topData.coinImage} alt="EthLogo" />{' '}
-                            {topData.totalVolume.toFixed(2)}
+                            <img src={topData.coinImage} alt="EthLogo" />
+                            {topData.highestPrice}
                           </div>
                         </div>
                       </div>
@@ -86,7 +86,7 @@ const TrendingChart = ({ option }: { option: string }) => {
                       <span>{topData.coinName}</span>
                       <div className="pTopColl">
                         <img src={topData.coinImage} alt="EthLogo" />{' '}
-                        {topData.highestPrice.toFixed(1)}
+                        {topData.totalVolume.toFixed(2)}
                       </div>
                     </div>
                   </div>

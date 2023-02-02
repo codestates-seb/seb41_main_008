@@ -1,9 +1,7 @@
-/* eslint-disable */
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import styled from 'styled-components';
 import customAxios from 'utils/api/axios';
-import ETHIcon from '../../assets/icons/PurchaseIcons/ETH';
 import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
 import HeartIcon from '../../assets/icons/PurchaseIcons/Heart';
 import OfferIcon from '../../assets/icons/PurchaseIcons/Offer';
@@ -13,14 +11,14 @@ import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
 import CountdownTimer from './CountDownTime/CountDown';
-import { getItemsData } from 'utils/api/api';
-import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useAppSelector } from 'hooks/hooks';
 import Rechart from './Rechart';
-import { date } from 'yup';
 import Header from 'components/Header/Header';
 import Footer from 'components/Layout/Footer';
+import Notification from 'components/Notification';
+import { BsCheckCircleFill } from 'react-icons/bs';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { setCreateItemOpen } from 'store/toastSlice';
 
 export interface ItemProps {
   coinId: number;
@@ -65,17 +63,16 @@ const ButtonWrapper = styled.div`
 const Asset = () => {
   const [data, setData] = useState<ItemProps>();
   const { itemId } = useParams();
+  const createItemOpen = useAppSelector((state) => state.toast.createItemOpen);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getItemsData(itemId).then((res) => setData(res.data));
-  }, [itemId]);
+    setTimeout(() => dispatch(setCreateItemOpen(false)), 5000);
 
-  useEffect(() => {
     const getItemsData = async () => {
       try {
         const res = await customAxios.get(`/api/items/${itemId}`);
         setData(res.data);
-        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err);
@@ -83,7 +80,7 @@ const Asset = () => {
     };
 
     getItemsData();
-  }, [itemId]);
+  }, [itemId, dispatch]);
 
   return (
     <div>
@@ -132,9 +129,7 @@ const Asset = () => {
               <div className="asset__meta">
                 <div className="asset__meta__item">
                   Owned by{' '}
-                  <Link to={`/collection/${itemId}`}>
-                    <a>{data?.ownerName}</a>
-                  </Link>
+                  <Link to={`/collection/${itemId}`}>{data?.ownerName}</Link>
                 </div>
                 <div className="asset__meta__item">
                   <EyeIcon /> 0 views
@@ -187,7 +182,7 @@ const Asset = () => {
                     </thead>
                     <tbody>
                       {data?.tradeHistory.map((item) => (
-                        <tr>
+                        <tr key={item.buyerId}>
                           <td>
                             <div className="price">
                               <img
@@ -215,6 +210,14 @@ const Asset = () => {
       </div>
       <Header />
       <Footer />
+      <Notification open={createItemOpen} setOpen={setCreateItemOpen}>
+        <p className="flex items-center gap-1 text-emerald-700">
+          <span>
+            <BsCheckCircleFill className="h-7 w-7" />
+          </span>{' '}
+          Created!
+        </p>
+      </Notification>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './Top.module.css';
 import Trending from '../Trending/Trending';
 import DayDropDown from './DayDropDown';
-import CoinFilter from './CoinFilter';
+
 
 
 
@@ -26,7 +26,6 @@ const Home = () => {
             </button>
           </div>
           <div>
-            {/* <CoinFilter  /> */}
           </div>
           <div>
             <DayDropDown
