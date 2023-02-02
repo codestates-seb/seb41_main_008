@@ -13,6 +13,7 @@ import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.domain.transaction.repository.TransActionRepository;
 import com.nfteam.server.dto.request.item.ItemCreateRequest;
 import com.nfteam.server.dto.request.item.ItemSellRequest;
+import com.nfteam.server.dto.response.common.SliceResponse;
 import com.nfteam.server.dto.response.item.ItemPriceHistoryResponse;
 import com.nfteam.server.dto.response.item.ItemResponse;
 import com.nfteam.server.dto.response.item.ItemTradeHistoryResponse;
@@ -22,8 +23,8 @@ import com.nfteam.server.exception.item.ItemCreateRequestNotValidException;
 import com.nfteam.server.exception.item.ItemNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.security.userdetails.MemberDetails;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -166,8 +167,14 @@ public class ItemService {
         return memberItems;
     }
 
-    public Page<ItemResponse> getCollectionItemList(Long collectionId, Pageable pageable) {
-        return itemRepository.findItemResponsePageByCollectionId(collectionId, pageable);
+    public SliceResponse<ItemResponse> getCollectionItemList(Long collectionId, Pageable pageable) {
+        Slice<ItemResponse> slice = itemRepository.findItemSliceResponseByCollectionId(collectionId, pageable);
+
+        if (slice.isEmpty()) {
+            return new SliceResponse<>(false, slice.getContent());
+        }
+
+        return new SliceResponse<>(true, slice.getContent());
     }
 
 }

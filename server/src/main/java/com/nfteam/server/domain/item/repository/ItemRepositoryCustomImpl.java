@@ -5,9 +5,7 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -75,6 +73,22 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return new PageImpl<>(contents, pageable, total);
     }
 
+    @Override
+    public Slice<ItemResponse> findItemSliceResponseByCollectionId(Long collectionId, Pageable pageable) {
+        List<ItemResponse> responses = jpaQueryFactory
+                .select(getItemResponseConstructor())
+                .from(item)
+                .leftJoin(item.collection)
+                .leftJoin(item.member)
+                .where(item.collection.collectionId.eq(collectionId))
+                .orderBy(item.onSale.desc(), item.itemId.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+        return toSlice(pageable, responses);
+    }
+
     private ConstructorExpression<ItemResponse> getItemResponseConstructor() {
         return Projections.constructor(ItemResponse.class,
                 item.collection.collectionId,
@@ -91,6 +105,14 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 item.itemDescription,
                 item.onSale,
                 item.itemPrice);
+    }
+
+    private <T> Slice<T> toSlice(Pageable pageable, List<T> items) {
+        if (items.size() > pageable.getPageSize()) {
+            items.remove(items.size() - 1);
+            return new SliceImpl<>(items, pageable, true);
+        }
+        return new SliceImpl<>(items, pageable, false);
     }
 
 }
