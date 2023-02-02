@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -116,11 +115,18 @@ public class CollectionService {
         Double totalVolume = items.stream().mapToDouble(i -> i.getItemPrice()).sum();
         Long ownerCount = items.stream().map(i -> i.getMember()).distinct().count();
 
-        Stream<Item> SalesItemStream = items.stream().filter(i -> i.getOnSale());
-        double highestPrice = SalesItemStream.mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
+        // 판매중인 상품들의 경우만 최고가 최저가 계산
+        List<Item> salesItems = items.stream().filter(i -> i.getOnSale()).collect(Collectors.toList());
+        Double highestPrice;
+        Double lowestPrice;
 
-        Stream<Item> SalesItemStream2 = items.stream().filter(i -> i.getOnSale());
-        double lowestPrice = SalesItemStream2.mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+        if (!salesItems.isEmpty()) {
+            highestPrice = salesItems.stream().mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
+            lowestPrice = salesItems.stream().mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+        } else {
+            highestPrice = 0.0;
+            lowestPrice = 0.0;
+        }
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }
@@ -145,11 +151,18 @@ public class CollectionService {
         Double totalVolume = items.stream().mapToDouble(i -> i.getItemPrice()).sum();
         Long ownerCount = items.stream().map(i -> i.getMember()).distinct().count();
 
-        Stream<Item> SalesItemStream = items.stream().filter(i -> i.getOnSale());
-        double highestPrice = SalesItemStream.mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
+        // 판매중인 상품들의 경우만 최고가 최저가 계산
+        List<Item> salesItems = items.stream().filter(i -> i.getOnSale()).collect(Collectors.toList());
+        Double highestPrice;
+        Double lowestPrice;
 
-        Stream<Item> SalesItemStream2 = items.stream().filter(i -> i.getOnSale());
-        double lowestPrice = SalesItemStream2.mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+        if (!salesItems.isEmpty()) {
+            highestPrice = salesItems.stream().mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
+            lowestPrice = salesItems.stream().mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+        } else {
+            highestPrice = 0.0;
+            lowestPrice = 0.0;
+        }
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
     }
