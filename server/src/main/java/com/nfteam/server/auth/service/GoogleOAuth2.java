@@ -43,12 +43,14 @@ public class GoogleOAuth2 implements OAuth2 {
     public SocialLoginResponse proceedLogin(String token) {
         ResponseEntity<String> userInfoResponse = createGetInfoRequest(token);
         GoogleUser googleUser = getUserInfo(userInfoResponse);
+        Boolean isAlreadySignUp = true;
 
         if (isFistLogin(googleUser)) {
             signUp(googleUser);
+            isAlreadySignUp = false;
         }
 
-        return makeSocialResponse(googleUser);
+        return makeSocialResponse(googleUser, isAlreadySignUp);
     }
 
     private ResponseEntity<String> createGetInfoRequest(String token) {
@@ -80,11 +82,13 @@ public class GoogleOAuth2 implements OAuth2 {
         memberRepository.save(member);
     }
 
-    public SocialLoginResponse makeSocialResponse(GoogleUser googleUser) {
+    public SocialLoginResponse makeSocialResponse(GoogleUser googleUser, Boolean isAlreadySignUp) {
         Member member = memberRepository.findByEmail(googleUser.getEmail())
                 .orElseThrow(() -> new MemberNotFoundException(googleUser.getEmail()));
-        member.updateNickname(googleUser.getName());
-        member.updateProfileImg(googleUser.getPicture());
+        if (!isAlreadySignUp) {
+            member.updateNickname(googleUser.getName());
+            member.updateProfileImg(googleUser.getPicture());
+        }
         member.updateLastLoginTime();
 
         MemberDetails memberDetails = new MemberDetails(member);
