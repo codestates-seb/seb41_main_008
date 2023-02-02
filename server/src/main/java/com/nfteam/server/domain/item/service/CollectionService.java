@@ -112,9 +112,19 @@ public class CollectionService {
 
     private void calcItemMetaInfo(List<Item> items, CollectionResponse response) {
         Integer itemCount = items.size();
+
         Double totalVolume = items.stream().mapToDouble(i -> i.getItemPrice()).sum();
-        Double highestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
-        Double lowestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+
+        Double highestPrice = items.stream()
+                .filter(i -> i.getOnSale())
+                .mapToDouble(i -> i.getItemPrice())
+                .max().getAsDouble();
+
+        Double lowestPrice = items.stream()
+                .filter(i -> i.getOnSale())
+                .mapToDouble(i -> i.getItemPrice())
+                .min().getAsDouble();
+
         Long ownerCount = items.stream().map(i -> i.getMember()).distinct().count();
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
@@ -137,9 +147,19 @@ public class CollectionService {
 
     private void calcCollectionOnlyItemMetaInfo(List<Item> items, CollectionOnlyResponse response) {
         Integer itemCount = items.size();
+
         Double totalVolume = items.stream().mapToDouble(i -> i.getItemPrice()).sum();
-        Double highestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).max().getAsDouble();
-        Double lowestPrice = items.stream().mapToDouble(i -> i.getItemPrice()).min().getAsDouble();
+
+        Double highestPrice = items.stream()
+                .filter(i -> i.getOnSale())
+                .mapToDouble(i -> i.getItemPrice())
+                .max().getAsDouble();
+
+        Double lowestPrice = items.stream()
+                .filter(i -> i.getOnSale())
+                .mapToDouble(i -> i.getItemPrice())
+                .min().getAsDouble();
+
         Long ownerCount = items.stream().map(i -> i.getMember()).distinct().count();
 
         response.addMetaInfo(itemCount, totalVolume, highestPrice, lowestPrice, ownerCount.intValue());
