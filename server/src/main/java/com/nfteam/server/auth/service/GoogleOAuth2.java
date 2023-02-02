@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.nfteam.server.auth.utils.JwtTokenizer;
 import com.nfteam.server.domain.member.entity.Member;
 import com.nfteam.server.domain.member.entity.MemberPlatform;
+import com.nfteam.server.domain.member.entity.MemberStatus;
 import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.dto.response.auth.GoogleUser;
 import com.nfteam.server.dto.response.auth.SocialLoginResponse;
@@ -84,7 +85,9 @@ public class GoogleOAuth2 implements OAuth2 {
 
     public SocialLoginResponse makeSocialResponse(GoogleUser googleUser, Boolean isAlreadySignUp) {
         Member member = memberRepository.findByEmail(googleUser.getEmail())
+                .filter(m -> !m.getMemberStatus().equals(MemberStatus.MEMBER_QUIT))
                 .orElseThrow(() -> new MemberNotFoundException(googleUser.getEmail()));
+
         if (!isAlreadySignUp) {
             member.updateNickname(googleUser.getName());
             member.updateProfileImg(googleUser.getPicture());
