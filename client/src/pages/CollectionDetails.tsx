@@ -63,12 +63,15 @@ export default function CollectionDetails() {
     queryKey: ['infinite', id],
     queryFn: async ({ pageParam = 1 }) =>
       await customAxios
-        .get(`/api/items/collections/${id}?page=${pageParam}&size=6`)
+        .get(`/api/items/collections/${id}?page=${pageParam}&size=12`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
+      console.log('lastPage', lastPage);
+      console.log('allPages', allPages);
       return lastPage.data.length ? allPages.length + 1 : undefined;
     },
   });
+  console.log('res.data', res.data);
   const isFetchingNextPage = res.isFetchingNextPage;
 
   useEffect(() => {
@@ -138,7 +141,7 @@ export default function CollectionDetails() {
               Chain <span className="font-semibold">{data?.coinName}</span>{' '}
             </span>
           </div>
-          <p className="text-lg">{data?.description}</p>
+          <p className="text-lg font-serif">{data?.description}</p>
 
           <div className="flex space-x-5">
             <div className="text-center">
@@ -162,7 +165,7 @@ export default function CollectionDetails() {
 
         <div className="mt-5 p-6 grid gap-4 grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
           {res.data &&
-            res.data.pages?.map((pages: any) => {
+            res?.data.pages?.map((pages: any) => {
               return pages?.data.map((el: any) => {
                 return (
                   <Card
