@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Button from './Button';
 import GoogleLoginButton from 'components/LoginAndSignup/GoogleLoginButton';
 import { useState } from 'react';

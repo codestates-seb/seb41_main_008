@@ -1,8 +1,6 @@
+/* eslint-disable */
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
-import HeartIcon from '../../assets/icons/PurchaseIcons/Heart';
-import OfferIcon from '../../assets/icons/PurchaseIcons/Offer';
 import './Buy.sass';
 import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
@@ -16,9 +14,15 @@ import { BsCheckCircleFill } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setCreateItemOpen } from 'store/toastSlice';
 import { getItemsData } from 'utils/api/api';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineEye } from 'react-icons/ai';
+import { RiShareBoxFill } from 'react-icons/ri';
+import { MdOutlineLocalOffer } from 'react-icons/md';
+
 export interface ItemProps {
   coinId: number;
   coinName: string;
+  ownerId: Number;
   collectionId: string;
   itemDescription: string;
   itemId: number;
@@ -32,7 +36,7 @@ export interface ItemProps {
   tradeHistory: ItemsData[];
   withdrawFee: number;
   logoImgName: string;
-  collectionName: string;
+  collectionName: string | number;
   coinImage: string;
 }
 interface ItemsData {
@@ -75,12 +79,16 @@ const Asset = () => {
         <div className="container">
           <div className="asset__grid">
             <div className="asset__grid__item">
-              <div className="bg-w center flex p-1 h-12 w-full border border-gray-300 rounded-tl-lg rounded-tr-lg ;">
+              <div className="  space-x-96  bg-w center flex p-1 h-12 w-full border border-gray-300 rounded-tl-lg rounded-tr-lg ;">
                 <img
-                  className=" w-5 h-5 "
+                  className="  w-9 h-9 "
                   src={data?.coinImage}
                   alt="EthLogo"
                 />
+                <div className=" space-x-4  items-center flex flex-row">
+                  <RiShareBoxFill />
+                  <AiOutlineHeart />
+                </div>
               </div>
               <img
                 src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
@@ -111,18 +119,20 @@ const Asset = () => {
               </div>
             </div>
             <div className="asset__grid__item asset__grid__item--expanded">
-              <h2>#{data?.itemId}</h2>
-              <div className="text-4xl font-bold">{data?.collectionName}</div>
+              <h2>#{data?.collectionName}</h2>
+              <div className="text-4xl font-bold">{data?.itemName}</div>
               <div className="asset__meta">
                 <div className="asset__meta__item">
                   Owned by{' '}
-                  <Link to={`/collection/${itemId}`}>{data?.ownerName}</Link>
+                  <Link to={`/account/${data?.ownerId}`}>
+                    {data?.ownerName}
+                  </Link>
                 </div>
                 <div className="asset__meta__item">
-                  <EyeIcon /> 0 views
+                  <AiOutlineEye /> 0 views
                 </div>
                 <div className="asset__meta__item">
-                  <HeartIcon /> 0 favorites
+                  <AiOutlineHeart />0 favorites
                 </div>
               </div>
               <div className="card dark:text-black">
@@ -131,11 +141,12 @@ const Asset = () => {
                     <div className="label">Current price</div>
                     <div className="asset__price">
                       <img
-                        className=" w-4 h-4"
+                        className=" w-6 h-6"
                         src={data?.coinImage}
                         alt="EthLogo"
                       />{' '}
                       <span>{data?.itemPrice}</span>
+                      <span>{data?.coinName}</span>
                     </div>
                   </div>
                   <ButtonWrapper>
@@ -145,7 +156,7 @@ const Asset = () => {
               </div>
               <div className="card dark:text-black">
                 <div className="card__header">
-                  <OfferIcon />
+                  <MdOutlineLocalOffer />
                   Trade History
                 </div>
                 <div className="card__body">
