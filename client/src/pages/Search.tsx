@@ -63,11 +63,11 @@ export default function Search() {
           <>
             <em className="text-lg">Results for {query}</em>
             <ColResults cols={page.collections} />
+            <h5 className="ml-3.5 mt-8 font-bold text-lg">
+              {page.items.data.length} items
+            </h5>
             {page.items.data.length ? (
               <>
-                <h5 className="ml-3.5 mt-8 font-bold text-lg">
-                  {page.items.data.length} items
-                </h5>
                 <section
                   key={idx}
                   className="py-1.5 grid grid-cols-2 gap-y-3 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
@@ -89,7 +89,7 @@ export default function Search() {
                 </section>
               </>
             ) : (
-              <p>We coudln{"'"} find any items.</p>
+              <p className="ml-3.5">We coudln{"'"} find any items.</p>
             )}
           </>
         ))}
