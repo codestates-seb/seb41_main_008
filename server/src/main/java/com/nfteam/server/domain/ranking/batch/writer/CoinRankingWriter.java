@@ -21,7 +21,7 @@ public class CoinRankingWriter implements ItemWriter<CoinRankingEntity> {
         CoinRankingEntity coinRankingEntity = items.get(0);
         String[] rank = coinRankingEntity.getRankString().split(",");
         if (rank.length > 14) {
-            // 거래량이 충분하여 랭킹이 15개 이상 형성된 경우 랭킹 기록을 갱신
+            // 거래량이 충분하여 랭킹이 15개 이상 형성된 경우 랭킹 기록을 갱신 한다.
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 15; i++) {
                 sb.append(rank[i]);
