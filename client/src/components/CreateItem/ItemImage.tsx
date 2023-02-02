@@ -54,9 +54,7 @@ export default function ItemImage({
 
   const { mutate, isLoading, error } = useMutation({
     mutationFn: (file: FormData) =>
-      customAxios
-        .post(`${process.env.REACT_APP_API_URL}/images`, file)
-        .then((res) => res.data),
+      customAxios.post('/images', file).then((res) => res.data),
     onSuccess: (data) => {
       queryClient.invalidateQueries(['images'], { exact: true });
       setItemName(data.imageName);
