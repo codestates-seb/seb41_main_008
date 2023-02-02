@@ -1,9 +1,6 @@
 /* eslint-disable */
 import { Link } from 'react-router-dom';
-import EthLogo from '../../assets/icons/eth-logo.png';
 import customAxios from 'utils/api/axios';
-import { getRaingkingData } from 'utils/api/api';
-import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { AxiosError } from 'axios';
 import '../Trending/Trending.css';
@@ -24,14 +21,6 @@ interface RankingData extends Array<Ranking> {}
 
 const TrendingChart = ({ option }: { option: string }) => {
   const [data, setData] = useState<RankingData>();
-  // const { time } = useParams();
-  console.log(option);
-  console.log(option.toLowerCase().trim());
-
-
-  // useEffect(() => {
-  //   getRaingkingData(time).then((res) => setData(res.data));
-  // }, [time]);
 
   useEffect(() => {
     const getRaingkingData = async () => {
@@ -41,10 +30,8 @@ const TrendingChart = ({ option }: { option: string }) => {
         );
         setData(res.data);
 
-        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
-        console.log(err);
       }
     };
 
@@ -59,23 +46,26 @@ const TrendingChart = ({ option }: { option: string }) => {
             return (
               <div>
                 <Link to={`/collection/${topData.collectionId}`}>
-                  <div className="inTCbox">
-                    <div className="left"></div>
+                  <div className="inTCbox dark:border-none dark:hover:bg-[#5e5e62] dark:text-[#ffffff]">
+                    <div className="left dark:text-[#ffffff]"></div>
                     <span>{topData.rank}</span>
-                    <div className="middle">
-                      <div className="topImgAvatar">
-                        <img
+                    <div className="middle dark:text-[#ffffff]">
+                      <div className="topImgAvatar dark:text-[#ffffff]">
+                        <img  
                           src={`${process.env.REACT_APP_IMAGE}${topData?.logoImgName}`}
                           alt=" "
+
                         />
                       </div>
-                      <div className="mText">
-                        <div className="topCollName">
+                      <div className="mText dark:text-[#ffffff]">
+                        <div className="topCollName dark:text-[#ffffff]">
                           {topData.collectionName}
                         </div>
-                        <div className="priceTopColl">
-                          <div className="fPtC">HighestPrice: </div>
-                          <div className="pTopColl">
+                        <div className="priceTopColl dark:text-[#ffffff]">
+                          <div className="fPtC dark:text-[#ffffff]">
+                            HighestPrice:{' '}
+                          </div>
+                          <div className="pTopColl dark:text-[#ffffff]">
                             <img src={topData.coinImage} alt="EthLogo" />
                             {topData.highestPrice}
                           </div>
@@ -83,8 +73,8 @@ const TrendingChart = ({ option }: { option: string }) => {
                       </div>
                     </div>
                     <div className="right">
-                      <span>{topData.coinName}</span>
-                      <div className="pTopColl">
+                      <span className="dark:text-[#ffffff]">{topData.coinName}</span>
+                      <div className="pTopColl dark:text-[#ffffff]">
                         <img src={topData.coinImage} alt="EthLogo" />{' '}
                         {topData.totalVolume.toFixed(2)}
                       </div>

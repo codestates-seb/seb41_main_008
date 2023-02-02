@@ -56,34 +56,36 @@ const CoinChart = ({ coinId }: { coinId: number }) => {
             return (
               <div>
                 <Link to={`/collection/${topData.collectionId}`}>
-                  <div className="inTCbox">
-                    <div className="left"></div>
+                  <div className="inTCbox dark:border-none dark:hover:bg-[#5e5e62] dark:text-[#ffffff]">
+                    <div className="left dark:text-[#ffffff]"></div>
                     <span>{topData.rank}</span>
-                    <div className="middle">
-                      <div className="topImgAvatar">
+                    <div className="middle dark:text-[#ffffff]">
+                      <div className="topImgAvatar dark:text-[#ffffff]">
                         <img
                           src={`${process.env.REACT_APP_IMAGE}${topData?.logoImgName}`}
                           alt=" "
                         />
                       </div>
-                      <div className="mText">
-                        <div className="topCollName">
+                      <div className="mText dark:text-[#ffffff]">
+                        <div className="topCollName dark:text-[#ffffff]">
                           {topData.collectionName}
                         </div>
-                        <div className="priceTopColl">
-                          <div className="fPtC">HighestPrice: </div>
-                          <div className="pTopColl">
+                        <div className="priceTopColl dark:text-[#ffffff]">
+                          <div className="fPtC dark:text-[#ffffff]">
+                            HighestPrice:{' '}
+                          </div>
+                          <div className="pTopColl dark:text-[#ffffff]">
                             <img src={topData.coinImage} alt="EthLogo" />
                             {topData.highestPrice}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="right">
+                    <div className="right dark:text-[#ffffff]">
                       <span>{topData.coinName}</span>
-                      <div className="pTopColl">
+                      <div className="pTopColl dark:text-[#ffffff]">
                         <img src={topData.coinImage} alt="EthLogo" />{' '}
-                        {topData.totalVolume.toFixed(3)}
+                        {topData.totalVolume.toFixed(2)}
                       </div>
                     </div>
                   </div>

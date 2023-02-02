@@ -8,11 +8,11 @@ import CoinFilter from './CoinFilter';
 
 const Home = () => {
   const [option, setOption] = useState('DAY');
-  const [coinId, setCoin] = useState(1);
+  const [coinId, setCoin] = useState(2);
   const [activeTab, setActiveTab] = useState('trending');
-    const onTabChange = (tab: SetStateAction<string>) => {
-      setActiveTab(tab);
-    };
+  const onTabChange = (tab: SetStateAction<string>) => {
+    setActiveTab(tab);
+  };
   return (
     <main className={`${styles.gridContainer} `}>
       <section
@@ -22,37 +22,45 @@ const Home = () => {
           <div className={styles.tabContainer}>
             <button
               className={`${styles.tabBtn} ${
-               activeTab === 'trending' && styles.tabBtnActive
-              } ${'dark:text-white'}`}
+                activeTab === 'trending' && styles.tabBtnActive
+              } ${'dark:text-[#abaaaa]'} `}
               onClick={() => onTabChange('trending')}
             >
               TOP
             </button>
             <button
-              className={`${styles.tabBtn} ${
+              className={`${styles.tabBtn}   ${
                 activeTab === 'top' && styles.tabBtnActive
-              }`}
+              } ${'dark:text-[#abaaaa]'} `}
               onClick={() => onTabChange('top')}
             >
               COIN
             </button>
           </div>
-          <div>
-            <CoinFilter
-              setCoin={setCoin}
-              onCoinClick={() => {
-                console.log(coinId);
-              }}
-            />
-          </div>
-          <div>
-            <DayDropDown
-              setOption={setOption}
-              onOptionClick={() => {
-                console.log(option);
-              }}
-            />
-          </div>
+          {activeTab === 'top' && (
+            <>
+              <div>
+                <CoinFilter
+                  setCoin={setCoin}
+                  onCoinClick={() => {
+                    console.log(coinId);
+                  }}
+                />
+              </div>
+            </>
+          )}
+          {activeTab === 'trending' && (
+            <>
+              <div>
+                <DayDropDown
+                  setOption={setOption}
+                  onOptionClick={() => {
+                    console.log(option);
+                  }}
+                />
+              </div>
+            </>
+          )}
         </header>
 
         {activeTab === 'trending' && (

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Link, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import styled from 'styled-components';
@@ -77,7 +76,6 @@ const Asset = () => {
         setData(res.data);
       } catch (error) {
         const err = error as AxiosError;
-        console.log(err);
       }
     };
 
@@ -88,101 +86,101 @@ const Asset = () => {
     <div>
       <div className="asset mt-9 ">
         <div className="container">
-            <div className="flex justify-between max-2xl:flex-col">
-              <div className="w-full h-full   ">
-                <div className="flex p-1 h-12 w-full rounded-t-lg">
-                  <img src={data?.coinImage} alt="EthLogo" />
+          <div className="flex justify-between max-2xl:flex-col">
+            <div className="w-full h-full   ">
+              <div className="flex p-1 h-12 w-full rounded-t-lg">
+                <img src={data?.coinImage} alt="EthLogo" />
+              </div>
+              <div className="w-[600px] h-[650px] max-2xl:w-full">
+                <img
+                  src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
+                  className=" h-full w-full"
+                  alt="nftImage"
+                />
+              </div>
+            </div>
+
+            <div className="border border-blue-500 w-full">
+              <div className=" ">
+                <h2>{data?.collectionName}</h2>
+                <div className="text-4xl font-bold">{data?.itemName}</div>
+                <div className="asset__meta">
+                  <div className="asset__meta__item">
+                    Owned by{' '}
+                    <Link to={`/account/${data?.ownerId}`}>
+                      {data?.ownerName}
+                    </Link>
+                  </div>
+                  <div className="asset__meta__item">
+                    <EyeIcon /> 0 views
+                  </div>
+                  <div className="asset__meta__item">
+                    <HeartIcon /> 0 favorites
+                  </div>
                 </div>
-                <div className="w-[600px] h-[650px] max-2xl:w-full">
-                  <img
-                    src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
-                    className=" h-full w-full"
-                    alt="nftImage"
-                  />
+
+                <div className="w-full">
+                  <div className=" w-full">
+                    <div>
+                      <div className="label">Current price</div>
+                      <div className="asset__price">
+                        <img
+                          className=" w-4 h-4"
+                          src={data?.coinImage}
+                          alt="EthLogo"
+                        />{' '}
+                        <span>
+                          {data?.itemPrice} {data?.coinName}
+                        </span>
+                      </div>
+                    </div>
+                    <ButtonWrapper>
+                      <BuyAndCartButton data={data} />
+                    </ButtonWrapper>
+                  </div>
                 </div>
               </div>
 
-              <div className="border border-blue-500 w-full">
-                <div className=" ">
-                  <h2>{data?.collectionName}</h2>
-                  <div className="text-4xl font-bold">{data?.itemName}</div>
-                  <div className="asset__meta">
-                    <div className="asset__meta__item">
-                      Owned by{' '}
-                      <Link to={`/account/${data?.ownerId}`}>
-                        {data?.ownerName}
-                      </Link>
-                    </div>
-                    <div className="asset__meta__item">
-                      <EyeIcon /> 0 views
-                    </div>
-                    <div className="asset__meta__item">
-                      <HeartIcon /> 0 favorites
-                    </div>
-                  </div>
-
-                  <div className="w-full">
-                    <div className=" w-full">
-                      <div>
-                        <div className="label">Current price</div>
-                        <div className="asset__price">
-                          <img
-                            className=" w-4 h-4"
-                            src={data?.coinImage}
-                            alt="EthLogo"
-                          />{' '}
-                          <span>
-                            {data?.itemPrice} {data?.coinName}
-                          </span>
-                        </div>
-                      </div>
-                      <ButtonWrapper>
-                        <BuyAndCartButton data={data} />
-                      </ButtonWrapper>
-                    </div>
-                  </div>
+              <div className="h-[500px] ">
+                <div className="">
+                  <OfferIcon />
+                  Trade History
                 </div>
-
-                <div className="h-[500px] ">
-                  <div className="">
-                    <OfferIcon />
-                    Trade History
-                  </div>
-                  <div className="table-auto overflow-scroll w-full">
-                    <table className="table h-[450px]">
-                      <thead>
-                        <tr>
-                          <th>Price</th>
-                          <th>Commission</th>
-                          <th>Coin</th>
-                          <th>From</th>
-                          <th>To</th>
-                          <th>Date</th>
+                <div className="table-auto overflow-scroll w-full">
+                  <table className="table h-[450px]">
+                    <thead>
+                      <tr>
+                        <th>Price</th>
+                        <th>Commission</th>
+                        <th>Coin</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="">
+                      {data?.tradeHistory.map((item) => (
+                        <tr key={item.buyerId}>
+                          <td>
+                            <div className="price">
+                              <img
+                                className="w-3 h-3"
+                                src={data?.coinImage}
+                                alt="EthLogo"
+                              />
+                              {item.transPrice}
+                            </div>
+                          </td>
+                          <td>{data?.withdrawFee}</td>
+                          <td>{item.coinName}</td>
+                          <td>{item.sellerName}</td>
+                          <td>{item.buyerName}</td>
+                          <td>{item.transDate}</td>
                         </tr>
-                      </thead>
-                      <tbody className=''>
-                        {data?.tradeHistory.map((item) => (
-                          <tr key={item.buyerId} >
-                            <td >
-                              <div className="price">
-                                <img
-                                  className="w-3 h-3"
-                                  src={data?.coinImage}
-                                  alt="EthLogo"
-                                />
-                                {item.transPrice}
-                              </div>
-                            </td>
-                            <td>{data?.withdrawFee}</td>
-                            <td>{item.coinName}</td>
-                            <td>{item.sellerName}</td>
-                            <td>{item.buyerName}</td>
-                            <td>{item.transDate}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

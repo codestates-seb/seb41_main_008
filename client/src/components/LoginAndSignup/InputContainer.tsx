@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Button from './Button';
 import GoogleLoginButton from 'components/LoginAndSignup/GoogleLoginButton';
 import { useState } from 'react';
@@ -45,9 +46,7 @@ const InputContainer = ({ isSignup }: Props) => {
           unAuthHandler();
         }
         if (res.meta.requestStatus === 'fulfilled') {
-          getMyProFile().then((res) => {
-            console.log(res);
-          });
+          getMyProFile().then((res) => {});
           navigate('/', { replace: true });
         }
       });
@@ -55,7 +54,6 @@ const InputContainer = ({ isSignup }: Props) => {
   };
 
   const onError = (error: {}) => {
-    console.log(error);
   };
   return (
     <>
