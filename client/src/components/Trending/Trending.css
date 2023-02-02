@@ -15,7 +15,7 @@
 .inTCbox {
     display: flex;
     border-bottom: 1px solid rgb(229, 232, 235);
-    padding: 16px;
+    padding: 14px;
     width: 100%;
 }
 
@@ -134,8 +134,8 @@
 
 @media screen and (max-width: 1199px) {
     .tCbox {
-        column-count: 1;
-        max-width: 440px;
+        column-count:1;
+        max-width: 1050px;
         width: 100%;
         margin: auto;
     }
