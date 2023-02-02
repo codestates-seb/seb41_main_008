@@ -42,10 +42,16 @@ const SuccessPaymentPage = () => {
     getCoinOrderInfo(tid).then((res) => setOrderInfo(res.data));
   }, [tid]);
   console.log(orderInfo);
+  if (localStorage.getItem('theme') === 'dark') {
+    let body: any = document.getElementsByTagName('body');
+    console.log(body);
+    body.className += 'class';
+  }
+
   return (
     <>
       <Header />
-      <OrderInfoWrapper>
+      <OrderInfoWrapper className="dark:text-black ">
         <header className="flex justify-between flex-col items-center w-full border-b-2 ">
           <div className="flex flex-col justify-center items-center text-emerald-600 mb-5 font-bold">
             <h1 className="text-4xl">Payment successful!</h1>

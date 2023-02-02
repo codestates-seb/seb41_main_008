@@ -103,7 +103,7 @@ const BuyCoinModal = () => {
       {buyCoinOpen && (
         <BuyCoinContainer>
           <header className="flex justify-between items-center p-2 w-full ">
-            <div className="grow text-center text-2xl">
+            <div className="grow text-center text-2xl dark:text-black">
               Buy crypto with KAKAO PAY
             </div>
             <button className="grow-0" onClick={() => dispatch(closeBuyCoin())}>
@@ -177,7 +177,7 @@ const BuyCoinModal = () => {
             </section>
             <footer className="">
               <div className="flex items-center justify-center p-1 bg-[#ffeb00] rounded-xl mt-6  w-full">
-                <button className="w-full m-auto">
+                <button className="w-full m-auto flex justify-center items-center">
                   <img src={kakaopayLogo} alt="kakaopay" />
                 </button>
               </div>

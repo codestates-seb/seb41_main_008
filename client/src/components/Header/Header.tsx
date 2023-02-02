@@ -12,10 +12,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MobileDropdownList from './MobileDropdownLIst';
 import MobileDropdown from './MobileDropdown';
 import Dropdown from './Dropdown';
+import logo from '../../../src/assets/logo.png';
 
 const SearchInput = styled.input`
   display: flex;
-  width: 100%;
+  width: 90%;
   padding: 8px;
   border-radius: 10px;
   outline: none;
@@ -70,8 +71,14 @@ const Header = () => {
       className={`duration-300 transition-colors flex justify-center items-center font-bold p-4 fixed top-0 left-0 right-0 z-20 text-lg bg-white text-black dark:bg-[#202225] dark:text-white
        ${!isScrolled && home && !walletState && 'bg-[#FED7C8]'}`}
     >
-      <div className="flex gap-2 mr-2">
-        <Link to={'/'}>logo</Link>
+      <div className="flex items-center gap-2 mr-2">
+        <Link to={'/'} className="w-12 h-12 object-cover">
+          <img
+            src={logo}
+            alt=""
+            className="w-full h-full  rounded-full object-cover bg-[#202225]"
+          />
+        </Link>
         <Link to={'/'}>NFTeam</Link>
       </div>
 
