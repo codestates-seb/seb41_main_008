@@ -1,49 +1,41 @@
-/* eslint-disable */
 import React, { FC } from 'react';
-import { IoIosArrowDown } from 'react-icons/io';
-import { IoIosArrowUp } from 'react-icons/io';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import Day from '../../assets/day/1D.png';
+import Week from '../../assets/day/7D.png';
+import Month from '../../assets/day/1M.png';
 
-const DayDropdown: FC<{
+const CoinFilter: FC<{
   setOption: React.Dispatch<React.SetStateAction<string>>;
   onOptionClick: (option: string) => void;
 }> = ({ setOption, onOptionClick }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const showDropDown = isExpanded;
-  const showDropUP = !isExpanded;
-  const options = ['DAY', 'WEEK', 'MONTH'];
+  const options = [
+    { id: 'day', name: Day },
+    { id: 'week', name: Week },
+    { id: 'month', name: Month },
+  ];
+
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className=" flex items-center rounded text-white px-4 py-1 hover:bg-rose-200 bg-rose-300 dark:bg-[#5b5b5b] dark:hover:bg-[#a1a3a3]"
-      >
-        <div className="mr-1">ALL</div>
-        <div>
-          {showDropDown && <IoIosArrowUp />}
-          {showDropUP && <IoIosArrowDown />}
-        </div>
-      </button>
-      {isExpanded && (
-        <div className="absolute dark:text-[black] bg-white px-2 py-1 rounded border border-gray-400 mt-2 w-30">
-          <ul>
+    <div className="">
+      <div>
+        <div className="">
+          <div className="flex space-x-2 ">
             {options.map((time) => (
-              <li
+              <button
                 onClick={() => {
-                  onOptionClick(time);
-                  setOption(time);
+                  onOptionClick(time.id);
+                  setOption(time.id);
                 }}
-                className="hover:bg-rose-200 dark:hover:bg-[#9b9b9b] px-2 py-1"
-                key={time}
+                className=" dark:bg-[#c2c2c210] hover:animate-bounce hover:shadow-inner rounded-full border border-gray-200 w-10 h-10  px-2 py-1"
+                key={time.id}
               >
-                {time}
-              </li>
+                <img className="" src={time.name} alt="coin" />
+              </button>
             ))}
-          </ul>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default DayDropdown;
+export default CoinFilter;

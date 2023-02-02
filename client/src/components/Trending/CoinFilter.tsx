@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { FC } from 'react';
 import { useEffect } from 'react';
 import BtcLogo from '../../assets/coins/btc.png';
@@ -6,7 +5,6 @@ import EthLogo from '../../assets/coins/eth.png';
 import EtcLogo from '../../assets/coins/etc.png';
 import SolLogo from '../../assets/coins/sol.png';
 import DogeLogo from '../../assets/coins/doge.png';
-import verified from '../../assets/profile/65396939.png';
 
 const CoinFilter: FC<{
   setCoin: React.Dispatch<React.SetStateAction<number>>;
@@ -31,7 +29,7 @@ const CoinFilter: FC<{
                   onCoinClick(coin.id);
                   setCoin(coin.id);
                 }}
-                className=" hover:animate-bounce hover:shadow-inner rounded-full border border-gray-200 w-9 h-9  px-2 py-1"
+                className=" dark:bg-[#c2c2c210] hover:animate-bounce hover:shadow-inner rounded-full border border-gray-200 w-10 h-10  px-2 py-1"
                 key={coin.id}
               >
                 <img className="" src={coin.name} alt="coin" />
