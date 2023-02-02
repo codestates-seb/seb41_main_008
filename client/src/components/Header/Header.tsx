@@ -1,11 +1,14 @@
-/* eslint-disable */
 import styled from 'styled-components';
 import { useState, useEffect, FormEvent } from 'react';
-import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  createSearchParams,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useNavigate, useLocation } from 'react-router-dom';
 import MobileDropdownList from './MobileDropdownLIst';
 import MobileDropdown from './MobileDropdown';
 import Dropdown from './Dropdown';
@@ -26,14 +29,6 @@ const Header = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  // const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === 'Enter' && searchValue.trim().length > 0) {
-  //     navigate(`/search/query/${searchValue}`);
-  //   } else {
-  //     return;
-  //   }
-  // };
 
   const params = { q: searchValue };
 
@@ -64,7 +59,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [location.pathname]);
+  }, []);
 
   const walletState = useAppSelector((state) => state.modal.walletOpen);
 
