@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { getCoinOrderInfo } from 'utils/api/api';
 import { useNavigate } from 'react-router-dom';
 import { BsCheckCircle } from 'react-icons/bs';
+import { useAppSelector } from 'hooks/hooks';
 const OrderInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,6 +48,16 @@ const SuccessPaymentPage = () => {
     console.log(body);
     body.className += 'class';
   }
+
+  const { isLogin } = useAppSelector((state) => state.login);
+
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다');
+      navigate('/login');
+    }
+    return;
+  }, [isLogin, navigate]);
 
   return (
     <>

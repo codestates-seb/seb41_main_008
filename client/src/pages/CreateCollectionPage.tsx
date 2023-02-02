@@ -2,7 +2,9 @@ import BannerImage from 'components/CreateCollection/BannerImage';
 import CreateCollection from 'components/CreateCollection/CreateCollection';
 import LogoImage from 'components/CreateCollection/LogoImage';
 import Header from 'components/Header/Header';
-import { useState } from 'react';
+import { useAppSelector } from 'hooks/hooks';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Blockchain {
   name: string;
@@ -17,6 +19,16 @@ export default function CreateCollectionPage() {
   const [logoName, setLogoName] = useState<string>('');
   const [bannerName, setBannerName] = useState<string>('');
   const [selectedCoin, setSelectedCoin] = useState<Blockchain | null>(null);
+  const { isLogin } = useAppSelector((state) => state.login);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다');
+      navigate('/login');
+    }
+    return;
+  }, [isLogin, navigate]);
 
   return (
     <>

@@ -1,12 +1,12 @@
 import Card from '../components/Card';
 import NoCard from '../components/Account/NoCard';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ProfileDropdown from 'components/Profile/ProfileDropdown';
 import Notification from 'components/Notification';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { setUpdateUserOpen } from 'store/toastSlice';
+import { setRemoveColOpen, setUpdateUserOpen } from 'store/toastSlice';
 import Header from 'components/Header/Header';
 import customAxios from 'utils/api/axios';
 import { useQuery } from '@tanstack/react-query';
@@ -37,7 +37,7 @@ interface ItemsType {
   ownerName: string;
 }
 const AccountPage = () => {
-  const { memberId }: any = useParams();
+  const { memberId } = useParams();
 
   const [filter, setFilter] = useState<string>('Collected');
 
@@ -53,11 +53,12 @@ const AccountPage = () => {
 
   const myId = window.localStorage.getItem('MEMBER_ID');
   const updateUserOpen = useAppSelector((state) => state.toast.updateUserOpen);
+  const removeColOpen = useAppSelector((state) => state.toast.removeColOpen);
+
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setTimeout(() => dispatch(setUpdateUserOpen(false)), 5000);
-  }, [dispatch]);
+  setTimeout(() => dispatch(setUpdateUserOpen(false)), 5000);
+  setTimeout(() => dispatch(setRemoveColOpen(false)), 5000);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -96,7 +97,7 @@ const AccountPage = () => {
                 <h1 className="font-bold text-3xl">{data?.member.nickname}</h1>
                 <p>{data?.member.description}</p>
               </div>
-              {myId === memberId && <ProfileDropdown id={parseInt(myId!)} />}
+              {myId === memberId && <ProfileDropdown id={myId!} />}
             </div>
           </div>
 
@@ -152,14 +153,24 @@ const AccountPage = () => {
           </div>
         </div>
         {memberId === myId && (
-          <Notification open={updateUserOpen} setOpen={setUpdateUserOpen}>
-            <p className="flex items-center gap-1 text-emerald-700">
-              <span>
-                <BsCheckCircleFill className="h-7 w-7" />
-              </span>{' '}
-              Updated!
-            </p>
-          </Notification>
+          <>
+            <Notification open={updateUserOpen} setOpen={setUpdateUserOpen}>
+              <p className="flex items-center gap-1 text-emerald-700">
+                <span>
+                  <BsCheckCircleFill className="h-7 w-7" />
+                </span>{' '}
+                Updated!
+              </p>
+            </Notification>
+            <Notification open={removeColOpen} setOpen={setRemoveColOpen}>
+              <p className="flex items-center gap-1 text-emerald-700">
+                <span>
+                  <BsCheckCircleFill className="h-7 w-7" />
+                </span>{' '}
+                Deleted!
+              </p>
+            </Notification>
+          </>
         )}
       </div>
     </>

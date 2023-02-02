@@ -1,14 +1,25 @@
 import CreateItem, { Collection } from 'components/CreateItem/CreateItem';
 import ItemImage from 'components/CreateItem/ItemImage';
 import Header from 'components/Header/Header';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useAppSelector } from 'hooks/hooks';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function CreateItemPage() {
   const [itemFile, setItemFile] = useState<File | null>(null);
   const [itemString, setItemString] = useState<string>('');
   const [itemName, setItemName] = useState<string>('');
   const [selectedCol, setSelectedCol] = useState<Collection>();
+  const { isLogin } = useAppSelector((state) => state.login);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다');
+      navigate('/login');
+    }
+    return;
+  }, [isLogin, navigate]);
 
   return (
     <>

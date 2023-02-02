@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { IoSettingsSharp } from 'react-icons/io5';
 import Alert from './Alert';
 
-export default function ProfileDropdown({ id }: { id: number | undefined }) {
+export default function ProfileDropdown({ id }: { id: string }) {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>

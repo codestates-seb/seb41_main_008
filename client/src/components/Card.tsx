@@ -1,8 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { GrStatusGoodSmall } from 'react-icons/gr';
 import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
+import { BiTrash } from 'react-icons/bi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import customAxios from 'utils/api/axios';
+import { useDispatch } from 'react-redux';
+import { setRemoveColOpen } from 'store/toastSlice';
+
 type cartBtnType = {
   hide: boolean;
 };
@@ -60,15 +66,35 @@ const Card = ({
   ownerId,
 }: CardType) => {
   const [hide, setHide] = useState<boolean>(false);
+  const [show, setShow] = useState<boolean>(false);
+  const myId = window.localStorage.getItem('MEMBER_ID');
+  const { memberId } = useParams();
+
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
+  const { mutate, error } = useMutation({
+    mutationFn: () => customAxios.delete(`api/collections/${collectionId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['members', memberId]);
+      dispatch(setRemoveColOpen(true));
+    },
+  });
+
+  if (error instanceof Error)
+    return <p>An error has occured + {error.message}</p>;
+
   return (
     <>
       <div className="shadow-lg hover:shadow-2xl rounded-xl font-semibold dark:bg-[#363840] dark:text-white h-full">
         <article
           onMouseEnter={() => {
             setHide(true);
+            setShow(true);
           }}
           onMouseLeave={() => {
             setHide(false);
+            setShow(false);
           }}
         >
           <Link
@@ -77,9 +103,20 @@ const Card = ({
                 ? `/collection/${collectionId}`
                 : `/item/${itemId}`
             }
-            className="flex flex-col "
+            className="flex flex-col w-full h-full"
           >
-            <div className="overflow-hidden rounded-t-xl w-full aspect-square ">
+            <div className="overflow-hidden relative rounded-t-xl w-full aspect-square ">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  mutate();
+                }}
+                className={`rounded-full p-1.5 bg-black/60 hover:bg-black z-10 absolute top-2 right-2 ${
+                  show && memberId === myId ? 'inline-block' : 'hidden'
+                } `}
+              >
+                <BiTrash className="h-6 w-6 text-gray-300" />
+              </button>
               <img
                 className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"
                 src={
@@ -87,7 +124,7 @@ const Card = ({
                     ? process.env.REACT_APP_IMAGE + itemImageName
                     : process.env.REACT_APP_IMAGE + logoImgName
                 }
-                alt="NFTImage"
+                alt="NFT"
               />
             </div>
             <div className="flex flex-col p-4 rounded-b-xl gap-2">
@@ -96,14 +133,11 @@ const Card = ({
               <div className="flex">
                 {onSale && <span className="mr-2">{itemPrice}</span>}
 
-                <span>
-                  {filter === 'Collected' && coinName}
-                  {/* <img alt="coinImage" src={coinImage} /> */}
-                </span>
+                <span>{filter === 'Collected' && coinName}</span>
               </div>
               {onSale ? (
                 <div
-                  className={` ${'flex  justify-center items-center w-24 rounded-full bg-green-300 dark:bg-emerald-700 text-green-700 font-bold dark:text-white'}`}
+                  className={`${'flex justify-center items-center w-24 rounded-full bg-green-300 dark:bg-emerald-700 text-green-700 font-bold dark:text-white'}`}
                 >
                   <GrStatusGoodSmall className="text-emerald-700 animate-ping w-2 h-2  dark:text-emerald-500" />
                   <span className="m-1">OnSale</span>
