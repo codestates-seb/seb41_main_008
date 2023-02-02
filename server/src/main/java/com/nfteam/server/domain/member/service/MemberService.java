@@ -57,6 +57,7 @@ public class MemberService {
 
     public Member findVerifiedMember(Long memberId, String email) {
         Member findMember = memberRepository.findById(memberId)
+                .filter(m -> !m.getMemberStatus().equals(MemberStatus.MEMBER_QUIT))
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
 
         if (findMember.getEmail().equals(email)) {
@@ -68,6 +69,7 @@ public class MemberService {
 
     public Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
+                .filter(m -> !m.getMemberStatus().equals(MemberStatus.MEMBER_QUIT))
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
