@@ -20,7 +20,7 @@ public class TimeRankingWriter implements ItemWriter<TimeRankingEntity> {
     public void write(List<? extends TimeRankingEntity> items) throws Exception {
         TimeRankingEntity timeRankingEntity = items.get(0);
         String[] rank = timeRankingEntity.getRankString().split(",");
-        if (rank.length > 15) {
+        if (rank.length > 14) {
             // 거래량이 충분하여 랭킹이 15개 이상 형성된 경우 랭킹 기록을 갱신
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 15; i++) {
