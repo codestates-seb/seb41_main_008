@@ -1,7 +1,7 @@
 import Card from '../components/Card';
 import NoCard from '../components/Account/NoCard';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ProfileDropdown from 'components/Profile/ProfileDropdown';
 import Notification from 'components/Notification';
 import { BsCheckCircleFill } from 'react-icons/bs';
@@ -55,9 +55,7 @@ const AccountPage = () => {
   const updateUserOpen = useAppSelector((state) => state.toast.updateUserOpen);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setTimeout(() => dispatch(setUpdateUserOpen(false)), 5000);
-  }, [dispatch]);
+  setTimeout(() => dispatch(setUpdateUserOpen(false)), 5000);
 
   if (isLoading) return <p>Loading...</p>;
 
