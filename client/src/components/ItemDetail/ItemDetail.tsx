@@ -71,7 +71,7 @@ const Asset = () => {
 
     const getItemsData = async () => {
       try {
-        const res = await customAxios.get(`/api/items/${itemId}`);
+        const res = await customAxios.get(`/api/item/${itemId}`);
         setData(res.data);
       } catch (error) {
         const err = error as AxiosError;
