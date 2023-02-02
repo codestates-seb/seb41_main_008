@@ -69,7 +69,7 @@ export default function ProfileBio({
       navigate(`/account/${id}`);
     },
   });
-
+  console.log(profileImageName, bannerImageName);
   const onSubmit = (data: Bio) => {
     dispatch(setUpdateUserOpen(true));
 

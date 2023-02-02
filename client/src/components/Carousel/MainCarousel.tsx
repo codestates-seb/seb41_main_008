@@ -32,7 +32,7 @@ export default function MainCarousel() {
   return (
     <div className="py-[4rem] px-[2rem]">
       <h1 className="text-indigo-900 text-center font-black text-4xl my-10 dark:text-white">
-        Explore, collect, and sell NFTs
+        NFTeam{"'"}s ONE-STOP NFT Trade Shop
       </h1>
       <Swiper
         spaceBetween={15}
