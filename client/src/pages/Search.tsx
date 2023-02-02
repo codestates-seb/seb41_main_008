@@ -63,27 +63,32 @@ export default function Search() {
       <div className="mt-32 px-8">
         <em className="text-lg">Results for {query}</em>
         <ColResults cols={data?.pages[0].collections} />
-        <h5 className="ml-3.5 mt-8 font-bold text-lg">items</h5>
-        {/* <p className="ml-3.5">We coudln{"'"} find any items.</p> */}
-        {data?.pages?.map((page, idx) => (
-          <section
-            key={idx}
-            className="py-1.5 grid grid-cols-2 gap-y-3 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-          >
-            {page.items.data.map((item: Item) => (
-              <ItemCard
-                key={item.itemId}
-                itemImageName={process.env.REACT_APP_IMAGE + item.itemImageName}
-                itemName={item.itemName}
-                itemPrice={item.itemPrice}
-                itemId={item.itemId}
-                coinName={item.coinName}
-                coinImage={item.coinImage}
-                collectionName={item.collectionName}
-              />
-            ))}
-          </section>
-        ))}
+        <h5 className="ml-3.5 mt-8 font-bold text-lg">Item results</h5>
+        {data?.pages[0].items.data.length === 0 ? (
+          <p className="ml-3.5">We coudln{"'"} find any items.</p>
+        ) : (
+          data?.pages?.map((page, idx) => (
+            <section
+              key={idx}
+              className="py-1.5 grid grid-cols-2 gap-y-3 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            >
+              {page.items.data.map((item: Item) => (
+                <ItemCard
+                  key={item.itemId}
+                  itemImageName={
+                    process.env.REACT_APP_IMAGE + item.itemImageName
+                  }
+                  itemName={item.itemName}
+                  itemPrice={item.itemPrice}
+                  itemId={item.itemId}
+                  coinName={item.coinName}
+                  coinImage={item.coinImage}
+                  collectionName={item.collectionName}
+                />
+              ))}
+            </section>
+          ))
+        )}
         <p className="inline-block" ref={ref}>
           {isFetchingNextPage && 'Loading more...'}
         </p>
