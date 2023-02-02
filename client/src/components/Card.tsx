@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { GrStatusGoodSmall } from 'react-icons/gr';
+import { TbCircleX } from 'react-icons/tb';
 import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
 type cartBtnType = {
@@ -92,6 +93,7 @@ const Card = ({
             </div>
             <div className="flex flex-col p-4 rounded-b-xl gap-2">
               <div>{itemName}</div>
+              <div>{collectionName}</div>
               <div className="flex">
                 {onSale && <span className="mr-2">{itemPrice}</span>}
 
@@ -102,14 +104,18 @@ const Card = ({
               </div>
               {onSale ? (
                 <div
-                  className={`${
-                    onSale ? 'visible' : 'hidden'
-                  } ${'flex  justify-center items-center w-24 rounded-full bg-green-300 dark:bg-emerald-700 text-green-700 font-bold dark:text-white'}`}
+                  className={` ${'flex  justify-center items-center w-24 rounded-full bg-green-300 dark:bg-emerald-700 text-green-700 font-bold dark:text-white'}`}
                 >
                   <GrStatusGoodSmall className="text-emerald-700 animate-ping w-2 h-2  dark:text-emerald-500" />
                   <span className="m-1">OnSale</span>
                 </div>
-              ) : null}
+              ) : (
+                // <div className="flex justify-center p-1 items-center font-bold  bg-red-300 text-red-700 rounded-full w-28">
+                //   <TbCircleX className="w-4 h-4 mr-1" />
+                //   Not listed
+                // </div>
+                <div className="h-[50px]"></div>
+              )}
             </div>
           </Link>
 

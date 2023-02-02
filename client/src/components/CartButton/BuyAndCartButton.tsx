@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { addTocart } from 'store/cartSlice';
 import { openSell } from 'store/modalSlice';
-
+import { setAddtoCartOpen } from 'store/toastSlice';
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -22,6 +22,7 @@ const BuyAndCartButton = ({ data }: any) => {
       alert('같은 코인의 NFT만 담을수있습니다.');
     } else {
       dispatch(addTocart(data));
+      dispatch(setAddtoCartOpen(true));
     }
     /**장바구니담는 로직작성 */
   };
