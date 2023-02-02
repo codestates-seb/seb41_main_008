@@ -73,6 +73,7 @@ public class MemberService {
 
     public Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
+                .filter(m -> !m.getMemberStatus().equals(MemberStatus.MEMBER_QUIT))
                 .orElseThrow(() -> new MemberNotFoundException(email));
     }
 
