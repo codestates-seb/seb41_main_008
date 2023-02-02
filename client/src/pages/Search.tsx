@@ -1,70 +1,102 @@
-/* eslint-disable */
-import customAxios from 'utils/api/axios';
-import { getSearchdata } from 'utils/api/api';
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { AxiosError } from 'axios';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import Header from 'components/Header/Header';
+import ColResults from 'components/Search/ColResults';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
+import ItemCard from 'components/ItemCard';
 
-
-export interface Search {
-  collections: collectionsData[];
-  items: itemsData[];
-  pageInfo:pageData[];
-}
-
-interface collectionsData {
-  collectionId: number;
-  collectionName: string;
-  logoImgName: number;
-  bannerImgName: string;
-}
-
-interface itemsData {
+export interface Item {
+  itemImageName: string;
+  itemName: string;
   itemPrice: number;
-  onSale: boolean;
-  itemId:number;
-  itemImageName:string;
-  itemName:string;
-  collectionId: number;
+  itemId: number;
+  coinName: string;
+  coinImage: string;
   collectionName: string;
-  coinId: number;
-  coinName: string
-  coinImage : string
 }
 
-interface pageData {
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  page: number;
-}
+export default function Search() {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('q');
 
-const Search = () => {
-  const [data, setData] = useState<Search>();
-  const { keyword, page, size } = useParams();
-  
-  useEffect(() => {
-    getSearchdata(keyword, page, size).then((res) => setData(res.data));
-  }, [keyword, page, size]);
+  const { status, data, error, isFetchingNextPage, fetchNextPage } =
+    useInfiniteQuery(
+      ['search', { keyword: query }],
+      ({ pageParam = 1 }) =>
+        axios
+          .get(
+            `${process.env.REACT_APP_API_URL}/api/search?keyword=${query}&page=${pageParam}&size=12`
+          )
+          .then((res) => res.data),
 
-  useEffect(() => {
-    const getSearchdata = async () => {
-      try {
-        const res = await customAxios.get(
-          `/api/search?keyword=${keyword}&page=${page}&size=${size}`
-        );
-        setData(res.data);
-        console.log(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
+      {
+        getNextPageParam: (lastPage, allPages) => {
+          return lastPage.length ? allPages.length + 1 : undefined;
+        },
       }
-    };
+    );
+  const { ref, inView } = useInView();
 
-    getSearchdata();
-  }, [keyword, page, size]);
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage]);
 
-  return <div></div>;
-};
-
-export default Search;
+  return status === 'loading' ? (
+    <>
+      <Header />
+      <p className="mt-20">Loading...</p>
+    </>
+  ) : status === 'error' && error instanceof Error ? (
+    <>
+      <Header />
+      <span className="mt-20">Error: {error.message}</span>
+    </>
+  ) : (
+    <>
+      <Header />
+      <div className="mt-32 px-8">
+        {data?.pages?.map((page, idx) => (
+          <>
+            <em className="text-lg">Results for {query}</em>
+            <ColResults cols={page.collections} />
+            {page.items.data.length ? (
+              <>
+                <h5 className="ml-3.5 mt-8 font-bold text-lg">
+                  {page.items.data.length} items
+                </h5>
+                <section
+                  key={idx}
+                  className="py-1.5 grid grid-cols-2 gap-y-3 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                >
+                  {page.items.data.map((item: Item) => (
+                    <ItemCard
+                      key={item.itemId}
+                      itemImageName={
+                        process.env.REACT_APP_IMAGE + item.itemImageName
+                      }
+                      itemName={item.itemName}
+                      itemPrice={item.itemPrice}
+                      itemId={item.itemId}
+                      coinName={item.coinName}
+                      coinImage={item.coinImage}
+                      collectionName={item.collectionName}
+                    />
+                  ))}
+                </section>
+              </>
+            ) : (
+              <p>We coudln{"'"} find any items.</p>
+            )}
+          </>
+        ))}
+        <p className="inline-block" ref={ref}>
+          {isFetchingNextPage && 'Loading more...'}
+        </p>
+      </div>
+    </>
+  );
+}

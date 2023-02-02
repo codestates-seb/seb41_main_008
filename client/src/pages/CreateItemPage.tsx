@@ -1,14 +1,8 @@
-import CreateItem from 'components/CreateItem/CreateItem';
+import CreateItem, { Collection } from 'components/CreateItem/CreateItem';
 import ItemImage from 'components/CreateItem/ItemImage';
 import Header from 'components/Header/Header';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Collection {
-  collectionName: string;
-  collectionId: number;
-  logoImgName: string;
-}
 
 export default function CreateItemPage() {
   const [itemFile, setItemFile] = useState<File | null>(null);
