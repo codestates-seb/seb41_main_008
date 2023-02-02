@@ -14,7 +14,7 @@ export default function Collection({
 }: ColProp) {
   return (
     <Link
-      to={`/collection/${id.toString()}`}
+      to={`/collection/${id}`}
       className="relative w-full h-full aspect-square inline-block rounded-md shadow-m overflow-hidden"
     >
       <div className="h-3/4 w-full overflow-hidden">

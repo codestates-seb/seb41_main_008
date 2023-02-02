@@ -27,7 +27,7 @@ export default function Search() {
       ({ pageParam = 1 }) =>
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/api/search?keyword=${query}&page=${pageParam}&size=12`
+            `${process.env.REACT_APP_API_URL}/api/search?keyword=${query}&page=${pageParam}&size=15`
           )
           .then((res) => res.data),
 

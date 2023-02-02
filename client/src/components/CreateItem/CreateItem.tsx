@@ -71,7 +71,6 @@ export default function CreateItem({
     queryFn: () =>
       customAxios.get(`/api/members/${id}`).then((res) => res.data),
     onSuccess: (data) => {
-      console.log(data);
       if (data.collections?.length) {
         setCollections(data.collections);
       }
