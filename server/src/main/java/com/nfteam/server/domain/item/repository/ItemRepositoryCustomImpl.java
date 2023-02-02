@@ -107,6 +107,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 item.itemPrice);
     }
 
+    // todo: Utils 클래스로 중복 메서드 공통화 하기
     private <T> Slice<T> toSlice(Pageable pageable, List<T> items) {
         if (items.size() > pageable.getPageSize()) {
             items.remove(items.size() - 1);

@@ -2,15 +2,14 @@ package com.nfteam.server.domain.item.repository;
 
 import com.nfteam.server.dto.response.search.SearchCollectionResponse;
 import com.nfteam.server.dto.response.search.SearchItemResponse;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -38,23 +37,20 @@ public class QSearchRepository {
                 .fetch();
     }
 
-    public Page<SearchItemResponse> searchItemWithKeyword(String keyword, Pageable pageable) {
-        QueryResults<SearchItemResponse> searchItemResponseQueryResults
-                = jpaQueryFactory
+    public Slice<SearchItemResponse> searchItemWithKeyword(String keyword, Pageable pageable) {
+        List<SearchItemResponse> responses = jpaQueryFactory
                 .select(getSearchItemResponseConstructor())
                 .from(item)
                 .leftJoin(item.collection)
                 .leftJoin(item.collection.coin)
                 .where(containsExpression(item.itemName, keyword)
                         .or(containsExpression(item.collection.collectionName, keyword)))
+                .orderBy(item.itemId.asc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
 
-        List<SearchItemResponse> contents = searchItemResponseQueryResults.getResults();
-        long total = searchItemResponseQueryResults.getTotal();
-
-        return new PageImpl<>(contents, pageable, total);
+        return toSlice(pageable, responses);
     }
 
     private ConstructorExpression<SearchCollectionResponse> getSearchCollectionResponseConstructor() {
@@ -84,6 +80,15 @@ public class QSearchRepository {
             return null;
         }
         return stringPath.containsIgnoreCase(keyword);
+    }
+
+    // todo: Utils 클래스로 중복 메서드 공통화 하기
+    private <T> Slice<T> toSlice(Pageable pageable, List<T> items) {
+        if (items.size() > pageable.getPageSize()) {
+            items.remove(items.size() - 1);
+            return new SliceImpl<>(items, pageable, true);
+        }
+        return new SliceImpl<>(items, pageable, false);
     }
 
 }
