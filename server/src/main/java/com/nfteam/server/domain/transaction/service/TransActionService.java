@@ -104,7 +104,7 @@ public class TransActionService {
 
         if (carts.size() != 1) {
             throw new TransRecordNotValidException("결제되지 않은 카트가 중복 존재 (기록 이상)");
-        } else if (cart.getCartId() != cartId) {
+        } else if (String.valueOf(cart.getCartId()).equals(cartId)) {
             throw new TransRecordNotValidException("거래 요청 카트 아이디와 기존 멤버 카드 아이디 불일치 (기록 이상)");
         }
 
