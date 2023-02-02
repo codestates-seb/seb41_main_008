@@ -19,14 +19,10 @@ export default function MainCollection({ id, name, coin, logo }: Props) {
         alt="Collection"
         className="group-hover:scale-110 w-full h-full duration-500 object-cover"
       />
-      <h3 className="w-full truncate pl-1.5 pb-1.5 z-20 absolute bottom-0 font-bold text-lg text-white">
+      <h3 className="w-full truncate pl-3 pb-2 z-20 absolute bottom-0 font-bold text-lg text-white">
         {name}
       </h3>
-      <img
-        src={coin}
-        alt="Coin"
-        className="h-6 w-6 absolute top-1.5 left-1.5"
-      />
+      <img src={coin} alt="Coin" className="h-6 w-6 absolute top-3 left-2" />
     </Link>
   );
 }
