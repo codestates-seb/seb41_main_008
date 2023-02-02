@@ -21,7 +21,7 @@ export const getUserProFile = async (memberId: string) => {
   return await customAxios.get(`/api/members/${memberId}`);
 };
 
-export const getItemsData = async (itemId: string | number | undefined) => {
+export const getItemsData = async (itemId: number) => {
   return await customAxios.get(`/api/items/${itemId}`);
 };
 
@@ -49,10 +49,7 @@ export const cartSaveHandler = async (data: {
   itemIdList: number[];
   totalPrice: number;
 }) => {
-  console.log(data);
-  return await customAxios
-    .post('/api/carts/save', data)
-    .then((res) => console.log(res));
+  return await customAxios.post('/api/carts/save', data);
 };
 /**판매하기 api */
 export const sellItemHandler = async (
@@ -61,7 +58,6 @@ export const sellItemHandler = async (
 ) => {
   await customAxios
     .post(`/api/items/sell/${itemId}`, data)
-    .then((res) => console.log(res))
     .catch((err) => console.log(err));
 };
 

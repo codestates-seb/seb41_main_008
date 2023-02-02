@@ -1,16 +1,10 @@
+/* eslint-disable */
 import { Link, useParams } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import styled from 'styled-components';
-import customAxios from 'utils/api/axios';
-import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
-import HeartIcon from '../../assets/icons/PurchaseIcons/Heart';
-import OfferIcon from '../../assets/icons/PurchaseIcons/Offer';
-import TimeIcon from '../../assets/icons/PurchaseIcons/Time';
 import './Buy.sass';
 import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
-import CountdownTimer from './CountDownTime/CountDown';
 import { useState, useEffect } from 'react';
 import Rechart from './Rechart';
 import Header from 'components/Header/Header';
@@ -19,6 +13,11 @@ import Notification from 'components/Notification';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setCreateItemOpen } from 'store/toastSlice';
+import { getItemsData } from 'utils/api/api';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineEye } from 'react-icons/ai';
+import { RiShareBoxFill } from 'react-icons/ri';
+import { MdOutlineLocalOffer } from 'react-icons/md';
 
 export interface ItemProps {
   coinId: number;
@@ -69,85 +68,99 @@ const Asset = () => {
 
   useEffect(() => {
     setTimeout(() => dispatch(setCreateItemOpen(false)), 5000);
-
-    const getItemsData = async () => {
-      try {
-        const res = await customAxios.get(`/api/items/${itemId}`);
-        setData(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-      }
-    };
-
-    getItemsData();
-  }, [itemId, dispatch]);
+  }, [dispatch]);
+  useEffect(() => {
+    getItemsData(Number(itemId)).then((res) => setData(res.data));
+  });
 
   return (
     <div>
       <div className="asset mt-9 ">
         <div className="container">
-          <div className="flex justify-between max-2xl:flex-col">
-            <div className="w-full h-full   ">
-              <div className="flex p-1 h-12 w-full rounded-t-lg">
-                <img src={data?.coinImage} alt="EthLogo" />
-              </div>
-              <div className="w-[600px] h-[650px] max-2xl:w-full">
+          <div className="asset__grid">
+            <div className="asset__grid__item">
+              <div className="  space-x-96  bg-w center flex p-1 h-12 w-full border border-gray-300 rounded-tl-lg rounded-tr-lg ;">
                 <img
-                  src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
-                  className=" h-full w-full"
-                  alt="nftImage"
+                  className="  w-9 h-9 "
+                  src={data?.coinImage}
+                  alt="EthLogo"
                 />
+                <div className=" space-x-4  items-center flex flex-row">
+                  <RiShareBoxFill />
+                  <AiOutlineHeart />
+                </div>
+              </div>
+              <img
+                src={`${process.env.REACT_APP_IMAGE}${data?.itemImageName}`}
+                className="asset__image"
+                alt=""
+              />
+              <div className="card dark:text-black">
+                <div className="card__header">
+                  <TbFileDescription />
+                  Description
+                </div>
+                <div className="card__body">
+                  <div className="asset__properties"></div>
+                  <div>{data?.itemDescription}</div>
+                </div>
+              </div>
+              <div className="card dark:text-black">
+                <div className="card__header">
+                  <SlGraph />
+                  Price History
+                </div>
+                <div className="card__body">
+                  <div className="asset__properties"></div>
+                  <div style={{ width: 460, height: 400 }}>
+                    <Rechart data={data} />
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div className="border border-blue-500 w-full">
-              <div className=" ">
-                <h2>{data?.collectionName}</h2>
-                <div className="text-4xl font-bold">{data?.itemName}</div>
-                <div className="asset__meta">
-                  <div className="asset__meta__item">
-                    Owned by{' '}
-                    <Link to={`/account/${data?.ownerId}`}>
-                      {data?.ownerName}
-                    </Link>
-                  </div>
-                  <div className="asset__meta__item">
-                    <EyeIcon /> 0 views
-                  </div>
-                  <div className="asset__meta__item">
-                    <HeartIcon /> 0 favorites
-                  </div>
+            <div className="asset__grid__item asset__grid__item--expanded">
+              <h2>#{data?.collectionName}</h2>
+              <div className="text-4xl font-bold">{data?.itemName}</div>
+              <div className="asset__meta">
+                <div className="asset__meta__item">
+                  Owned by{' '}
+                  <Link to={`/account/${data?.ownerId}`}>
+                    {data?.ownerName}
+                  </Link>
                 </div>
-
-                <div className="w-full">
-                  <div className=" w-full">
-                    <div>
-                      <div className="label">Current price</div>
-                      <div className="asset__price">
-                        <img
-                          className=" w-4 h-4"
-                          src={data?.coinImage}
-                          alt="EthLogo"
-                        />{' '}
-                        <span>
-                          {data?.itemPrice} {data?.coinName}
-                        </span>
-                      </div>
-                    </div>
-                    <ButtonWrapper>
-                      <BuyAndCartButton data={data} />
-                    </ButtonWrapper>
-                  </div>
+                <div className="asset__meta__item">
+                  <AiOutlineEye /> 0 views
+                </div>
+                <div className="asset__meta__item">
+                  <AiOutlineHeart />0 favorites
                 </div>
               </div>
-
-              <div className="h-[500px] ">
-                <div className="">
-                  <OfferIcon />
+              <div className="card dark:text-black">
+                <div className="card__body">
+                  <div>
+                    <div className="label">Current price</div>
+                    <div className="asset__price">
+                      <img
+                        className=" w-6 h-6"
+                        src={data?.coinImage}
+                        alt="EthLogo"
+                      />{' '}
+                      <span>{data?.itemPrice}</span>
+                      <span>{data?.coinName}</span>
+                    </div>
+                  </div>
+                  <ButtonWrapper>
+                    <BuyAndCartButton data={data} />
+                  </ButtonWrapper>
+                </div>
+              </div>
+              <div className="card dark:text-black">
+                <div className="card__header">
+                  <MdOutlineLocalOffer />
                   Trade History
                 </div>
-                <div className="table-auto overflow-scroll w-full">
-                  <table className="table h-[450px]">
+                <div className="card__body">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th>Price</th>
@@ -158,7 +171,7 @@ const Asset = () => {
                         <th>Date</th>
                       </tr>
                     </thead>
-                    <tbody className="">
+                    <tbody>
                       {data?.tradeHistory.map((item) => (
                         <tr key={item.buyerId}>
                           <td>
@@ -180,31 +193,6 @@ const Asset = () => {
                       ))}
                     </tbody>
                   </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex w-[450px] flex-col ">
-            <div className="card">
-              <div className="card__header">
-                <TbFileDescription />
-                Description
-              </div>
-              <div className="card__body">
-                <div className="asset__properties"></div>
-                <div>{data?.itemDescription}</div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card__header">
-                <SlGraph />
-                Price History
-              </div>
-              <div className="card__body">
-                <div className="asset__properties"></div>
-                <div style={{ width: 430, height: 400 }}>
-                  <Rechart data={data} />
                 </div>
               </div>
             </div>

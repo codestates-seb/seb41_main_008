@@ -21,6 +21,13 @@ interface RankingData extends Array<Ranking> {}
 
 const TrendingChart = ({ option }: { option: string }) => {
   const [data, setData] = useState<RankingData>();
+  // const { time } = useParams();
+  console.log(option);
+  console.log(option.toLowerCase().trim());
+
+  // useEffect(() => {
+  //   getRaingkingData(time).then((res) => setData(res.data));
+  // }, [time]);
 
   useEffect(() => {
     const getRaingkingData = async () => {
@@ -30,8 +37,10 @@ const TrendingChart = ({ option }: { option: string }) => {
         );
         setData(res.data);
 
+        console.log(res.data);
       } catch (error) {
         const err = error as AxiosError;
+        console.log(err);
       }
     };
 
@@ -41,7 +50,7 @@ const TrendingChart = ({ option }: { option: string }) => {
   return (
     <div>
       <div className="top-collections">
-        <div className="tCbox">
+        <div className="tCbox ">
           {data?.map((topData) => {
             return (
               <div>
@@ -53,8 +62,7 @@ const TrendingChart = ({ option }: { option: string }) => {
                       <div className="topImgAvatar dark:text-[#ffffff]">
                         <img  
                           src={`${process.env.REACT_APP_IMAGE}${topData?.logoImgName}`}
-                          alt=" "
-
+                          alt="nftlogoimage"
                         />
                       </div>
                       <div className="mText dark:text-[#ffffff]">

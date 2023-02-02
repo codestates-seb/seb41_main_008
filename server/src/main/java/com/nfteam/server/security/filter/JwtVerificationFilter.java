@@ -1,6 +1,6 @@
 package com.nfteam.server.security.filter;
 
-import com.nfteam.server.common.utils.JwtTokenizer;
+import com.nfteam.server.auth.utils.JwtTokenizer;
 import com.nfteam.server.exception.token.TokenNotValidateException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;

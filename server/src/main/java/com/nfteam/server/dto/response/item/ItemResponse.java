@@ -21,6 +21,7 @@ public class ItemResponse implements Comparable<ItemResponse> {
     private Long coinId;
     private String coinName;
     private Double withdrawFee;
+    private String coinImage;
 
     // 아이템 정보
     private Long itemId;
@@ -45,6 +46,7 @@ public class ItemResponse implements Comparable<ItemResponse> {
                         Long coinId,
                         String coinName,
                         Double withdrawFee,
+                        String coinImage,
                         Long itemId,
                         String itemName,
                         String itemImageName,
@@ -58,6 +60,7 @@ public class ItemResponse implements Comparable<ItemResponse> {
         this.coinId = coinId;
         this.coinName = coinName;
         this.withdrawFee = withdrawFee;
+        this.coinImage = coinImage;
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemImageName = itemImageName;
@@ -77,7 +80,7 @@ public class ItemResponse implements Comparable<ItemResponse> {
     // 미판매 -> 판매 순 정렬
     @Override
     public int compareTo(ItemResponse o) {
-        return Boolean.compare(this.onSale, o.onSale);
+        return Boolean.compare(o.onSale, this.onSale);
     }
 
 }

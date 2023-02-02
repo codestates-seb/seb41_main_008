@@ -25,6 +25,7 @@ public class CollectionResponse {
     // 컬렉션 코인 정보
     private Long coinId;
     private String coinName;
+    private String coinImage;
 
     // 컬렉션 소속 아이템리스트 메타정보
     private Integer itemCount; // 아이템 갯수
@@ -46,7 +47,8 @@ public class CollectionResponse {
                               Long ownerId,
                               String ownerName,
                               Long coinId,
-                              String coinName) {
+                              String coinName,
+                              String coinImage) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.description = description;
@@ -57,6 +59,7 @@ public class CollectionResponse {
         this.ownerName = ownerName;
         this.coinId = coinId;
         this.coinName = coinName;
+        this.coinImage = coinImage;
     }
 
     public void addMetaInfo(Integer itemCount,
@@ -65,7 +68,7 @@ public class CollectionResponse {
                             Double lowestPrice,
                             Integer ownerCount) {
         this.itemCount = itemCount;
-        this.totalVolume = totalVolume;
+        this.totalVolume = convertNumber(totalVolume);
         this.highestPrice = highestPrice;
         this.lowestPrice = lowestPrice;
         this.ownerCount = ownerCount;
@@ -74,5 +77,10 @@ public class CollectionResponse {
     public void addItemResponseList(List<CollectionItemResponse> items) {
         this.itemList = items;
     }
+
+    private Double convertNumber(Double num) {
+        return Double.parseDouble(String.valueOf(Math.round(num)));
+    }
+
 
 }

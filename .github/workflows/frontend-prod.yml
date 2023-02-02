@@ -9,49 +9,50 @@ name: 프론트엔드 운영서버 배포 자동화
 
 on:
   push:
-    branches: [ "prod" ]
+    branches: [ "release" ]
     paths: 'client/**'
 
-defaults:
-  run:
-    working-directory: client
-
 env:
+  WORKING_DIRECTORY: ./client
+
+  AWS_ACCESS_KEY_ID: ${{ secrets.PROD_AWS_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: www.nfteam008.com
-  PROJECT_NAME: client
+  AWS_S3_BUCKET: www.nfteam008.com
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      working-directory: ./client
-    steps:
-      - name: Checkout source code.   # 레포지토리 체크아웃
-        uses: actions/checkout@master
+  build_deploy_dev:
+    name: Deploy to S3 Bucket
 
-      - name: Cache node modules      # node modules 캐싱
-        uses: actions/cache@v1
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: cache
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
-      - name: Install dependencies
+          key: npm-packages-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Dependency
         run: npm install
-        working-directory: ${{ env.working-directory }}
 
-      - name: build
+      - name: Build
         run: npm run build
-        working-directory: ${{ env.working-directory }}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./ s3://$S3_BUCKET_NAME/$PROJECT_NAME/
+      - name: Deploy to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ${{ env.AWS_REGION }} \
+            build s3://${{ env.AWS_S3_BUCKET }}

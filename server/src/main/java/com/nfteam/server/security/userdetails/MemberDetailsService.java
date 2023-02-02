@@ -1,8 +1,10 @@
 package com.nfteam.server.security.userdetails;
 
+import com.nfteam.server.domain.member.entity.Member;
+import com.nfteam.server.domain.member.entity.MemberStatus;
+import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.exception.member.MemberNotFoundException;
-import com.nfteam.server.member.entity.Member;
-import com.nfteam.server.member.repository.MemberRepository;
+import com.nfteam.server.exception.member.MemberStatusNotActiveException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,8 +26,16 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member findMember = memberRepository.findByEmail(username)
                 .orElseThrow(() -> new MemberNotFoundException(username));
+        checkMemberStatus(findMember.getMemberStatus());
         findMember.updateLastLoginTime();
         return new MemberDetails(findMember);
+    }
+
+    private void checkMemberStatus(MemberStatus memberStatus) {
+
+        if (memberStatus.equals(MemberStatus.MEMBER_QUIT)) {
+            throw new MemberStatusNotActiveException();
+        }
     }
 
 }

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { HiOutlineStar, HiShare } from 'react-icons/hi';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { setCreateColOpen } from 'store/toastSlice';
+import { setCreateColOpen, setAddtoCartOpen } from 'store/toastSlice';
 import { format } from 'date-fns';
 import MissingPage from 'pages/MissingPage';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
@@ -48,9 +48,11 @@ export default function CollectionDetails() {
   const { ref, inView } = useInView();
   const dispatch = useAppDispatch();
   const createColOpen = useAppSelector((state) => state.toast.createColOpen);
+  const addToCartOprn = useAppSelector((state) => state.toast.addToCartOpen);
   useEffect(() => {
     setTimeout(() => dispatch(setCreateColOpen(false)), 5000);
   }, [dispatch]);
+  setTimeout(() => dispatch(setAddtoCartOpen(false)), 2000);
 
   const { isLoading, error, data } = useQuery<Collection>({
     queryKey: ['collections', 'only', id],
@@ -59,23 +61,20 @@ export default function CollectionDetails() {
         .get(`${process.env.REACT_APP_API_URL}/api/collections/only/${id}`)
         .then((res) => res.data),
   });
-  const res: any = useInfiniteQuery({
+  const items: any = useInfiniteQuery({
     queryKey: ['infinite', id],
     queryFn: async ({ pageParam = 1 }) =>
       await customAxios
-        .get(`/api/items/collections/${id}?page=${pageParam}&size=12`)
+        .get(`/api/items/collections/${id}?page=${pageParam}&size=6`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
-      console.log('lastPage', lastPage);
-      console.log('allPages', allPages);
       return lastPage.data.length ? allPages.length + 1 : undefined;
     },
   });
-  console.log('res.data', res.data);
-  const isFetchingNextPage = res.isFetchingNextPage;
+  const isFetchingNextPage = items.isFetchingNextPage;
 
   useEffect(() => {
-    if (inView) res.fetchNextPage();
+    if (inView) items.fetchNextPage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
   if (isLoading) return <p>Loading...</p>;
@@ -164,14 +163,14 @@ export default function CollectionDetails() {
         </section>
 
         <div className="mt-5 p-6 grid gap-4 grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
-          {res.data &&
-            res?.data.pages?.map((pages: any) => {
+          {items.data &&
+            items?.data.pages?.map((pages: any, index: number) => {
               return pages?.data.map((el: any) => {
                 return (
                   <Card
                     key={el.itemId}
                     {...el}
-                    data={res.data.pages[0].data}
+                    data={items.data.pages[index].data}
                     filter={'Collected'}
                   />
                 );
@@ -185,6 +184,15 @@ export default function CollectionDetails() {
               <BsCheckCircleFill className="h-7 w-7" />
             </span>{' '}
             Created!
+          </p>
+        </Notification>
+
+        <Notification open={addToCartOprn} setOpen={setAddtoCartOpen}>
+          <p className="flex items-center gap-1 text-emerald-700">
+            <span>
+              <BsCheckCircleFill className="h-7 w-7" />
+            </span>{' '}
+            Add to Cart!
           </p>
         </Notification>
       </div>

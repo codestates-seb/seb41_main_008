@@ -3,13 +3,14 @@ package com.nfteam.server.auth.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.nfteam.server.common.utils.JwtTokenizer;
+import com.nfteam.server.auth.utils.JwtTokenizer;
+import com.nfteam.server.domain.member.entity.Member;
+import com.nfteam.server.domain.member.entity.MemberPlatform;
+import com.nfteam.server.domain.member.entity.MemberStatus;
+import com.nfteam.server.domain.member.repository.MemberRepository;
 import com.nfteam.server.dto.response.auth.GoogleUser;
 import com.nfteam.server.dto.response.auth.SocialLoginResponse;
 import com.nfteam.server.exception.member.MemberNotFoundException;
-import com.nfteam.server.member.entity.Member;
-import com.nfteam.server.member.entity.MemberPlatform;
-import com.nfteam.server.member.repository.MemberRepository;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,8 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @Transactional(readOnly = true)
 public class GoogleOAuth2 implements OAuth2 {
+
+    private static final String USER_INFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -41,26 +44,27 @@ public class GoogleOAuth2 implements OAuth2 {
     public SocialLoginResponse proceedLogin(String token) {
         ResponseEntity<String> userInfoResponse = createGetInfoRequest(token);
         GoogleUser googleUser = getUserInfo(userInfoResponse);
+        Boolean isAlreadySignUp = true;
 
         if (isFistLogin(googleUser)) {
             signUp(googleUser);
+            isAlreadySignUp = false;
         }
 
-        return makeSocialResponse(googleUser);
+        return makeSocialResponse(googleUser, isAlreadySignUp);
     }
 
-    private ResponseEntity<String> createGetInfoRequest(String socialToken) {
-        String url = "https://www.googleapis.com/oauth2/v1/userinfo";
-
+    private ResponseEntity<String> createGetInfoRequest(String token) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + socialToken);
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(headers);
 
-        return restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+        return restTemplate.exchange(USER_INFO_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
     }
 
     private GoogleUser getUserInfo(ResponseEntity<String> userInfoResponse) {
-        GoogleUser googleUser = null;
+        GoogleUser googleUser;
+
         try {
             googleUser = objectMapper.readValue(userInfoResponse.getBody(), GoogleUser.class);
         } catch (JsonProcessingException exception) {
@@ -79,11 +83,15 @@ public class GoogleOAuth2 implements OAuth2 {
         memberRepository.save(member);
     }
 
-    public SocialLoginResponse makeSocialResponse(GoogleUser googleUser) {
+    public SocialLoginResponse makeSocialResponse(GoogleUser googleUser, Boolean isAlreadySignUp) {
         Member member = memberRepository.findByEmail(googleUser.getEmail())
+                .filter(m -> !m.getMemberStatus().equals(MemberStatus.MEMBER_QUIT))
                 .orElseThrow(() -> new MemberNotFoundException(googleUser.getEmail()));
-        member.updateNickname(googleUser.getName());
-        member.updateProfileImg(googleUser.getPicture());
+
+        if (!isAlreadySignUp) {
+            member.updateNickname(googleUser.getName());
+            member.updateProfileImg(googleUser.getPicture());
+        }
         member.updateLastLoginTime();
 
         MemberDetails memberDetails = new MemberDetails(member);
