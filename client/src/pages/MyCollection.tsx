@@ -24,6 +24,7 @@ export default function MyCollectionPage() {
     }
     return;
   }, [isLogin, navigate]);
+
   const { isLoading, error } = useQuery<SearchCol[]>({
     queryKey: ['members', 'mypage'],
     queryFn: () =>

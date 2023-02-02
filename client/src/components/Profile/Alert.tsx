@@ -2,10 +2,10 @@ import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import customAxios from 'utils/api/axios';
 
-export default function Alert({ id }: { id: number | undefined }) {
+export default function Alert({ id }: { id: string }) {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: (id: number) => customAxios.delete(`api/members/${id}`),
+    mutationFn: (id: string) => customAxios.delete(`api/members/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries(['members', id]);
       window.localStorage.clear();

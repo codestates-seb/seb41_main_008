@@ -33,12 +33,14 @@ export default function Search() {
 
       {
         getNextPageParam: (lastPage, allPages) => {
-          return lastPage.length ? allPages.length + 1 : undefined;
+          // return lastPage ? allPages.length + 1 : undefined;
+          // console.log(lastPage, allPages);
+          return lastPage.items.hasNext ? allPages.length + 1 : undefined;
         },
       }
     );
   const { ref, inView } = useInView();
-
+  console.log(data);
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -59,40 +61,34 @@ export default function Search() {
     <>
       <Header />
       <div className="mt-32 px-8">
-        {data?.pages?.map((page, idx) => (
-          <>
-            <em className="text-lg">Results for {query}</em>
-            <ColResults cols={page.collections} />
-            <h5 className="ml-3.5 mt-8 font-bold text-lg">
-              {page.items.data.length} items
-            </h5>
-            {page.items.data.length ? (
-              <>
-                <section
-                  key={idx}
-                  className="py-1.5 grid grid-cols-2 gap-y-3 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                >
-                  {page.items.data.map((item: Item) => (
-                    <ItemCard
-                      key={item.itemId}
-                      itemImageName={
-                        process.env.REACT_APP_IMAGE + item.itemImageName
-                      }
-                      itemName={item.itemName}
-                      itemPrice={item.itemPrice}
-                      itemId={item.itemId}
-                      coinName={item.coinName}
-                      coinImage={item.coinImage}
-                      collectionName={item.collectionName}
-                    />
-                  ))}
-                </section>
-              </>
-            ) : (
-              <p className="ml-3.5">We coudln{"'"} find any items.</p>
-            )}
-          </>
-        ))}
+        <em className="text-lg">Results for {query}</em>
+        <ColResults cols={data?.pages[0].collections} />
+        <h5 className="ml-3.5 mt-8 font-bold text-lg">Item results</h5>
+        {data?.pages[0].items.data.length === 0 ? (
+          <p className="ml-3.5">We coudln{"'"} find any items.</p>
+        ) : (
+          data?.pages?.map((page, idx) => (
+            <section
+              key={idx}
+              className="py-1.5 grid grid-cols-2 gap-y-3 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            >
+              {page.items.data.map((item: Item) => (
+                <ItemCard
+                  key={item.itemId}
+                  itemImageName={
+                    process.env.REACT_APP_IMAGE + item.itemImageName
+                  }
+                  itemName={item.itemName}
+                  itemPrice={item.itemPrice}
+                  itemId={item.itemId}
+                  coinName={item.coinName}
+                  coinImage={item.coinImage}
+                  collectionName={item.collectionName}
+                />
+              ))}
+            </section>
+          ))
+        )}
         <p className="inline-block" ref={ref}>
           {isFetchingNextPage && 'Loading more...'}
         </p>

@@ -2,12 +2,25 @@ import { useQuery } from '@tanstack/react-query';
 import ProfileBanner from 'components/Profile/ProfileBanner';
 import ProfileBio from 'components/Profile/ProfileBio';
 import ProfileLogo from 'components/Profile/ProfileLogo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import customAxios from 'utils/api/axios';
 import { UserType } from './AccountPage';
 import Header from 'components/Header/Header';
+import { useAppSelector } from 'hooks/hooks';
+import { useNavigate } from 'react-router-dom';
 
 export default function EditProfile() {
+  const { isLogin } = useAppSelector((state) => state.login);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다');
+      navigate('/login');
+    }
+    return;
+  }, [isLogin, navigate]);
+
   const id = window.localStorage.getItem('MEMBER_ID');
 
   const [profileLogo, setProfileLogo] = useState<string>('');

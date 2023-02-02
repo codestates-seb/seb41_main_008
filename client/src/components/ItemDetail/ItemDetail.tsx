@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import './Buy.sass';
@@ -14,8 +13,7 @@ import { BsCheckCircleFill } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setCreateItemOpen } from 'store/toastSlice';
 import { getItemsData } from 'utils/api/api';
-import { AiOutlineHeart } from 'react-icons/ai';
-import { AiOutlineEye } from 'react-icons/ai';
+import { AiOutlineHeart, AiOutlineEye } from 'react-icons/ai';
 import { RiShareBoxFill } from 'react-icons/ri';
 import { MdOutlineLocalOffer } from 'react-icons/md';
 
@@ -66,9 +64,8 @@ const Asset = () => {
   const createItemOpen = useAppSelector((state) => state.toast.createItemOpen);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setTimeout(() => dispatch(setCreateItemOpen(false)), 5000);
-  }, [dispatch]);
+  setTimeout(() => dispatch(setCreateItemOpen(false)), 5000);
+
   useEffect(() => {
     getItemsData(Number(itemId)).then((res) => setData(res.data));
   });

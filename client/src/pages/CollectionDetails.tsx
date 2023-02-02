@@ -49,9 +49,8 @@ export default function CollectionDetails() {
   const dispatch = useAppDispatch();
   const createColOpen = useAppSelector((state) => state.toast.createColOpen);
   const addToCartOprn = useAppSelector((state) => state.toast.addToCartOpen);
-  useEffect(() => {
-    setTimeout(() => dispatch(setCreateColOpen(false)), 5000);
-  }, [dispatch]);
+
+  setTimeout(() => dispatch(setCreateColOpen(false)), 5000);
   setTimeout(() => dispatch(setAddtoCartOpen(false)), 2000);
 
   const { isLoading, error, data } = useQuery<Collection>({
@@ -62,9 +61,9 @@ export default function CollectionDetails() {
         .then((res) => res.data),
   });
   const items: any = useInfiniteQuery({
-    queryKey: ['infinite', id],
-    queryFn: async ({ pageParam = 1 }) =>
-      await customAxios
+    queryKey: ['items', 'collections', id],
+    queryFn: ({ pageParam = 1 }) =>
+      customAxios
         .get(`/api/items/collections/${id}?page=${pageParam}&size=6`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
@@ -75,8 +74,7 @@ export default function CollectionDetails() {
 
   useEffect(() => {
     if (inView) items.fetchNextPage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
+  }, [inView, items]);
   if (isLoading) return <p>Loading...</p>;
 
   if (error instanceof Error)
