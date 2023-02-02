@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { GrStatusGoodSmall } from 'react-icons/gr';
-import { TbCircleX } from 'react-icons/tb';
 import styled from 'styled-components';
 import BuyAndCartButton from './CartButton/BuyAndCartButton';
 type cartBtnType = {
@@ -110,10 +109,6 @@ const Card = ({
                   <span className="m-1">OnSale</span>
                 </div>
               ) : (
-                // <div className="flex justify-center p-1 items-center font-bold  bg-red-300 text-red-700 rounded-full w-28">
-                //   <TbCircleX className="w-4 h-4 mr-1" />
-                //   Not listed
-                // </div>
                 <div className="h-[50px]"></div>
               )}
             </div>

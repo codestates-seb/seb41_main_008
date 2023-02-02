@@ -61,22 +61,20 @@ export default function CollectionDetails() {
         .get(`${process.env.REACT_APP_API_URL}/api/collections/only/${id}`)
         .then((res) => res.data),
   });
-  const res: any = useInfiniteQuery({
+  const items: any = useInfiniteQuery({
     queryKey: ['infinite', id],
     queryFn: async ({ pageParam = 1 }) =>
       await customAxios
         .get(`/api/items/collections/${id}?page=${pageParam}&size=6`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
-      console.log('lastPage', lastPage);
-      console.log('allPages', allPages);
       return lastPage.data.length ? allPages.length + 1 : undefined;
     },
   });
-  const isFetchingNextPage = res.isFetchingNextPage;
+  const isFetchingNextPage = items.isFetchingNextPage;
 
   useEffect(() => {
-    if (inView) res.fetchNextPage();
+    if (inView) items.fetchNextPage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
   if (isLoading) return <p>Loading...</p>;
@@ -165,14 +163,14 @@ export default function CollectionDetails() {
         </section>
 
         <div className="mt-5 p-6 grid gap-4 grid-cols-6 max-xl:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 rounded">
-          {res.data &&
-            res?.data.pages?.map((pages: any, index: number) => {
+          {items.data &&
+            items?.data.pages?.map((pages: any, index: number) => {
               return pages?.data.map((el: any) => {
                 return (
                   <Card
                     key={el.itemId}
                     {...el}
-                    data={res.data.pages[index].data}
+                    data={items.data.pages[index].data}
                     filter={'Collected'}
                   />
                 );

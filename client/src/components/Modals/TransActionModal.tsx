@@ -55,8 +55,6 @@ const TransActionModal = () => {
         .reduce((prev, curr) => prev + curr, 0),
     [cartItems]
   );
-  console.log(cartItems);
-  console.log('최적화 필요', totalPrice);
 
   const transActionHandler = () => {
     transAction({ cartId, itemInfo })

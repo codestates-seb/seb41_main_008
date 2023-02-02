@@ -1,7 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import styled from 'styled-components';
-import customAxios from 'utils/api/axios';
 import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
 import HeartIcon from '../../assets/icons/PurchaseIcons/Heart';
 import OfferIcon from '../../assets/icons/PurchaseIcons/Offer';
@@ -17,7 +15,7 @@ import Notification from 'components/Notification';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setCreateItemOpen } from 'store/toastSlice';
-
+import { getItemsData } from 'utils/api/api';
 export interface ItemProps {
   coinId: number;
   coinName: string;
@@ -66,19 +64,10 @@ const Asset = () => {
 
   useEffect(() => {
     setTimeout(() => dispatch(setCreateItemOpen(false)), 5000);
-
-    const getItemsData = async () => {
-      try {
-        const res = await customAxios.get(`/api/items/${itemId}`);
-        setData(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
-    };
-
-    getItemsData();
-  }, [itemId, dispatch]);
+  }, [dispatch]);
+  useEffect(() => {
+    getItemsData(Number(itemId)).then((res) => setData(res.data));
+  });
 
   return (
     <div>

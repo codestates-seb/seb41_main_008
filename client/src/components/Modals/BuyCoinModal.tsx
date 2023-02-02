@@ -60,7 +60,6 @@ const BuyCoinModal = () => {
   const selectBoxHandler = (e: any) => {
     setCoinName(e.target.value);
   };
-  console.log(coinName);
   const pgToken = location.search.split('=')[1];
   const tid = localStorage.getItem('tid');
   const paidPrice = tradePrice * watch('coinCount');
