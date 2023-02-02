@@ -27,7 +27,8 @@ export default function Carousel() {
     return <p>An error has occurred: + {error.message}</p>;
 
   return (
-    <div className="p-[2rem] mt-[2rem]">
+    <div className="p-[2rem] mt-[2rem] space-y-5">
+      <h1 className="font-bold text-3xl">Notable Collections</h1>
       <Swiper
         spaceBetween={15}
         loop={true}
@@ -56,11 +57,11 @@ export default function Carousel() {
             slidesPerGroup: 5,
           },
         }}
-        className="carousel"
+        className="carousel rounded-md"
       >
         {data?.map((col) => (
           <SwiperSlide
-            className="my-3 rounded-md aspect-square shadow-md hover:shadow-lg hover:-translate-y-2 duration-300"
+            className="bg-gray-200 group rounded-md"
             key={col.collectionId}
           >
             <Collection
