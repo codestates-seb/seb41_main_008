@@ -20,10 +20,16 @@ const GoogleLoginButton = ({ isSignup }: Props) => {
   const navigate = useNavigate();
   const login = useGoogleLogin({
     onSuccess: (codeResponse: any) => {
-      console.log(codeResponse);
-      dispatch(googleLogin(codeResponse.access_token)).then(() =>
-        navigate('/')
-      );
+      dispatch(googleLogin(codeResponse.access_token)).then((res: any) => {
+        if (res.error) {
+          alert('탈퇴한 회원은 30일간 회원가입 할 수 없습니다.');
+        } else {
+          navigate('/');
+        }
+      });
+      // .then(() =>
+      //   navigate('/')
+      // );
     },
   });
   return (

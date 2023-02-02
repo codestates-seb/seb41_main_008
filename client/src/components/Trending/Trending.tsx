@@ -28,7 +28,6 @@ const TrendingChart = ({ option }: { option: string }) => {
   console.log(option);
   console.log(option.toLowerCase().trim());
 
-
   // useEffect(() => {
   //   getRaingkingData(time).then((res) => setData(res.data));
   // }, [time]);
@@ -54,19 +53,19 @@ const TrendingChart = ({ option }: { option: string }) => {
   return (
     <div>
       <div className="top-collections">
-        <div className="tCbox">
+        <div className="tCbox ">
           {data?.map((topData) => {
             return (
               <div>
                 <Link to={`/collection/${topData.collectionId}`}>
-                  <div className="inTCbox">
-                    <div className="left"></div>
+                  <div className="inTCbox  dark:border-gray-500">
+                    <div className="left "></div>
                     <span>{topData.rank}</span>
                     <div className="middle">
                       <div className="topImgAvatar">
                         <img
                           src={`${process.env.REACT_APP_IMAGE}${topData?.logoImgName}`}
-                          alt=" "
+                          alt="nftlogoimage"
                         />
                       </div>
                       <div className="mText">

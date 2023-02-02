@@ -48,7 +48,6 @@ const SellModal = () => {
     resetField,
   } = useForm<FormValue>({ mode: 'onChange' });
   useEffect(() => {
-    console.log('s');
     getItemsData(itemId).then((res) => setData(res.data));
   }, [itemId]);
 
@@ -75,7 +74,6 @@ const SellModal = () => {
 
   const onClickSubmit: SubmitHandler<FormValue> = (data) => {
     console.log(errors);
-    console.log(data);
     if (totalPrice > 999999999999999) {
       alert('999999999999999₩ 을 초과할 수 없습니다');
       return;

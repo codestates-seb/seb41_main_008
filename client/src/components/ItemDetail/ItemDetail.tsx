@@ -1,16 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import styled from 'styled-components';
-import customAxios from 'utils/api/axios';
 import EyeIcon from '../../assets/icons/PurchaseIcons/Eye';
 import HeartIcon from '../../assets/icons/PurchaseIcons/Heart';
 import OfferIcon from '../../assets/icons/PurchaseIcons/Offer';
-import TimeIcon from '../../assets/icons/PurchaseIcons/Time';
 import './Buy.sass';
 import { SlGraph } from 'react-icons/sl';
 import { TbFileDescription } from 'react-icons/tb';
 import BuyAndCartButton from '../CartButton/BuyAndCartButton';
-import CountdownTimer from './CountDownTime/CountDown';
 import { useState, useEffect } from 'react';
 import Rechart from './Rechart';
 import Header from 'components/Header/Header';
@@ -19,7 +15,7 @@ import Notification from 'components/Notification';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { setCreateItemOpen } from 'store/toastSlice';
-
+import { getItemsData } from 'utils/api/api';
 export interface ItemProps {
   coinId: number;
   coinName: string;
@@ -68,19 +64,10 @@ const Asset = () => {
 
   useEffect(() => {
     setTimeout(() => dispatch(setCreateItemOpen(false)), 5000);
-
-    const getItemsData = async () => {
-      try {
-        const res = await customAxios.get(`/api/items/${itemId}`);
-        setData(res.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err);
-      }
-    };
-
-    getItemsData();
-  }, [itemId, dispatch]);
+  }, [dispatch]);
+  useEffect(() => {
+    getItemsData(Number(itemId)).then((res) => setData(res.data));
+  });
 
   return (
     <div>
@@ -100,7 +87,7 @@ const Asset = () => {
                 className="asset__image"
                 alt=""
               />
-              <div className="card">
+              <div className="card dark:text-black">
                 <div className="card__header">
                   <TbFileDescription />
                   Description
@@ -110,7 +97,7 @@ const Asset = () => {
                   <div>{data?.itemDescription}</div>
                 </div>
               </div>
-              <div className="card">
+              <div className="card dark:text-black">
                 <div className="card__header">
                   <SlGraph />
                   Price History
@@ -138,32 +125,25 @@ const Asset = () => {
                   <HeartIcon /> 0 favorites
                 </div>
               </div>
-              {data?.onSale && (
-                <div className="card">
-                  <div className="card__header">
-                    <TimeIcon />
-                    Sale ends january 31, 2023 at 23:59 UTC+9
-                  </div>
-                  <CountdownTimer />
-                  <div className="card__body">
-                    <div>
-                      <div className="label">Current price</div>
-                      <div className="asset__price">
-                        <img
-                          className=" w-4 h-4"
-                          src={data?.coinImage}
-                          alt="EthLogo"
-                        />{' '}
-                        <span>{data?.itemPrice}</span>
-                      </div>
+              <div className="card dark:text-black">
+                <div className="card__body">
+                  <div>
+                    <div className="label">Current price</div>
+                    <div className="asset__price">
+                      <img
+                        className=" w-4 h-4"
+                        src={data?.coinImage}
+                        alt="EthLogo"
+                      />{' '}
+                      <span>{data?.itemPrice}</span>
                     </div>
-                    <ButtonWrapper>
-                      <BuyAndCartButton data={data} />
-                    </ButtonWrapper>
                   </div>
+                  <ButtonWrapper>
+                    <BuyAndCartButton data={data} />
+                  </ButtonWrapper>
                 </div>
-              )}
-              <div className="card">
+              </div>
+              <div className="card dark:text-black">
                 <div className="card__header">
                   <OfferIcon />
                   Trade History
