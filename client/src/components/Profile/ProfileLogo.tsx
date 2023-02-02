@@ -49,7 +49,6 @@ export default function ProfileLogo({
         .then((res) => res.data),
     onSuccess: (data) => {
       setLogoName(data.imageName);
-      console.log(data.imageName);
     },
   });
 
@@ -103,10 +102,7 @@ export default function ProfileLogo({
       </div>
 
       {isLoading ? (
-        <h5
-          className="mt-3
-        font-bold text-gray-500"
-        >
+        <h5 className="mt-3 font-bold text-gray-500">
           Uploading a profile logo...
         </h5>
       ) : error instanceof Error ? (

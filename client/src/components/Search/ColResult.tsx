@@ -9,7 +9,7 @@ export default function ColResult({
 }: SearchCol) {
   return (
     <Link
-      to={`/collection/${collectionId.toString()}`}
+      to={`/collection/${collectionId}`}
       className="relative w-full h-full bg-gray-100 rounded-2xl overflow-hidden aspect-square inline-block"
     >
       <img

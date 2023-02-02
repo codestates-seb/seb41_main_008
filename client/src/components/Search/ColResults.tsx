@@ -16,8 +16,7 @@ export default function ColResults({
       {cols?.length ? (
         <Swiper
           spaceBetween={15}
-          loop={true}
-          loopFillGroupWithBlank={true}
+          loop={cols?.length >= 4 && true}
           navigation={true}
           modules={[Navigation]}
           breakpoints={{

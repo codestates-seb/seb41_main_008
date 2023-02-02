@@ -6,10 +6,6 @@ import Coin from '../Trending/Coin';
 import DayDropDown from './DayDropDown';
 import CoinFilter from './CoinFilter';
 
-
-
-
-
 const Home = () => {
   const [option, setOption] = useState('DAY');
   const [coinId, setCoin] = useState(1);
@@ -18,16 +14,16 @@ const Home = () => {
       setActiveTab(tab);
     };
   return (
-    <main className={styles.gridContainer}>
+    <main className={`${styles.gridContainer} `}>
       <section
-        className={`${styles.gridItem} ${styles.section} ${styles.statsSection}`}
+        className={`${styles.gridItem} ${styles.section} ${styles.statsSection} `}
       >
         <header className={`${styles.statsHeader}`}>
           <div className={styles.tabContainer}>
             <button
               className={`${styles.tabBtn} ${
-                activeTab === 'trending' && styles.tabBtnActive
-              }`}
+               activeTab === 'trending' && styles.tabBtnActive
+              } ${'dark:text-white'}`}
               onClick={() => onTabChange('trending')}
             >
               TOP

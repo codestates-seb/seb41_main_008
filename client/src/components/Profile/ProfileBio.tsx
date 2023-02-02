@@ -70,14 +70,23 @@ export default function ProfileBio({
     },
   });
 
+  const profilePic =
+    profileImageName.slice(0, 8) === 'https://'
+      ? profileImageName
+      : process.env.REACT_APP_IMAGE + profileImageName;
+  const bannerPic =
+    bannerImageName.slice(0, 8) === 'https://'
+      ? bannerImageName
+      : process.env.REACT_APP_IMAGE + bannerImageName;
+
   const onSubmit = (data: Bio) => {
     dispatch(setUpdateUserOpen(true));
 
     mutate({
       nickname: data.nickname,
       description: data.description,
-      profileImageName: process.env.REACT_APP_IMAGE + profileImageName,
-      bannerImageName: process.env.REACT_APP_IMAGE + bannerImageName,
+      profileImageName: profilePic,
+      bannerImageName: bannerPic,
     });
   };
 
@@ -105,7 +114,7 @@ export default function ProfileBio({
             type="text"
             {...register('nickname')}
             placeholder="Enter username"
-            className="w-full rounded-lg p-3 text-lg group outline-none h-full"
+            className="w-full rounded-md p-3 text-lg group outline-none h-full dark:bg-[#3d3d41]"
             onFocus={() => setNicknameFocus(true)}
             onBlur={() => setNicknameFocus(false)}
             defaultValue={nickname}
@@ -135,7 +144,7 @@ export default function ProfileBio({
         >
           <textarea
             {...register('description')}
-            className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg"
+            className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-md text-lg dark:bg-[#3d3d41]"
             onFocus={() => setDescFocus(true)}
             onBlur={() => setDescFocus(false)}
             placeholder="Tell the world your story!"

@@ -1,28 +1,17 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAppDispatch } from 'hooks/hooks';
-import { useNavigate } from 'react-router-dom';
-import { setDeleteUserOpen } from 'store/toastSlice';
 import customAxios from 'utils/api/axios';
 
 export default function Alert({ id }: { id: number | undefined }) {
-  const navigate = useNavigate();
-
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: (id: string) => customAxios.delete(`api/members/${id}`),
+    mutationFn: (id: number) => customAxios.delete(`api/members/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries(['members', id]);
-      navigate('/');
+      window.localStorage.clear();
+      window.location.replace('/');
     },
   });
-
-  const dispatch = useAppDispatch();
-
-  const deleteAccount = () => {
-    mutate(id?.toString()!);
-    dispatch(setDeleteUserOpen(true));
-  };
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -52,7 +41,7 @@ export default function Alert({ id }: { id: number | undefined }) {
               <button className="Button mauve">Cancel</button>
             </AlertDialog.Cancel>
             <AlertDialog.Action asChild>
-              <button className="Button red" onClick={deleteAccount}>
+              <button className="Button red" onClick={() => mutate(id!)}>
                 Yes, delete account
               </button>
             </AlertDialog.Action>

@@ -25,7 +25,7 @@ export default function CollectionOptions({
   if (isLoading) return <p>Loading...</p>;
 
   if (error) return <p>An error has occurred: + {error.message}</p>;
-  console.log(collections);
+
   return (
     <div className="space-y-3">
       {collections?.length ? (

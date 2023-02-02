@@ -1,4 +1,3 @@
-/* eslint-disable */
 import customAxios from './axios';
 import axios from 'axios';
 export const logout = () => {
