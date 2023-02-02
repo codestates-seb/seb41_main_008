@@ -37,7 +37,6 @@ export default function MainCarousel() {
       <Swiper
         spaceBetween={15}
         loop={true}
-        loopFillGroupWithBlank={true}
         navigation={true}
         autoplay={{
           delay: 5000,

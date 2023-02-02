@@ -73,9 +73,6 @@ export default function ProfileLogo({
         Logo image{' '}
         <span className="text-red-500 text-xl font-bold align-top">*</span>
       </h3>
-      <p className="text-gray-500">
-        (You cannot change Google profile picture)
-      </p>
 
       <input
         type="file"

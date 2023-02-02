@@ -32,7 +32,6 @@ export default function Carousel() {
       <Swiper
         spaceBetween={15}
         loop={true}
-        loopFillGroupWithBlank={true}
         navigation={true}
         modules={[Navigation]}
         breakpoints={{

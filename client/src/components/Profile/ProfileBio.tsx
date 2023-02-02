@@ -69,15 +69,24 @@ export default function ProfileBio({
       navigate(`/account/${id}`);
     },
   });
-  console.log(profileImageName, bannerImageName);
+
+  const profilePic =
+    profileImageName.slice(0, 8) === 'https://'
+      ? profileImageName
+      : process.env.REACT_APP_IMAGE + profileImageName;
+  const bannerPic =
+    bannerImageName.slice(0, 8) === 'https://'
+      ? bannerImageName
+      : process.env.REACT_APP_IMAGE + bannerImageName;
+
   const onSubmit = (data: Bio) => {
     dispatch(setUpdateUserOpen(true));
 
     mutate({
       nickname: data.nickname,
       description: data.description,
-      profileImageName: process.env.REACT_APP_IMAGE + profileImageName,
-      bannerImageName: process.env.REACT_APP_IMAGE + bannerImageName,
+      profileImageName: profilePic,
+      bannerImageName: bannerPic,
     });
   };
 
