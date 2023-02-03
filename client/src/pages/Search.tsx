@@ -60,7 +60,7 @@ export default function Search() {
   ) : (
     <>
       <Header />
-      <div className="mt-32 px-8">
+      <div className="pt-32 px-8">
         <em className="text-lg">Results for {query}</em>
         <ColResults cols={data?.pages[0].collections} />
         <h5 className="ml-3.5 mt-8 font-bold text-lg">Item results</h5>
