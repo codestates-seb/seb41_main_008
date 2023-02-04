@@ -45,7 +45,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return headerNotValidate(request) || isLoginLogoutRequest(request) || isSignUpRequest(request) || isRefreshRequest(request);
+        return headerNotValidate(request) || isLoginLogoutRequest(request) ||
+                isSignUpRequest(request) || isRefreshRequest(request) ||
+                isRankingGetRequest(request) || isSearchGetRequest(request);
     }
 
     private boolean headerNotValidate(HttpServletRequest request) {
@@ -67,5 +69,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private boolean isRefreshRequest(HttpServletRequest request) {
         return request.getRequestURI().contains("/auth/reissue");
     }
+
+    private boolean isRankingGetRequest(HttpServletRequest request) {
+        return request.getRequestURI().contains("/api/ranking");
+    }
+
+    private boolean isSearchGetRequest(HttpServletRequest request) {
+        return request.getRequestURI().contains("/api/search");
+    }
+
 
 }
