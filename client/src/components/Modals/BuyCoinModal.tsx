@@ -3,10 +3,11 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { ModalBack } from './CartingModal';
 import { closeBuyCoin, closeWallet } from 'store/modalSlice';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getCoinPrice, buyCoin, kakaoPay } from 'utils/api/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import kakaopayLogo from '../../../src/assets/kakaopayS.png';
+import useModalClose from '../../hooks/useModalClose';
 
 const BuyCoinContainer = styled.div`
   display: flex;
@@ -44,12 +45,13 @@ const BuyCoinModal = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const ref = useRef<HTMLDivElement>(null);
 
   const { buyCoinOpen } = useAppSelector((state) => state.modal);
   const [coinName, setCoinName] = useState('SOL');
   const [tradePrice, setTradePrice] = useState(0);
   const memberId = localStorage.getItem('MEMBER_ID');
+  const ref = useModalClose(buyCoinOpen, closeBuyCoin());
+
   const {
     register,
     handleSubmit,
@@ -60,6 +62,7 @@ const BuyCoinModal = () => {
   const selectBoxHandler = (e: any) => {
     setCoinName(e.target.value);
   };
+  console.log(coinName);
   const pgToken = location.search.split('=')[1];
   const tid = localStorage.getItem('tid');
   const paidPrice = tradePrice * watch('coinCount');
@@ -84,17 +87,6 @@ const BuyCoinModal = () => {
       setTradePrice(res.data[0].trade_price)
     );
   }, [coinName]);
-  const modalClose = (e: MouseEvent) => {
-    if (buyCoinOpen && ref.current?.contains(e.target as Node)) {
-      dispatch(closeBuyCoin());
-    }
-  };
-  useEffect(() => {
-    document.addEventListener('click', modalClose);
-    return () => {
-      document.removeEventListener('click', modalClose);
-    };
-  });
 
   return (
     <>

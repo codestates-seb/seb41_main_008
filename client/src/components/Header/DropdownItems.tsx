@@ -8,13 +8,13 @@ import { IoIosCreate, IoMdSunny } from 'react-icons/io';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 type ToggleType = {
-  dark?: any;
+  isOn: boolean;
 };
 const ToggleContainer = styled.div<ToggleType>`
   display: flex;
   width: 64px;
   height: 24px;
-  background-color: ${(props) => (props.dark ? 'rgb(32, 129, 226)' : 'gray')};
+  background-color: ${(props) => (props.isOn ? 'rgb(32, 129, 226)' : 'gray')};
   border-radius: 15px;
   align-items: center;
   padding: 10px;
@@ -28,33 +28,35 @@ const ToggleCircle = styled.input<ToggleType>`
   appearance: none;
   border-radius: 9999px;
   transition: 0.2s ease-out;
-  right: ${(props) => (props.dark ? '-35px' : '5px')};
+  right: ${(props) => (props.isOn ? '-35px' : '5px')};
 `;
 const DropdownItems = () => {
   const navigate = useNavigate();
-  const [isOn, setIsOn] = useState(false);
-  // const [dark, setDark] = useState(false);
   const { isLogin } = useAppSelector((state) => state.login);
+  // const [dark, setDark] = useState(false);
+  const [isOn, setIsOn] = useState(false);
 
   const onChangeToggle = () => {
     setIsOn(!isOn);
   };
   const darkMode = () => {
+    /**다크모드 off */
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.remove('dark');
       localStorage.removeItem('theme');
     } else {
+      /**다크모드 on */
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     }
   };
   useEffect(() => {
+    /**로컬스토리지 다크모드 여부에따라 보여질 첫화면 */
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
     }
-  });
+  }, []);
 
-  const dark = localStorage.getItem('theme');
   const onRoute = (route: string) => {
     if (!isLogin) {
       alert('로그인이 필요합니다.');
@@ -100,10 +102,10 @@ const DropdownItems = () => {
           <label htmlFor="night-mode" className="dropdown-style">
             {isOn ? <MdNightlight /> : <IoMdSunny />}
             <span>Night Mode</span>
-            <ToggleContainer dark={dark}>
+            <ToggleContainer isOn={isOn}>
               <ToggleCircle
                 onClick={darkMode}
-                dark={dark}
+                isOn={isOn}
                 id="night-mode"
                 type="checkbox"
                 role="switch"

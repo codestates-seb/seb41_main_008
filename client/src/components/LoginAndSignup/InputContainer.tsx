@@ -46,9 +46,10 @@ const InputContainer = ({ isSignup }: Props) => {
           unAuthHandler();
         }
         if (res.meta.requestStatus === 'fulfilled') {
-          getMyProFile().then(() => {
-            navigate('/', { replace: true });
-          });
+          getMyProFile();
+          // .then(() => {
+          //   navigate('/', { replace: true });
+          // });
         }
       });
     }

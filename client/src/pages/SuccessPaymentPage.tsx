@@ -43,17 +43,12 @@ const SuccessPaymentPage = () => {
     getCoinOrderInfo(tid).then((res) => setOrderInfo(res.data));
   }, [tid]);
   console.log(orderInfo);
-  if (localStorage.getItem('theme') === 'dark') {
-    let body: any = document.getElementsByTagName('body');
-    console.log(body);
-    body.className += 'class';
-  }
 
   const { isLogin } = useAppSelector((state) => state.login);
 
   useEffect(() => {
     if (!isLogin) {
-      alert('로그인이 필요합니다');
+      alert('비정상적인 접근입니다.');
       navigate('/login');
     }
     return;

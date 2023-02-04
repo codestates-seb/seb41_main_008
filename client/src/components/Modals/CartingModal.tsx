@@ -3,10 +3,11 @@ import CartItems from './CartItems';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { closeModal, openPayment } from '../../store/modalSlice';
 import { clearCart } from 'store/cartSlice';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { cartSaveHandler, getCoinPrice } from '../../utils/api/api';
+import useModalClose from '../../hooks/useModalClose';
 interface ModalContainerProps {
   visible: boolean;
 }
@@ -64,31 +65,17 @@ const ModalContainer = styled.div<ModalContainerProps>`
 
 const CartingModal = () => {
   const dispatch = useAppDispatch();
-  const ref = useRef<HTMLDivElement>(null);
   const [coinPrice, setCoinPrice] = useState(0);
   const [soldoutArr, setSoldoutArr] = useState<number[]>([]);
   const { cartItems } = useAppSelector((state) => state.cart);
   const { isOpen } = useAppSelector((state) => state.modal);
   const { isLogin } = useAppSelector((state) => state.login);
-  /**여러개 트랜잭션 보낼떄 이거보내주면됨*/
-  const cartItemsItemId = cartItems.map((el: any) => el.itemId);
+  const ref = useModalClose(isOpen, closeModal());
 
+  const cartItemsItemId = cartItems.map((el: any) => el.itemId);
   const totalPrice = cartItems
     .map((el: any) => el.itemPrice)
     .reduce((prev, curr) => prev + curr, 0);
-
-  /**모달 오픈시 모달창영역밖 클릭했을떄 모달닫는 기능*/
-  const modalClose = (e: MouseEvent) => {
-    if (isOpen && ref.current?.contains(e.target as Node)) {
-      dispatch(closeModal());
-    }
-  };
-  useEffect(() => {
-    document.addEventListener('click', modalClose);
-    return () => {
-      document.removeEventListener('click', modalClose);
-    };
-  });
 
   useEffect(() => {
     getCoinPrice(cartItems[0]?.coinName)

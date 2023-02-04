@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ModalBack } from './CartingModal';
 import { closeWallet, openBuyCoin } from 'store/modalSlice';
 import { getMyCoin, getCoinPrice } from 'utils/api/api';
 import { IoChevronBackSharp } from 'react-icons/io5';
+import useModalClose from '../../hooks/useModalClose';
 interface WalletContainerProps {
   visible: boolean;
 }
@@ -47,18 +48,7 @@ const WalletModal = () => {
   const [totalbalance, setTotalbalance] = useState<number>(0);
   const [eachCoinPrice, setEachCoinPrice] = useState<number[]>([]);
   const memberId = localStorage.getItem('MEMBER_ID');
-  const ref = useRef<HTMLDivElement>(null);
-  const modalClose = (e: MouseEvent) => {
-    if (walletOpen && ref.current?.contains(e.target as Node)) {
-      dispatch(closeWallet());
-    }
-  };
-  useEffect(() => {
-    document.addEventListener('click', modalClose);
-    return () => {
-      document.removeEventListener('click', modalClose);
-    };
-  });
+  const ref = useModalClose(walletOpen, closeWallet());
 
   const buyCoinHandler = () => {
     dispatch(openBuyCoin());
@@ -95,6 +85,7 @@ const WalletModal = () => {
     getCoinPriceList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletOpen]);
+  console.log(data);
   return (
     <>
       {walletOpen && <ModalBack zIndex={'10'} ref={ref} />}
