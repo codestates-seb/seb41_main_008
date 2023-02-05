@@ -7,6 +7,8 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCoinPrice, transAction } from 'utils/api/api';
 import CartItems from './CartItems';
+import useModalClose from '../../hooks/useModalClose';
+
 const TransActionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -38,7 +40,7 @@ const TransActionModal = () => {
   const { paymentOpen } = useAppSelector((state) => state.modal);
   const cartId = localStorage.getItem('CART_ID');
   const memberId = localStorage.getItem('MEMBER_ID');
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useModalClose(paymentOpen, closePayment());
 
   const itemInfo = cartItems.map((el: any) => {
     return {
@@ -78,17 +80,6 @@ const TransActionModal = () => {
       .catch((err) => console.log(err));
   }, [cartItems]);
 
-  const modalClose = (e: MouseEvent) => {
-    if (paymentOpen && ref.current?.contains(e.target as Node)) {
-      dispatch(closePayment());
-    }
-  };
-  useEffect(() => {
-    document.addEventListener('click', modalClose);
-    return () => {
-      document.removeEventListener('click', modalClose);
-    };
-  });
   return (
     <>
       {paymentOpen && <ModalBack zIndex={'60'} ref={ref} />}

@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { getItemsData, getCoinPrice, sellItemHandler } from 'utils/api/api';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import useModalClose from '../../hooks/useModalClose';
 
 import { ItemProps } from 'components/ItemDetail/ItemDetail';
 
@@ -34,12 +35,13 @@ interface FormValue {
 const SellModal = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const ref = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<ItemProps>();
   const [isCheckd, setIsChecked] = useState(false);
   const [coinPrice, setCoinPrice] = useState(0);
   const { sellOpen } = useAppSelector((state) => state.modal);
   const { itemId } = useAppSelector((state) => state.modal);
+  const ref = useModalClose(sellOpen, closeSell());
+
   const {
     register,
     handleSubmit,
@@ -50,21 +52,6 @@ const SellModal = () => {
   useEffect(() => {
     getItemsData(itemId).then((res) => setData(res.data));
   }, [itemId]);
-
-  /**모달 오픈시 모달창영역밖 클릭했을떄 모달닫는 기능*/
-  const modalClose = (e: MouseEvent) => {
-    if (sellOpen && ref.current?.contains(e.target as Node)) {
-      dispatch(closeSell());
-      resetField('itemPrice');
-      setIsChecked(false);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener('click', modalClose);
-    return () => {
-      document.removeEventListener('click', modalClose);
-    };
-  });
 
   useEffect(() => {
     getCoinPrice(data?.coinName)
