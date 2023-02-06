@@ -68,7 +68,7 @@ const Asset = () => {
 
   useEffect(() => {
     getItemsData(Number(itemId)).then((res) => setData(res.data));
-  }, []);
+  }, [itemId]);
 
   return (
     <div>
