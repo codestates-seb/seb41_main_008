@@ -106,17 +106,19 @@ const Card = ({
             className="flex flex-col w-full h-full"
           >
             <div className="overflow-hidden relative rounded-t-xl w-full aspect-square ">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  mutate();
-                }}
-                className={`rounded-full p-1.5 bg-black/60 hover:bg-black z-10 absolute top-2 right-2 ${
-                  show && memberId === myId ? 'inline-block' : 'hidden'
-                } `}
-              >
-                <BiTrash className="h-6 w-6 text-gray-300" />
-              </button>
+              {filter === 'Created' && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    mutate();
+                  }}
+                  className={`rounded-full p-1.5 bg-black/60 hover:bg-black z-10 absolute top-2 right-2 ${
+                    show && memberId === myId ? 'inline-block' : 'hidden'
+                  } `}
+                >
+                  <BiTrash className="h-6 w-6 text-gray-300" />
+                </button>
+              )}
               <img
                 className="rounded-t-xl object-cover hover:scale-125 duration-500 h-full w-full"
                 src={
