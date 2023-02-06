@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useEffect } from 'react';
 import Day from '../../assets/day/1D.png';
 import Week from '../../assets/day/7D.png';
 import Month from '../../assets/day/1M.png';

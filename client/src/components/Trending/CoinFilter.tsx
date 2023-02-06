@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useEffect } from 'react';
 import BtcLogo from '../../assets/coins/btc.png';
 import EthLogo from '../../assets/coins/eth.png';
 import EtcLogo from '../../assets/coins/etc.png';

@@ -27,7 +27,6 @@ public class TimeRankingWriter implements ItemWriter<TimeRankingEntity> {
                 sb.append(rank[i]);
                 sb.append("/");
             }
-            sb.delete(sb.length() - 1, sb.length());
             timeRankingEntity.updateRank(sb.toString());
             timeRankingRepository.save(timeRankingEntity);
         }

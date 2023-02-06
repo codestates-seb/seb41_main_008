@@ -68,7 +68,8 @@ public class RankingService {
     private List<RankingResponse> getRankingResponses(String[] ranking) {
         List<RankingResponse> rankingResponses = new ArrayList<>();
 
-        for (int i = 0; i < ranking.length; i++) {
+        for (int i = 0; i < 15; i++) {
+            if(ranking[i].equals("")) continue;
             Long collectionId = Long.parseLong(ranking[i]);
             RankingResponse rankingResponse = qRankingRepository.findRankingCollectionInfo(collectionId);
 
