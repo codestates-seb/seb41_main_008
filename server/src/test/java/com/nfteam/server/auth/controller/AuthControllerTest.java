@@ -8,6 +8,7 @@ import com.nfteam.server.dto.response.auth.SocialLoginResponse;
 import com.nfteam.server.dto.response.cart.CartResponse;
 import com.nfteam.server.support.ControllerTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -29,7 +33,9 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebMvcTest(AuthController.class)
+@Transactional
 class AuthControllerTest extends ControllerTest {
 
     @Autowired
@@ -40,7 +46,6 @@ class AuthControllerTest extends ControllerTest {
     private AuthService authService;
 
     @Test
-    @Transactional
     void oauthLogin_test() throws Exception {
 
         // given
@@ -92,6 +97,29 @@ class AuthControllerTest extends ControllerTest {
                                         fieldWithPath("profileImageName").type(JsonFieldType.STRING).description("프로필 이미지명"),
                                         fieldWithPath("cartId").type(JsonFieldType.NUMBER).description("회원 카트 식별자")
                                 )
+                        )
+                ));
+    }
+
+    @Test
+    void logout_test() throws Exception {
+        // given
+        doNothing().when(authService).logout(Mockito.anyString());
+
+        // When
+        ResultActions actions = mockMvc.perform(
+                get("/auth/logout")
+                        .header("RefreshToken", "refreshToken")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andDo(document("auth-logout",
+                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
+                        requestHeaders(
+                                headerWithName("RefreshToken").description("리프레시 토큰")
                         )
                 ));
     }
