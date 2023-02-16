@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,7 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -120,6 +120,35 @@ class AuthControllerTest extends ControllerTest {
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
                         requestHeaders(
                                 headerWithName("RefreshToken").description("리프레시 토큰")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockUser
+    public void reissue_test() throws Exception {
+        // given
+        String refreshToken = "refreshToken";
+        String accessToken = "Bearer authorizationToken";
+
+        given(authService.reissue(refreshToken)).willReturn(accessToken);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/auth/reissue")
+                .header("RefreshToken", "refreshToken")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andDo(document("auth-reissue",
+                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
+                        requestHeaders(
+                                headerWithName("RefreshToken").description("리프레시 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName("Authorization").description("갱신된 엑세스 토큰")
                         )
                 ));
     }
