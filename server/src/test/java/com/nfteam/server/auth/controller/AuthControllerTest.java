@@ -52,7 +52,7 @@ class AuthControllerTest extends ControllerTest {
         String socialType = "google";
         String token = "googleToken";
 
-        String accessToken = "accessToken";
+        String accessToken = "Bearer accessToken";
         String refreshToken = "refreshToken";
 
         Member member = new Member("google@google.com", "nickname", MemberPlatform.GOOGLE);
@@ -87,6 +87,13 @@ class AuthControllerTest extends ControllerTest {
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
                         pathParameters(
                                 parameterWithName("socialType").description("소셜 로그인 플랫폼")
+                        ),
+                        requestHeaders(
+                                headerWithName("googleToken").description("구글 엑세스 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName("Authorization").description("엑세스 토큰"),
+                                headerWithName("RefreshToken").description("리프레시 토큰")
                         ),
                         responseFields(
                                 List.of(
@@ -129,7 +136,7 @@ class AuthControllerTest extends ControllerTest {
     public void reissue_test() throws Exception {
         // given
         String refreshToken = "refreshToken";
-        String accessToken = "Bearer authorizationToken";
+        String accessToken = "accessToken";
 
         given(authService.reissue(refreshToken)).willReturn(accessToken);
 
