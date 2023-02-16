@@ -21,4 +21,8 @@ public class CartResponse {
                 .collect(Collectors.toList());
     }
 
+    public CartResponse(Long cartId) {
+        this.cartId = cartId;
+    }
+
 }

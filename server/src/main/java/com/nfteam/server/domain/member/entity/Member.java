@@ -111,6 +111,11 @@ public class Member extends BaseEntity {
         this.lastLoginTime = LocalDateTime.now();
     }
 
+    // 테스트용
+    public void updateId(Long memberId) {
+        this.memberId = memberId;
+    }
+
     public void updateLastLoginTime() {
         this.lastLoginTime = LocalDateTime.now();
     }
