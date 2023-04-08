@@ -46,8 +46,8 @@ public class TransActionCoinRankingReaderJobScheduler {
         this.transActionETCReaderJobConfiguration = transActionETCReaderJobConfiguration;
     }
 
-    // SOL 코인 배치 : 매일 오전 4시
-    @Scheduled(cron = "0 0 4 1/1 * ?")
+    // SOL 코인 배치 : 매주 일요일 오전 4시
+    @Scheduled(cron = "0 0 4 * * SUN")
     public void runSOLRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -65,8 +65,8 @@ public class TransActionCoinRankingReaderJobScheduler {
         }
     }
 
-    // BTC 코인 배치 : 매일 오전 4시 30분
-    @Scheduled(cron = "0 30 4 1/1 * ?")
+    // BTC 코인 배치 : 매주 일요일 오전 4시 30분
+    @Scheduled(cron = "0 30 4 * * SUN")
     public void runBTCRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -84,8 +84,8 @@ public class TransActionCoinRankingReaderJobScheduler {
         }
     }
 
-    // DOGE 코인 배치 : 매일 오전 5시
-    @Scheduled(cron = "0 0 5 1/1 * ?")
+    // DOGE 코인 배치 : 매주 일요일 오전 5시
+    @Scheduled(cron = "0 0 5 * * SUN")
     public void runDOGERankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -103,8 +103,8 @@ public class TransActionCoinRankingReaderJobScheduler {
         }
     }
 
-    // ETH 코인 배치 : 매일 오전 5시 30분
-    @Scheduled(cron = "0 30 5 1/1 * ?")
+    // ETH 코인 배치 : 매주 일요일 오전 5시 30분
+    @Scheduled(cron = "0 30 5 * * SUN")
     public void runETHRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -122,8 +122,8 @@ public class TransActionCoinRankingReaderJobScheduler {
         }
     }
 
-    // ETC 코인 배치 : 매일 오전 6시
-    @Scheduled(cron = "0 0 6 1/1 * ?")
+    // ETC 코인 배치 : 매주 일요일 오전 6시
+    @Scheduled(cron = "0 0 6 * * SUN")
     public void runETCRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));

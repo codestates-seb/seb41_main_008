@@ -61,8 +61,8 @@ public class TransActionTimeRankingReaderJobScheduler {
         }
     }
 
-    // 주간 랭킹 배치 : 매일 오전 2시
-    @Scheduled(cron = "0 0 2 1/1 * ?")
+    // 주간 랭킹 배치 : 매주 일요일 오전 2시
+    @Scheduled(cron = "0 0 2 * * SUN")
     public void run1WRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
@@ -80,8 +80,8 @@ public class TransActionTimeRankingReaderJobScheduler {
         }
     }
 
-    // 월간 랭킹 배치 : 매일 오전 3시
-    @Scheduled(cron = "0 0 3 1/1 * ?")
+    // 월간 랭킹 배치 : 매월 마지막날 오전 3시
+    @Scheduled(cron = "0 0 3 L * *")
     public void run1MRankJob() {
         Map<String, JobParameter> map = new HashMap<>();
         map.put("time", new JobParameter(System.currentTimeMillis()));
