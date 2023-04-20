@@ -11,7 +11,6 @@
   <br>
 
 [![Application](http://img.shields.io/badge/Application-yellow?logo=Bitcoin&logoColor=white&link=https://www.nfteam008.com/)](https://www.nfteam008.com/)
-[![RestDocs](http://img.shields.io/badge/API%20명세서-green?logo=ReadtheDocs&logoColor=white&link=https://nfteam008.com/docs)](https://nfteam008.com/docs)
 [![서비스_가이드](http://img.shields.io/badge/-서비스%20안내페이지-098223?logo=Ello&logoColor=white&link=https://www.notion.so/codestates/41-TEAM-008-NFTEAM-b5519f19a8c1470cbb5ca29167f5a02a)](https://www.notion.so/codestates/41-TEAM-008-NFTEAM-b5519f19a8c1470cbb5ca29167f5a02a)
 </div>
 

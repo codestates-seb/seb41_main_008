@@ -5,19 +5,24 @@ import com.nfteam.server.dto.response.auth.SocialLoginResponse;
 import com.nfteam.server.exception.auth.NotSupportedPlatformException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class OAuth2Service {
 
-    private final GoogleOAuth2 googleOAuth2;
+    private final Map<String, OAuth2> oAuth2Map;
+    private final List<OAuth2> oAuth2List;
 
-    public OAuth2Service(GoogleOAuth2 googleOAuth2) {
-        this.googleOAuth2 = googleOAuth2;
+    public OAuth2Service(Map<String, OAuth2> oAuth2Map, List<OAuth2> oAuth2List) {
+        this.oAuth2Map = oAuth2Map;
+        this.oAuth2List = oAuth2List;
     }
 
     public SocialLoginResponse login(String token, MemberPlatform memberPlatform) {
         switch (memberPlatform) {
             case GOOGLE:
-                return googleOAuth2.proceedLogin(token);
+                return oAuth2Map.get("googleOAuth2").proceedLogin(token);
             default:
                 throw new NotSupportedPlatformException();
         }
