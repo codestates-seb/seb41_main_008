@@ -21,6 +21,7 @@ public class CartController {
         this.cartService = cartService;
     }
 
+    // 장바구니 기록 저장
     @PostMapping("/save")
     public ResponseEntity<Void> save(@RequestBody CartPurchaseRequest cartPurchaseRequest,
                                      @AuthenticationPrincipal MemberDetails memberDetails) {

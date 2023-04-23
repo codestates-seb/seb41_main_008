@@ -31,6 +31,7 @@ public class JwtTokenizer {
         this.refreshTokenExpirationMinutes = refreshTokenExpirationMinutes;
     }
 
+    // 엑세스 토큰 발급
     public String generateAccessToken(MemberDetails memberDetails) {
         return Jwts.builder()
                 .claim("memberId", memberDetails.getMemberId())
@@ -43,6 +44,7 @@ public class JwtTokenizer {
                 .compact();
     }
 
+    // 리프레시 토큰 발급
     public String generateRefreshToken() {
         return Jwts.builder()
                 .setIssuedAt(Calendar.getInstance().getTime())
@@ -51,6 +53,7 @@ public class JwtTokenizer {
                 .compact();
     }
 
+    // 엑세스 토큰 -> Authentication 생성 및 반환
     public Authentication getAuthentication(String accessToken) {
         Claims claims = getClaims(accessToken);
         String role = (String) claims.get("role");
@@ -80,6 +83,7 @@ public class JwtTokenizer {
                 .getBody();
     }
 
+    // 토큰 유효 기간 검사
     public boolean isValidDateToken(String jws) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder()

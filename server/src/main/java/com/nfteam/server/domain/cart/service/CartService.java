@@ -17,6 +17,7 @@ import com.nfteam.server.exception.item.ItemNotFoundException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.exception.transaction.TransRecordNotValidException;
 import com.nfteam.server.security.userdetails.MemberDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Transactional(readOnly = true)
 @Service
 public class CartService {
@@ -43,6 +45,7 @@ public class CartService {
         this.itemRepository = itemRepository;
     }
 
+    // 현재 활성화 된(미결제) 본인의 카트 조회
     @Transactional
     public CartResponse loadOwnCart(String email) {
         Member member = findMember(email);
@@ -51,10 +54,10 @@ public class CartService {
         List<Cart> findCartList = cartRepository.findCartByMemberAndPaymentYn(member, false);
         validateCartSize(findCartList.size());
 
-        // 신규 카트 or 기존 카트 가져오기
+        // 카트 정보 가져오기
         Cart cart = getCart(member, findCartList);
 
-        // 장바구니 아이템 리스트 조회
+        // 카트 내 아이템 리스트 조회
         List<CartItemRel> cartItemRelList = cartItemRelRepository.findByCartId(cart.getCartId());
         List<Long> itemIdList = cartItemRelList.stream()
                 .map(rel -> rel.getItem().getItemId())
@@ -68,11 +71,13 @@ public class CartService {
                 .orElseThrow(() -> new MemberNotFoundException(email));
     }
 
+    // 미결제 카트의 갯수 체크 - 미결제 카트가 1개가 아니면 데이터 정합성의 문제가 있는 것
     private void validateCartSize(int size) {
         if (size > 1) throw new CartExistException();
     }
 
     private Cart getCart(Member member, List<Cart> findCartList) {
+        // 현재 미결제 카트 정보가 없는 경우 신규 카트 정보 생성
         if (findCartList.size() == 0) {
             Cart cart = new Cart(member);
             return cartRepository.save(cart);
@@ -81,10 +86,7 @@ public class CartService {
         }
     }
 
-    /**
-     * Cart: paymentYn - 결제완료 처리는 TransAction 완료 후 성립 & 결제 완료 후 해당 멤버에게 새로운 카트 배정
-     * Item: onSale - 판매완료 처리는 TransAction 완료 후 성립
-     */
+    // 장바구니 기록 저장
     @Transactional
     public void saveCartRel(CartPurchaseRequest cartPurchaseRequest, MemberDetails memberDetails) {
         Member member = findMember(memberDetails.getEmail());
@@ -93,7 +95,7 @@ public class CartService {
         // 본인 카트 검증
         validateOwnCart(member, cart);
 
-        // 기존 장바구니 연관관계 기록은 삭제
+        // 기존 장바구니 아이템 연관관계 기록은 삭제
         cartItemRelRepository.deleteByCartId(cart.getCartId());
 
         // 장바구니에 아이템이 존재하면 연관관계 생성 후 저장
@@ -118,9 +120,12 @@ public class CartService {
         }
     }
 
+    // DB에 기록된 카트 소유자와 현재 회원 일치 여부 확인
     private void validateOwnCart(Member member, Cart cart) {
+        // 카트가 결제 상태 이거나(카트 이상), 카트 소유자와 현재 회원이 불일치 할 경우(회원 이상)
         if (cart.getPaymentYn() || (cart.getMember().getMemberId() != member.getMemberId())) {
-            throw new TransRecordNotValidException("본인의 장바구니 정보가 아닙니다. (기록 이상)");
+            log.warn("장바구니 정보가 올바르지 않습니다. cartId : {}, member : {}", cart.getCartId(), member.getEmail());
+            throw new TransRecordNotValidException("장바구니 정보가 올바르지 않습니다. - 관리자 체크 요망");
         }
     }
 
@@ -129,8 +134,10 @@ public class CartService {
                 .orElseThrow(() -> new ItemNotFoundException(itemId));
     }
 
+    // 아이템 리스트 중 판매가 된 아이템이 섞여있는지 검사
     private void checkItemSaleStatus(List<Item> items) {
         List<Long> notSaleList = new ArrayList<>();
+
         items.stream().forEach(i -> {
             if (!i.getOnSale()) notSaleList.add(i.getItemId());
         });

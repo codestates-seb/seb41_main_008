@@ -71,8 +71,8 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Item> itemList = new ArrayList<>();
 
-    private static final String DEFAULT_PROFILE_IMAGE = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/fac08fee-12b4-43f1-a24f-34a382d6fa3f.png";
-    private static final String DEFAULT_BANNER_IMAGE = "https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/a5dfe9b9-8fb6-43ae-a1ce-533500dae858.jpeg";
+    private static final String DEFAULT_PROFILE_IMAGE = "https://nfteam-deploy-img.s3.ap-northeast-2.amazonaws.com/coin.svg";
+    private static final String DEFAULT_BANNER_IMAGE = "https://nfteam-deploy-img.s3.ap-northeast-2.amazonaws.com/0bb1f73d-5e5f-4a45-98ba-91cf09806899.jpeg";
     private static final String DEFAULT_DESC = "자기소개를 입력해주세요.";
 
     public Member() {

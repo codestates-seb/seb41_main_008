@@ -12,7 +12,7 @@ public interface CartItemRelRepository extends JpaRepository<CartItemRel, Long> 
     @Query("select rel from CartItemRel rel where rel.cart.cartId =:cartId")
     List<CartItemRel> findByCartId(Long cartId);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Modifying(clearAutomatically = true)
     @Query("delete from CartItemRel rel where rel.cart.cartId =:cartId")
     void deleteByCartId(Long cartId);
 

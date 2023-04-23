@@ -46,6 +46,7 @@ public class GoogleOAuth2 implements OAuth2 {
         GoogleUser googleUser = getUserInfo(userInfoResponse);
         Boolean isAlreadySignUp = true;
 
+        // 최초 로그인 시 회원가입 처리
         if (isFistLogin(googleUser)) {
             signUp(googleUser);
             isAlreadySignUp = false;
@@ -54,6 +55,7 @@ public class GoogleOAuth2 implements OAuth2 {
         return makeSocialResponse(googleUser, isAlreadySignUp);
     }
 
+    // 구글 리소스 서버에서 사용자 정보 가져오기
     private ResponseEntity<String> createGetInfoRequest(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
@@ -62,6 +64,7 @@ public class GoogleOAuth2 implements OAuth2 {
         return restTemplate.exchange(USER_INFO_REQUEST_URL, HttpMethod.GET, httpEntity, String.class);
     }
 
+    // 구글 리소스 서버에서 가져온 정보 GoogleUser 클래스로 변환
     private GoogleUser getUserInfo(ResponseEntity<String> userInfoResponse) {
         GoogleUser googleUser;
 
@@ -78,22 +81,26 @@ public class GoogleOAuth2 implements OAuth2 {
         return !memberRepository.existsByEmail(googleUser.getEmail());
     }
 
-    public void signUp(GoogleUser googleUser) {
+    private void signUp(GoogleUser googleUser) {
         Member member = new Member(googleUser.getEmail(), googleUser.getName(), MemberPlatform.GOOGLE);
         memberRepository.save(member);
     }
 
-    public SocialLoginResponse makeSocialResponse(GoogleUser googleUser, Boolean isAlreadySignUp) {
+    private SocialLoginResponse makeSocialResponse(GoogleUser googleUser, Boolean isAlreadySignUp) {
         Member member = memberRepository.findByEmail(googleUser.getEmail())
-                .filter(m -> !m.getMemberStatus().equals(MemberStatus.MEMBER_QUIT))
+                .filter(m -> !m.getMemberStatus().equals(MemberStatus.MEMBER_QUIT)) // 회원 탈퇴 상태일 경우 예외처리
                 .orElseThrow(() -> new MemberNotFoundException(googleUser.getEmail()));
 
+        // 이미 가입된 회원일 경우 닉네임과 프로필 사진만 변경
         if (!isAlreadySignUp) {
             member.updateNickname(googleUser.getName());
             member.updateProfileImg(googleUser.getPicture());
         }
+
+        // 마지막 로그인 타임 갱신
         member.updateLastLoginTime();
 
+        // JWT 생성 후 세팅
         MemberDetails memberDetails = new MemberDetails(member);
         String accessToken = "Bearer " + jwtTokenizer.generateAccessToken(memberDetails);
         String refreshToken = jwtTokenizer.generateRefreshToken();

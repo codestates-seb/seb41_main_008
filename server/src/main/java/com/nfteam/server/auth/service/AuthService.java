@@ -36,16 +36,18 @@ public class AuthService {
         redisRepository.expireRefreshToken(refreshToken);
     }
 
+    // AccessToken 재발급
     public String reissue(String refreshToken) {
-        // 1차 서버 - 리프레시 토큰 유효기한 검사
+        // 1차 - 리프레시 토큰 유효기한 검사
         Boolean isValidDate = jwtTokenizer.isValidDateToken(refreshToken);
+        if (!isValidDate) throw new RefreshTokenExpiredException();
 
         // 2차 - 레디스 리프레시 토큰 존재여부 검사
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         Boolean hasKey = redisTemplate.hasKey(refreshToken);
 
         // 레디스 토큰 유효성 검사 통과 시 엑세스 토큰 재 발급
-        if (isValidDate && hasKey) {
+        if (hasKey) {
             String email = valueOperations.get(refreshToken);
             Member member = memberRepository.findByEmail(email)
                     .orElseThrow(() -> new MemberNotFoundException(email));

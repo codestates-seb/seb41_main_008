@@ -25,6 +25,7 @@ public class AuthController {
         this.cartService = cartService;
     }
 
+    // 소셜 로그인 전용 로그인 처리
     @GetMapping("/login/{socialType}")
     public ResponseEntity<LoginResponse> oauthLogin(@PathVariable(name = "socialType") String socialType,
                                                     @RequestHeader(value = "googleToken") String token) {
@@ -41,6 +42,7 @@ public class AuthController {
                 getHeaders(accessToken, refreshToken), HttpStatus.OK);
     }
 
+    // LoginResponse 반환 + refresh 토큰 Redis 저장 + 로그인 회원의 카트 정보 조회 및 세팅
     private LoginResponse getLoginResponse(LoginResponse loginResponse, String refreshToken) {
         // 레디스 서버 로그인 정보 저장
         String email = loginResponse.getEmail();
@@ -59,12 +61,14 @@ public class AuthController {
         return headers;
     }
 
+    // 로그아웃 - reFreshToken 캐시 정보 제거
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(@RequestHeader(value = "RefreshToken") String refreshToken) {
         authService.logout(refreshToken);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    // AccessToken 재발급
     @GetMapping("/reissue")
     public ResponseEntity<Void> reissue(@RequestHeader(value = "RefreshToken") String refreshToken) {
         return ResponseEntity.ok()
