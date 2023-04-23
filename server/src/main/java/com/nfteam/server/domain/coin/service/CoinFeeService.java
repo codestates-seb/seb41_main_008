@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class CoinFeeService {
         // 코인 가격 업데이트
         updateCoinFee(result, COIN);
 
-        log.info("withdraw-fee updated successfully!");
+        log.info("withdraw-fee updated successfully! : {}", LocalDateTime.now());
     }
 
     private Map<String, Double> crawling() throws IOException {

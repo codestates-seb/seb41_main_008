@@ -69,9 +69,10 @@ public class CoinService {
     public List<MemberCoinResponse> getMemberCoinList(Long memberId) {
         List<CoinMemberRel> memberCoinList = coinMemberRelRepository.findAllByMemberId(memberId);
 
-        // 현재 가지고 있는 코인이 없을 경우 멤버 값만 있는 객체 생성 후 리턴
+        // 현재 가지고 있는 코인이 없을 경우 멤버 값만 있는 MemberCoinResponse 객체 생성 후 리턴
         if (memberCoinList.isEmpty()) {
-            Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new MemberNotFoundException(memberId));
             return List.of(MemberCoinResponse.ofMember(member));
         }
 
@@ -81,6 +82,7 @@ public class CoinService {
 
         // 코인 번호 순 정렬
         responses.sort(MemberCoinResponse::compareTo);
+
         return responses;
     }
 
@@ -91,12 +93,14 @@ public class CoinService {
                 .getWithdrawFee();
     }
 
+    // 코인 구매 진행
     @Transactional
     public CoinPurchaseReadyResponse startPayment(CoinPurchaseRequest request, MemberDetails memberDetails) {
+        // 구매자 정보 + 구매 코인 정보 체크
         Member buyer = findMember(memberDetails.getEmail());
         Coin coin = findCoin(request.getCoinName());
 
-        // 구매 갯수 + 구매 가격 소수점 둘째 자리까지 반올림
+        // 구매 갯수 + 구매 가격 : 소수점 둘째 자리까지 반올림
         Double convertCoinCount = Double.parseDouble(String.format("%.2f", request.getCoinCount()));
         Double convertTotalPrice = Double.parseDouble(String.format("%.2f", request.getTotalPrice()));
 
@@ -117,10 +121,12 @@ public class CoinService {
         CoinPurchaseReadyResponse coinPurchaseReadyResponse
                 = restTemplate.postForObject(readyUrl, httpEntity, CoinPurchaseReadyResponse.class);
 
+        // 결제 준비 응답 받는데 성공했을 경우
         if (coinPurchaseReadyResponse != null) {
             // 코인 주문 tid 세팅
             coinOrder.updateTid(coinPurchaseReadyResponse.getTid());
         } else {
+            // 카카오 페이로부터 결제 응답 받는데 실패한 경우
             throw new CoinPaymentFailedException();
         }
 
@@ -159,8 +165,10 @@ public class CoinService {
         return headers;
     }
 
+    // 결제 승인 완료 진행
     @Transactional
     public CoinPurchaseApproveResponse approvePayment(String pgToken, String tid) {
+        // 코인 주문정보 조회
         CoinOrder coinOrder = getCoinOrder(tid);
 
         Member buyer = coinOrder.getBuyer();
@@ -175,10 +183,11 @@ public class CoinService {
         CoinPurchaseApproveResponse coinPurchaseApproveResponse
                 = restTemplate.postForObject(approveUrl, requestEntity, CoinPurchaseApproveResponse.class);
 
+        // 결제 승인 요청 응답 성공 시
         if (coinPurchaseApproveResponse != null) {
-            // 결제 상태 TRUE
+            // 코인 주문정보 결제 상태 TRUE
             coinOrder.updatePayStatusTrue();
-            // 현재 해당 회원이 해당 코인이 없을 경우 신규 관계 생성
+            // 현재 해당 회원이 해당 코인이 없을 경우 신규 관계 생성 및 저장
             CoinMemberRel coinMemberRel = coinMemberRelRepository.findByMemberAndCoin(buyer, coinOrder.getCoin())
                     .orElseGet(() -> coinMemberRelRepository.save(new CoinMemberRel(coinOrder.getCoin(), buyer)));
             // 코인 갯수 업데이트

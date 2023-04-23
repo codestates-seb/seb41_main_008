@@ -21,28 +21,33 @@ public class CoinController {
         this.coinService = coinService;
     }
 
+    // 현재 회원의 코인 지갑 정보 조회
     @GetMapping("/my")
     public ResponseEntity getMemberCoinList(@AuthenticationPrincipal MemberDetails memberDetails) {
         return new ResponseEntity<>(coinService.getMemberCoinList(memberDetails.getMemberId()), HttpStatus.OK);
     }
 
+    // 해당 코인의 수수료 정보 조회
     @GetMapping("/fee/{coinId}")
     public ResponseEntity<Double> getCoinFee(@PathVariable("coinId") Long coinId) {
         return new ResponseEntity<>(coinService.getCoinFee(coinId), HttpStatus.OK);
     }
 
+    // 코인 구매 요청
     @PostMapping("/purchase")
     public ResponseEntity<CoinPurchaseReadyResponse> purchase(@RequestBody @Valid CoinPurchaseRequest request,
                                                               @AuthenticationPrincipal MemberDetails memberDetails) {
         return new ResponseEntity<>(coinService.startPayment(request, memberDetails), HttpStatus.OK);
     }
 
+    // 코인 결제 승인 요청
     @GetMapping(value = "/approve")
     public ResponseEntity approve(@RequestParam(value = "pg_token") String pgToken,
                                   @RequestParam(value = "tid") String tid) {
         return new ResponseEntity<>(coinService.approvePayment(pgToken, tid), HttpStatus.MOVED_PERMANENTLY);
     }
 
+    // 코인 결제 완료 요청
     @GetMapping(value = "/success")
     public ResponseEntity success(@RequestParam(value = "tid") String tid) {
         return new ResponseEntity<>(coinService.getCoinOrderInfo(tid), HttpStatus.OK);
