@@ -28,7 +28,6 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.info("Security - Authentication success");
         MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
         sendSuccessResponse(response, memberDetails);
     }
