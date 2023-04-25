@@ -42,8 +42,8 @@ public class GoogleOAuth2 implements OAuth2 {
     @Override
     @Transactional
     public SocialLoginResponse proceedLogin(String token) {
-        ResponseEntity<String> userInfoResponse = createGetInfoRequest(token);
-        GoogleUser googleUser = getUserInfo(userInfoResponse);
+        ResponseEntity<String> userInfoResponse = createGetInfoRequest(token); // 구글 서버 응답값 받기
+        GoogleUser googleUser = getUserInfo(userInfoResponse); // 회원 정보 변환
         Boolean isAlreadySignUp = true;
 
         // 최초 로그인 시 회원가입 처리

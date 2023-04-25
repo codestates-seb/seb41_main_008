@@ -28,10 +28,12 @@ public class AuthService {
         this.redisTemplate = redisTemplate;
     }
 
+    // 로그인 - 리프레시 토큰 + 해당 멤버 이메일 레디스에 저장
     public void login(String refreshToken, String email) {
         redisRepository.saveRefreshToken(refreshToken, email);
     }
 
+    // 로그아웃 - 리프레시 토큰 레디스에서 삭제
     public void logout(String refreshToken) {
         redisRepository.expireRefreshToken(refreshToken);
     }

@@ -42,7 +42,7 @@ public class AuthController {
                 getHeaders(accessToken, refreshToken), HttpStatus.OK);
     }
 
-    // LoginResponse 반환 + refresh 토큰 Redis 저장 + 로그인 회원의 카트 정보 조회 및 세팅
+    // LoginResponse 세팅 - refresh 토큰 Redis 저장 + 로그인 회원의 카트 정보 조회 및 세팅
     private LoginResponse getLoginResponse(LoginResponse loginResponse, String refreshToken) {
         // 레디스 서버 로그인 정보 저장
         String email = loginResponse.getEmail();
@@ -54,6 +54,7 @@ public class AuthController {
         return loginResponse;
     }
 
+    // Header 세팅 - JWT
     private static HttpHeaders getHeaders(String accessToken, String refreshToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, accessToken);
@@ -68,7 +69,7 @@ public class AuthController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // AccessToken 재발급
+    // AccessToken 재발급 - refresh 토큰 확인
     @GetMapping("/reissue")
     public ResponseEntity<Void> reissue(@RequestHeader(value = "RefreshToken") String refreshToken) {
         return ResponseEntity.ok()

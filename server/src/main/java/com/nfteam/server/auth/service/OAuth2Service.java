@@ -16,7 +16,7 @@ public class OAuth2Service {
         this.oAuth2Map = oAuth2Map;
     }
 
-    // 각 플랫폼 별 구현 클래스 호출 후 로그인 프로세스 진행 - 전략패턴
+    // 각 플랫폼 - OAuth2 인터페이스 구현 클래스 호출 후 로그인 프로세스 진행
     public SocialLoginResponse login(String token, MemberPlatform memberPlatform) {
         switch (memberPlatform) {
             case GOOGLE:

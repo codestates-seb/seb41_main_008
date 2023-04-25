@@ -76,6 +76,7 @@ public class CoinService {
             return List.of(MemberCoinResponse.ofMember(member));
         }
 
+        // Response DTO 변환
         List<MemberCoinResponse> responses = memberCoinList.stream()
                 .map(r -> MemberCoinResponse.of(r))
                 .collect(Collectors.toList());
@@ -93,7 +94,7 @@ public class CoinService {
                 .getWithdrawFee();
     }
 
-    // 코인 구매 진행
+    // 코인 구매
     @Transactional
     public CoinPurchaseReadyResponse startPayment(CoinPurchaseRequest request, MemberDetails memberDetails) {
         // 구매자 정보 + 구매 코인 정보 체크
@@ -165,7 +166,7 @@ public class CoinService {
         return headers;
     }
 
-    // 결제 승인 완료 진행
+    // 결제 승인
     @Transactional
     public CoinPurchaseApproveResponse approvePayment(String pgToken, String tid) {
         // 코인 주문정보 조회

@@ -59,6 +59,7 @@ public class TransActionService {
         this.credentialEncryptUtils = credentialEncryptUtils;
     }
 
+    // 거래 기록 생성
     @Transactional
     public CartResponse savePurchaseRecord(TransActionCreateRequest request, MemberDetails memberDetails) {
         // 구매자 정보 검증
@@ -176,10 +177,12 @@ public class TransActionService {
         }
     }
 
+    // 거래 암호화 기록 검증
     private void validateTransRecord(Item item) throws Exception {
         String transEncryption = item.getItemCredential().getTransEncryption();
         String lastTransRecord = transEncryption.substring(transEncryption.lastIndexOf(",") + 1);
 
+        // 마지막 거래 기록 복호화
         String record = credentialEncryptUtils.decryptRecordByAES256(lastTransRecord);
         Long lastOwnerId = Long.parseLong(record.split("-")[1]);
 
@@ -190,6 +193,7 @@ public class TransActionService {
         }
     }
 
+    // 신규 거래기록 기록
     private void recordNewTransHistory(Member seller, Member buyer, Item item, Coin coin, Double transPrice) throws Exception {
         StringBuilder record = new StringBuilder();
         record.append(seller.getMemberId()).append("-")
