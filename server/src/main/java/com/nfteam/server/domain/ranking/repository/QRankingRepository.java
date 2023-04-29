@@ -6,9 +6,12 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import static com.nfteam.server.domain.item.entity.QItemCollection.itemCollection;
-import static com.nfteam.server.domain.ranking.batch.entity.QCoinRankingEntity.coinRankingEntity;
-import static com.nfteam.server.domain.ranking.batch.entity.QTimeRankingEntity.timeRankingEntity;
+import static com.nfteam.server.domain.ranking.entity.QDailyAggregate.dailyAggregate;
+
 
 @Repository
 public class QRankingRepository {
@@ -19,22 +22,27 @@ public class QRankingRepository {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public String getTimeRankString(String timeCriteria) {
+    // 시간대별 컬렉션 랭킹 조회
+    public List<Long> getTimeRankCollectionId(LocalDate date) {
         return jpaQueryFactory
-                .select(timeRankingEntity.rankString)
-                .from(timeRankingEntity)
-                .where(timeRankingEntity.rankCriteria.eq(timeCriteria))
-                .orderBy(timeRankingEntity.createdDate.desc())
-                .fetchFirst();
+                .select(dailyAggregate.collection.collectionId)
+                .from(dailyAggregate)
+                .where(dailyAggregate.baseDate.after(date))
+                .groupBy(dailyAggregate.collection.collectionId)
+                .orderBy(dailyAggregate.totalTradingVolume.desc())
+                .fetch();
     }
 
-    public String getCoinRankString(Long coinId) {
+    // 코인 별 컬렉션 랭킹 조회 - 일간 순위
+    public List<Long> getCoinRankCollectionId(Long coinId) {
         return jpaQueryFactory
-                .select(coinRankingEntity.rankString)
-                .from(coinRankingEntity)
-                .where(coinRankingEntity.coinId.eq(coinId))
-                .orderBy(coinRankingEntity.createdDate.desc())
-                .fetchFirst();
+                .select(dailyAggregate.collection.collectionId)
+                .from(dailyAggregate)
+                .where(dailyAggregate.baseDate.after(LocalDate.now().minusDays(1L))
+                        .and(dailyAggregate.coin.coinId.eq(coinId)))
+                .groupBy(dailyAggregate.collection)
+                .orderBy(dailyAggregate.totalTradingVolume.desc())
+                .fetch();
     }
 
     public RankingResponse findRankingCollectionInfo(Long collectionId) {

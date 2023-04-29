@@ -1,4 +1,4 @@
-package com.nfteam.server.domain.ranking.batch.repository;
+package com.nfteam.server.domain.ranking.repository;
 
 import com.nfteam.server.domain.transaction.entity.TransAction;
 import org.springframework.data.domain.Page;

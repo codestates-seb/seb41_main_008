@@ -7,10 +7,10 @@
 
 name: 백엔드 운영 서버 배포 자동화
 
-on:
-  push:
-    branches: [ "release" ]
-    paths: 'server/**'
+#on:
+#  push:
+#    branches: [ "release" ]
+#    paths: 'server/**'
 
 defaults:
   run:
