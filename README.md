@@ -42,6 +42,10 @@
 <br>
 <br/>
 
+## ✨ ERD 설계
+![DB](https://user-images.githubusercontent.com/110760593/235343437-03ed9a47-f8b5-4930-b955-f249abd18dd7.png)
+<br/>
+
 ## ✨ 프론트엔드 기술 스택
 
 ![프론트엔드기술스택](https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/fe.png.jpg)
