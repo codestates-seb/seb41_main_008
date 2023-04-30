@@ -23,7 +23,6 @@ public class TransActionAggregateJobScheduler {
 
     private final JobLauncher jobLauncher;
     private final TransActionDailyAggregateJobConfiguration transActionDailyAggregateJobConfiguration;
-
     private final RankingService rankingService;
 
     public TransActionAggregateJobScheduler(JobLauncher jobLauncher, TransActionDailyAggregateJobConfiguration transActionDailyAggregateJobConfiguration, RankingService rankingService) {
@@ -62,5 +61,4 @@ public class TransActionAggregateJobScheduler {
         rankingService.deleteCoinRankingCache(4L);
         rankingService.deleteCoinRankingCache(5L);
     }
-
 }

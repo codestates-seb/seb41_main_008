@@ -1,5 +1,6 @@
 package com.nfteam.server.domain.ranking.service;
 
+import com.nfteam.server.domain.coin.entity.Coin;
 import com.nfteam.server.domain.item.entity.Item;
 import com.nfteam.server.domain.item.repository.ItemRepository;
 import com.nfteam.server.domain.ranking.repository.QRankingRepository;
@@ -7,6 +8,7 @@ import com.nfteam.server.dto.response.ranking.RankingResponse;
 import com.nfteam.server.exception.ranking.RankCoinCriteriaNotValidException;
 import com.nfteam.server.exception.ranking.RankTimeCriteriaNotValidException;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,20 +22,21 @@ public class RankingService {
 
     private final QRankingRepository qRankingRepository;
     private final ItemRepository itemRepository;
+    public static final String noCoinImage = "https://nfteam-deploy-img.s3.ap-northeast-2.amazonaws.com/coin.svg";
 
     public RankingService(QRankingRepository qRankingRepository, ItemRepository itemRepository) {
         this.qRankingRepository = qRankingRepository;
         this.itemRepository = itemRepository;
     }
 
-    //@Cacheable("timeRanking")
+    @Cacheable("timeRanking")
     public List<RankingResponse> getTimeRanking(String time) {
         LocalDate localDate = checkTimeValidate(time);
         List<Long> timeRankCollectionIdList = qRankingRepository.getTimeRankCollectionId(localDate);
         return getRankingResponses(timeRankCollectionIdList);
     }
 
-    //@Cacheable("coinRanking")
+    @Cacheable("coinRanking")
     public List<RankingResponse> getCoinRanking(Long coinId) {
         checkCoinIdValidate(coinId);
         List<Long> coinRankCollectionId = qRankingRepository.getCoinRankCollectionId(coinId);
@@ -68,9 +71,14 @@ public class RankingService {
 
     private List<RankingResponse> getRankingResponses(List<Long> collectionIdList) {
         List<RankingResponse> rankingResponses = new ArrayList<>();
+        Coin defaultCoin = null;
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < collectionIdList.size(); i++) {
             RankingResponse rankingResponse = qRankingRepository.findRankingCollectionInfo(collectionIdList.get(i));
+
+            // 빈 데이터용 디폴트 코인 정보 세팅
+            if (i == 0)
+                defaultCoin = new Coin(rankingResponse.getCoinId(), rankingResponse.getCoinName(), rankingResponse.getCoinImage(), 0.0);
 
             // 랭킹 세팅
             rankingResponse.addRanking(i + 1);
@@ -85,6 +93,16 @@ public class RankingService {
             } else {
                 rankingResponse.addMetaInfo(0.0, 0.0);
             }
+
+            rankingResponses.add(rankingResponse);
+        }
+
+        if (defaultCoin == null) {
+            defaultCoin = new Coin(0L, "NO DATA", noCoinImage, 0.0);
+        }
+
+        while (rankingResponses.size() < 15) {
+            rankingResponses.add(RankingResponse.noRankingResponse(rankingResponses.size() + 1, defaultCoin));
         }
 
         return rankingResponses;

@@ -47,7 +47,7 @@ public class TransActionDailyAggregateJobConfiguration {
                 .get("transactionDailyReaderStep")
                 .<TransAction, HashMap<Long, DailyAggregate>>chunk(chunkSize)
                 .reader(transactionDailyReader()) // 하루 간 모든 거래 기록을 읽어온다.
-                .processor(transactionDailyProcessor()) // 거래량을 컬렉션 별로 map에 저장한다.
+                .processor(transactionDailyProcessor()) // 거래량을 컬렉션 별 HashMap 저장한다.
                 .writer(transactionDailyWriter()) // 집계 테이블에 집계 정보를 저장한다.
                 .build();
     }
@@ -76,8 +76,8 @@ public class TransActionDailyAggregateJobConfiguration {
             DailyAggregate dailyAggregate = map.getOrDefault(collection.getCollectionId(),
                     new DailyAggregate(collection, collection.getCoin(), LocalDate.now(), 0L, 0.0));
 
-            dailyAggregate.addTotalVolume();
-            dailyAggregate.addTotalTradingPrice(transActions.getTransPrice());
+            dailyAggregate.addTotalVolume(); // 거래량 증가
+            dailyAggregate.addTotalTradingPrice(transActions.getTransPrice()); // 거래금액 추가
             map.put(collection.getCollectionId(), dailyAggregate);
 
             return map;
@@ -88,7 +88,7 @@ public class TransActionDailyAggregateJobConfiguration {
         return items -> {
             HashMap<Long, DailyAggregate> aggregateHashMap = items.get(0);
             for (DailyAggregate da : aggregateHashMap.values()) {
-                dailyAggregateRepository.save(da);
+                dailyAggregateRepository.save(da); // 각 컬렉션 별 집계정보 저장
             }
         };
     }

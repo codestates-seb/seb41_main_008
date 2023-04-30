@@ -33,7 +33,7 @@ public class QRankingRepository {
                 .fetch();
     }
 
-    // 코인 별 컬렉션 랭킹 조회 - 일간 순위
+    // 코인 별 컬렉션 랭킹 조회(일간 기준)
     public List<Long> getCoinRankCollectionId(Long coinId) {
         return jpaQueryFactory
                 .select(dailyAggregate.collection.collectionId)
