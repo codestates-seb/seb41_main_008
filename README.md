@@ -29,7 +29,7 @@
 |![기능 - 컬렉션 생성](https://user-images.githubusercontent.com/110760593/235341159-9d9221d4-b2b1-4743-9add-e24b5fe10a4f.gif)|![기능 - NFT 발행](https://user-images.githubusercontent.com/110760593/235341287-957541de-fceb-42ec-aab0-d77bf47f382b.gif)|
 |<b>아이템 판매</b>|<b>아이템 구매</b>|
 |![기능 - 아이템 판매 등록](https://user-images.githubusercontent.com/110760593/235341347-9f4c13e6-685b-4dab-942e-5aa5f732ad97.gif)|![기능-아이템 구매](https://user-images.githubusercontent.com/110760593/235341364-1fecd59a-a0a6-4eed-bf5b-43ac2fd07b29.gif)|
-|<b>코인 충전</b>|<b>코인 결제</b>|
+|<b>코인 충전</b>|
 |![기능-코인 충전](https://user-images.githubusercontent.com/110760593/235341608-e27951d9-07ef-4410-b663-74c7aebfd2bb.gif)|![기능-코인결제](https://user-images.githubusercontent.com/110760593/235341613-f466154a-6261-4027-b89d-7e7c6bfd43fc.gif)|
 <br/>
 
