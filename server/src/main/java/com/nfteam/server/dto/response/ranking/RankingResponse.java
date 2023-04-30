@@ -1,5 +1,6 @@
 package com.nfteam.server.dto.response.ranking;
 
+import com.nfteam.server.domain.coin.entity.Coin;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,6 +72,22 @@ public class RankingResponse {
     public void addMetaInfo(Double totalVolume, Double highestPrice) {
         this.totalVolume = totalVolume;
         this.highestPrice = highestPrice;
+    }
+
+    public static RankingResponse noRankingResponse(Integer rank, Coin coin) {
+        RankingResponse rankingResponse = new RankingResponse();
+
+        rankingResponse.collectionId = 0L;
+        rankingResponse.collectionName = "NO RANKING DATA";
+        rankingResponse.rank = rank;
+        rankingResponse.coinId = coin.getCoinId();
+        rankingResponse.coinName = coin.getCoinName();
+        rankingResponse.coinImage = coin.getCoinImage();
+        rankingResponse.logoImgName = "no-data.jpg";
+        rankingResponse.totalVolume = 0.0;
+        rankingResponse.highestPrice = 0.0;
+
+        return rankingResponse;
     }
 
 }
