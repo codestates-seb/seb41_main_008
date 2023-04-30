@@ -6,14 +6,31 @@
   <br>
   NFT 발행 및 거래부터, 원하는 코인 구매까지 
   <br>
-  한 곳에서 모든 것이 가능한 <strong>ONE-STOP</strong> NFT 거래소!!
+  한 곳에서 모든 것이 가능한 <strong>ONE-STOP 가상 NFT 거래소</strong>
   <br>
   <br>
 
-[![Application](http://img.shields.io/badge/Application-yellow?logo=Bitcoin&logoColor=white&link=https://www.nfteam008.com/)](https://www.nfteam008.com/)
+[![서비스 페이지 바로가기](http://img.shields.io/badge/데모페이지%20바로가기-blue?logo=Bitcoin&logoColor=white&link=https://www.nfteam008.com/)](https://www.nfteam008.com/)
 [![서비스_가이드](http://img.shields.io/badge/-서비스%20안내페이지-098223?logo=Ello&logoColor=white&link=https://www.notion.so/codestates/41-TEAM-008-NFTEAM-b5519f19a8c1470cbb5ca29167f5a02a)](https://www.notion.so/codestates/41-TEAM-008-NFTEAM-b5519f19a8c1470cbb5ca29167f5a02a)
+#### 👉 테스트 아이디 : tester001@gmail.com
+#### 👉 테스트 비밀번호 : qwert1234@@
 </div>
 
+<br/>
+
+
+
+## ✨ 주요 기능 소개
+
+|<b>로그인</b>|<b>페이지 상세보기</b>|
+|:-:|:-:|
+|![기능 - 로그인](https://user-images.githubusercontent.com/110760593/235340559-97982f05-81fe-4dda-ba42-b9812e878edb.gif)|![기능 - 아이템 상세보기](https://user-images.githubusercontent.com/110760593/235340594-eceeafe0-7fa3-40fa-bd44-9c9d55ff68c6.gif)|
+|<b>컬렉션 생성</b>|<b>NFT 발행</b>|
+|![기능 - 컬렉션 생성](https://user-images.githubusercontent.com/110760593/235341159-9d9221d4-b2b1-4743-9add-e24b5fe10a4f.gif)|![기능 - NFT 발행](https://user-images.githubusercontent.com/110760593/235341287-957541de-fceb-42ec-aab0-d77bf47f382b.gif)|
+|<b>아이템 판매</b>|<b>아이템 구매</b>|
+|![기능 - 아이템 판매 등록](https://user-images.githubusercontent.com/110760593/235341347-9f4c13e6-685b-4dab-942e-5aa5f732ad97.gif)|![기능-아이템 구매](https://user-images.githubusercontent.com/110760593/235341364-1fecd59a-a0a6-4eed-bf5b-43ac2fd07b29.gif)|
+|<b>코인 충전</b>|<b>코인 결제</b>|
+|![기능-코인 충전](https://user-images.githubusercontent.com/110760593/235341608-e27951d9-07ef-4410-b663-74c7aebfd2bb.gif)|![기능-코인결제](https://user-images.githubusercontent.com/110760593/235341613-f466154a-6261-4027-b89d-7e7c6bfd43fc.gif)|
 <br/>
 
 ## 💱 NFTEAM 소개
