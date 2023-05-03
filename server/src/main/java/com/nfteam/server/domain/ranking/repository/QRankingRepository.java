@@ -33,12 +33,12 @@ public class QRankingRepository {
                 .fetch();
     }
 
-    // 코인 별 컬렉션 랭킹 조회(일간 기준)
+    // 코인 별 컬렉션 랭킹 조회(연간 기준)
     public List<Long> getCoinRankCollectionId(Long coinId) {
         return jpaQueryFactory
                 .select(dailyAggregate.collection.collectionId)
                 .from(dailyAggregate)
-                .where(dailyAggregate.baseDate.after(LocalDate.now().minusDays(1L))
+                .where(dailyAggregate.baseDate.after(LocalDate.now().minusYears(1L))
                         .and(dailyAggregate.coin.coinId.eq(coinId)))
                 .groupBy(dailyAggregate.collection)
                 .orderBy(dailyAggregate.totalTradingVolume.desc())
