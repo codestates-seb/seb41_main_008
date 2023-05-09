@@ -47,20 +47,17 @@
 <br/>
 
 ## ✨ 프론트엔드 기술 스택
-
-![프론트엔드기술스택](https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/fe.png.jpg)
+![image](https://user-images.githubusercontent.com/110760593/236981297-cb31300c-3957-4ee8-b2e4-ddcce9b91a9b.png)
 
 <br/>
 
 ## ✨ 벡엔드 기술 스택
-
-![프론트엔드기술스택](https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/be.png.jpg)
+![image](https://user-images.githubusercontent.com/110760593/236981354-4126fffd-f448-45d9-8357-118a7b130644.png)
 
 <br/>
 
 ## ✨ 인프라 및 CI/CD 구조
-
-![프론트엔드기술스택](https://nfteam-dev-img.s3.ap-northeast-2.amazonaws.com/infra.png.jpg)
+![image](https://user-images.githubusercontent.com/110760593/236981214-25ad7253-bf30-4acf-a3bd-40adc609e856.png)
 
 <br/>
 
