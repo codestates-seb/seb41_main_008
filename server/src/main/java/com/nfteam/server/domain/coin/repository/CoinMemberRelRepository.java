@@ -4,13 +4,16 @@ import com.nfteam.server.domain.coin.entity.Coin;
 import com.nfteam.server.domain.coin.entity.CoinMemberRel;
 import com.nfteam.server.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 
 public interface CoinMemberRelRepository extends JpaRepository<CoinMemberRel, Long> {
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<CoinMemberRel> findByMemberAndCoin(Member member, Coin coin);
 
     @Query("select rel from CoinMemberRel rel " +

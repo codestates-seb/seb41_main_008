@@ -2,8 +2,10 @@ package com.nfteam.server.domain.item.repository;
 
 import com.nfteam.server.domain.item.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositor
     @Query("select i from Item i left join fetch i.member m where i.itemId =:itemId")
     Optional<Item> findItemWithOwner(Long itemId);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select i from Item i " +
             "left join fetch i.itemCredential ic " +
             "left join fetch i.member m " +
