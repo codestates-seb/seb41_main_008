@@ -55,25 +55,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<ItemResponse> findItemResponsePageByCollectionId(Long collectionId, Pageable pageable) {
-        QueryResults<ItemResponse> itemResponseQueryResults = jpaQueryFactory
-                .select(getItemResponseConstructor())
-                .from(item)
-                .leftJoin(item.collection)
-                .leftJoin(item.member)
-                .where(item.collection.collectionId.eq(collectionId))
-                .orderBy(item.onSale.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-
-        List<ItemResponse> contents = itemResponseQueryResults.getResults();
-        long total = itemResponseQueryResults.getTotal();
-
-        return new PageImpl<>(contents, pageable, total);
-    }
-
-    @Override
     public Slice<ItemResponse> findItemSliceResponseByCollectionId(Long collectionId, Pageable pageable) {
         List<ItemResponse> responses = jpaQueryFactory
                 .select(getItemResponseConstructor())
