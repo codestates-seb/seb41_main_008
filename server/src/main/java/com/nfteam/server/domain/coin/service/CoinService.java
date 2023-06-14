@@ -13,12 +13,14 @@ import com.nfteam.server.dto.response.coin.CoinOrderResponse;
 import com.nfteam.server.dto.response.coin.CoinPurchaseApproveResponse;
 import com.nfteam.server.dto.response.coin.CoinPurchaseReadyResponse;
 import com.nfteam.server.dto.response.coin.MemberCoinResponse;
+import com.nfteam.server.exception.NFTCustomException;
 import com.nfteam.server.exception.coin.CoinNotFoundException;
 import com.nfteam.server.exception.coin.CoinOrderNotFoundException;
 import com.nfteam.server.exception.coin.CoinPaymentFailedException;
 import com.nfteam.server.exception.member.MemberNotFoundException;
 import com.nfteam.server.security.userdetails.MemberDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.PessimisticLockException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,8 +30,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.LockTimeoutException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.nfteam.server.exception.ExceptionCode.RUNTIME_ERROR;
 
 @Slf4j
 @Service
@@ -188,9 +193,18 @@ public class CoinService {
         if (coinPurchaseApproveResponse != null) {
             // 코인 주문정보 결제 상태 TRUE
             coinOrder.updatePayStatusTrue();
-            // 현재 해당 회원이 해당 코인이 없을 경우 신규 관계 생성 및 저장
-            CoinMemberRel coinMemberRel = coinMemberRelRepository.findByMemberAndCoin(buyer, coinOrder.getCoin())
-                    .orElseGet(() -> coinMemberRelRepository.save(new CoinMemberRel(coinOrder.getCoin(), buyer)));
+            CoinMemberRel coinMemberRel = null;
+
+            try {
+                // 현재 해당 회원이 해당 코인이 없을 경우 신규 관계 생성 및 저장
+                coinMemberRel = coinMemberRelRepository.findByMemberAndCoin(buyer, coinOrder.getCoin())
+                        .orElseGet(() -> coinMemberRelRepository.save(new CoinMemberRel(coinOrder.getCoin(), buyer)));
+            } catch (PessimisticLockException e) {
+                throw new NFTCustomException(RUNTIME_ERROR, "PessimisticLockException - 코인 구매");
+            } catch (LockTimeoutException le) {
+                throw new NFTCustomException(RUNTIME_ERROR, "LockTimeoutException - 코인 구매");
+            }
+
             // 코인 갯수 업데이트
             coinMemberRel.addCoinCount(coinOrder.getCoinCount());
 
