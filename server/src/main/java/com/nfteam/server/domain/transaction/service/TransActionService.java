@@ -44,7 +44,6 @@ public class TransActionService {
     private final CoinRepository coinRepository;
     private final TransActionRepository transActionRepository;
     private final CoinMemberRelRepository coinMemberRelRepository;
-
     private final CredentialEncryptUtils credentialEncryptUtils;
 
     public TransActionService(ItemRepository itemRepository,
@@ -80,6 +79,10 @@ public class TransActionService {
         itemInfoList.stream().forEach(item -> {
             try {
                 transActions.add(makeTransAction(item, buyer, coin));
+            } catch (PessimisticLockException e) {
+                throw new NFTCustomException(RUNTIME_ERROR, "PessimisticLockException - makeTransAction");
+            } catch (LockTimeoutException le) {
+                throw new NFTCustomException(RUNTIME_ERROR, "LockTimeoutException - makeTransAction");
             } catch (Exception e) {
                 throw new NFTCustomException(ExceptionCode.TRANSACTION_FAILED, e.getMessage());
             }
@@ -87,8 +90,10 @@ public class TransActionService {
 
         // 거래 기록 저장
         transActionRepository.saveAll(transActions);
+
         // 카트 거래 완료 체크.
         buyerCart.changePaymentYn(true);
+
         // 현재 구매자에게 새로운 장바구니 부여
         Cart newCart = cartRepository.save(new Cart(buyer));
 
@@ -121,6 +126,7 @@ public class TransActionService {
         itemInfoList.forEach(item -> {
             if (item.getCoinId() != commonCoinId) throw new TransRecordNotValidException("같은 종류의 코인 상품만 거래가 가능합니다.");
         });
+
         return commonCoinId;
     }
 
@@ -132,27 +138,24 @@ public class TransActionService {
     public TransAction makeTransAction(TransActionRequestItemInfo itemInfo, Member buyer, Coin coin) throws Exception {
         Double transPrice = itemInfo.getTransPrice();
         Item item = getItemByIdWithOwnerAndCredentialAndCollection(itemInfo.getItemId());
+
         Member seller = item.getMember();
         ItemCollection collection = item.getCollection();
 
         // 판매 가능 상품 체크
         checkSaleStatus(item.getOnSale());
-
         // 판매자 검증
         validateSeller(item, seller, buyer);
 
         // 거래 기록 (Credential) 검증
         validateTransRecord(item);
-
         // itemCredential 거래내역 기록
         recordNewTransHistory(seller, buyer, item, coin, transPrice);
 
         // 코인 이동
         transferCoin(buyer, seller, item.getItemPrice(), coin);
-
         // item 소유자 변경
         item.assignMember(buyer);
-
         // item 판매 불가 변경
         item.updateSaleStatus(false);
 
@@ -167,18 +170,8 @@ public class TransActionService {
     }
 
     private Item getItemByIdWithOwnerAndCredentialAndCollection(Long itemId) {
-        Item item = null;
-
-        try {
-            item = itemRepository.findItemWithOwnerAndCredentialAndCollection(itemId)
-                    .orElseThrow(() -> new ItemNotFoundException(itemId));
-        } catch (PessimisticLockException e) {
-            throw new NFTCustomException(RUNTIME_ERROR, "PessimisticLockException - 거래 내역 생성 중 아이템 조회");
-        } catch (LockTimeoutException le) {
-            throw new NFTCustomException(RUNTIME_ERROR, "LockTimeoutException - 거래 내역 생성 중 아이템 조회");
-        }
-
-        return item;
+        return itemRepository.findItemWithOwnerAndCredentialAndCollection(itemId)
+                .orElseThrow(() -> new ItemNotFoundException(itemId));
     }
 
     private void checkSaleStatus(Boolean onSale) {
@@ -225,19 +218,12 @@ public class TransActionService {
                 credentialEncryptUtils.encryptRecordByAES256(record.toString()));
     }
 
-    private void transferCoin(Member buyer, Member seller, Double itemPrice, Coin coin) {
-        CoinMemberRel buyerCoinMemberRel;
+    private void transferCoin(Member buyer, Member seller, Double itemPrice, Coin coin) throws Exception {
+        // 구매자에게서 코인 조회
+        CoinMemberRel buyerCoinMemberRel = coinMemberRelRepository.findByMemberAndCoin(buyer, coin)
+                .orElseThrow(() -> new TransRecordNotValidException("구매 코인이 부족합니다."));
 
-        try {
-            // 구매자에게서 코인 조회
-            buyerCoinMemberRel = coinMemberRelRepository.findByMemberAndCoin(buyer, coin)
-                    .orElseThrow(() -> new TransRecordNotValidException("구매 코인이 부족합니다."));
-        } catch (PessimisticLockException e) {
-            throw new NFTCustomException(RUNTIME_ERROR, "PessimisticLockException - 구매자에게서 코인 감소");
-        } catch (LockTimeoutException le) {
-            throw new NFTCustomException(RUNTIME_ERROR, "LockTimeoutException - 구매자에게서 코인 감소");
-        }
-
+        // 코인 잔액 비교
         if (buyerCoinMemberRel.getCoinCount() - itemPrice < 0) {
             throw new TransRecordNotValidException("구매 코인이 부족합니다.");
         }
@@ -245,21 +231,13 @@ public class TransActionService {
         // 구매자에게 구매 코인 감소
         buyerCoinMemberRel.minusCoinCount(itemPrice);
 
-        try {
-            // 판매자에게 10퍼센트 수수료를 제외한 코인 송금
-            CoinMemberRel sellerCoinMemberRel = coinMemberRelRepository
-                    .findByMemberAndCoin(seller, coin).orElse(new CoinMemberRel(coin, seller));
-            sellerCoinMemberRel.addCoinCount(itemPrice * 0.9);
+        // 판매자에게 10퍼센트 수수료를 제외한 코인 송금
+        CoinMemberRel sellerCoinMemberRel = coinMemberRelRepository
+                .findByMemberAndCoin(seller, coin).orElse(new CoinMemberRel(coin, seller));
+        sellerCoinMemberRel.addCoinCount(itemPrice * 0.9);
 
-            // 판매자의 경우 해당 코인이 없을 경우 신규 Entity 가 되므로 저장
-            coinMemberRelRepository.save(sellerCoinMemberRel);
-
-        } catch (PessimisticLockException e) {
-            throw new NFTCustomException(RUNTIME_ERROR, "PessimisticLockException - 판매자에게 코인 이동");
-        } catch (LockTimeoutException le) {
-            throw new NFTCustomException(RUNTIME_ERROR, "LockTimeoutException - 판매자에게 코인 이동");
-        }
-
+        // 판매자의 경우 해당 코인이 없을 경우 신규 Entity 가 되므로 저장
+        coinMemberRelRepository.save(sellerCoinMemberRel);
     }
 
 }
