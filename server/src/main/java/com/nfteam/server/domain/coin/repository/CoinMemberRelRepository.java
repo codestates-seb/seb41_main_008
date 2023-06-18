@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public interface CoinMemberRelRepository extends JpaRepository<CoinMemberRel, Long> {
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "5000")})
     Optional<CoinMemberRel> findByMemberAndCoin(Member member, Coin coin);
 

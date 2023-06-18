@@ -19,7 +19,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositor
     @Query("select i from Item i left join fetch i.member m where i.itemId =:itemId")
     Optional<Item> findItemWithOwner(Long itemId);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "5000")})
     @Query("select i from Item i " +
             "left join fetch i.itemCredential ic " +
